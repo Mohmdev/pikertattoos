@@ -9,10 +9,10 @@ import '@styles/globals.css'
 
 import Head from 'next/head'
 
-import { mergeOpenGraph } from '@seo/mergeOpenGraph'
-
 import { InitTheme } from '@providers/Theme/InitTheme'
-import { getServerSideURL } from '@utils/getURL'
+
+// import { mergeOpenGraph } from '@seo/mergeOpenGraph'
+// import { getServerSideURL } from '@utils/getURL'
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -28,7 +28,7 @@ export default function RootLayout({
         <link href="/assets/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/assets/favicon.svg" rel="icon" type="image/svg+xml" />
       </Head>
-      <body className={cn(jakarta.className, 'antialiased bg-black')}>
+      <body className={cn(jakarta.className, 'antialiased dark:bg-black')}>
         <Providers>{children}</Providers>
       </body>
     </html>
@@ -36,6 +36,8 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph()
+  // metadataBase: new URL(getServerSideURL()),
+  // openGraph: mergeOpenGraph()
+  title: 'Piker Tattoos',
+  description: 'Tattoo studio'
 }

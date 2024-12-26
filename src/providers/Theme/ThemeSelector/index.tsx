@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 
-import type { Theme } from './types'
+import type { Theme } from '../types'
 
 import {
   Select,
@@ -13,7 +13,8 @@ import {
 } from '@ui/select'
 
 import { useTheme } from '..'
-import { themeLocalStorageKey } from './types'
+
+import { themeLocalStorageKey } from '@constants/theme'
 
 export const ThemeSelector: React.FC = () => {
   const { setTheme } = useTheme()

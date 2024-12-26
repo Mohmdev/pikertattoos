@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next'
 
-import redirects from './redirects'
+import redirects from './redirects.mjs'
 
 // const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 //   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`

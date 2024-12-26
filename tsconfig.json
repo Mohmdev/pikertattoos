@@ -37,6 +37,7 @@
       "@fields/*": ["src/fields/*"],
       "@ui/*": ["src/components/_ui/*"],
       "@components/*": ["src/components/*"],
+      "@scss/*": ["src/styles/scss/*"],
       "@styles/*": ["src/styles/*"],
       "@services/*": ["src/services/*"],
       "@utils/*": ["src/lib/utils/*"],

@@ -12,12 +12,10 @@ import canUseDOM from '@utils/canUseDOM'
 
 import type { Theme, ThemeContextType } from './types'
 
-import {
-  defaultTheme,
-  getImplicitPreference,
-  themeLocalStorageKey
-} from './shared'
+import { getImplicitPreference } from './shared'
 import { themeIsValid } from './types'
+
+import { defaultTheme, themeLocalStorageKey } from '@constants/theme'
 
 const initialContext: ThemeContextType = {
   setTheme: () => null,
