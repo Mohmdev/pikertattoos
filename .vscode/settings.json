@@ -1,0 +1,15 @@
+{
+  "npm.packageManager": "pnpm",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[javascript][typescript][typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  },
+  "[json][jsonc][markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
