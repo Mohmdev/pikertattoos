@@ -9,7 +9,10 @@ import '@styles/globals.css'
 
 import Head from 'next/head'
 
+import { mergeOpenGraph } from '@seo/mergeOpenGraph'
+
 import { InitTheme } from '@providers/Theme/InitTheme'
+import { getServerSideURL } from '@utils/getURL'
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -33,6 +36,6 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  title: 'Piker Tattoos',
-  description: 'Tattoo studio'
+  metadataBase: new URL(getServerSideURL()),
+  openGraph: mergeOpenGraph()
 }
