@@ -1,27 +1,52 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "target": "ES2024",
+    "lib": ["DOM", "DOM.Iterable", "ES2024"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "esModuleInterop": true,
+    "incremental": true,
+    "jsx": "preserve",
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "sourceMap": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "react": ["node_modules/@types/react"],
+      "@payload-config": ["src/CMS/payload-config.ts"],
+      "@payload-types": ["src/CMS/payload-types.ts"],
+      "@admin-components/*": ["src/CMS/_components/*"],
+      "@CMS/*": ["src/CMS/*"],
+      "@access/*": ["src/services/access/*"],
+      "@data/*": ["src/_data/*"],
+      "@providers": ["src/providers"],
+      "@providers/*": ["src/providers/*"],
+      "@forms/*": ["src/forms/*"],
+      "@blocks/*": ["src/blocks/*"],
+      "@fields/*": ["src/fields/*"],
+      "@ui/*": ["src/components/_ui/*"],
+      "@components/*": ["src/components/*"],
+      "@styles/*": ["src/styles/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/lib/utils/*"],
+      "@hooks/*": ["src/lib/hooks/*"],
+      "@seo/*": ["src/lib/seo/*"],
+      "@constants/*": ["src/lib/constants/*"],
+      "@lib/*": ["src/lib/*"],
+      "@/*": ["src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".temp"]
 }
