@@ -2,19 +2,26 @@ import React from 'react'
 
 import { Toaster } from 'sonner'
 
-import { HeaderThemeProvider } from './HeaderTheme'
+import { ThemeProvider } from './NextTheme'
+// import { HeaderThemeProvider } from './HeaderTheme'
 import { ReactQueryProvider } from './ReactQuery'
-import { ThemeProvider } from './Theme'
+
+// import { ScrollbarProvider } from './Scrollbar'
+// import { ThemeProvider } from './Theme'
 
 export const Providers: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
   return (
-    <ThemeProvider>
-      <HeaderThemeProvider>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
-        <Toaster />
-      </HeaderThemeProvider>
-    </ThemeProvider>
+    <>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ReactQueryProvider>
+          {/* <ScrollbarProvider> */}
+          {children}
+          {/* </ScrollbarProvider> */}
+          <Toaster />
+        </ReactQueryProvider>
+      </ThemeProvider>
+    </>
   )
 }

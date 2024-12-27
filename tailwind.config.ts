@@ -5,9 +5,9 @@ import type { Config } from 'tailwindcss'
 
 export default {
   darkMode: [
-    // 'class'
-    'selector',
-    '[data-theme="dark"]'
+    'class'
+    // 'selector',
+    // '[data-theme="dark"]'
   ],
   content: [
     './pages/**/*.{ts,tsx}',

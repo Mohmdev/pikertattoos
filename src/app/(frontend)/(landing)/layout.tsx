@@ -6,7 +6,7 @@ type LandingLayoutProps = {
 
 const LandingLayout = ({ children }: LandingLayoutProps) => {
   return (
-    <div className="flex flex-col min-h-screen dark:bg-black pb-10">
+    <div className="flex flex-col min-h-screen pb-10 w-screen box-border">
       <Navbar />
       {children}
     </div>

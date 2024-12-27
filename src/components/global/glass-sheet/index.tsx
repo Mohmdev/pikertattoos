@@ -1,6 +1,6 @@
 import { cn } from '@utils/cn'
 
-import { Sheet, SheetContent, SheetTrigger } from '@ui/sheet'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@ui/sheet'
 
 type GlassSheetProps = {
   children: React.ReactNode
@@ -21,6 +21,7 @@ const GlassSheet = ({ children, trigger, className, triggerClass }: GlassSheetPr
           className
         )}
       >
+        <SheetTitle className="hidden">title</SheetTitle>
         {children}
       </SheetContent>
     </Sheet>

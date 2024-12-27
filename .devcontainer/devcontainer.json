@@ -1,0 +1,24 @@
+{
+  "name": "Node.js Development",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-22",
+  
+  "features": {
+      "ghcr.io/devcontainers/features/node:1": {
+          "version": "22",
+          "nodeGypDependencies": true
+      }
+  },
+
+  "customizations": {
+      "vscode": {
+          "extensions": [
+              "dbaeumer.vscode-eslint",
+              "esbenp.prettier-vscode"
+          ]
+      }
+  },
+
+  "postCreateCommand": "npm install -g pnpm vercel",
+
+  "remoteUser": "node"
+}

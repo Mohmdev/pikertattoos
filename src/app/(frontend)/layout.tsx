@@ -1,15 +1,14 @@
 import { Plus_Jakarta_Sans } from 'next/font/google'
-import type { Metadata } from 'next'
-
-import { Providers } from '@providers'
-
-import { cn } from '@utils/cn'
 
 import '@styles/globals.css'
 
 import Head from 'next/head'
+import type { Metadata } from 'next'
+
+import { Providers } from '@providers'
 
 import { InitTheme } from '@providers/Theme/InitTheme'
+import { cn } from '@utils/cn'
 
 // import { mergeOpenGraph } from '@seo/mergeOpenGraph'
 // import { getServerSideURL } from '@utils/getURL'
