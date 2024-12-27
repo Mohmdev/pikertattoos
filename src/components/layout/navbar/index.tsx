@@ -7,6 +7,7 @@ import { CheckBadge, Logout } from '@icons'
 import { MenuIcon } from 'lucide-react'
 
 import { ModeToggle } from '@providers/NextTheme/mode-toggle'
+import { cn } from '@utils/cn'
 
 import { Button } from '@ui/button'
 import GlassSheet from '@components/global/glass-sheet'
@@ -27,15 +28,20 @@ export const Navbar = async () => {
         {user.status === 200 ? (
           <GroupDropDown members={groups.members} groups={groups} />
         ) : (
-          <p>Grouple.</p>
+          <p>Pikertattoos.</p>
         )}
       </div>
 
       <GlassSheet
         trigger={
-          <span className="lg:hidden flex items-center gap-2 py-2">
+          <span
+            className={cn(
+              'lg:hidden flex items-center gap-2 py-2',
+              'text-primary-foreground/80 dark:text-foreground hover:text-primary-foreground'
+            )}
+          >
             <MenuIcon className="cursor-pointer" />
-            <p>Grouple.</p>
+            <p>Pikertattoos.</p>
           </span>
         }
       >
@@ -48,7 +54,11 @@ export const Navbar = async () => {
         <Link href={user.status === 200 ? `/group/create` : '/sign-in'}>
           <Button
             variant="outline"
-            className="bg-themeBlack rounded-2xl flex gap-2 border-themeGray hover:bg-themeGray"
+            className={cn(
+              'flex gap-2 border-border rounded-xl',
+              'dark:bg-themeBlack bg-foreground dark:border-themeGray hover:bg-themeGray',
+              'text-primary-foreground/80 dark:text-foreground hover:text-primary-foreground'
+            )}
           >
             <CheckBadge />
             Create Group

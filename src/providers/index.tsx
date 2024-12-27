@@ -13,15 +13,13 @@ export const Providers: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
   return (
-    <>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <ReactQueryProvider>
-          {/* <ScrollbarProvider> */}
-          {children}
-          {/* </ScrollbarProvider> */}
-          <Toaster />
-        </ReactQueryProvider>
-      </ThemeProvider>
-    </>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ReactQueryProvider>
+        {/* <ScrollbarProvider> */}
+        {children}
+        {/* </ScrollbarProvider> */}
+        <Toaster />
+      </ReactQueryProvider>
+    </ThemeProvider>
   )
 }

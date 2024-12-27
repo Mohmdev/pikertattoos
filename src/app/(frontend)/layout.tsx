@@ -7,7 +7,6 @@ import type { Metadata } from 'next'
 
 import { Providers } from '@providers'
 
-import { InitTheme } from '@providers/Theme/InitTheme'
 import { cn } from '@utils/cn'
 
 // import { mergeOpenGraph } from '@seo/mergeOpenGraph'
@@ -23,7 +22,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Head>
-        <InitTheme />
         <link href="/assets/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/assets/favicon.svg" rel="icon" type="image/svg+xml" />
       </Head>

@@ -46,7 +46,7 @@ export const GroupDropDown = ({ groups, members }: GroupDropDownProps) => {
       title="Owned Groups"
       trigger={
         <Button variant="ghost" className="rounded-2xl hover:bg-themeGray font-medium flex gap-2">
-          Grouple.
+          Pikertattoos.
           <CarotSort />
         </Button>
       }
