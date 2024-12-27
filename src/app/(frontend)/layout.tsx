@@ -28,7 +28,7 @@ export default function RootLayout({
         <link href="/assets/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/assets/favicon.svg" rel="icon" type="image/svg+xml" />
       </Head>
-      <body className={cn(jakarta.className, 'antialiased dark:bg-black')}>
+      <body className={cn(jakarta.className, 'antialiased')}>
         <Providers>{children}</Providers>
       </body>
     </html>
