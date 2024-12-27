@@ -1,0 +1,17 @@
+- Hand
+- Arm
+- Shoulder
+- Chest
+- Back
+- Leg
+- Ankle
+- Foot
+- Neck
+- Wrist
+- Finger
+- Rib
+- Hip
+- Face
+- Full Body
+- Cover Up
+- Connected Pieces
