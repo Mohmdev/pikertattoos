@@ -3,14 +3,14 @@
 
 // TODO: Replace the redux logic with Payload to simulate the actual implementation
 
-import { useEffect, useRef } from 'react'
+// import { useEffect, useRef } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
-import { useDispatch } from 'react-redux'
+// import { useQuery } from '@tanstack/react-query'
+// import { useDispatch } from 'react-redux'
 
-import { onGetPaginatedPosts, onSearchGroups } from '@/actions/groups'
-import { onInfiniteScroll } from '@/redux/slices/infinite-scroll-slice'
-import { AppDispatch, useAppSelector } from '@/redux/store'
+// import { onGetPaginatedPosts, onSearchGroups } from '@/actions/groups'
+// import { onInfiniteScroll } from '@/redux/slices/infinite-scroll-slice'
+// import { AppDispatch, useAppSelector } from '@/redux/store'
 
 export const useInfiniteScroll = (
   action: 'GROUPS' | 'CHANNEL' | 'POSTS',

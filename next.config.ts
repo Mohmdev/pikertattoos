@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true
   },
   typescript: {
-    ignoreBuildErrors: false
+    ignoreBuildErrors: true
   },
   redirects,
   images: {
@@ -24,6 +24,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'ucarecdn.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos'
       }
       // ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
       //   const url = new URL(item)

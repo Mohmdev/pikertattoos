@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 
 // import { onGetExploreGroup } from '@/actions/groups'
@@ -5,7 +7,14 @@ import { mockGroups } from '@lib/data/mock-data'
 
 import ExplorePageContent from './explore-content'
 
-const ExploreCategoryPage = async ({ params }: { params: { category: string } }) => {
+type Props = {
+  params: {
+    category: string
+  }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function ExploreCategoryPage({ params }: Props) {
   const query = new QueryClient()
 
   await query.prefetchQuery({
@@ -21,4 +30,7 @@ const ExploreCategoryPage = async ({ params }: { params: { category: string } })
   )
 }
 
-export default ExploreCategoryPage
+export const metadata: Metadata = {
+  title: 'Explore Groups',
+  description: 'Explore different groups'
+}
