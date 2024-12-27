@@ -3,6 +3,7 @@ import React from 'react'
 import { Toaster } from 'sonner'
 
 import { HeaderThemeProvider } from './HeaderTheme'
+import { ReactQueryProvider } from './ReactQuery'
 import { ThemeProvider } from './Theme'
 
 export const Providers: React.FC<{
@@ -11,7 +12,7 @@ export const Providers: React.FC<{
   return (
     <ThemeProvider>
       <HeaderThemeProvider>
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
         <Toaster />
       </HeaderThemeProvider>
     </ThemeProvider>

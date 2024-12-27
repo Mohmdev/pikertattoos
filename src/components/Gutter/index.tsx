@@ -9,6 +9,7 @@ type Props = {
   disableMobile?: boolean
   leftGutter?: boolean
   rightGutter?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ref?: React.RefObject<any>
 }
 export const Gutter: React.FC<Props> = ({

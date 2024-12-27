@@ -15,9 +15,7 @@ const defaultOpenGraph: Metadata['openGraph'] = {
   title: 'Nexweb - Modern Web Development Platform'
 }
 
-export const mergeOpenGraph = (
-  og?: Metadata['openGraph']
-): Metadata['openGraph'] => {
+export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {
   return {
     ...defaultOpenGraph,
     ...og,

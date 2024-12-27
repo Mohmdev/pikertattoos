@@ -4,13 +4,7 @@ import React, { useState } from 'react'
 
 import type { Theme } from '../types'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select'
 
 import { useTheme } from '..'
 

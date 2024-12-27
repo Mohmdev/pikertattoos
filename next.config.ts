@@ -18,19 +18,23 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false
   },
-  redirects
-  // images: {
-  //   remotePatterns: [
-  //     ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
-  //       const url = new URL(item)
+  redirects,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ucarecdn.com'
+      }
+      // ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
+      //   const url = new URL(item)
 
-  //       return {
-  //         hostname: url.hostname,
-  //         protocol: url.protocol.replace(':', '')
-  //       }
-  //     })
-  //   ]
-  // }
+      //   return {
+      //     hostname: url.hostname,
+      //     protocol: url.protocol.replace(':', '')
+      //   }
+      // })
+    ]
+  }
 }
 
 export default nextConfig

@@ -13,10 +13,7 @@ const prettierConfig = {
   semi: false,
   proseWrap: 'preserve',
   embeddedLanguageFormatting: 'auto',
-  plugins: [
-    'prettier-plugin-tailwindcss',
-    '@ianvs/prettier-plugin-sort-imports'
-  ],
+  plugins: ['prettier-plugin-tailwindcss', '@ianvs/prettier-plugin-sort-imports'],
   tailwindStylesheet: 'src/styles/globals.css',
   tailwindConfig: 'src/styles/globals.css',
   // importOrder config

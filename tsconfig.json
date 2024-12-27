@@ -40,6 +40,7 @@
       "@scss/*": ["src/styles/scss/*"],
       "@styles/*": ["src/styles/*"],
       "@services/*": ["src/services/*"],
+      "@icons": ["src/lib/icons"],
       "@utils/*": ["src/lib/utils/*"],
       "@hooks/*": ["src/lib/hooks/*"],
       "@seo/*": ["src/lib/seo/*"],

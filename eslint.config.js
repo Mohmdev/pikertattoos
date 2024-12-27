@@ -1,28 +1,29 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import pluginReact from 'eslint-plugin-react';
-import { FlatCompat } from '@eslint/eslintrc';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { FlatCompat } from '@eslint/eslintrc'
+import pluginJs from '@eslint/js'
+import pluginReact from 'eslint-plugin-react'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+  baseDirectory: __dirname
+})
 
 /** @type {import('eslint').Linter.Config[]} */
-export default [
+const eslingConfig = [
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.node,
-      },
-    },
+        ...globals.node
+      }
+    }
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
@@ -42,7 +43,8 @@ export default [
       '**/node_modules',
       '**/temp',
       'playwright.config.ts',
-      'jest.config.js',
-    ],
-  },
-];
+      'jest.config.js'
+    ]
+  }
+]
+export default eslingConfig

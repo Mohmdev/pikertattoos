@@ -1,3 +1,4 @@
+import tailwindcssAnimate from 'tailwindcss-animate'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 import type { Config } from 'tailwindcss'
@@ -14,7 +15,7 @@ export default {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}'
   ],
-  plugins: [require('tailwindcss-animate')],
+  plugins: [tailwindcssAnimate],
   theme: {
     container: {
       center: true,
