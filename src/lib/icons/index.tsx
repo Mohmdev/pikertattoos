@@ -47,3 +47,9 @@ export { Tech } from './tech'
 export { Unlike } from './unlike'
 export { WhiteLabel } from './white-label'
 export { ZapDouToneBlack } from './zap-duotone-black'
+
+// Theme
+export { ThemeAutoIcon } from './ThemeAutoIcon'
+export { ThemeDarkIcon } from './ThemeDarkIcon'
+export { ThemeLightIcon } from './ThemeLightIcon'
+export { ChevronUpDownIcon } from './ChevronUpDownIcon'
