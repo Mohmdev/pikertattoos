@@ -7,6 +7,7 @@ import { CheckBadge, Logout } from '@icons'
 import { MenuIcon } from 'lucide-react'
 
 import { ModeToggle } from '@providers/NextTheme/mode-toggle'
+import { mockGroups, mockUser } from '@lib/data/mock-data'
 import { cn } from '@utils/cn'
 
 import { Button } from '@ui/button'
@@ -14,7 +15,6 @@ import GlassSheet from '@components/global/glass-sheet'
 import { UserWidget } from '@components/global/user-widget'
 
 import { GroupDropDown } from './group-dropdown'
-import { mockGroups, mockUser } from './mock-data'
 
 export const Navbar = async () => {
   // const user = await onAuthenticatedUser()
