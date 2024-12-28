@@ -12,7 +12,10 @@ const ExploreLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-1 flex-col">
       <div className="mt-36 flex flex-col items-center px-10">
-        <GradientText className="text-[90px] font-semibold leading-none" element="H2">
+        <GradientText
+          className="text-center text-[40px] font-semibold leading-none md:text-[55px] lg:text-[90px]"
+          element="H2"
+        >
           Piker Tattoos
         </GradientText>
         <p className="pt-2 leading-none text-themeTextGray">
