@@ -1,7 +1,7 @@
+import type { GlobalConfig } from 'payload'
+
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { publishedOnly } from '@access/publishedOnly'
-
-import type { GlobalConfig } from 'payload'
 
 import { revalidateGlobalSettings } from './revalidateGlobalSettings'
 
@@ -19,13 +19,6 @@ export const GlobalSettings: GlobalConfig = {
   },
   hooks: {
     afterChange: [revalidateGlobalSettings]
-  },
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100
-      }
-    }
   },
   fields: [
     {
@@ -176,8 +169,7 @@ export const GlobalSettings: GlobalConfig = {
               type: 'upload',
               relationTo: 'assets',
               admin: {
-                description:
-                  'The image that will appear when sharing your site on social media.'
+                description: 'The image that will appear when sharing your site on social media.'
               }
             }
           ]

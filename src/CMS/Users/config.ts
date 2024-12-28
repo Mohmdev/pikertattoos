@@ -89,6 +89,11 @@ export const Users: CollectionConfig<'users'> = {
     admin: hasAdminPanelAccess(...ROLES_WITH_ADMIN_ACCESS)
   },
   auth: {
+    loginWithUsername: {
+      allowEmailLogin: true,
+      requireEmail: false
+      // requireUsername: boolean
+    },
     cookies: {
       // HTTPS only cookies
       secure:

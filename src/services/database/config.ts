@@ -1,18 +1,14 @@
-// import { postgresAdapter } from '@payloadcms/db-postgres'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 
 import type { Config } from 'payload'
 
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
+
 export const databaseAdapter: Config['db'] = vercelPostgresAdapter({
   forceUseVercelPostgres: true,
-  migrationDir: './src/services/database/migrations'
+  migrationDir: path.resolve(dirname, './migrations')
 })
-
-// export const databaseAdapter: Config['db'] = postgresAdapter({
-//   pool: {
-//     connectionString: process.env.POSTGRES_URI
-//   },
-
-//   // prodMigrations: migrations,
-//   migrationDir: './src/services/database/migrations'
-// })

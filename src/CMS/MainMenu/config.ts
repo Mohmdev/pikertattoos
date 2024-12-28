@@ -17,13 +17,6 @@ export const MainMenu: GlobalConfig = {
     readVersions: isAdminOrEditor,
     readDrafts: isAdminOrEditor
   },
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100
-      }
-    }
-  },
   fields: [
     {
       name: 'tabs',

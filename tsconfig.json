@@ -53,7 +53,7 @@
     "**/*.ts",
     "**/*.tsx",
     "next-env.d.ts",
-    "environment.d.ts",
+    "src/environment.d.ts",
     ".next/types/**/*.ts",
     "redirects.js",
     "next.config.ts",

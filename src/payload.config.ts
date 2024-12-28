@@ -27,17 +27,11 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   collections: [
-    ...collectionGroup('Studio', [Pages]),
+    ...collectionGroup('Content', [Pages]),
     ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
     ...collectionGroup('Settings', [Users])
   ],
-  globals: [
-    ...globalGroup('Customize', [
-      // GlobalSettings,
-      // MainMenu,
-      // Footer
-    ])
-  ],
+  globals: [...globalGroup('Customize', [GlobalSettings, MainMenu, Footer])],
   editor: defaultLexical,
   admin: adminConfig,
   db: databaseAdapter,

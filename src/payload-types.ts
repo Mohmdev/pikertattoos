@@ -42,8 +42,16 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'global-settings': GlobalSetting;
+    'main-menu': MainMenu;
+    footer: Footer;
+  };
+  globalsSelect: {
+    'global-settings': GlobalSettingsSelect<false> | GlobalSettingsSelect<true>;
+    'main-menu': MainMenuSelect<false> | MainMenuSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -54,22 +62,34 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
-  forgotPassword: {
-    email: string;
-    password: string;
-  };
-  login: {
-    email: string;
-    password: string;
-  };
+  forgotPassword:
+    | {
+        email: string;
+      }
+    | {
+        username: string;
+      };
+  login:
+    | {
+        email: string;
+        password: string;
+      }
+    | {
+        password: string;
+        username: string;
+      };
   registerFirstUser: {
-    email: string;
     password: string;
+    username: string;
+    email?: string;
   };
-  unlock: {
-    email: string;
-    password: string;
-  };
+  unlock:
+    | {
+        email: string;
+      }
+    | {
+        username: string;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -604,14 +624,14 @@ export interface Form {
  */
 export interface User {
   id: number;
-  username: string;
   firstName?: string | null;
   lastName?: string | null;
   photo?: (number | null) | UserPhoto;
   role: 'admin' | 'editor' | 'public';
   updatedAt: string;
   createdAt: string;
-  email: string;
+  email?: string | null;
+  username: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
   salt?: string | null;
@@ -1148,7 +1168,6 @@ export interface UserPhotosSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  username?: T;
   firstName?: T;
   lastName?: T;
   photo?: T;
@@ -1156,6 +1175,7 @@ export interface UsersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   email?: T;
+  username?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
   salt?: T;
@@ -1347,102 +1367,402 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SpotlightBlock".
+ * via the `definition` "global-settings".
  */
-export interface SpotlightBlock {
-  element?: ('h1' | 'h2' | 'h3' | 'p') | null;
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
+export interface GlobalSetting {
+  id: number;
+  siteIdentity?: {
+    siteName?: string | null;
+    siteDescription?: string | null;
+  };
+  branding?: {
+    /**
+     * Light-colored version of your logo optimized for dark backgrounds and dark mode displays.
+     */
+    logo?: (number | null) | Asset;
+    /**
+     * Dark-colored version of your logo optimized for light backgrounds and standard displays.
+     */
+    logoSquare?: (number | null) | Asset;
+    /**
+     * The small icon that is displayed in the browser tab. Recommended size: 32x32px.
+     */
+    favicon?: (number | null) | Asset;
+  };
+  contactInfo?: {
+    contactName?: string | null;
+    contactEmail?: string | null;
+    contactPhone?: string | null;
+    contactAddress?: string | null;
+    socialMedia?: {
+      facebook?: string | null;
+      twitter?: string | null;
+      instagram?: string | null;
+      linkedin?: string | null;
+      youtube?: string | null;
+      whatsapp?: string | null;
+      telegram?: string | null;
     };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'spotlight';
+  };
+  globalSeo?: {
+    keywords?: string | null;
+    /**
+     * The image that will appear when sharing your site on social media.
+     */
+    ogImage?: (number | null) | Asset;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "VideoBlock".
+ * via the `definition` "main-menu".
  */
-export interface VideoBlock {
-  url?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'video';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BrBlock".
- */
-export interface BrBlock {
-  ignore?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'br';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CommandLineBlock".
- */
-export interface CommandLineBlock {
-  command?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'commandLine';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TemplateCardsBlock".
- */
-export interface TemplateCardsBlock {
-  templates?:
+export interface MainMenu {
+  id: number;
+  tabs?:
     | {
-        name: string;
-        description: string;
-        image: string;
-        slug: string;
-        order: number;
+        label: string;
+        enableDirectLink?: boolean | null;
+        enableDropdown?: boolean | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: number | Page;
+          } | null;
+          url?: string | null;
+          customId?: string | null;
+        };
+        description?: string | null;
+        descriptionLinks?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+                customId?: string | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        navItems?:
+          | {
+              style?: ('default' | 'featured' | 'list') | null;
+              defaultLink?: {
+                link: {
+                  type?: ('reference' | 'custom') | null;
+                  newTab?: boolean | null;
+                  reference?: {
+                    relationTo: 'pages';
+                    value: number | Page;
+                  } | null;
+                  url?: string | null;
+                  label: string;
+                  customId?: string | null;
+                };
+                description?: string | null;
+              };
+              featuredLink?: {
+                tag?: string | null;
+                label?: {
+                  root: {
+                    type: string;
+                    children: {
+                      type: string;
+                      version: number;
+                      [k: string]: unknown;
+                    }[];
+                    direction: ('ltr' | 'rtl') | null;
+                    format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                    indent: number;
+                    version: number;
+                  };
+                  [k: string]: unknown;
+                } | null;
+                links?:
+                  | {
+                      link: {
+                        type?: ('reference' | 'custom') | null;
+                        newTab?: boolean | null;
+                        reference?: {
+                          relationTo: 'pages';
+                          value: number | Page;
+                        } | null;
+                        url?: string | null;
+                        label: string;
+                        customId?: string | null;
+                      };
+                      id?: string | null;
+                    }[]
+                  | null;
+              };
+              listLinks?: {
+                tag?: string | null;
+                links?:
+                  | {
+                      link: {
+                        type?: ('reference' | 'custom') | null;
+                        newTab?: boolean | null;
+                        reference?: {
+                          relationTo: 'pages';
+                          value: number | Page;
+                        } | null;
+                        url?: string | null;
+                        label: string;
+                        customId?: string | null;
+                      };
+                      id?: string | null;
+                    }[]
+                  | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'templateCards';
+  menuCta: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?: {
+      relationTo: 'pages';
+      value: number | Page;
+    } | null;
+    url?: string | null;
+    label: string;
+    customId?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock".
+ * via the `definition` "footer".
  */
-export interface BannerBlock {
-  type?: ('default' | 'success' | 'warning' | 'error') | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'banner';
+export interface Footer {
+  id: number;
+  columns?:
+    | {
+        label: string;
+        navItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+                customId?: string | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "global-settings_select".
+ */
+export interface GlobalSettingsSelect<T extends boolean = true> {
+  siteIdentity?:
+    | T
+    | {
+        siteName?: T;
+        siteDescription?: T;
+      };
+  branding?:
+    | T
+    | {
+        logo?: T;
+        logoSquare?: T;
+        favicon?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        contactName?: T;
+        contactEmail?: T;
+        contactPhone?: T;
+        contactAddress?: T;
+        socialMedia?:
+          | T
+          | {
+              facebook?: T;
+              twitter?: T;
+              instagram?: T;
+              linkedin?: T;
+              youtube?: T;
+              whatsapp?: T;
+              telegram?: T;
+            };
+      };
+  globalSeo?:
+    | T
+    | {
+        keywords?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "main-menu_select".
+ */
+export interface MainMenuSelect<T extends boolean = true> {
+  tabs?:
+    | T
+    | {
+        label?: T;
+        enableDirectLink?: T;
+        enableDropdown?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              customId?: T;
+            };
+        description?: T;
+        descriptionLinks?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    customId?: T;
+                  };
+              id?: T;
+            };
+        navItems?:
+          | T
+          | {
+              style?: T;
+              defaultLink?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          customId?: T;
+                        };
+                    description?: T;
+                  };
+              featuredLink?:
+                | T
+                | {
+                    tag?: T;
+                    label?: T;
+                    links?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                                customId?: T;
+                              };
+                          id?: T;
+                        };
+                  };
+              listLinks?:
+                | T
+                | {
+                    tag?: T;
+                    links?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                                customId?: T;
+                              };
+                          id?: T;
+                        };
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  menuCta?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        customId?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  columns?:
+    | T
+    | {
+        label?: T;
+        navItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    customId?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
