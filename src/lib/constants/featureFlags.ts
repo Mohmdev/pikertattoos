@@ -24,8 +24,8 @@ export const PREVIEWABLE_COLLECTIONS: CollectionSlug[] = [
 export const ENABLED_PLUGINS = {
   storage: true,
   formBuilder: true,
-  seo: false,
-  redirects: false,
+  seo: true,
+  redirects: true,
   nestedDocs: true,
   search: true
 } as const

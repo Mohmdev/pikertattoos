@@ -56,5 +56,9 @@ export const Artist: CollectionConfig<'artist'> = {
       }
     },
     ...slugField()
-  ]
+  ],
+  versions: {
+    drafts: true,
+    maxPerDoc: 10
+  }
 }

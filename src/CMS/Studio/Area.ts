@@ -35,5 +35,9 @@ export const Area: CollectionConfig<'area'> = {
       on: 'area'
     },
     ...slugField()
-  ]
+  ],
+  versions: {
+    drafts: true,
+    maxPerDoc: 10
+  }
 }

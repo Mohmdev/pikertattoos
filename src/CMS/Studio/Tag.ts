@@ -41,5 +41,9 @@ export const Tag: CollectionConfig<'tag'> = {
       on: 'tags'
     },
     ...slugField()
-  ]
+  ],
+  versions: {
+    drafts: true,
+    maxPerDoc: 10
+  }
 }

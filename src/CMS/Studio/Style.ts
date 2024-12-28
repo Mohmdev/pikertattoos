@@ -41,5 +41,9 @@ export const Style: CollectionConfig<'style'> = {
       on: 'style'
     },
     ...slugField()
-  ]
+  ],
+  versions: {
+    drafts: true,
+    maxPerDoc: 10
+  }
 }

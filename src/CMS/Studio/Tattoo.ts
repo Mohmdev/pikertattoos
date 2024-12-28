@@ -1,5 +1,8 @@
 import { slugField } from '@fields/slug/config'
 
+import { getLivePreviewUrl } from '@utils/getLivePreviewUrl'
+import { getPreviewUrl } from '@utils/getPreviewUrl'
+
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '@access/anyone'
@@ -19,7 +22,9 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
     update: isAdminOrSelf
   },
   admin: {
-    useAsTitle: 'title'
+    useAsTitle: 'title',
+    livePreview: getLivePreviewUrl('pages'),
+    preview: getPreviewUrl('pages')
   },
   fields: [
     {
@@ -69,5 +74,13 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
       }
     },
     ...slugField()
-  ]
+  ],
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100
+      }
+    },
+    maxPerDoc: 50
+  }
 }
