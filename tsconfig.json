@@ -24,8 +24,8 @@
     "baseUrl": ".",
     "paths": {
       "react": ["node_modules/@types/react"],
-      "@payload-config": ["src/CMS/payload-config.ts"],
-      "@payload-types": ["src/CMS/payload-types.ts"],
+      "@payload-config": ["src/payload.config.ts"],
+      "@payload-types": ["src/payload-types.ts"],
       "@admin-components/*": ["src/CMS/_components/*"],
       "@CMS/*": ["src/CMS/*"],
       "@access/*": ["src/services/access/*"],

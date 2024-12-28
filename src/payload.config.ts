@@ -1,39 +1,49 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { Assets } from '@CMS/Assets/config'
+import { Footer } from '@CMS/Footer/config'
+import { GlobalSettings } from '@CMS/GlobalSettings/config'
+import { MainMenu } from '@CMS/MainMenu/config'
+import { Media } from '@CMS/Media/config'
+import { UserPhotos } from '@CMS/UserMedia/config'
+import { Users } from '@CMS/Users/config'
+import { adminConfig } from '@services/admin/config'
+import { databaseAdapter } from '@services/database/config'
+import { defaultLexical } from '@services/editor/defaultLexical'
+import { emailAdapter } from '@services/email/config'
+import { pluginsConfig } from '@services/plugins'
 
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
+import { getServerSideURL } from '@utils/getURL'
+import { collectionGroup, globalGroup } from '@utils/groupContent'
+
+import { COOKIE_PREFIX } from '@constants/featureFlags'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  editor: lexicalEditor(),
-  collections: [],
-  secret: process.env.PAYLOAD_SECRET || '',
-  db: vercelPostgresAdapter({ forceUseVercelPostgres: true }),
-  plugins: [
-    vercelBlobStorage({
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-      // Specify which collections should use Vercel Blob
-      collections: {
-        // media: {
-        //   prefix: 'media',
-        //   disableLocalStorage: true
-        // },
-        // assets: {
-        //   prefix: 'assets',
-        //   disableLocalStorage: true
-        // }
-      }
-    })
+  collections: [
+    // ...collectionGroup('Studio', []),
+    ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
+    ...collectionGroup('Settings', [Users])
   ],
+  globals: [...globalGroup('Customize', [GlobalSettings, MainMenu, Footer])],
+  editor: defaultLexical,
+  admin: adminConfig,
+  db: databaseAdapter,
+  email: emailAdapter,
+  plugins: [...pluginsConfig],
   sharp,
+  secret: process.env.PAYLOAD_SECRET || '',
+  cookiePrefix: `${COOKIE_PREFIX}`,
+  serverURL: getServerSideURL(),
+  cors: [getServerSideURL()].filter(Boolean),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts')
-  }
+  },
+  // debug: true,
+  telemetry: false
 })
