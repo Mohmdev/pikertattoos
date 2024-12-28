@@ -29,14 +29,15 @@ const GroupCard = ({
 }: Props) => {
   return (
     <Link href={`/about/${id}`}>
-      <Card className="bg-themeBlack border-themeGray rounded-xl overflow-hidden">
+      <Card className="overflow-hidden rounded-xl border-themeGray bg-themeBlack">
         <Image
           src={preview || `https://ucarecdn.com/${thumbnail}/`}
           alt="thumbnail"
-          className="w-full opacity-70 h-56"
+          fill
+          className="h-56 w-full opacity-70"
         />
         <div className="p-6">
-          <h3 className="text-lg text-themeTextGray font-bold">{name}</h3>
+          <h3 className="text-lg font-bold text-themeTextGray">{name}</h3>
           <p className="text-base text-themeTextGray">
             {description && truncateString(description)}
           </p>

@@ -1,7 +1,9 @@
+import { CATEGORY_LIST } from '@lib/data/tattoo/category-list'
+
 import { AuthFormProps, SIGN_IN_FORM, SIGN_UP_FORM } from './forms'
 import { GROUP_PAGE_MENU, GroupMenuProps, LANDING_PAGE_MENU, MenuProps } from './menus'
 import { CREATE_GROUP_PLACEHOLDER, CreateGroupPlaceholderProps } from './placeholder'
-import { GROUP_LIST, GroupListProps } from './slider'
+import { GroupListProps } from './slider'
 
 type GroupleConstantsProps = {
   landingPageMenu: MenuProps[]
@@ -16,7 +18,7 @@ export const SITE_CONSTANTS: GroupleConstantsProps = {
   landingPageMenu: LANDING_PAGE_MENU,
   signUpForm: SIGN_UP_FORM,
   signInForm: SIGN_IN_FORM,
-  groupList: GROUP_LIST,
+  groupList: CATEGORY_LIST,
   createGroupPlaceholder: CREATE_GROUP_PLACEHOLDER,
   groupPageMenu: GROUP_PAGE_MENU
 }
