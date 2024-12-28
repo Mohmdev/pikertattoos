@@ -7,8 +7,12 @@ export const SITE_NAME_SHORT = 'Piker'
 export const SITE_NAME_LONG = 'Pikertattoos'
 
 export const LINKABLE_COLLECTIONS: CollectionSlug[] = [
-  'pages'
-  // 'tatoos'
+  'pages',
+  'tattoo',
+  'tag',
+  'artist',
+  'area',
+  'style'
   // 'posts',
 ] as const
 export const PREVIEWABLE_COLLECTIONS: CollectionSlug[] = [
@@ -28,34 +32,40 @@ export const ENABLED_PLUGINS = {
 
 /* ----------------------------------- SEO ---------------------------------- */
 export const SEO_ENABLED_COLLECTIONS: CollectionSlug[] = [
-  'pages'
-  // 'tattoos',
+  'pages',
+  'tattoo',
+  'tag',
+  'artist'
   // 'posts'
 ] as const
 export const SEO_ENABLED_GLOBALS: GlobalSlug[] = [
   // 'get-started',
+  // 'home-page',
 ] as const
 /* --------------------------------- Search --------------------------------- */
 export const INDEXED_COLLECTIONS: CollectionSlug[] = [
-  // 'tattoos',
-  'categories'
+  'tattoo',
+  'artist'
   // 'posts',
 ] as const
 export const INDEXED_TAXONOMY_COLLECTIONS: CollectionSlug[] = [
   //
-  'categories'
+  'area',
+  'style',
+  'tag'
 ] as const
 /* -------------------------------- Redirects ------------------------------- */
 export const REDIRECTABLE_COLLECTIONS: CollectionSlug[] = [
-  'pages'
-  // 'tattoos',
+  'pages',
+  'tattoo'
   // 'posts',
 ] as const
 /* ------------------------------- Nested Docs ------------------------------ */
 export const NESTED_COLLECTIONS: CollectionSlug[] = [
   //
   'pages',
-  'categories'
+  'area',
+  'style'
 ] as const
 /* ------------------------------- Page Blocks ------------------------------ */
 export const ENABLED_PAGE_BLOCKS = {

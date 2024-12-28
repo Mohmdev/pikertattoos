@@ -2,13 +2,13 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { basicLexical } from '@services/editor/basicLexical'
-import { mediaDarkModeFallback } from '@fields/darkModeFallback/media'
 import { uploadAltField } from '@fields/uploadAlt/config'
+
+import type { CollectionConfig } from 'payload'
+
 import { anyone } from '@access/anyone'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
-
-import type { CollectionConfig } from 'payload'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,14 +36,7 @@ export const Media: CollectionConfig<'media'> = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: [
-      'thumbnail',
-      'title',
-      'mimeType',
-      'authors',
-      'createdAt',
-      'updatedAt'
-    ]
+    defaultColumns: ['thumbnail', 'title', 'mimeType', 'authors', 'createdAt', 'updatedAt']
   },
   fields: [
     {
@@ -59,8 +52,8 @@ export const Media: CollectionConfig<'media'> = {
       admin: {
         description: 'Optional'
       }
-    },
-    mediaDarkModeFallback
+    }
+    // mediaDarkModeFallback
   ],
   upload: {
     crop: true,

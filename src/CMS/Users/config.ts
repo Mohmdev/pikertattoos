@@ -54,8 +54,7 @@ export const Users: CollectionConfig<'users'> = {
     {
       name: 'photo',
       type: 'upload',
-      relationTo: 'user-photos',
-      displayPreview: true
+      relationTo: 'user-photo'
     },
     {
       name: 'role',
@@ -91,8 +90,8 @@ export const Users: CollectionConfig<'users'> = {
   auth: {
     loginWithUsername: {
       allowEmailLogin: true,
+      requireUsername: true,
       requireEmail: false
-      // requireUsername: boolean
     },
     cookies: {
       // HTTPS only cookies

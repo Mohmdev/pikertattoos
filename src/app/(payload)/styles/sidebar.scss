@@ -2,10 +2,15 @@
   .nav-group {
     &.Content {
       order: 1;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    &.Studio {
+      order: 2;
       margin-bottom: 1.5rem;
     }
     &.Customize {
-      order: 2;
+      order: 3;
     }
     &.Uploads {
       order: 20;

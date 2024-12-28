@@ -26,5 +26,6 @@ export const seoPluginConfig: Plugin = seoPlugin({
   generateURL,
   collections: SEO_ENABLED_COLLECTIONS,
   globals: SEO_ENABLED_GLOBALS,
-  uploadsCollection: 'media'
+  uploadsCollection: 'assets',
+  tabbedUI: true
 })

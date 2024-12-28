@@ -1,0 +1,19 @@
+.before-dashboard {
+  display: flex;
+  flex-direction: column;
+
+  padding-inline: var(--gutter-h);
+  height: calc(100vh - var(--app-header-height)); // fallback
+  height: calc(100dvh - var(--app-header-height));
+
+  &__banner {
+    background-color: transparent;
+    & h2 {
+      margin: 0;
+    }
+  }
+
+  & a:hover {
+    opacity: 0.85;
+  }
+}

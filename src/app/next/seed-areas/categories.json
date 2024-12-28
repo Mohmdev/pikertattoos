@@ -1,0 +1,223 @@
+{
+  "docs": [
+    {
+      "id": 13,
+      "title": "Custom",
+      "parent": null,
+      "breadcrumbs": [
+        {
+          "id": "677069b3dfd4b40003d54302",
+          "doc": 13,
+          "url": "/undefined",
+          "label": "Custom"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:12:19.516Z",
+      "createdAt": "2024-12-28T21:12:18.669Z"
+    },
+    {
+      "id": 12,
+      "title": "Lower Body",
+      "parent": null,
+      "breadcrumbs": [
+        {
+          "id": "6770699edfd4b40003d54300",
+          "doc": 12,
+          "url": "/undefined",
+          "label": "Lower Body"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:11:58.404Z",
+      "createdAt": "2024-12-28T21:11:57.556Z"
+    },
+    {
+      "id": 11,
+      "title": "Upper Boddy",
+      "parent": null,
+      "breadcrumbs": [
+        {
+          "id": "6770698ddfd4b40003d542fe",
+          "doc": 11,
+          "url": "/undefined",
+          "label": "Upper Boddy"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:11:41.105Z",
+      "createdAt": "2024-12-28T21:11:40.245Z"
+    },
+    {
+      "id": 10,
+      "title": "Connected Piece",
+      "parent": null,
+      "breadcrumbs": [
+        {
+          "id": "67706953dfd4b40003d542fc",
+          "doc": 10,
+          "url": "/undefined",
+          "label": "Connected Piece"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:10:43.745Z",
+      "createdAt": "2024-12-28T21:10:42.889Z"
+    },
+    {
+      "id": 9,
+      "title": "Full Body",
+      "parent": null,
+      "breadcrumbs": [
+        {
+          "id": "67706945dfd4b40003d542fa",
+          "doc": 9,
+          "url": "/undefined",
+          "label": "Full Body"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:10:29.920Z",
+      "createdAt": "2024-12-28T21:10:29.068Z"
+    },
+    {
+      "id": 8,
+      "title": "Neck",
+      "parent": {
+        "id": 11,
+        "title": "Upper Boddy",
+        "parent": null,
+        "breadcrumbs": [
+          {
+            "id": "6770698ddfd4b40003d542fe",
+            "doc": 11,
+            "url": "/undefined",
+            "label": "Upper Boddy"
+          }
+        ],
+        "updatedAt": "2024-12-28T21:11:41.105Z",
+        "createdAt": "2024-12-28T21:11:40.245Z"
+      },
+      "breadcrumbs": [
+        {
+          "id": "67706a1158af8e000350a28a",
+          "doc": 11,
+          "url": "/undefined",
+          "label": "Upper Boddy"
+        },
+        {
+          "id": "67706a1158af8e000350a28b",
+          "doc": 8,
+          "url": "/undefined/undefined",
+          "label": "Neck"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:13:53.403Z",
+      "createdAt": "2024-12-28T21:10:10.954Z"
+    },
+    {
+      "id": 7,
+      "title": "Leg",
+      "parent": {
+        "id": 12,
+        "title": "Lower Body",
+        "parent": null,
+        "breadcrumbs": [
+          {
+            "id": "6770699edfd4b40003d54300",
+            "doc": 12,
+            "url": "/undefined",
+            "label": "Lower Body"
+          }
+        ],
+        "updatedAt": "2024-12-28T21:11:58.404Z",
+        "createdAt": "2024-12-28T21:11:57.556Z"
+      },
+      "breadcrumbs": [
+        {
+          "id": "67706a8c4a5e3b0003241825",
+          "doc": 12,
+          "url": "/undefined",
+          "label": "Lower Body"
+        },
+        {
+          "id": "67706a8c4a5e3b0003241826",
+          "doc": 7,
+          "url": "/undefined/undefined",
+          "label": "Leg"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:15:56.817Z",
+      "createdAt": "2024-12-28T21:10:02.418Z"
+    },
+    {
+      "id": 6,
+      "title": "Finger",
+      "parent": null,
+      "breadcrumbs": [
+        {
+          "id": "67706920dfd4b40003d542f4",
+          "doc": 6,
+          "url": "/undefined",
+          "label": "Finger"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:09:52.708Z",
+      "createdAt": "2024-12-28T21:09:51.856Z"
+    },
+    {
+      "id": 5,
+      "title": "Chest",
+      "parent": {
+        "id": 11,
+        "title": "Upper Boddy",
+        "parent": null,
+        "breadcrumbs": [
+          {
+            "id": "6770698ddfd4b40003d542fe",
+            "doc": 11,
+            "url": "/undefined",
+            "label": "Upper Boddy"
+          }
+        ],
+        "updatedAt": "2024-12-28T21:11:41.105Z",
+        "createdAt": "2024-12-28T21:11:40.245Z"
+      },
+      "breadcrumbs": [
+        {
+          "id": "677069e1dfd4b40003d54305",
+          "doc": 11,
+          "url": "/undefined",
+          "label": "Upper Boddy"
+        },
+        {
+          "id": "677069e1dfd4b40003d54306",
+          "doc": 5,
+          "url": "/undefined/undefined",
+          "label": "Chest"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:13:05.999Z",
+      "createdAt": "2024-12-28T21:09:41.213Z"
+    },
+    {
+      "id": 4,
+      "title": "Cover Up",
+      "parent": null,
+      "breadcrumbs": [
+        {
+          "id": "6770690adfd4b40003d542f0",
+          "doc": 4,
+          "url": "/undefined",
+          "label": "Cover Up"
+        }
+      ],
+      "updatedAt": "2024-12-28T21:09:30.520Z",
+      "createdAt": "2024-12-28T21:09:29.669Z"
+    }
+  ],
+  "hasNextPage": true,
+  "hasPrevPage": false,
+  "limit": 10,
+  "nextPage": 2,
+  "page": 1,
+  "pagingCounter": 1,
+  "prevPage": null,
+  "totalDocs": 13,
+  "totalPages": 2
+}

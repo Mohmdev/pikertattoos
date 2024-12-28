@@ -1,10 +1,10 @@
+import type { CollectionConfig } from 'payload'
+
 import { anyone } from '@access/anyone'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
 
-import type { CollectionConfig } from 'payload'
-
-export const UserPhotos: CollectionConfig<'user-photos'> = {
-  slug: 'user-photos',
+export const UserPhotos: CollectionConfig<'user-photo'> = {
+  slug: 'user-photo',
   labels: {
     singular: 'User Photo',
     plural: 'User Photos'
@@ -17,13 +17,14 @@ export const UserPhotos: CollectionConfig<'user-photos'> = {
   },
   defaultPopulate: {
     filename: true,
-    mimeType: true,
+    user: true,
     url: true,
     height: true,
-    width: true
+    width: true,
+    mimeType: true
   },
   admin: {
-    defaultColumns: ['thumbnail', 'mimeType', 'createdAt', 'updatedAt']
+    defaultColumns: ['thumbnail', 'user', 'createdAt', 'updatedAt']
   },
   fields: [
     {

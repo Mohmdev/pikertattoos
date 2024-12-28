@@ -1,73 +1,22 @@
 @import 'styles/sidebar.scss';
 @import 'styles/dashboard.scss';
-/* --------------------------- Nav groups order -------------------------- */
-// .nav__wrap {
-//   .nav-group {
-//     &.Content {
-//       order: 1;
-//       margin-bottom: 1.5rem;
-//     }
-//     &.Customize {
-//       order: 2;
-//     }
-//     &.Uploads {
-//       order: 20;
-//     }
-//     &.Settings {
-//       order: 30;
-//     }
-//   }
-//   // controls is a direct child with just nav__controls class
-//   > .nav__controls {
-//     order: 99;
-//   }
-// }
-/* ------------------------ Dashboard groups order ------------------------ */
-// .dashboard__wrap {
-//   .dashboard__group {
-//     &:nth-of-type(1) {
-//       order: 1;
-//       margin-block: 2rem;
 
-//       .dashboard__label {
-//         display: none;
-//       }
+:root {
+  /* Variables */
+  --theme-bg: var(--theme-elevation-0);
+  // --theme-input-bg: var(--theme-elevation-0);
+  --theme-text: var(--theme-elevation-800);
+  --theme-overlay: rgba(5, 5, 5, 0.5);
+  --font-body: Inter, 'Segoe UI', Tahoma, Geneva, sans-serif;
+  // --font-mono: monospace;
+  // --font-serif: 'Merriweather', serif;
+  // --style-radius-s: 4px;
+  // --style-radius-m: 8px;
+  // --style-radius-l: 16px;
+  // --nav-width: 224px;
+}
 
-//       .dashboard__card-list {
-//         height: 8rem;
-//       }
-//     }
-
-//     // Uploads
-//     &:nth-of-type(2) {
-//       order: 10;
-//       display: none;
-//     }
-
-//     // Settings
-//     &:nth-of-type(3) {
-//       order: 20;
-//       display: none;
-//     }
-
-//     // Customize
-//     &:nth-of-type(4) {
-//       order: 2;
-//       display: none;
-//     }
-//   }
-// }
 /* ------------------------------ Admin Avatar ------------------------------ */
 .app-header__account {
   text-decoration: none;
 }
-//
-
-// .nav nav a {
-//   font-size: 1.5rem;
-//   line-height: 2rem;
-// }
-// .nav-group__label {
-//   font-size: 1.25rem;
-//   line-height: 2.25rem;
-// }

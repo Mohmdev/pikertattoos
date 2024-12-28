@@ -29,7 +29,8 @@
     "migrate:down": "payload migrate:down",
     "migrate:reset": "payload migrate:reset",
     "migrate:fresh": "payload migrate:fresh",
-    "migrate:create": "payload migrate:create"
+    "migrate:create": "payload migrate:create",
+    "ci": "payload migrate && next build"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",

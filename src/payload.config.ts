@@ -2,12 +2,16 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { Assets } from '@CMS/Assets/config'
-import { Categories } from '@CMS/Categories'
 import { Footer } from '@CMS/Footer/config'
 import { GlobalSettings } from '@CMS/GlobalSettings/config'
 import { MainMenu } from '@CMS/MainMenu/config'
 import { Media } from '@CMS/Media/config'
 import { Pages } from '@CMS/Pages/config'
+import { Area } from '@CMS/Studio/Area'
+import { Artist } from '@CMS/Studio/Artist'
+import { Style } from '@CMS/Studio/Style'
+import { Tag } from '@CMS/Studio/Tag'
+import { Tattoo } from '@CMS/Studio/Tattoo'
 import { UserPhotos } from '@CMS/UserMedia/config'
 import { Users } from '@CMS/Users/config'
 import { adminConfig } from '@services/admin/config'
@@ -28,7 +32,8 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   collections: [
-    ...collectionGroup('Content', [Pages, Categories]),
+    ...collectionGroup('Content', [Pages]),
+    ...collectionGroup('Studio', [Tattoo, Area, Style, Artist, Tag]),
     ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
     ...collectionGroup('Settings', [Users])
   ],

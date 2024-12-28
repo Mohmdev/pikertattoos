@@ -12,10 +12,14 @@ export interface Config {
   };
   collections: {
     pages: Page;
-    categories: Category;
+    tattoo: Tattoo;
+    area: Area;
+    style: Style;
+    artist: Artist;
+    tag: Tag;
     media: Media;
     assets: Asset;
-    'user-photos': UserPhoto;
+    'user-photo': UserPhoto;
     users: User;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -25,16 +29,31 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
-    'user-photos': {
+    area: {
+      tattoos: 'tattoo';
+    };
+    style: {
+      tattoos: 'tattoo';
+      artists: 'artist';
+    };
+    tag: {
+      tattoos: 'tattoo';
+      artists: 'artist';
+    };
+    'user-photo': {
       user: 'users';
     };
   };
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tattoo: TattooSelect<false> | TattooSelect<true>;
+    area: AreaSelect<false> | AreaSelect<true>;
+    style: StyleSelect<false> | StyleSelect<true>;
+    artist: ArtistSelect<false> | ArtistSelect<true>;
+    tag: TagSelect<false> | TagSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     assets: AssetsSelect<false> | AssetsSelect<true>;
-    'user-photos': UserPhotosSelect<false> | UserPhotosSelect<true>;
+    'user-photo': UserPhotoSelect<false> | UserPhotoSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -129,10 +148,31 @@ export interface Page {
           link: {
             type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: number | Page;
-            } | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'tattoo';
+                  value: number | Tattoo;
+                } | null)
+              | ({
+                  relationTo: 'tag';
+                  value: number | Tag;
+                } | null)
+              | ({
+                  relationTo: 'artist';
+                  value: number | Artist;
+                } | null)
+              | ({
+                  relationTo: 'area';
+                  value: number | Area;
+                } | null)
+              | ({
+                  relationTo: 'style';
+                  value: number | Style;
+                } | null);
             url?: string | null;
             label: string;
             customId?: string | null;
@@ -144,10 +184,31 @@ export interface Page {
     announcementLink?: {
       type?: ('reference' | 'custom') | null;
       newTab?: boolean | null;
-      reference?: {
-        relationTo: 'pages';
-        value: number | Page;
-      } | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'tattoo';
+            value: number | Tattoo;
+          } | null)
+        | ({
+            relationTo: 'tag';
+            value: number | Tag;
+          } | null)
+        | ({
+            relationTo: 'artist';
+            value: number | Artist;
+          } | null)
+        | ({
+            relationTo: 'area';
+            value: number | Area;
+          } | null)
+        | ({
+            relationTo: 'style';
+            value: number | Style;
+          } | null);
       url?: string | null;
       label: string;
       customId?: string | null;
@@ -191,10 +252,31 @@ export interface Page {
           link?: {
             type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: number | Page;
-            } | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'tattoo';
+                  value: number | Tattoo;
+                } | null)
+              | ({
+                  relationTo: 'tag';
+                  value: number | Tag;
+                } | null)
+              | ({
+                  relationTo: 'artist';
+                  value: number | Artist;
+                } | null)
+              | ({
+                  relationTo: 'area';
+                  value: number | Area;
+                } | null)
+              | ({
+                  relationTo: 'style';
+                  value: number | Style;
+                } | null);
             url?: string | null;
             label: string;
             customId?: string | null;
@@ -237,10 +319,31 @@ export interface Page {
           link: {
             type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: number | Page;
-            } | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'tattoo';
+                  value: number | Tattoo;
+                } | null)
+              | ({
+                  relationTo: 'tag';
+                  value: number | Tag;
+                } | null)
+              | ({
+                  relationTo: 'artist';
+                  value: number | Artist;
+                } | null)
+              | ({
+                  relationTo: 'area';
+                  value: number | Area;
+                } | null)
+              | ({
+                  relationTo: 'style';
+                  value: number | Style;
+                } | null);
             url?: string | null;
             label: string;
             customId?: string | null;
@@ -263,10 +366,31 @@ export interface Page {
               link: {
                 type?: ('reference' | 'custom') | null;
                 newTab?: boolean | null;
-                reference?: {
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'tattoo';
+                      value: number | Tattoo;
+                    } | null)
+                  | ({
+                      relationTo: 'tag';
+                      value: number | Tag;
+                    } | null)
+                  | ({
+                      relationTo: 'artist';
+                      value: number | Artist;
+                    } | null)
+                  | ({
+                      relationTo: 'area';
+                      value: number | Area;
+                    } | null)
+                  | ({
+                      relationTo: 'style';
+                      value: number | Style;
+                    } | null);
                 url?: string | null;
                 label: string;
                 customId?: string | null;
@@ -292,10 +416,31 @@ export interface Page {
           link: {
             type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: number | Page;
-            } | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'tattoo';
+                  value: number | Tattoo;
+                } | null)
+              | ({
+                  relationTo: 'tag';
+                  value: number | Tag;
+                } | null)
+              | ({
+                  relationTo: 'artist';
+                  value: number | Artist;
+                } | null)
+              | ({
+                  relationTo: 'area';
+                  value: number | Area;
+                } | null)
+              | ({
+                  relationTo: 'style';
+                  value: number | Style;
+                } | null);
             url?: string | null;
             label: string;
             customId?: string | null;
@@ -355,6 +500,192 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tattoo".
+ */
+export interface Tattoo {
+  id: number;
+  title: string;
+  area?: (number | Area)[] | null;
+  style?: (number | Style)[] | null;
+  artist?: (number | Artist)[] | null;
+  tags?: (number | Tag)[] | null;
+  slug: string;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "area".
+ */
+export interface Area {
+  id: number;
+  title: string;
+  tattoos?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  slug: string;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Area;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Area;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "style".
+ */
+export interface Style {
+  id: number;
+  title: string;
+  tattoos?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  artists?: {
+    docs?: (number | Artist)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  slug: string;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Style;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Style;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "artist".
+ */
+export interface Artist {
+  id: number;
+  title: string;
+  user: number | User;
+  style?: (number | Style)[] | null;
+  tags?: (number | Tag)[] | null;
+  slug: string;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  photo?: (number | null) | UserPhoto;
+  role: 'admin' | 'editor' | 'public';
+  updatedAt: string;
+  createdAt: string;
+  email?: string | null;
+  username: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  _verified?: boolean | null;
+  _verificationToken?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-photo".
+ */
+export interface UserPhoto {
+  id: number;
+  alt?: string | null;
+  user?: {
+    docs?: (number | User)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tag".
+ */
+export interface Tag {
+  id: number;
+  title: string;
+  tattoos?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  artists?: {
+    docs?: (number | Artist)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  slug: string;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
@@ -383,10 +714,6 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
-  /**
-   * Dark variation of the media for dark mode. (Optional)
-   */
-  mediaDarkModeFallback?: (number | null) | Media;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -633,106 +960,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  firstName?: string | null;
-  lastName?: string | null;
-  photo?: (number | null) | UserPhoto;
-  role: 'admin' | 'editor' | 'public';
-  updatedAt: string;
-  createdAt: string;
-  email?: string | null;
-  username: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  _verified?: boolean | null;
-  _verificationToken?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "user-photos".
- */
-export interface UserPhoto {
-  id: number;
-  alt?: string | null;
-  user?: {
-    docs?: (number | User)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    square?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    small?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "assets".
  */
 export interface Asset {
@@ -787,10 +1014,15 @@ export interface Search {
   id: number;
   title?: string | null;
   priority?: number | null;
-  doc: {
-    relationTo: 'categories';
-    value: number | Category;
-  };
+  doc:
+    | {
+        relationTo: 'tattoo';
+        value: number | Tattoo;
+      }
+    | {
+        relationTo: 'artist';
+        value: number | Artist;
+      };
   slug?: string | null;
   meta?: {
     title?: string | null;
@@ -819,8 +1051,24 @@ export interface PayloadLockedDocument {
         value: number | Page;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: number | Category;
+        relationTo: 'tattoo';
+        value: number | Tattoo;
+      } | null)
+    | ({
+        relationTo: 'area';
+        value: number | Area;
+      } | null)
+    | ({
+        relationTo: 'style';
+        value: number | Style;
+      } | null)
+    | ({
+        relationTo: 'artist';
+        value: number | Artist;
+      } | null)
+    | ({
+        relationTo: 'tag';
+        value: number | Tag;
       } | null)
     | ({
         relationTo: 'media';
@@ -831,7 +1079,7 @@ export interface PayloadLockedDocument {
         value: number | Asset;
       } | null)
     | ({
-        relationTo: 'user-photos';
+        relationTo: 'user-photo';
         value: number | UserPhoto;
       } | null)
     | ({
@@ -1062,10 +1310,28 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
+ * via the `definition` "tattoo_select".
  */
-export interface CategoriesSelect<T extends boolean = true> {
+export interface TattooSelect<T extends boolean = true> {
   title?: T;
+  area?: T;
+  style?: T;
+  artist?: T;
+  tags?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "area_select".
+ */
+export interface AreaSelect<T extends boolean = true> {
+  title?: T;
+  tattoos?: T;
+  slug?: T;
+  slugLock?: T;
   parent?: T;
   breadcrumbs?:
     | T
@@ -1080,6 +1346,55 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "style_select".
+ */
+export interface StyleSelect<T extends boolean = true> {
+  title?: T;
+  tattoos?: T;
+  artists?: T;
+  slug?: T;
+  slugLock?: T;
+  parent?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "artist_select".
+ */
+export interface ArtistSelect<T extends boolean = true> {
+  title?: T;
+  user?: T;
+  style?: T;
+  tags?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tag_select".
+ */
+export interface TagSelect<T extends boolean = true> {
+  title?: T;
+  tattoos?: T;
+  artists?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1087,7 +1402,6 @@ export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   altLock?: T;
   caption?: T;
-  mediaDarkModeFallback?: T;
   prefix?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1199,9 +1513,9 @@ export interface AssetsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "user-photos_select".
+ * via the `definition` "user-photo_select".
  */
-export interface UserPhotosSelect<T extends boolean = true> {
+export interface UserPhotoSelect<T extends boolean = true> {
   alt?: T;
   user?: T;
   updatedAt?: T;
@@ -1551,10 +1865,31 @@ export interface MainMenu {
         link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
-          reference?: {
-            relationTo: 'pages';
-            value: number | Page;
-          } | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'tattoo';
+                value: number | Tattoo;
+              } | null)
+            | ({
+                relationTo: 'tag';
+                value: number | Tag;
+              } | null)
+            | ({
+                relationTo: 'artist';
+                value: number | Artist;
+              } | null)
+            | ({
+                relationTo: 'area';
+                value: number | Area;
+              } | null)
+            | ({
+                relationTo: 'style';
+                value: number | Style;
+              } | null);
           url?: string | null;
           customId?: string | null;
         };
@@ -1564,10 +1899,31 @@ export interface MainMenu {
               link: {
                 type?: ('reference' | 'custom') | null;
                 newTab?: boolean | null;
-                reference?: {
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'tattoo';
+                      value: number | Tattoo;
+                    } | null)
+                  | ({
+                      relationTo: 'tag';
+                      value: number | Tag;
+                    } | null)
+                  | ({
+                      relationTo: 'artist';
+                      value: number | Artist;
+                    } | null)
+                  | ({
+                      relationTo: 'area';
+                      value: number | Area;
+                    } | null)
+                  | ({
+                      relationTo: 'style';
+                      value: number | Style;
+                    } | null);
                 url?: string | null;
                 label: string;
                 customId?: string | null;
@@ -1582,10 +1938,31 @@ export interface MainMenu {
                 link: {
                   type?: ('reference' | 'custom') | null;
                   newTab?: boolean | null;
-                  reference?: {
-                    relationTo: 'pages';
-                    value: number | Page;
-                  } | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: number | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'tattoo';
+                        value: number | Tattoo;
+                      } | null)
+                    | ({
+                        relationTo: 'tag';
+                        value: number | Tag;
+                      } | null)
+                    | ({
+                        relationTo: 'artist';
+                        value: number | Artist;
+                      } | null)
+                    | ({
+                        relationTo: 'area';
+                        value: number | Area;
+                      } | null)
+                    | ({
+                        relationTo: 'style';
+                        value: number | Style;
+                      } | null);
                   url?: string | null;
                   label: string;
                   customId?: string | null;
@@ -1614,10 +1991,31 @@ export interface MainMenu {
                       link: {
                         type?: ('reference' | 'custom') | null;
                         newTab?: boolean | null;
-                        reference?: {
-                          relationTo: 'pages';
-                          value: number | Page;
-                        } | null;
+                        reference?:
+                          | ({
+                              relationTo: 'pages';
+                              value: number | Page;
+                            } | null)
+                          | ({
+                              relationTo: 'tattoo';
+                              value: number | Tattoo;
+                            } | null)
+                          | ({
+                              relationTo: 'tag';
+                              value: number | Tag;
+                            } | null)
+                          | ({
+                              relationTo: 'artist';
+                              value: number | Artist;
+                            } | null)
+                          | ({
+                              relationTo: 'area';
+                              value: number | Area;
+                            } | null)
+                          | ({
+                              relationTo: 'style';
+                              value: number | Style;
+                            } | null);
                         url?: string | null;
                         label: string;
                         customId?: string | null;
@@ -1633,10 +2031,31 @@ export interface MainMenu {
                       link: {
                         type?: ('reference' | 'custom') | null;
                         newTab?: boolean | null;
-                        reference?: {
-                          relationTo: 'pages';
-                          value: number | Page;
-                        } | null;
+                        reference?:
+                          | ({
+                              relationTo: 'pages';
+                              value: number | Page;
+                            } | null)
+                          | ({
+                              relationTo: 'tattoo';
+                              value: number | Tattoo;
+                            } | null)
+                          | ({
+                              relationTo: 'tag';
+                              value: number | Tag;
+                            } | null)
+                          | ({
+                              relationTo: 'artist';
+                              value: number | Artist;
+                            } | null)
+                          | ({
+                              relationTo: 'area';
+                              value: number | Area;
+                            } | null)
+                          | ({
+                              relationTo: 'style';
+                              value: number | Style;
+                            } | null);
                         url?: string | null;
                         label: string;
                         customId?: string | null;
@@ -1654,10 +2073,31 @@ export interface MainMenu {
   menuCta: {
     type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
-    reference?: {
-      relationTo: 'pages';
-      value: number | Page;
-    } | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'tattoo';
+          value: number | Tattoo;
+        } | null)
+      | ({
+          relationTo: 'tag';
+          value: number | Tag;
+        } | null)
+      | ({
+          relationTo: 'artist';
+          value: number | Artist;
+        } | null)
+      | ({
+          relationTo: 'area';
+          value: number | Area;
+        } | null)
+      | ({
+          relationTo: 'style';
+          value: number | Style;
+        } | null);
     url?: string | null;
     label: string;
     customId?: string | null;
@@ -1679,10 +2119,31 @@ export interface Footer {
               link: {
                 type?: ('reference' | 'custom') | null;
                 newTab?: boolean | null;
-                reference?: {
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'tattoo';
+                      value: number | Tattoo;
+                    } | null)
+                  | ({
+                      relationTo: 'tag';
+                      value: number | Tag;
+                    } | null)
+                  | ({
+                      relationTo: 'artist';
+                      value: number | Artist;
+                    } | null)
+                  | ({
+                      relationTo: 'area';
+                      value: number | Area;
+                    } | null)
+                  | ({
+                      relationTo: 'style';
+                      value: number | Style;
+                    } | null);
                 url?: string | null;
                 label: string;
                 customId?: string | null;
