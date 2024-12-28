@@ -1,5 +1,3 @@
-import { Config } from 'payload'
-
 import {
   // ItalicFeature,
   // BoldFeature,
@@ -13,6 +11,8 @@ import {
 import link from '@fields/link'
 import { LabelFeature } from '@fields/richText/features/label/server'
 import { LargeBodyFeature } from '@fields/richText/features/largeBody/server'
+
+import { Config } from 'payload'
 
 // import { LINKABLE_COLLECTIONS } from '@constants'
 

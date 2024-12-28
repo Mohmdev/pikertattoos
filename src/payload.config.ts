@@ -6,6 +6,7 @@ import { Footer } from '@CMS/Footer/config'
 import { GlobalSettings } from '@CMS/GlobalSettings/config'
 import { MainMenu } from '@CMS/MainMenu/config'
 import { Media } from '@CMS/Media/config'
+import { Pages } from '@CMS/Pages/config'
 import { UserPhotos } from '@CMS/UserMedia/config'
 import { Users } from '@CMS/Users/config'
 import { adminConfig } from '@services/admin/config'
@@ -26,11 +27,17 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   collections: [
-    // ...collectionGroup('Studio', []),
+    ...collectionGroup('Studio', [Pages]),
     ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
     ...collectionGroup('Settings', [Users])
   ],
-  globals: [...globalGroup('Customize', [GlobalSettings, MainMenu, Footer])],
+  globals: [
+    ...globalGroup('Customize', [
+      // GlobalSettings,
+      // MainMenu,
+      // Footer
+    ])
+  ],
   editor: defaultLexical,
   admin: adminConfig,
   db: databaseAdapter,
