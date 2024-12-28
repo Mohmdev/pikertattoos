@@ -17,14 +17,9 @@ import {
   UserCircle
 } from 'lucide-react'
 
-type GroupListProps = {
-  id: string
-  label: string
-  icon: React.ReactNode
-  path: string
-}
+import type { CategoryListProps } from './types'
 
-export const CATEGORY_LIST: GroupListProps[] = [
+export const tattooCategories: CategoryListProps[] = [
   {
     id: '0',
     label: 'All',

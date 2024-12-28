@@ -5,7 +5,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 // import { onGetExploreGroup } from '@/actions/groups'
 import { mockGroups } from '@lib/data/mock-data'
 
-import ExplorePageContent from './explore-content'
+import ExplorePageTemplate from './explore-page-template'
 
 type Props = {
   params: {
@@ -25,12 +25,12 @@ export default async function ExploreCategoryPage({ params }: Props) {
 
   return (
     <HydrationBoundary state={dehydrate(query)}>
-      <ExplorePageContent layout="LIST" category={params.category} />
+      <ExplorePageTemplate layout="LIST" category={params.category} />
     </HydrationBoundary>
   )
 }
 
 export const metadata: Metadata = {
-  title: 'Explore Groups',
-  description: 'Explore different groups'
+  title: 'View Tattoo Piece',
+  description: 'See this piece in details.'
 }

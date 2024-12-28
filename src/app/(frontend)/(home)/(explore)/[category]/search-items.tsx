@@ -5,8 +5,8 @@ import InfiniteScrollObserver from '@components/global/infinite-scroll'
 import { Loader } from '@components/global/loader'
 import { NoResult } from '@components/global/search/no-results'
 
-import GroupCard from './group-card'
-import PaginatedGroups from './paginated-groups'
+import { ItemCard } from './item-card'
+import { PaginatedItems } from './paginated-items'
 
 type Props = {
   searching: boolean
@@ -14,12 +14,12 @@ type Props = {
   query?: string
 }
 
-export const SearchGroups = ({ data, searching, query }: Props) => {
+export const SearchItems = ({ data, searching, query }: Props) => {
   return (
-    <div className="container grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-6 mt-36">
-      <Loader loading={searching} className="lg:col-span-3 md:col-span-2">
+    <div className="container mt-36 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <Loader loading={searching} className="md:col-span-2 lg:col-span-3">
         {data.length > 0 ? (
-          data.map((group: GroupStateProps) => <GroupCard key={group.id} {...group} />)
+          data.map((group: GroupStateProps) => <ItemCard key={group.id} {...group} />)
         ) : (
           <NoResult />
         )}
@@ -31,7 +31,7 @@ export const SearchGroups = ({ data, searching, query }: Props) => {
           paginate={data.length}
           search
         >
-          <PaginatedGroups />
+          <PaginatedItems />
         </InfiniteScrollObserver>
       )}
     </div>

@@ -1,36 +1,37 @@
+// TODO: Not sure about this component. Needs investigation.
+
 // import { useGroupList } from '@hooks/groups'
-import { mockExploreGroups } from '@lib/data/mock-data'
+
+import { mockTattooItems } from '@lib/tattoo/mock-tattoos'
 import InfiniteScrollObserver from '@/components/global/infinite-scroll'
 import { NoResult } from '@/components/global/search/no-results'
 
-import GroupCard from './group-card'
-import PaginatedGroups from './paginated-groups'
+import { ItemCard } from './item-card'
+import { PaginatedItems } from './paginated-items'
 
 type Props = {
   category: string
 }
 
-const GroupList = ({ category }: Props) => {
+export const ItemsList = ({ category }: Props) => {
   // const { groups, status } = useGroupList('groups')
   const { groups, status } = {
-    groups: mockExploreGroups,
+    groups: mockTattooItems,
     status: 200
   }
 
   return (
-    <div className="container grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-6 mt-16">
+    <div className="container mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {status === 200 ? (
-        groups.map((group) => <GroupCard key={group.id} {...group} />)
+        groups.map((group) => <ItemCard key={group.id} {...group} />)
       ) : (
         <NoResult />
       )}
       {groups && groups.length > 5 && (
         <InfiniteScrollObserver action="GROUPS" identifier={category} paginate={groups.length}>
-          <PaginatedGroups />
+          <PaginatedItems />
         </InfiniteScrollObserver>
       )}
     </div>
   )
 }
-
-export default GroupList

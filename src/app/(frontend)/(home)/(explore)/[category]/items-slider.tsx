@@ -1,6 +1,6 @@
 import { SwiperSlide } from 'swiper/react'
 
-import { mockExploreGroups } from '@lib/data/mock-data'
+import { mockTattooItems } from '@lib/tattoo/mock-tattoos'
 
 import type { GroupStateProps } from '@lib/data/types'
 
@@ -10,7 +10,7 @@ import type { GroupStateProps } from '@lib/data/types'
 import Skeleton from '@components/global/skeleton'
 import { Slider } from '@components/global/slider'
 
-import GroupCard from './group-card'
+import { ItemCard } from './item-card'
 
 type Props = {
   query: string
@@ -18,14 +18,14 @@ type Props = {
   text: string
 }
 
-const ExploreSlider = ({
+export const ItemsSlider = ({
   // query,
   label,
   text
 }: Props) => {
   // Mock implementation of hooks
   const { groups, status } = {
-    groups: mockExploreGroups,
+    groups: mockTattooItems,
     status: 200
   }
   // const { groups, status } = useGroupList(query)
@@ -55,7 +55,7 @@ const ExploreSlider = ({
     status === 200 &&
     groups.length > 0 &&
     onLoadSlider && (
-      <div className="flex flex-col mt-16">
+      <div className="mt-16 flex flex-col">
         <div className="flex flex-col px-[40px] lg:px-[150px]">
           <h2 className="text-2xl font-bold text-white">{label}</h2>
           <p className="text-sm text-themeTextGray">{text}</p>
@@ -96,13 +96,13 @@ const ExploreSlider = ({
         >
           {groups.map((group) => (
             <SwiperSlide key={group.id}>
-              <GroupCard {...group} />
+              <ItemCard {...group} />
             </SwiperSlide>
           ))}
           {fetchedData?.status === 200 &&
             data.map((group: GroupStateProps) => (
               <SwiperSlide key={group.id}>
-                <GroupCard {...group} />
+                <ItemCard {...group} />
               </SwiperSlide>
             ))}
           {isFetching && (
@@ -115,5 +115,3 @@ const ExploreSlider = ({
     )
   )
 }
-
-export default ExploreSlider

@@ -3,9 +3,9 @@ import { mockInfiniteScrollState } from '@lib/data/mock-data'
 
 import type { GroupStateProps } from '@lib/data/types'
 
-import GroupCard from './group-card'
+import { ItemCard } from './item-card'
 
-const PaginatedGroups = () => {
+export const PaginatedItems = () => {
   // Mock selector
   const { data } = mockInfiniteScrollState
   // const { data } = useAppSelector((state) => state.infiniteScrollReducer)
@@ -13,10 +13,8 @@ const PaginatedGroups = () => {
   return (
     <>
       {data.map((item: GroupStateProps) => (
-        <GroupCard key={item.id} {...item} />
+        <ItemCard key={item.id} {...item} />
       ))}
     </>
   )
 }
-
-export default PaginatedGroups

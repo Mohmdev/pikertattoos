@@ -7,11 +7,11 @@ import { UseFormRegister } from 'react-hook-form'
 import { Input } from '@ui/input'
 import { Label } from '@ui/label'
 
-import { SITE_CONSTANTS } from '@constants/index'
-
 import 'swiper/css/bundle'
 
 import { SwiperProps, SwiperSlide } from 'swiper/react'
+
+import { PIKER_DATA } from '@lib/tattoo'
 
 import { Slider } from '../slider'
 import { GroupListItem } from './list-item'
@@ -25,7 +25,14 @@ type Props = {
   route?: boolean
 } & SwiperProps
 
-export const GroupListSlider = ({ overlay, label, register, selected, route, ...rest }: Props) => {
+export const CategoryListSlider = ({
+  overlay,
+  label,
+  register,
+  selected,
+  route,
+  ...rest
+}: Props) => {
   return (
     <Slider
       slidesPerView={'auto'}
@@ -36,8 +43,8 @@ export const GroupListSlider = ({ overlay, label, register, selected, route, ...
       overlay={overlay}
       {...rest}
     >
-      {SITE_CONSTANTS.groupList.map((item, i) => (
-        <SwiperSlide key={item.id} className="content-width-slide ">
+      {PIKER_DATA.groupList.map((item, i) => (
+        <SwiperSlide key={item.id} className="content-width-slide">
           {!register ? (
             route ? (
               <Link href={`/explore/${item.path}`}>

@@ -17,15 +17,15 @@ export const Slider = ({ children, overlay, label, ...rest }: SliderProps) => {
       style={{
         maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 1) 20%,rgba(0, 0, 0, 1) 80%,rgba(0, 0, 0, 0))`
       }}
-      className="w-full max-w-full overflow-x-hidden mt-5 relative  "
+      className="relative mt-5 w-full max-w-full overflow-x-hidden"
     >
       {overlay && (
         <>
-          <div className="absolute w-[40px] slider-overlay left-0 h-full z-50" />
-          <div className="absolute w-[40px] slider-overlay-rev right-0 h-full z-50" />
+          <div className="slider-overlay absolute left-0 z-50 h-full w-[40px]" />
+          <div className="slider-overlay-rev absolute right-0 z-50 h-full w-[40px]" />
         </>
       )}
-      {label && <Label className="pl-7 mb-3 text-themeTextGray">{label}</Label>}
+      {label && <Label className="mb-3 pl-7 text-themeTextGray">{label}</Label>}
       <Swiper modules={[Navigation, Pagination, Autoplay, FreeMode]} {...rest}>
         {children}
       </Swiper>

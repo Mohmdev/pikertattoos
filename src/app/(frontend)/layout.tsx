@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <Head>
         <link href="/assets/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/assets/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/assets/vercel.svg" rel="icon" type="image/svg+xml" />
       </Head>
       <body className={cn(jakarta.className, 'antialiased')}>
         <Providers>{children}</Providers>
