@@ -2,6 +2,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { Assets } from '@CMS/Assets/config'
+import { Categories } from '@CMS/Categories'
 import { Footer } from '@CMS/Footer/config'
 import { GlobalSettings } from '@CMS/GlobalSettings/config'
 import { MainMenu } from '@CMS/MainMenu/config'
@@ -27,7 +28,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   collections: [
-    ...collectionGroup('Content', [Pages]),
+    ...collectionGroup('Content', [Pages, Categories]),
     ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
     ...collectionGroup('Settings', [Users])
   ],

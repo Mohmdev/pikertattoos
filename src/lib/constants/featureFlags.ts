@@ -22,8 +22,8 @@ export const ENABLED_PLUGINS = {
   formBuilder: true,
   seo: false,
   redirects: false,
-  nestedDocs: false,
-  search: false
+  nestedDocs: true,
+  search: true
 } as const
 
 /* ----------------------------------- SEO ---------------------------------- */
@@ -38,22 +38,24 @@ export const SEO_ENABLED_GLOBALS: GlobalSlug[] = [
 /* --------------------------------- Search --------------------------------- */
 export const INDEXED_COLLECTIONS: CollectionSlug[] = [
   // 'tattoos',
-  // 'categories',
+  'categories'
   // 'posts',
 ] as const
 export const INDEXED_TAXONOMY_COLLECTIONS: CollectionSlug[] = [
   //
-  // 'categories'
+  'categories'
 ] as const
 /* -------------------------------- Redirects ------------------------------- */
 export const REDIRECTABLE_COLLECTIONS: CollectionSlug[] = [
+  'pages'
   // 'tattoos',
   // 'posts',
 ] as const
 /* ------------------------------- Nested Docs ------------------------------ */
 export const NESTED_COLLECTIONS: CollectionSlug[] = [
-  'pages'
-  // 'categories'
+  //
+  'pages',
+  'categories'
 ] as const
 /* ------------------------------- Page Blocks ------------------------------ */
 export const ENABLED_PAGE_BLOCKS = {
