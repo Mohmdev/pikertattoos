@@ -1,4 +1,4 @@
-import { CATEGORY_LIST } from '@lib/data/tattoo/category-list'
+import { CATEGORY_LIST } from '@lib/tattoo/category-list'
 
 import { AuthFormProps, SIGN_IN_FORM, SIGN_UP_FORM } from './forms'
 import { GROUP_PAGE_MENU, GroupMenuProps, LANDING_PAGE_MENU, MenuProps } from './menus'
