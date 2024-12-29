@@ -85,6 +85,17 @@ export const Users: CollectionConfig<'users'> = {
       admin: {
         position: 'sidebar'
       }
+    },
+    {
+      type: 'ui',
+      name: 'seedButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/SeedButton#SeedButton'
+        },
+        position: 'sidebar'
+      }
     }
   ],
   access: {

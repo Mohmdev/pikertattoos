@@ -3,6 +3,7 @@
     {
       "id": 13,
       "title": "Custom",
+      "slug": "custom",
       "parent": null,
       "breadcrumbs": [
         {
@@ -11,13 +12,12 @@
           "url": "/undefined",
           "label": "Custom"
         }
-      ],
-      "updatedAt": "2024-12-28T21:12:19.516Z",
-      "createdAt": "2024-12-28T21:12:18.669Z"
+      ]
     },
     {
       "id": 12,
       "title": "Lower Body",
+      "slug": "lower-body",
       "parent": null,
       "breadcrumbs": [
         {
@@ -26,13 +26,12 @@
           "url": "/undefined",
           "label": "Lower Body"
         }
-      ],
-      "updatedAt": "2024-12-28T21:11:58.404Z",
-      "createdAt": "2024-12-28T21:11:57.556Z"
+      ]
     },
     {
       "id": 11,
       "title": "Upper Boddy",
+      "slug": "upper-boddy",
       "parent": null,
       "breadcrumbs": [
         {
@@ -41,13 +40,12 @@
           "url": "/undefined",
           "label": "Upper Boddy"
         }
-      ],
-      "updatedAt": "2024-12-28T21:11:41.105Z",
-      "createdAt": "2024-12-28T21:11:40.245Z"
+      ]
     },
     {
       "id": 10,
       "title": "Connected Piece",
+      "slug": "connected-piece",
       "parent": null,
       "breadcrumbs": [
         {
@@ -56,13 +54,12 @@
           "url": "/undefined",
           "label": "Connected Piece"
         }
-      ],
-      "updatedAt": "2024-12-28T21:10:43.745Z",
-      "createdAt": "2024-12-28T21:10:42.889Z"
+      ]
     },
     {
       "id": 9,
       "title": "Full Body",
+      "slug": "full-body",
       "parent": null,
       "breadcrumbs": [
         {
@@ -71,13 +68,12 @@
           "url": "/undefined",
           "label": "Full Body"
         }
-      ],
-      "updatedAt": "2024-12-28T21:10:29.920Z",
-      "createdAt": "2024-12-28T21:10:29.068Z"
+      ]
     },
     {
       "id": 8,
       "title": "Neck",
+      "slug": "neck",
       "parent": {
         "id": 11,
         "title": "Upper Boddy",
@@ -89,9 +85,7 @@
             "url": "/undefined",
             "label": "Upper Boddy"
           }
-        ],
-        "updatedAt": "2024-12-28T21:11:41.105Z",
-        "createdAt": "2024-12-28T21:11:40.245Z"
+        ]
       },
       "breadcrumbs": [
         {
@@ -106,13 +100,12 @@
           "url": "/undefined/undefined",
           "label": "Neck"
         }
-      ],
-      "updatedAt": "2024-12-28T21:13:53.403Z",
-      "createdAt": "2024-12-28T21:10:10.954Z"
+      ]
     },
     {
       "id": 7,
       "title": "Leg",
+      "slug": "leg",
       "parent": {
         "id": 12,
         "title": "Lower Body",
@@ -124,9 +117,7 @@
             "url": "/undefined",
             "label": "Lower Body"
           }
-        ],
-        "updatedAt": "2024-12-28T21:11:58.404Z",
-        "createdAt": "2024-12-28T21:11:57.556Z"
+        ]
       },
       "breadcrumbs": [
         {
@@ -141,13 +132,12 @@
           "url": "/undefined/undefined",
           "label": "Leg"
         }
-      ],
-      "updatedAt": "2024-12-28T21:15:56.817Z",
-      "createdAt": "2024-12-28T21:10:02.418Z"
+      ]
     },
     {
       "id": 6,
       "title": "Finger",
+      "slug": "finger",
       "parent": null,
       "breadcrumbs": [
         {
@@ -156,13 +146,12 @@
           "url": "/undefined",
           "label": "Finger"
         }
-      ],
-      "updatedAt": "2024-12-28T21:09:52.708Z",
-      "createdAt": "2024-12-28T21:09:51.856Z"
+      ]
     },
     {
       "id": 5,
       "title": "Chest",
+      "slug": "chest",
       "parent": {
         "id": 11,
         "title": "Upper Boddy",
@@ -174,9 +163,7 @@
             "url": "/undefined",
             "label": "Upper Boddy"
           }
-        ],
-        "updatedAt": "2024-12-28T21:11:41.105Z",
-        "createdAt": "2024-12-28T21:11:40.245Z"
+        ]
       },
       "breadcrumbs": [
         {
@@ -191,13 +178,12 @@
           "url": "/undefined/undefined",
           "label": "Chest"
         }
-      ],
-      "updatedAt": "2024-12-28T21:13:05.999Z",
-      "createdAt": "2024-12-28T21:09:41.213Z"
+      ]
     },
     {
       "id": 4,
       "title": "Cover Up",
+      "slug": "cover-up",
       "parent": null,
       "breadcrumbs": [
         {
@@ -206,18 +192,7 @@
           "url": "/undefined",
           "label": "Cover Up"
         }
-      ],
-      "updatedAt": "2024-12-28T21:09:30.520Z",
-      "createdAt": "2024-12-28T21:09:29.669Z"
+      ]
     }
-  ],
-  "hasNextPage": true,
-  "hasPrevPage": false,
-  "limit": 10,
-  "nextPage": 2,
-  "page": 1,
-  "pagingCounter": 1,
-  "prevPage": null,
-  "totalDocs": 13,
-  "totalPages": 2
+  ]
 }
