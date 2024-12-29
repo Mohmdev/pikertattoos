@@ -1,4 +1,6 @@
-import { slugField } from '@fields/slug/config'
+import { seoTab } from '@fields/shared/seoTab'
+import { slugField } from '@fields/shared/slug/config'
+import { tagsField } from '@fields/shared/tagsField'
 
 import { getLivePreviewUrl } from '@utils/getLivePreviewUrl'
 import { getPreviewUrl } from '@utils/getPreviewUrl'
@@ -34,44 +36,46 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
       label: 'Tattoo Title'
     },
     {
-      name: 'area',
-      type: 'relationship',
-      relationTo: 'area',
-      hasMany: true,
-      label: {
-        singular: 'Area',
-        plural: 'Areas'
-      }
-    },
-    {
-      name: 'style',
-      type: 'relationship',
-      relationTo: 'style',
-      hasMany: true,
-      label: {
-        singular: 'Style',
-        plural: 'Styles'
-      }
-    },
-    {
-      name: 'artist',
-      type: 'relationship',
-      relationTo: 'artist',
-      hasMany: true,
-      label: {
-        singular: 'Artist',
-        plural: 'Artists'
-      }
-    },
-    {
-      name: 'tags',
-      type: 'relationship',
-      relationTo: 'tag',
-      hasMany: true,
-      label: {
-        singular: 'Tag',
-        plural: 'Tags'
-      }
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Details',
+          fields: [
+            {
+              name: 'area',
+              type: 'relationship',
+              relationTo: 'area',
+              hasMany: true,
+              label: {
+                singular: 'Area',
+                plural: 'Areas'
+              }
+            },
+            {
+              name: 'style',
+              type: 'relationship',
+              relationTo: 'style',
+              hasMany: true,
+              label: {
+                singular: 'Style',
+                plural: 'Styles'
+              }
+            },
+            {
+              name: 'artist',
+              type: 'relationship',
+              relationTo: 'artist',
+              hasMany: true,
+              label: {
+                singular: 'Artist',
+                plural: 'Artists'
+              }
+            },
+            tagsField
+          ]
+        },
+        seoTab
+      ]
     },
     ...slugField()
   ],

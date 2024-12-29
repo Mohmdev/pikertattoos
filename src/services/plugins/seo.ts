@@ -5,15 +5,15 @@ import { getServerSideURL } from '@utils/getURL'
 import type { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import type { Plugin } from 'payload'
 
-import { SEO_ENABLED_COLLECTIONS, SEO_ENABLED_GLOBALS } from '@constants/featureFlags'
+import { SITE_NAME } from '@constants/featureFlags'
+
+const generateTitle: GenerateTitle = ({ doc }) => {
+  return doc?.title ? `${doc.title} | ${SITE_NAME}` : SITE_NAME
+}
 
 const generateURL: GenerateURL = ({ doc }) => {
   const url = getServerSideURL()
   return doc?.slug ? `${url}/${doc.slug}` : url
-}
-
-const generateTitle: GenerateTitle = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Pikertattoos` : 'Pikertattoos'
 }
 
 export type GenerateTitle2<T = unknown> = (args: {
@@ -23,9 +23,8 @@ export type GenerateTitle2<T = unknown> = (args: {
 
 export const seoPluginConfig: Plugin = seoPlugin({
   generateTitle,
-  generateURL,
-  collections: SEO_ENABLED_COLLECTIONS,
-  globals: SEO_ENABLED_GLOBALS,
-  uploadsCollection: 'assets',
-  tabbedUI: true
+  generateURL
+  // collections: SEO_ENABLED_COLLECTIONS,
+  // globals: SEO_ENABLED_GLOBALS,
+  // uploadsCollection: 'assets'
 })

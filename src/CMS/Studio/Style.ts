@@ -1,4 +1,4 @@
-import { slugField } from '@fields/slug/config'
+import { slugField } from '@fields/shared/slug/config'
 
 import type { CollectionConfig } from 'payload'
 

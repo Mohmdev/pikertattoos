@@ -1,4 +1,6 @@
-import { slugField } from '@fields/slug/config'
+import { basicLexical } from '@services/editor/basicLexical'
+import { slugField } from '@fields/shared/slug/config'
+import { tagsField } from '@fields/shared/tagsField'
 
 import type { CollectionConfig } from 'payload'
 
@@ -29,32 +31,42 @@ export const Artist: CollectionConfig<'artist'> = {
       required: true
     },
     {
-      name: 'user',
-      type: 'relationship',
-      relationTo: 'users',
-      label: 'Artist Profile',
-      required: true
-    },
-    {
-      name: 'style',
-      type: 'relationship',
-      relationTo: 'style',
-      hasMany: true,
-      label: {
-        singular: 'Style',
-        plural: 'Styles'
+      name: 'bio',
+      label: 'Bio',
+      type: 'richText',
+      editor: basicLexical,
+      admin: {
+        description: 'Optional'
       }
     },
     {
-      name: 'tags',
-      type: 'relationship',
-      relationTo: 'tag',
-      hasMany: true,
-      label: {
-        singular: 'Tag',
-        plural: 'Tags'
-      }
+      type: 'row',
+      fields: [
+        {
+          name: 'style',
+          type: 'relationship',
+          relationTo: 'style',
+          hasMany: true,
+          required: true,
+          label: {
+            singular: 'Style',
+            plural: 'Styles'
+          }
+        },
+        {
+          name: 'user',
+          type: 'relationship',
+          relationTo: 'users',
+          label: 'Artist Profile',
+          required: true,
+          admin: {
+            description:
+              'Associate this artist with a user account to enable them to log in and manage their own content.'
+          }
+        }
+      ]
     },
+    tagsField,
     ...slugField()
   ],
   versions: {

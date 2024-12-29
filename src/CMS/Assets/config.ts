@@ -1,13 +1,14 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { assetDarkModeFallback } from '@fields/darkModeFallback/asset'
-import { uploadAltField } from '@fields/uploadAlt/config'
+import { assetDarkModeFallback } from '@fields/shared/darkModeFallback/asset'
+import { uploadAltField } from '@fields/shared/uploadAlt/config'
+
+import type { CollectionConfig } from 'payload'
+
 import { anyone } from '@access/anyone'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
-
-import type { CollectionConfig } from 'payload'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -35,14 +36,7 @@ export const Assets: CollectionConfig<'assets'> = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: [
-      'thumbnail',
-      'title',
-      'mimeType',
-      'authors',
-      'createdAt',
-      'updatedAt'
-    ]
+    defaultColumns: ['thumbnail', 'title', 'mimeType', 'authors', 'createdAt', 'updatedAt']
   },
   fields: [
     {

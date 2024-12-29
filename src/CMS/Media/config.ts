@@ -2,7 +2,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { basicLexical } from '@services/editor/basicLexical'
-import { uploadAltField } from '@fields/uploadAlt/config'
+import { uploadAltField } from '@fields/shared/uploadAlt/config'
 
 import type { CollectionConfig } from 'payload'
 

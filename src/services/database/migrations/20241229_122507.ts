@@ -2,7 +2,17 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postg
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-   CREATE TYPE "public"."enum_pages_hero_breadcrumbs_bar_links_link_type" AS ENUM('reference', 'custom');
+   CREATE TYPE "public"."enum_tattoo_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__tattoo_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_area_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__area_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_style_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__style_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_artist_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__artist_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_tag_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__tag_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_pages_hero_breadcrumbs_bar_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_primary_buttons_type" AS ENUM('link', 'npmCta');
   CREATE TYPE "public"."enum_pages_hero_primary_buttons_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_links_link_type" AS ENUM('reference', 'custom');
@@ -28,8 +38,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__pages_v_version_hero_announcement_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum__pages_v_version_hero_three_c_t_a" AS ENUM('newsletter', 'buttons');
   CREATE TYPE "public"."enum__pages_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_posts_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__posts_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_users_role" AS ENUM('admin', 'editor', 'public');
   CREATE TYPE "public"."enum_forms_confirmation_type" AS ENUM('message', 'redirect');
+  CREATE TYPE "public"."enum_redirects_to_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_main_menu_tabs_description_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_main_menu_tabs_nav_items_featured_link_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_main_menu_tabs_nav_items_list_links_links_link_type" AS ENUM('reference', 'custom');
@@ -38,6 +51,219 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_main_menu_tabs_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_main_menu_menu_cta_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_footer_columns_nav_items_link_type" AS ENUM('reference', 'custom');
+  CREATE TABLE IF NOT EXISTS "tattoo" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"meta_title" varchar,
+  	"meta_image_id" integer,
+  	"meta_description" varchar,
+  	"slug" varchar,
+  	"slug_lock" boolean DEFAULT true,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_tattoo_status" DEFAULT 'draft'
+  );
+  
+  CREATE TABLE IF NOT EXISTS "tattoo_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"area_id" integer,
+  	"style_id" integer,
+  	"artist_id" integer,
+  	"tag_id" integer
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_tattoo_v" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"parent_id" integer,
+  	"version_title" varchar,
+  	"version_meta_title" varchar,
+  	"version_meta_image_id" integer,
+  	"version_meta_description" varchar,
+  	"version_slug" varchar,
+  	"version_slug_lock" boolean DEFAULT true,
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__tattoo_v_version_status" DEFAULT 'draft',
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_tattoo_v_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"area_id" integer,
+  	"style_id" integer,
+  	"artist_id" integer,
+  	"tag_id" integer
+  );
+  
+  CREATE TABLE IF NOT EXISTS "area_breadcrumbs" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"doc_id" integer,
+  	"url" varchar,
+  	"label" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "area" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"slug" varchar,
+  	"slug_lock" boolean DEFAULT true,
+  	"parent_id" integer,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_area_status" DEFAULT 'draft'
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_area_v_version_breadcrumbs" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"doc_id" integer,
+  	"url" varchar,
+  	"label" varchar,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_area_v" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"parent_id" integer,
+  	"version_title" varchar,
+  	"version_slug" varchar,
+  	"version_slug_lock" boolean DEFAULT true,
+  	"version_parent_id" integer,
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__area_v_version_status" DEFAULT 'draft',
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean
+  );
+  
+  CREATE TABLE IF NOT EXISTS "style_breadcrumbs" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"doc_id" integer,
+  	"url" varchar,
+  	"label" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "style" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"slug" varchar,
+  	"slug_lock" boolean DEFAULT true,
+  	"parent_id" integer,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_style_status" DEFAULT 'draft'
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_style_v_version_breadcrumbs" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"doc_id" integer,
+  	"url" varchar,
+  	"label" varchar,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_style_v" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"parent_id" integer,
+  	"version_title" varchar,
+  	"version_slug" varchar,
+  	"version_slug_lock" boolean DEFAULT true,
+  	"version_parent_id" integer,
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__style_v_version_status" DEFAULT 'draft',
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean
+  );
+  
+  CREATE TABLE IF NOT EXISTS "artist" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"bio" jsonb,
+  	"user_id" integer,
+  	"slug" varchar,
+  	"slug_lock" boolean DEFAULT true,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_artist_status" DEFAULT 'draft'
+  );
+  
+  CREATE TABLE IF NOT EXISTS "artist_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"style_id" integer,
+  	"tag_id" integer
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_artist_v" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"parent_id" integer,
+  	"version_title" varchar,
+  	"version_bio" jsonb,
+  	"version_user_id" integer,
+  	"version_slug" varchar,
+  	"version_slug_lock" boolean DEFAULT true,
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__artist_v_version_status" DEFAULT 'draft',
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_artist_v_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"style_id" integer,
+  	"tag_id" integer
+  );
+  
+  CREATE TABLE IF NOT EXISTS "tag" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"slug" varchar,
+  	"slug_lock" boolean DEFAULT true,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_tag_status" DEFAULT 'draft'
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_tag_v" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"parent_id" integer,
+  	"version_title" varchar,
+  	"version_slug" varchar,
+  	"version_slug_lock" boolean DEFAULT true,
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__tag_v_version_status" DEFAULT 'draft',
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean
+  );
+  
   CREATE TABLE IF NOT EXISTS "pages_hero_breadcrumbs_bar_links" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -136,6 +362,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar,
   	"full_title" varchar,
   	"noindex" boolean,
+  	"published_at" timestamp(3) with time zone,
+  	"slug" varchar,
+  	"slug_lock" boolean DEFAULT true,
   	"hero_type" "enum_pages_hero_type" DEFAULT 'default',
   	"hero_full_background" boolean,
   	"hero_theme" "enum_pages_hero_theme",
@@ -159,8 +388,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"hero_feature_video_id" integer,
   	"hero_form_id" integer,
   	"hero_logo_showcase_label" jsonb,
-  	"slug" varchar,
-  	"slug_lock" boolean DEFAULT true,
+  	"meta_title" varchar,
+  	"meta_image_id" integer,
+  	"meta_description" varchar,
   	"parent_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -172,14 +402,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"order" integer,
   	"parent_id" integer NOT NULL,
   	"path" varchar NOT NULL,
+  	"users_id" integer,
   	"pages_id" integer,
   	"tattoo_id" integer,
   	"tag_id" integer,
   	"artist_id" integer,
   	"area_id" integer,
   	"style_id" integer,
-  	"media_id" integer,
-  	"users_id" integer
+  	"media_id" integer
   );
   
   CREATE TABLE IF NOT EXISTS "_pages_v_version_hero_breadcrumbs_bar_links" (
@@ -290,6 +520,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_title" varchar,
   	"version_full_title" varchar,
   	"version_noindex" boolean,
+  	"version_published_at" timestamp(3) with time zone,
+  	"version_slug" varchar,
+  	"version_slug_lock" boolean DEFAULT true,
   	"version_hero_type" "enum__pages_v_version_hero_type" DEFAULT 'default',
   	"version_hero_full_background" boolean,
   	"version_hero_theme" "enum__pages_v_version_hero_theme",
@@ -313,8 +546,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_hero_feature_video_id" integer,
   	"version_hero_form_id" integer,
   	"version_hero_logo_showcase_label" jsonb,
-  	"version_slug" varchar,
-  	"version_slug_lock" boolean DEFAULT true,
+  	"version_meta_title" varchar,
+  	"version_meta_image_id" integer,
+  	"version_meta_description" varchar,
   	"version_parent_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
@@ -330,107 +564,82 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"order" integer,
   	"parent_id" integer NOT NULL,
   	"path" varchar NOT NULL,
+  	"users_id" integer,
   	"pages_id" integer,
   	"tattoo_id" integer,
   	"tag_id" integer,
   	"artist_id" integer,
   	"area_id" integer,
   	"style_id" integer,
-  	"media_id" integer,
-  	"users_id" integer
+  	"media_id" integer
   );
   
-  CREATE TABLE IF NOT EXISTS "tattoo" (
+  CREATE TABLE IF NOT EXISTS "posts" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"title" varchar NOT NULL,
-  	"slug" varchar NOT NULL,
+  	"title" varchar,
+  	"hero_image_id" integer,
+  	"editor" jsonb,
+  	"meta_title" varchar,
+  	"meta_image_id" integer,
+  	"meta_description" varchar,
+  	"published_at" timestamp(3) with time zone,
+  	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_posts_status" DEFAULT 'draft'
   );
   
-  CREATE TABLE IF NOT EXISTS "tattoo_rels" (
+  CREATE TABLE IF NOT EXISTS "posts_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
   	"parent_id" integer NOT NULL,
   	"path" varchar NOT NULL,
   	"area_id" integer,
   	"style_id" integer,
-  	"artist_id" integer,
-  	"tag_id" integer
+  	"tag_id" integer,
+  	"tattoo_id" integer,
+  	"posts_id" integer
   );
   
-  CREATE TABLE IF NOT EXISTS "area_breadcrumbs" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"doc_id" integer,
-  	"url" varchar,
-  	"label" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "area" (
+  CREATE TABLE IF NOT EXISTS "_posts_v" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"title" varchar NOT NULL,
-  	"slug" varchar NOT NULL,
-  	"slug_lock" boolean DEFAULT true,
   	"parent_id" integer,
+  	"version_title" varchar,
+  	"version_hero_image_id" integer,
+  	"version_editor" jsonb,
+  	"version_meta_title" varchar,
+  	"version_meta_image_id" integer,
+  	"version_meta_description" varchar,
+  	"version_published_at" timestamp(3) with time zone,
+  	"version_slug" varchar,
+  	"version_slug_lock" boolean DEFAULT true,
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__posts_v_version_status" DEFAULT 'draft',
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
-  CREATE TABLE IF NOT EXISTS "style_breadcrumbs" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"doc_id" integer,
-  	"url" varchar,
-  	"label" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "style" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"title" varchar NOT NULL,
-  	"slug" varchar NOT NULL,
-  	"slug_lock" boolean DEFAULT true,
-  	"parent_id" integer,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE IF NOT EXISTS "artist" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"title" varchar NOT NULL,
-  	"user_id" integer NOT NULL,
-  	"slug" varchar NOT NULL,
-  	"slug_lock" boolean DEFAULT true,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE IF NOT EXISTS "artist_rels" (
+  CREATE TABLE IF NOT EXISTS "_posts_v_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
   	"parent_id" integer NOT NULL,
   	"path" varchar NOT NULL,
+  	"area_id" integer,
   	"style_id" integer,
-  	"tag_id" integer
-  );
-  
-  CREATE TABLE IF NOT EXISTS "tag" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"title" varchar NOT NULL,
-  	"slug" varchar NOT NULL,
-  	"slug_lock" boolean DEFAULT true,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"tag_id" integer,
+  	"tattoo_id" integer,
+  	"posts_id" integer
   );
   
   CREATE TABLE IF NOT EXISTS "media" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
   	"alt" varchar NOT NULL,
-  	"alt_lock" boolean DEFAULT true,
+  	"alt_lock" boolean DEFAULT false,
   	"caption" jsonb,
   	"prefix" varchar DEFAULT 'media',
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -492,7 +701,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
   	"alt" varchar NOT NULL,
-  	"alt_lock" boolean DEFAULT true,
+  	"alt_lock" boolean DEFAULT false,
   	"asset_dark_mode_fallback_id" integer,
   	"prefix" varchar DEFAULT 'assets',
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -556,7 +765,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"role" "enum_users_role" DEFAULT 'public' NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"email" varchar,
+  	"email" varchar NOT NULL,
   	"username" varchar NOT NULL,
   	"reset_password_token" varchar,
   	"reset_password_expiration" timestamp(3) with time zone,
@@ -725,6 +934,24 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
+  CREATE TABLE IF NOT EXISTS "redirects" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"from" varchar NOT NULL,
+  	"to_type" "enum_redirects_to_type" DEFAULT 'reference',
+  	"to_url" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "redirects_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"pages_id" integer,
+  	"tattoo_id" integer
+  );
+  
   CREATE TABLE IF NOT EXISTS "search_categories" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -766,18 +993,20 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"order" integer,
   	"parent_id" integer NOT NULL,
   	"path" varchar NOT NULL,
-  	"pages_id" integer,
   	"tattoo_id" integer,
   	"area_id" integer,
   	"style_id" integer,
   	"artist_id" integer,
   	"tag_id" integer,
+  	"pages_id" integer,
+  	"posts_id" integer,
   	"media_id" integer,
   	"assets_id" integer,
   	"user_photo_id" integer,
   	"users_id" integer,
   	"forms_id" integer,
   	"form_submissions_id" integer,
+  	"redirects_id" integer,
   	"search_id" integer
   );
   
@@ -954,6 +1183,228 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   );
   
   DO $$ BEGIN
+   ALTER TABLE "tattoo" ADD CONSTRAINT "tattoo_meta_image_id_assets_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_area_fk" FOREIGN KEY ("area_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_artist_fk" FOREIGN KEY ("artist_id") REFERENCES "public"."artist"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tattoo_v" ADD CONSTRAINT "_tattoo_v_parent_id_tattoo_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."tattoo"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tattoo_v" ADD CONSTRAINT "_tattoo_v_version_meta_image_id_assets_id_fk" FOREIGN KEY ("version_meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_tattoo_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_area_fk" FOREIGN KEY ("area_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_artist_fk" FOREIGN KEY ("artist_id") REFERENCES "public"."artist"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "area_breadcrumbs" ADD CONSTRAINT "area_breadcrumbs_doc_id_area_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."area"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "area_breadcrumbs" ADD CONSTRAINT "area_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "area" ADD CONSTRAINT "area_parent_id_area_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."area"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_area_v_version_breadcrumbs" ADD CONSTRAINT "_area_v_version_breadcrumbs_doc_id_area_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."area"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_area_v_version_breadcrumbs" ADD CONSTRAINT "_area_v_version_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_area_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_area_v" ADD CONSTRAINT "_area_v_parent_id_area_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."area"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_area_v" ADD CONSTRAINT "_area_v_version_parent_id_area_id_fk" FOREIGN KEY ("version_parent_id") REFERENCES "public"."area"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "style_breadcrumbs" ADD CONSTRAINT "style_breadcrumbs_doc_id_style_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "style_breadcrumbs" ADD CONSTRAINT "style_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "style" ADD CONSTRAINT "style_parent_id_style_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_style_v_version_breadcrumbs" ADD CONSTRAINT "_style_v_version_breadcrumbs_doc_id_style_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_style_v_version_breadcrumbs" ADD CONSTRAINT "_style_v_version_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_style_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_style_v" ADD CONSTRAINT "_style_v_parent_id_style_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_style_v" ADD CONSTRAINT "_style_v_version_parent_id_style_id_fk" FOREIGN KEY ("version_parent_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "artist" ADD CONSTRAINT "artist_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "artist_rels" ADD CONSTRAINT "artist_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."artist"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "artist_rels" ADD CONSTRAINT "artist_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "artist_rels" ADD CONSTRAINT "artist_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_artist_v" ADD CONSTRAINT "_artist_v_parent_id_artist_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."artist"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_artist_v" ADD CONSTRAINT "_artist_v_version_user_id_users_id_fk" FOREIGN KEY ("version_user_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_artist_v_rels" ADD CONSTRAINT "_artist_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_artist_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_artist_v_rels" ADD CONSTRAINT "_artist_v_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_artist_v_rels" ADD CONSTRAINT "_artist_v_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tag_v" ADD CONSTRAINT "_tag_v_parent_id_tag_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."tag"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "pages_hero_breadcrumbs_bar_links" ADD CONSTRAINT "pages_hero_breadcrumbs_bar_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -1050,6 +1501,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "pages" ADD CONSTRAINT "pages_meta_image_id_assets_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "pages" ADD CONSTRAINT "pages_parent_id_pages_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -1057,6 +1514,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1099,12 +1562,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1212,6 +1669,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_version_meta_image_id_assets_id_fk" FOREIGN KEY ("version_meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_version_parent_id_pages_id_fk" FOREIGN KEY ("version_parent_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -1219,6 +1682,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1266,97 +1735,103 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "posts" ADD CONSTRAINT "posts_hero_image_id_media_id_fk" FOREIGN KEY ("hero_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "posts" ADD CONSTRAINT "posts_meta_image_id_assets_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_area_fk" FOREIGN KEY ("area_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_area_fk" FOREIGN KEY ("area_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_artist_fk" FOREIGN KEY ("artist_id") REFERENCES "public"."artist"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "area_breadcrumbs" ADD CONSTRAINT "area_breadcrumbs_doc_id_area_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."area"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "area_breadcrumbs" ADD CONSTRAINT "area_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "area" ADD CONSTRAINT "area_parent_id_area_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."area"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "_posts_v" ADD CONSTRAINT "_posts_v_parent_id_posts_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."posts"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "style_breadcrumbs" ADD CONSTRAINT "style_breadcrumbs_doc_id_style_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "_posts_v" ADD CONSTRAINT "_posts_v_version_hero_image_id_media_id_fk" FOREIGN KEY ("version_hero_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "style_breadcrumbs" ADD CONSTRAINT "style_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_posts_v" ADD CONSTRAINT "_posts_v_version_meta_image_id_assets_id_fk" FOREIGN KEY ("version_meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "style" ADD CONSTRAINT "style_parent_id_style_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "artist" ADD CONSTRAINT "artist_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_area_fk" FOREIGN KEY ("area_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "artist_rels" ADD CONSTRAINT "artist_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."artist"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "artist_rels" ADD CONSTRAINT "artist_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "artist_rels" ADD CONSTRAINT "artist_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1452,6 +1927,24 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "redirects_rels" ADD CONSTRAINT "redirects_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."redirects"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "redirects_rels" ADD CONSTRAINT "redirects_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "redirects_rels" ADD CONSTRAINT "redirects_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "search_categories" ADD CONSTRAINT "search_categories_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."search"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -1488,12 +1981,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -1519,6 +2006,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1555,6 +2054,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_form_submissions_fk" FOREIGN KEY ("form_submissions_id") REFERENCES "public"."form_submissions"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_redirects_fk" FOREIGN KEY ("redirects_id") REFERENCES "public"."redirects"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1727,6 +2232,111 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
    WHEN duplicate_object THEN null;
   END $$;
   
+  CREATE INDEX IF NOT EXISTS "tattoo_meta_meta_image_idx" ON "tattoo" USING btree ("meta_image_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "tattoo_slug_idx" ON "tattoo" USING btree ("slug");
+  CREATE INDEX IF NOT EXISTS "tattoo_updated_at_idx" ON "tattoo" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "tattoo_created_at_idx" ON "tattoo" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "tattoo__status_idx" ON "tattoo" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_order_idx" ON "tattoo_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_parent_idx" ON "tattoo_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_path_idx" ON "tattoo_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_area_id_idx" ON "tattoo_rels" USING btree ("area_id");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_style_id_idx" ON "tattoo_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_artist_id_idx" ON "tattoo_rels" USING btree ("artist_id");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_tag_id_idx" ON "tattoo_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_parent_idx" ON "_tattoo_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_version_meta_version_meta_image_idx" ON "_tattoo_v" USING btree ("version_meta_image_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_version_version_slug_idx" ON "_tattoo_v" USING btree ("version_slug");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_version_version_updated_at_idx" ON "_tattoo_v" USING btree ("version_updated_at");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_version_version_created_at_idx" ON "_tattoo_v" USING btree ("version_created_at");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_version_version__status_idx" ON "_tattoo_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_created_at_idx" ON "_tattoo_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_updated_at_idx" ON "_tattoo_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_latest_idx" ON "_tattoo_v" USING btree ("latest");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_autosave_idx" ON "_tattoo_v" USING btree ("autosave");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_order_idx" ON "_tattoo_v_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_parent_idx" ON "_tattoo_v_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_path_idx" ON "_tattoo_v_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_area_id_idx" ON "_tattoo_v_rels" USING btree ("area_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_style_id_idx" ON "_tattoo_v_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_artist_id_idx" ON "_tattoo_v_rels" USING btree ("artist_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_tag_id_idx" ON "_tattoo_v_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "area_breadcrumbs_order_idx" ON "area_breadcrumbs" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "area_breadcrumbs_parent_id_idx" ON "area_breadcrumbs" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "area_breadcrumbs_doc_idx" ON "area_breadcrumbs" USING btree ("doc_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "area_slug_idx" ON "area" USING btree ("slug");
+  CREATE INDEX IF NOT EXISTS "area_parent_idx" ON "area" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "area_updated_at_idx" ON "area" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "area_created_at_idx" ON "area" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "area__status_idx" ON "area" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "_area_v_version_breadcrumbs_order_idx" ON "_area_v_version_breadcrumbs" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_area_v_version_breadcrumbs_parent_id_idx" ON "_area_v_version_breadcrumbs" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_area_v_version_breadcrumbs_doc_idx" ON "_area_v_version_breadcrumbs" USING btree ("doc_id");
+  CREATE INDEX IF NOT EXISTS "_area_v_parent_idx" ON "_area_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_area_v_version_version_slug_idx" ON "_area_v" USING btree ("version_slug");
+  CREATE INDEX IF NOT EXISTS "_area_v_version_version_parent_idx" ON "_area_v" USING btree ("version_parent_id");
+  CREATE INDEX IF NOT EXISTS "_area_v_version_version_updated_at_idx" ON "_area_v" USING btree ("version_updated_at");
+  CREATE INDEX IF NOT EXISTS "_area_v_version_version_created_at_idx" ON "_area_v" USING btree ("version_created_at");
+  CREATE INDEX IF NOT EXISTS "_area_v_version_version__status_idx" ON "_area_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_area_v_created_at_idx" ON "_area_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_area_v_updated_at_idx" ON "_area_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_area_v_latest_idx" ON "_area_v" USING btree ("latest");
+  CREATE INDEX IF NOT EXISTS "style_breadcrumbs_order_idx" ON "style_breadcrumbs" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "style_breadcrumbs_parent_id_idx" ON "style_breadcrumbs" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "style_breadcrumbs_doc_idx" ON "style_breadcrumbs" USING btree ("doc_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "style_slug_idx" ON "style" USING btree ("slug");
+  CREATE INDEX IF NOT EXISTS "style_parent_idx" ON "style" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "style_updated_at_idx" ON "style" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "style_created_at_idx" ON "style" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "style__status_idx" ON "style" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_breadcrumbs_order_idx" ON "_style_v_version_breadcrumbs" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_breadcrumbs_parent_id_idx" ON "_style_v_version_breadcrumbs" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_breadcrumbs_doc_idx" ON "_style_v_version_breadcrumbs" USING btree ("doc_id");
+  CREATE INDEX IF NOT EXISTS "_style_v_parent_idx" ON "_style_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_version_slug_idx" ON "_style_v" USING btree ("version_slug");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_version_parent_idx" ON "_style_v" USING btree ("version_parent_id");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_version_updated_at_idx" ON "_style_v" USING btree ("version_updated_at");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_version_created_at_idx" ON "_style_v" USING btree ("version_created_at");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_version__status_idx" ON "_style_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_style_v_created_at_idx" ON "_style_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_style_v_updated_at_idx" ON "_style_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_style_v_latest_idx" ON "_style_v" USING btree ("latest");
+  CREATE INDEX IF NOT EXISTS "artist_user_idx" ON "artist" USING btree ("user_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "artist_slug_idx" ON "artist" USING btree ("slug");
+  CREATE INDEX IF NOT EXISTS "artist_updated_at_idx" ON "artist" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "artist_created_at_idx" ON "artist" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "artist__status_idx" ON "artist" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "artist_rels_order_idx" ON "artist_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "artist_rels_parent_idx" ON "artist_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "artist_rels_path_idx" ON "artist_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "artist_rels_style_id_idx" ON "artist_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "artist_rels_tag_id_idx" ON "artist_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "_artist_v_parent_idx" ON "_artist_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_artist_v_version_version_user_idx" ON "_artist_v" USING btree ("version_user_id");
+  CREATE INDEX IF NOT EXISTS "_artist_v_version_version_slug_idx" ON "_artist_v" USING btree ("version_slug");
+  CREATE INDEX IF NOT EXISTS "_artist_v_version_version_updated_at_idx" ON "_artist_v" USING btree ("version_updated_at");
+  CREATE INDEX IF NOT EXISTS "_artist_v_version_version_created_at_idx" ON "_artist_v" USING btree ("version_created_at");
+  CREATE INDEX IF NOT EXISTS "_artist_v_version_version__status_idx" ON "_artist_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_artist_v_created_at_idx" ON "_artist_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_artist_v_updated_at_idx" ON "_artist_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_artist_v_latest_idx" ON "_artist_v" USING btree ("latest");
+  CREATE INDEX IF NOT EXISTS "_artist_v_rels_order_idx" ON "_artist_v_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "_artist_v_rels_parent_idx" ON "_artist_v_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_artist_v_rels_path_idx" ON "_artist_v_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "_artist_v_rels_style_id_idx" ON "_artist_v_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "_artist_v_rels_tag_id_idx" ON "_artist_v_rels" USING btree ("tag_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "tag_slug_idx" ON "tag" USING btree ("slug");
+  CREATE INDEX IF NOT EXISTS "tag_updated_at_idx" ON "tag" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "tag_created_at_idx" ON "tag" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "tag__status_idx" ON "tag" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "_tag_v_parent_idx" ON "_tag_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_tag_v_version_version_slug_idx" ON "_tag_v" USING btree ("version_slug");
+  CREATE INDEX IF NOT EXISTS "_tag_v_version_version_updated_at_idx" ON "_tag_v" USING btree ("version_updated_at");
+  CREATE INDEX IF NOT EXISTS "_tag_v_version_version_created_at_idx" ON "_tag_v" USING btree ("version_created_at");
+  CREATE INDEX IF NOT EXISTS "_tag_v_version_version__status_idx" ON "_tag_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_tag_v_created_at_idx" ON "_tag_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_tag_v_updated_at_idx" ON "_tag_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_tag_v_latest_idx" ON "_tag_v" USING btree ("latest");
   CREATE INDEX IF NOT EXISTS "pages_hero_breadcrumbs_bar_links_order_idx" ON "pages_hero_breadcrumbs_bar_links" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "pages_hero_breadcrumbs_bar_links_parent_id_idx" ON "pages_hero_breadcrumbs_bar_links" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "pages_hero_primary_buttons_order_idx" ON "pages_hero_primary_buttons" USING btree ("_order");
@@ -1751,11 +2361,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "pages_breadcrumbs_parent_id_idx" ON "pages_breadcrumbs" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "pages_breadcrumbs_doc_idx" ON "pages_breadcrumbs" USING btree ("doc_id");
   CREATE UNIQUE INDEX IF NOT EXISTS "pages_title_idx" ON "pages" USING btree ("title");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_slug_idx" ON "pages" USING btree ("slug");
   CREATE INDEX IF NOT EXISTS "pages_hero_hero_media_idx" ON "pages" USING btree ("hero_media_id");
   CREATE INDEX IF NOT EXISTS "pages_hero_hero_secondary_media_idx" ON "pages" USING btree ("hero_secondary_media_id");
   CREATE INDEX IF NOT EXISTS "pages_hero_hero_feature_video_idx" ON "pages" USING btree ("hero_feature_video_id");
   CREATE INDEX IF NOT EXISTS "pages_hero_hero_form_idx" ON "pages" USING btree ("hero_form_id");
-  CREATE UNIQUE INDEX IF NOT EXISTS "pages_slug_idx" ON "pages" USING btree ("slug");
+  CREATE INDEX IF NOT EXISTS "pages_meta_meta_image_idx" ON "pages" USING btree ("meta_image_id");
   CREATE INDEX IF NOT EXISTS "pages_parent_idx" ON "pages" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "pages_updated_at_idx" ON "pages" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "pages_created_at_idx" ON "pages" USING btree ("created_at");
@@ -1763,6 +2374,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "pages_rels_order_idx" ON "pages_rels" USING btree ("order");
   CREATE INDEX IF NOT EXISTS "pages_rels_parent_idx" ON "pages_rels" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_path_idx" ON "pages_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "pages_rels_users_id_idx" ON "pages_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_pages_id_idx" ON "pages_rels" USING btree ("pages_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_tattoo_id_idx" ON "pages_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_tag_id_idx" ON "pages_rels" USING btree ("tag_id");
@@ -1770,7 +2382,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "pages_rels_area_id_idx" ON "pages_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_style_id_idx" ON "pages_rels" USING btree ("style_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_media_id_idx" ON "pages_rels" USING btree ("media_id");
-  CREATE INDEX IF NOT EXISTS "pages_rels_users_id_idx" ON "pages_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_breadcrumbs_bar_links_order_idx" ON "_pages_v_version_hero_breadcrumbs_bar_links" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_breadcrumbs_bar_links_parent_id_idx" ON "_pages_v_version_hero_breadcrumbs_bar_links" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_primary_buttons_order_idx" ON "_pages_v_version_hero_primary_buttons" USING btree ("_order");
@@ -1796,11 +2407,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_pages_v_version_breadcrumbs_doc_idx" ON "_pages_v_version_breadcrumbs" USING btree ("doc_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_parent_idx" ON "_pages_v" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_version_title_idx" ON "_pages_v" USING btree ("version_title");
+  CREATE INDEX IF NOT EXISTS "_pages_v_version_version_slug_idx" ON "_pages_v" USING btree ("version_slug");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_media_idx" ON "_pages_v" USING btree ("version_hero_media_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_secondary_media_idx" ON "_pages_v" USING btree ("version_hero_secondary_media_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_feature_video_idx" ON "_pages_v" USING btree ("version_hero_feature_video_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_form_idx" ON "_pages_v" USING btree ("version_hero_form_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_version_slug_idx" ON "_pages_v" USING btree ("version_slug");
+  CREATE INDEX IF NOT EXISTS "_pages_v_version_meta_version_meta_image_idx" ON "_pages_v" USING btree ("version_meta_image_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_version_parent_idx" ON "_pages_v" USING btree ("version_parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_version_updated_at_idx" ON "_pages_v" USING btree ("version_updated_at");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_version_created_at_idx" ON "_pages_v" USING btree ("version_created_at");
@@ -1812,6 +2424,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_order_idx" ON "_pages_v_rels" USING btree ("order");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_parent_idx" ON "_pages_v_rels" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_path_idx" ON "_pages_v_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_rels_users_id_idx" ON "_pages_v_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_pages_id_idx" ON "_pages_v_rels" USING btree ("pages_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_tattoo_id_idx" ON "_pages_v_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_tag_id_idx" ON "_pages_v_rels" USING btree ("tag_id");
@@ -1819,43 +2432,41 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_area_id_idx" ON "_pages_v_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_style_id_idx" ON "_pages_v_rels" USING btree ("style_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_media_id_idx" ON "_pages_v_rels" USING btree ("media_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_rels_users_id_idx" ON "_pages_v_rels" USING btree ("users_id");
-  CREATE UNIQUE INDEX IF NOT EXISTS "tattoo_slug_idx" ON "tattoo" USING btree ("slug");
-  CREATE INDEX IF NOT EXISTS "tattoo_updated_at_idx" ON "tattoo" USING btree ("updated_at");
-  CREATE INDEX IF NOT EXISTS "tattoo_created_at_idx" ON "tattoo" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "tattoo_rels_order_idx" ON "tattoo_rels" USING btree ("order");
-  CREATE INDEX IF NOT EXISTS "tattoo_rels_parent_idx" ON "tattoo_rels" USING btree ("parent_id");
-  CREATE INDEX IF NOT EXISTS "tattoo_rels_path_idx" ON "tattoo_rels" USING btree ("path");
-  CREATE INDEX IF NOT EXISTS "tattoo_rels_area_id_idx" ON "tattoo_rels" USING btree ("area_id");
-  CREATE INDEX IF NOT EXISTS "tattoo_rels_style_id_idx" ON "tattoo_rels" USING btree ("style_id");
-  CREATE INDEX IF NOT EXISTS "tattoo_rels_artist_id_idx" ON "tattoo_rels" USING btree ("artist_id");
-  CREATE INDEX IF NOT EXISTS "tattoo_rels_tag_id_idx" ON "tattoo_rels" USING btree ("tag_id");
-  CREATE INDEX IF NOT EXISTS "area_breadcrumbs_order_idx" ON "area_breadcrumbs" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "area_breadcrumbs_parent_id_idx" ON "area_breadcrumbs" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "area_breadcrumbs_doc_idx" ON "area_breadcrumbs" USING btree ("doc_id");
-  CREATE UNIQUE INDEX IF NOT EXISTS "area_slug_idx" ON "area" USING btree ("slug");
-  CREATE INDEX IF NOT EXISTS "area_parent_idx" ON "area" USING btree ("parent_id");
-  CREATE INDEX IF NOT EXISTS "area_updated_at_idx" ON "area" USING btree ("updated_at");
-  CREATE INDEX IF NOT EXISTS "area_created_at_idx" ON "area" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "style_breadcrumbs_order_idx" ON "style_breadcrumbs" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "style_breadcrumbs_parent_id_idx" ON "style_breadcrumbs" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "style_breadcrumbs_doc_idx" ON "style_breadcrumbs" USING btree ("doc_id");
-  CREATE UNIQUE INDEX IF NOT EXISTS "style_slug_idx" ON "style" USING btree ("slug");
-  CREATE INDEX IF NOT EXISTS "style_parent_idx" ON "style" USING btree ("parent_id");
-  CREATE INDEX IF NOT EXISTS "style_updated_at_idx" ON "style" USING btree ("updated_at");
-  CREATE INDEX IF NOT EXISTS "style_created_at_idx" ON "style" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "artist_user_idx" ON "artist" USING btree ("user_id");
-  CREATE UNIQUE INDEX IF NOT EXISTS "artist_slug_idx" ON "artist" USING btree ("slug");
-  CREATE INDEX IF NOT EXISTS "artist_updated_at_idx" ON "artist" USING btree ("updated_at");
-  CREATE INDEX IF NOT EXISTS "artist_created_at_idx" ON "artist" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "artist_rels_order_idx" ON "artist_rels" USING btree ("order");
-  CREATE INDEX IF NOT EXISTS "artist_rels_parent_idx" ON "artist_rels" USING btree ("parent_id");
-  CREATE INDEX IF NOT EXISTS "artist_rels_path_idx" ON "artist_rels" USING btree ("path");
-  CREATE INDEX IF NOT EXISTS "artist_rels_style_id_idx" ON "artist_rels" USING btree ("style_id");
-  CREATE INDEX IF NOT EXISTS "artist_rels_tag_id_idx" ON "artist_rels" USING btree ("tag_id");
-  CREATE UNIQUE INDEX IF NOT EXISTS "tag_slug_idx" ON "tag" USING btree ("slug");
-  CREATE INDEX IF NOT EXISTS "tag_updated_at_idx" ON "tag" USING btree ("updated_at");
-  CREATE INDEX IF NOT EXISTS "tag_created_at_idx" ON "tag" USING btree ("created_at");
+  CREATE UNIQUE INDEX IF NOT EXISTS "posts_title_idx" ON "posts" USING btree ("title");
+  CREATE INDEX IF NOT EXISTS "posts_hero_image_idx" ON "posts" USING btree ("hero_image_id");
+  CREATE INDEX IF NOT EXISTS "posts_meta_meta_image_idx" ON "posts" USING btree ("meta_image_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "posts_slug_idx" ON "posts" USING btree ("slug");
+  CREATE INDEX IF NOT EXISTS "posts_updated_at_idx" ON "posts" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "posts_created_at_idx" ON "posts" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "posts__status_idx" ON "posts" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "posts_rels_order_idx" ON "posts_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "posts_rels_parent_idx" ON "posts_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "posts_rels_path_idx" ON "posts_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "posts_rels_area_id_idx" ON "posts_rels" USING btree ("area_id");
+  CREATE INDEX IF NOT EXISTS "posts_rels_style_id_idx" ON "posts_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "posts_rels_tag_id_idx" ON "posts_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "posts_rels_tattoo_id_idx" ON "posts_rels" USING btree ("tattoo_id");
+  CREATE INDEX IF NOT EXISTS "posts_rels_posts_id_idx" ON "posts_rels" USING btree ("posts_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_parent_idx" ON "_posts_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_version_version_title_idx" ON "_posts_v" USING btree ("version_title");
+  CREATE INDEX IF NOT EXISTS "_posts_v_version_version_hero_image_idx" ON "_posts_v" USING btree ("version_hero_image_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_version_meta_version_meta_image_idx" ON "_posts_v" USING btree ("version_meta_image_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_version_version_slug_idx" ON "_posts_v" USING btree ("version_slug");
+  CREATE INDEX IF NOT EXISTS "_posts_v_version_version_updated_at_idx" ON "_posts_v" USING btree ("version_updated_at");
+  CREATE INDEX IF NOT EXISTS "_posts_v_version_version_created_at_idx" ON "_posts_v" USING btree ("version_created_at");
+  CREATE INDEX IF NOT EXISTS "_posts_v_version_version__status_idx" ON "_posts_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_posts_v_created_at_idx" ON "_posts_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_posts_v_updated_at_idx" ON "_posts_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_posts_v_latest_idx" ON "_posts_v" USING btree ("latest");
+  CREATE INDEX IF NOT EXISTS "_posts_v_autosave_idx" ON "_posts_v" USING btree ("autosave");
+  CREATE INDEX IF NOT EXISTS "_posts_v_rels_order_idx" ON "_posts_v_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "_posts_v_rels_parent_idx" ON "_posts_v_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_rels_path_idx" ON "_posts_v_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "_posts_v_rels_area_id_idx" ON "_posts_v_rels" USING btree ("area_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_rels_style_id_idx" ON "_posts_v_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_rels_tag_id_idx" ON "_posts_v_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_rels_tattoo_id_idx" ON "_posts_v_rels" USING btree ("tattoo_id");
+  CREATE INDEX IF NOT EXISTS "_posts_v_rels_posts_id_idx" ON "_posts_v_rels" USING btree ("posts_id");
   CREATE INDEX IF NOT EXISTS "media_alt_idx" ON "media" USING btree ("alt");
   CREATE INDEX IF NOT EXISTS "media_updated_at_idx" ON "media" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "media_created_at_idx" ON "media" USING btree ("created_at");
@@ -1922,6 +2533,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "form_submissions_form_idx" ON "form_submissions" USING btree ("form_id");
   CREATE INDEX IF NOT EXISTS "form_submissions_updated_at_idx" ON "form_submissions" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "form_submissions_created_at_idx" ON "form_submissions" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "redirects_from_idx" ON "redirects" USING btree ("from");
+  CREATE INDEX IF NOT EXISTS "redirects_updated_at_idx" ON "redirects" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "redirects_created_at_idx" ON "redirects" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "redirects_rels_order_idx" ON "redirects_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "redirects_rels_parent_idx" ON "redirects_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "redirects_rels_path_idx" ON "redirects_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "redirects_rels_pages_id_idx" ON "redirects_rels" USING btree ("pages_id");
+  CREATE INDEX IF NOT EXISTS "redirects_rels_tattoo_id_idx" ON "redirects_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "search_categories_order_idx" ON "search_categories" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "search_categories_parent_id_idx" ON "search_categories" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "search_slug_idx" ON "search" USING btree ("slug");
@@ -1939,18 +2558,20 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_order_idx" ON "payload_locked_documents_rels" USING btree ("order");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_parent_idx" ON "payload_locked_documents_rels" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_path_idx" ON "payload_locked_documents_rels" USING btree ("path");
-  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_pages_id_idx" ON "payload_locked_documents_rels" USING btree ("pages_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_tattoo_id_idx" ON "payload_locked_documents_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_area_id_idx" ON "payload_locked_documents_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_style_id_idx" ON "payload_locked_documents_rels" USING btree ("style_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_artist_id_idx" ON "payload_locked_documents_rels" USING btree ("artist_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_tag_id_idx" ON "payload_locked_documents_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_pages_id_idx" ON "payload_locked_documents_rels" USING btree ("pages_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_posts_id_idx" ON "payload_locked_documents_rels" USING btree ("posts_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_media_id_idx" ON "payload_locked_documents_rels" USING btree ("media_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_assets_id_idx" ON "payload_locked_documents_rels" USING btree ("assets_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_user_photo_id_idx" ON "payload_locked_documents_rels" USING btree ("user_photo_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_users_id_idx" ON "payload_locked_documents_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_forms_id_idx" ON "payload_locked_documents_rels" USING btree ("forms_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_form_submissions_id_idx" ON "payload_locked_documents_rels" USING btree ("form_submissions_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_redirects_id_idx" ON "payload_locked_documents_rels" USING btree ("redirects_id");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_search_id_idx" ON "payload_locked_documents_rels" USING btree ("search_id");
   CREATE INDEX IF NOT EXISTS "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
   CREATE INDEX IF NOT EXISTS "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
@@ -2001,7 +2622,25 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
-   DROP TABLE "pages_hero_breadcrumbs_bar_links" CASCADE;
+   DROP TABLE "tattoo" CASCADE;
+  DROP TABLE "tattoo_rels" CASCADE;
+  DROP TABLE "_tattoo_v" CASCADE;
+  DROP TABLE "_tattoo_v_rels" CASCADE;
+  DROP TABLE "area_breadcrumbs" CASCADE;
+  DROP TABLE "area" CASCADE;
+  DROP TABLE "_area_v_version_breadcrumbs" CASCADE;
+  DROP TABLE "_area_v" CASCADE;
+  DROP TABLE "style_breadcrumbs" CASCADE;
+  DROP TABLE "style" CASCADE;
+  DROP TABLE "_style_v_version_breadcrumbs" CASCADE;
+  DROP TABLE "_style_v" CASCADE;
+  DROP TABLE "artist" CASCADE;
+  DROP TABLE "artist_rels" CASCADE;
+  DROP TABLE "_artist_v" CASCADE;
+  DROP TABLE "_artist_v_rels" CASCADE;
+  DROP TABLE "tag" CASCADE;
+  DROP TABLE "_tag_v" CASCADE;
+  DROP TABLE "pages_hero_breadcrumbs_bar_links" CASCADE;
   DROP TABLE "pages_hero_primary_buttons" CASCADE;
   DROP TABLE "pages_hero_links" CASCADE;
   DROP TABLE "pages_blocks_link" CASCADE;
@@ -2023,15 +2662,10 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "_pages_v_version_breadcrumbs" CASCADE;
   DROP TABLE "_pages_v" CASCADE;
   DROP TABLE "_pages_v_rels" CASCADE;
-  DROP TABLE "tattoo" CASCADE;
-  DROP TABLE "tattoo_rels" CASCADE;
-  DROP TABLE "area_breadcrumbs" CASCADE;
-  DROP TABLE "area" CASCADE;
-  DROP TABLE "style_breadcrumbs" CASCADE;
-  DROP TABLE "style" CASCADE;
-  DROP TABLE "artist" CASCADE;
-  DROP TABLE "artist_rels" CASCADE;
-  DROP TABLE "tag" CASCADE;
+  DROP TABLE "posts" CASCADE;
+  DROP TABLE "posts_rels" CASCADE;
+  DROP TABLE "_posts_v" CASCADE;
+  DROP TABLE "_posts_v_rels" CASCADE;
   DROP TABLE "media" CASCADE;
   DROP TABLE "assets" CASCADE;
   DROP TABLE "user_photo" CASCADE;
@@ -2050,6 +2684,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "forms" CASCADE;
   DROP TABLE "form_submissions_submission_data" CASCADE;
   DROP TABLE "form_submissions" CASCADE;
+  DROP TABLE "redirects" CASCADE;
+  DROP TABLE "redirects_rels" CASCADE;
   DROP TABLE "search_categories" CASCADE;
   DROP TABLE "search" CASCADE;
   DROP TABLE "search_rels" CASCADE;
@@ -2070,6 +2706,16 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "footer_columns" CASCADE;
   DROP TABLE "footer" CASCADE;
   DROP TABLE "footer_rels" CASCADE;
+  DROP TYPE "public"."enum_tattoo_status";
+  DROP TYPE "public"."enum__tattoo_v_version_status";
+  DROP TYPE "public"."enum_area_status";
+  DROP TYPE "public"."enum__area_v_version_status";
+  DROP TYPE "public"."enum_style_status";
+  DROP TYPE "public"."enum__style_v_version_status";
+  DROP TYPE "public"."enum_artist_status";
+  DROP TYPE "public"."enum__artist_v_version_status";
+  DROP TYPE "public"."enum_tag_status";
+  DROP TYPE "public"."enum__tag_v_version_status";
   DROP TYPE "public"."enum_pages_hero_breadcrumbs_bar_links_link_type";
   DROP TYPE "public"."enum_pages_hero_primary_buttons_type";
   DROP TYPE "public"."enum_pages_hero_primary_buttons_link_type";
@@ -2096,8 +2742,11 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__pages_v_version_hero_announcement_link_type";
   DROP TYPE "public"."enum__pages_v_version_hero_three_c_t_a";
   DROP TYPE "public"."enum__pages_v_version_status";
+  DROP TYPE "public"."enum_posts_status";
+  DROP TYPE "public"."enum__posts_v_version_status";
   DROP TYPE "public"."enum_users_role";
   DROP TYPE "public"."enum_forms_confirmation_type";
+  DROP TYPE "public"."enum_redirects_to_type";
   DROP TYPE "public"."enum_main_menu_tabs_description_links_link_type";
   DROP TYPE "public"."enum_main_menu_tabs_nav_items_featured_link_links_link_type";
   DROP TYPE "public"."enum_main_menu_tabs_nav_items_list_links_links_link_type";

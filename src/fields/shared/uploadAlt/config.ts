@@ -7,10 +7,7 @@ type Overrides = {
   checkboxOverrides?: Partial<CheckboxField>
 }
 
-type Alt = (
-  fieldToUse?: string,
-  overrides?: Overrides
-) => [TextField, CheckboxField]
+type Alt = (fieldToUse?: string, overrides?: Overrides) => [TextField, CheckboxField]
 
 export const uploadAltField: Alt = (fieldToUse = 'title', overrides = {}) => {
   const { altOverrides, checkboxOverrides } = overrides
@@ -18,7 +15,7 @@ export const uploadAltField: Alt = (fieldToUse = 'title', overrides = {}) => {
   const checkBoxField: CheckboxField = {
     name: 'altLock',
     type: 'checkbox',
-    defaultValue: true,
+    defaultValue: false, // Changed from true to false
     admin: {
       hidden: true
     },
@@ -38,11 +35,12 @@ export const uploadAltField: Alt = (fieldToUse = 'title', overrides = {}) => {
       beforeValidate: [formatUploadAltHook(fieldToUse)]
     },
     admin: {
+      // TODO: Make tooltip for alt text
       description: 'Alt text used for SEO and accessibility',
       ...(altOverrides?.admin || {}),
       components: {
         Field: {
-          path: '@fields/uploadAlt/client#UploadAltComponent',
+          path: '@fields/shared/uploadAlt/client#UploadAltComponent',
           clientProps: {
             fieldToUse,
             checkboxFieldPath: checkBoxField.name

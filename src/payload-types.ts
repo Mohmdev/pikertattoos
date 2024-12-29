@@ -11,12 +11,13 @@ export interface Config {
     users: UserAuthOperations;
   };
   collections: {
-    pages: Page;
     tattoo: Tattoo;
     area: Area;
     style: Style;
     artist: Artist;
     tag: Tag;
+    pages: Page;
+    posts: Post;
     media: Media;
     assets: Asset;
     'user-photo': UserPhoto;
@@ -46,12 +47,13 @@ export interface Config {
     };
   };
   collectionsSelect: {
-    pages: PagesSelect<false> | PagesSelect<true>;
     tattoo: TattooSelect<false> | TattooSelect<true>;
     area: AreaSelect<false> | AreaSelect<true>;
     style: StyleSelect<false> | StyleSelect<true>;
     artist: ArtistSelect<false> | ArtistSelect<true>;
     tag: TagSelect<false> | TagSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     assets: AssetsSelect<false> | AssetsSelect<true>;
     'user-photo': UserPhotoSelect<false> | UserPhotoSelect<true>;
@@ -106,7 +108,7 @@ export interface UserAuthOperations {
   registerFirstUser: {
     password: string;
     username: string;
-    email?: string;
+    email: string;
   };
   unlock:
     | {
@@ -115,6 +117,260 @@ export interface UserAuthOperations {
     | {
         username: string;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tattoo".
+ */
+export interface Tattoo {
+  id: number;
+  title: string;
+  area?: (number | Area)[] | null;
+  style?: (number | Style)[] | null;
+  artist?: (number | Artist)[] | null;
+  tags?: (number | Tag)[] | null;
+  meta?: Meta;
+  slug: string;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "area".
+ */
+export interface Area {
+  id: number;
+  title: string;
+  tattoos?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  slug: string;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Area;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Area;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "style".
+ */
+export interface Style {
+  id: number;
+  title: string;
+  tattoos?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  artists?: {
+    docs?: (number | Artist)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  slug: string;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Style;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Style;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "artist".
+ */
+export interface Artist {
+  id: number;
+  title: string;
+  /**
+   * Optional
+   */
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  style: (number | Style)[];
+  /**
+   * Associate this artist with a user account to enable them to log in and manage their own content.
+   */
+  user: number | User;
+  tags?: (number | Tag)[] | null;
+  slug: string;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  photo?: (number | null) | UserPhoto;
+  role: 'admin' | 'editor' | 'public';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  username: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  _verified?: boolean | null;
+  _verificationToken?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-photo".
+ */
+export interface UserPhoto {
+  id: number;
+  alt?: string | null;
+  user?: {
+    docs?: (number | User)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tag".
+ */
+export interface Tag {
+  id: number;
+  title: string;
+  tattoos?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  artists?: {
+    docs?: (number | Artist)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  slug: string;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "meta".
+ */
+export interface Meta {
+  title?: string | null;
+  /**
+   * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+   */
+  image?: (number | null) | Asset;
+  description?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assets".
+ */
+export interface Asset {
+  id: number;
+  title: string;
+  /**
+   * Alt text used for SEO and accessibility
+   */
+  alt: string;
+  altLock?: boolean | null;
+  /**
+   * Dark variation of the asset for dark mode. (Optional)
+   */
+  assetDarkModeFallback?: (number | null) | Asset;
+  prefix?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -128,6 +384,10 @@ export interface Page {
    * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
    */
   noindex?: boolean | null;
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  slug: string;
+  slugLock?: boolean | null;
   hero: {
     type:
       | 'default'
@@ -484,17 +744,7 @@ export interface Page {
     } | null;
     logoShowcase?: (number | Media)[] | null;
   };
-  slug: string;
-  slugLock?: boolean | null;
-  authors: (number | User)[];
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Asset;
-  };
+  meta?: Meta;
   parent?: (number | null) | Page;
   breadcrumbs?:
     | {
@@ -507,250 +757,6 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tattoo".
- */
-export interface Tattoo {
-  id: number;
-  title: string;
-  area?: (number | Area)[] | null;
-  style?: (number | Style)[] | null;
-  artist?: (number | Artist)[] | null;
-  tags?: (number | Tag)[] | null;
-  slug: string;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Asset;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "area".
- */
-export interface Area {
-  id: number;
-  title: string;
-  tattoos?: {
-    docs?: (number | Tattoo)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  slug: string;
-  slugLock?: boolean | null;
-  parent?: (number | null) | Area;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Area;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "style".
- */
-export interface Style {
-  id: number;
-  title: string;
-  tattoos?: {
-    docs?: (number | Tattoo)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  artists?: {
-    docs?: (number | Artist)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  slug: string;
-  slugLock?: boolean | null;
-  parent?: (number | null) | Style;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Style;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "artist".
- */
-export interface Artist {
-  id: number;
-  title: string;
-  user: number | User;
-  style?: (number | Style)[] | null;
-  tags?: (number | Tag)[] | null;
-  slug: string;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Asset;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  firstName?: string | null;
-  lastName?: string | null;
-  photo?: (number | null) | UserPhoto;
-  role: 'admin' | 'editor' | 'public';
-  updatedAt: string;
-  createdAt: string;
-  email?: string | null;
-  username: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  _verified?: boolean | null;
-  _verificationToken?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "user-photo".
- */
-export interface UserPhoto {
-  id: number;
-  alt?: string | null;
-  user?: {
-    docs?: (number | User)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    square?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    small?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tag".
- */
-export interface Tag {
-  id: number;
-  title: string;
-  tattoos?: {
-    docs?: (number | Tattoo)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  artists?: {
-    docs?: (number | Artist)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  slug: string;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Asset;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "assets".
- */
-export interface Asset {
-  id: number;
-  title: string;
-  /**
-   * Alt text used for SEO and accessibility
-   */
-  alt: string;
-  altLock?: boolean | null;
-  /**
-   * Dark variation of the asset for dark mode. (Optional)
-   */
-  assetDarkModeFallback?: (number | null) | Asset;
-  prefix?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1028,6 +1034,65 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  heroImage?: (number | null) | Media;
+  editor: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  categories?:
+    | (
+        | {
+            relationTo: 'area';
+            value: number | Area;
+          }
+        | {
+            relationTo: 'style';
+            value: number | Style;
+          }
+      )[]
+    | null;
+  tags?: (number | Tag)[] | null;
+  /**
+   * Posts that are related to this one. Could be a post, or a tattoo that's featured in this post.
+   */
+  relatedPosts?:
+    | (
+        | {
+            relationTo: 'tattoo';
+            value: number | Tattoo;
+          }
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+      )[]
+    | null;
+  meta?: Meta;
+  publishedAt?: string | null;
+  slug: string;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -1112,10 +1177,6 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'pages';
-        value: number | Page;
-      } | null)
-    | ({
         relationTo: 'tattoo';
         value: number | Tattoo;
       } | null)
@@ -1134,6 +1195,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tag';
         value: number | Tag;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
       } | null)
     | ({
         relationTo: 'media';
@@ -1211,12 +1280,117 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tattoo_select".
+ */
+export interface TattooSelect<T extends boolean = true> {
+  title?: T;
+  area?: T;
+  style?: T;
+  artist?: T;
+  tags?: T;
+  meta?: T | MetaSelect<T>;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "meta_select".
+ */
+export interface MetaSelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
+  description?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "area_select".
+ */
+export interface AreaSelect<T extends boolean = true> {
+  title?: T;
+  tattoos?: T;
+  slug?: T;
+  slugLock?: T;
+  parent?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "style_select".
+ */
+export interface StyleSelect<T extends boolean = true> {
+  title?: T;
+  tattoos?: T;
+  artists?: T;
+  slug?: T;
+  slugLock?: T;
+  parent?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "artist_select".
+ */
+export interface ArtistSelect<T extends boolean = true> {
+  title?: T;
+  bio?: T;
+  style?: T;
+  user?: T;
+  tags?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tag_select".
+ */
+export interface TagSelect<T extends boolean = true> {
+  title?: T;
+  tattoos?: T;
+  artists?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   fullTitle?: T;
   noindex?: T;
+  publishedAt?: T;
+  authors?: T;
+  slug?: T;
+  slugLock?: T;
   hero?:
     | T
     | {
@@ -1361,16 +1535,7 @@ export interface PagesSelect<T extends boolean = true> {
         logoShowcaseLabel?: T;
         logoShowcase?: T;
       };
-  slug?: T;
-  slugLock?: T;
-  authors?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
+  meta?: T | MetaSelect<T>;
   parent?: T;
   breadcrumbs?:
     | T
@@ -1386,111 +1551,19 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tattoo_select".
+ * via the `definition` "posts_select".
  */
-export interface TattooSelect<T extends boolean = true> {
+export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  area?: T;
-  style?: T;
-  artist?: T;
+  heroImage?: T;
+  editor?: T;
+  categories?: T;
   tags?: T;
+  relatedPosts?: T;
+  meta?: T | MetaSelect<T>;
+  publishedAt?: T;
   slug?: T;
   slugLock?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "area_select".
- */
-export interface AreaSelect<T extends boolean = true> {
-  title?: T;
-  tattoos?: T;
-  slug?: T;
-  slugLock?: T;
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "style_select".
- */
-export interface StyleSelect<T extends boolean = true> {
-  title?: T;
-  tattoos?: T;
-  artists?: T;
-  slug?: T;
-  slugLock?: T;
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "artist_select".
- */
-export interface ArtistSelect<T extends boolean = true> {
-  title?: T;
-  user?: T;
-  style?: T;
-  tags?: T;
-  slug?: T;
-  slugLock?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tag_select".
- */
-export interface TagSelect<T extends boolean = true> {
-  title?: T;
-  tattoos?: T;
-  artists?: T;
-  slug?: T;
-  slugLock?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

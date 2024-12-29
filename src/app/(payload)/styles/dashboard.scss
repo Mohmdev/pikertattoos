@@ -1,45 +1,81 @@
 .dashboard__wrap {
+  --card-list-height: 8rem;
+  --margin-block: 1.125rem;
+
   .dashboard__group {
+
+    // 1. Studio
     &:nth-of-type(1) {
       order: 1;
-      margin-block: 2rem;
-
-      .dashboard__label {
-        display: none;
-      }
-
+      margin-block: var(--margin-block);
+    
       .dashboard__card-list {
-        height: 8rem;
+        min-height: var(--card-list-height);
       }
     }
 
-    // Studio
+    // 2. Content
     &:nth-of-type(2) {
       order: 2;
-      display: none;
+      margin-block: var(--margin-block);
+
+      .dashboard__card-list {
+        min-height: var(--card-list-height);
+      }
     }
 
-    // Uploads
+    // 3. Uploads (hidden)
     &:nth-of-type(3) {
       order: 10;
       display: none;
     }
 
-    // Settings
+    // 4. Settings (hidden)
     &:nth-of-type(4) {
       order: 20;
       display: none;
     }
 
-    // Customize
+    // 5. Customize
     &:nth-of-type(5) {
       order: 3;
+      margin-block: var(--margin-block);
+
+      .dashboard__card-list {
+        min-height: var(--card-list-height);
+      }
     }
   }
 }
 
+// Dashboard main wrapper
+.template-default__wrap {
+  background-color: var(--dashboard-bg);
+  color: var(--theme-text);
+  font-family: var(--font-body);
+}
+
 .card {
-  background-color: var(--theme-elevation-50);
-  border: 1px solid var(--theme-elevation-150);
+  background-color: var(--dashboard-card-bg);
+  border: 1px solid var(--border-ui);
   border-radius: 5px;
+}
+
+.document-fields__sidebar-wrap {
+  background-color: var(--secondary-sidebar-bg);
+}
+
+.auth-fields {
+  border: 1px solid var(--border-ui);
+}
+
+.doc-controls {
+  background-color: var(--doc-controls-bg);
+}
+.doc-header {
+  background-color: var(--doc-controls-bg);
+  @media (max-width: 1024px) {
+    padding-inline: 1rem;
+    margin-top: var(--gutter-h);
+  }
 }

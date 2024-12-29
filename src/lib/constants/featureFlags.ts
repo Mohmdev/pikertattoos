@@ -3,8 +3,8 @@ import type { CollectionSlug, GlobalSlug } from 'payload'
 export const ROLES_WITH_ADMIN_ACCESS = ['admin', 'editor'] as const
 export const DASHBOARD_SLUG = 'studio'
 
-export const SITE_NAME_SHORT = 'Piker'
-export const SITE_NAME_LONG = 'Pikertattoos'
+export const SITE_NAME_SHORT = 'Piker' as const
+export const SITE_NAME = 'Pikertattoos' as const
 
 export const LINKABLE_COLLECTIONS: CollectionSlug[] = [
   'pages',
@@ -15,10 +15,11 @@ export const LINKABLE_COLLECTIONS: CollectionSlug[] = [
   'style'
   // 'posts',
 ] as const
-export const PREVIEWABLE_COLLECTIONS: CollectionSlug[] = [
-  'pages'
-  // 'tatoos'
-  // 'posts',
+export const PREVIEWABLE_COLLECTIONS: CollectionSlug[] = ['pages', 'tattoo', 'posts'] as const
+export const RELATED_POSTS_COLLECTIONS: CollectionSlug[] = [
+  //
+  'tattoo',
+  'posts'
 ] as const
 
 export const ENABLED_PLUGINS = {

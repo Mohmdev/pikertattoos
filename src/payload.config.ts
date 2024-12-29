@@ -7,6 +7,7 @@ import { GlobalSettings } from '@CMS/GlobalSettings/config'
 import { MainMenu } from '@CMS/MainMenu/config'
 import { Media } from '@CMS/Media/config'
 import { Pages } from '@CMS/Pages/config'
+import { Posts } from '@CMS/Posts/config'
 import { Area } from '@CMS/Studio/Area'
 import { Artist } from '@CMS/Studio/Artist'
 import { Style } from '@CMS/Studio/Style'
@@ -32,8 +33,8 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   collections: [
-    ...collectionGroup('Content', [Pages]),
     ...collectionGroup('Studio', [Tattoo, Area, Style, Artist, Tag]),
+    ...collectionGroup('Content', [Pages, Posts]),
     ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
     ...collectionGroup('Settings', [Users])
   ],
@@ -42,8 +43,8 @@ export default buildConfig({
   admin: adminConfig,
   db: databaseAdapter,
   email: emailAdapter,
-  plugins: [...pluginsConfig],
   sharp,
+  plugins: [...pluginsConfig],
   secret: process.env.PAYLOAD_SECRET || '',
   cookiePrefix: `${COOKIE_PREFIX}`,
   serverURL: getServerSideURL(),

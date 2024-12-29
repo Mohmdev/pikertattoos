@@ -2,16 +2,9 @@
 
 import React, { useCallback, useEffect } from 'react'
 
-import { TextFieldClientProps } from 'payload'
+import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui'
 
-import {
-  Button,
-  FieldLabel,
-  TextInput,
-  useField,
-  useForm,
-  useFormFields
-} from '@payloadcms/ui'
+import { TextFieldClientProps } from 'payload'
 
 import { formatUploadAlt } from './formatAlt'
 
@@ -51,9 +44,7 @@ export const UploadAltComponent: React.FC<UploadAltComponentProps> = ({
   })
 
   // Compute formatted alt text for placeholder
-  const formattedAltTextPreview = targetFieldValue
-    ? formatUploadAlt(targetFieldValue)
-    : ''
+  const formattedAltTextPreview = targetFieldValue ? formatUploadAlt(targetFieldValue) : ''
 
   useEffect(() => {
     if (checkboxValue) {

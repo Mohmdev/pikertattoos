@@ -25,6 +25,7 @@ export const Users: CollectionConfig<'users'> = {
     defaultColumns: ['photo', 'username', 'role', 'email']
   },
   defaultPopulate: {
+    email: true,
     username: true,
     firstName: true,
     lastName: true,
@@ -36,7 +37,16 @@ export const Users: CollectionConfig<'users'> = {
       name: 'username',
       type: 'text',
       required: true,
-      index: true
+      index: true,
+      unique: true,
+      hooks: {
+        beforeValidate: [
+          ({ value }) => {
+            if (!value) return value // If no value, return it as is
+            return value.trim().toLowerCase()
+          }
+        ]
+      }
     },
     {
       type: 'row',
@@ -90,8 +100,8 @@ export const Users: CollectionConfig<'users'> = {
   auth: {
     loginWithUsername: {
       allowEmailLogin: true,
-      requireUsername: true,
-      requireEmail: false
+      requireEmail: true,
+      requireUsername: true
     },
     cookies: {
       // HTTPS only cookies

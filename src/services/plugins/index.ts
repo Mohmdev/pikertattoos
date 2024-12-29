@@ -12,8 +12,8 @@ import { ENABLED_PLUGINS } from '@constants/featureFlags'
 export const pluginsConfig: Plugin[] = [
   ...(ENABLED_PLUGINS.storage ? [storagePlugin] : []),
   ...(ENABLED_PLUGINS.formBuilder ? [formBuilderPluginConfig] : []),
-  ...(ENABLED_PLUGINS.seo ? [seoPluginConfig] : []),
   ...(ENABLED_PLUGINS.redirects ? [redirectsPluginConfig] : []),
   ...(ENABLED_PLUGINS.nestedDocs ? [nestedDocsPluginConfig] : []),
-  ...(ENABLED_PLUGINS.search ? [searchPluginConfig] : [])
+  ...(ENABLED_PLUGINS.search ? [searchPluginConfig] : []),
+  ...(ENABLED_PLUGINS.seo ? [seoPluginConfig] : [])
 ]

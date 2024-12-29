@@ -24,7 +24,11 @@
 // import { StickyHighlights } from '@blocks/StickyHighlights/config'
 import { fullTitle } from '@fields/fullTitle/config'
 import { hero } from '@fields/hero/config'
-import { slugField } from '@fields/slug/config'
+import { authorsField } from '@fields/shared/authorsField'
+import { noindexField } from '@fields/shared/noindexField'
+import { publishedAtField } from '@fields/shared/publishedAtField'
+import { seoTab } from '@fields/shared/seoTab'
+import { slugField } from '@fields/shared/slug/config'
 
 import { getLivePreviewUrl } from '@utils/getLivePreviewUrl'
 import { getPreviewUrl } from '@utils/getPreviewUrl'
@@ -58,7 +62,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   defaultPopulate: {
     slug: true,
-    // breadcrumbs: true,
+    breadcrumbs: true,
     title: true
   },
   fields: [
@@ -69,24 +73,17 @@ export const Pages: CollectionConfig<'pages'> = {
       unique: true
     },
     fullTitle,
-    {
-      name: 'noindex',
-      type: 'checkbox',
-      label: 'Hide from Search Engines',
-      admin: {
-        position: 'sidebar',
-        // TODO: Make the description a tooltip
-        description:
-          'When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.'
-      }
-    },
+    noindexField,
+    publishedAtField,
+    authorsField,
+    ...slugField(),
     {
       type: 'tabs',
       tabs: [
         {
           fields: [hero],
           label: 'Hero'
-        }
+        },
         // {
         //   fields: [
         //     {
@@ -148,25 +145,15 @@ export const Pages: CollectionConfig<'pages'> = {
         //     }),
         //   ],
         // },
+        seoTab
       ]
-    },
-    ...slugField(),
-    {
-      name: 'authors',
-      type: 'relationship',
-      admin: {
-        position: 'sidebar'
-      },
-      hasMany: true,
-      relationTo: 'users',
-      required: true
     }
   ],
   hooks: {
     afterChange: [revalidatePage],
     afterRead: [populateAuthors],
-    beforeChange: [populatePublishedAt],
-    beforeDelete: [revalidateDelete]
+    afterDelete: [revalidateDelete],
+    beforeChange: [populatePublishedAt]
     // afterChange: [
     //   ({ doc, previousDoc }) => {
     //     if (doc._status === 'published' || doc._status !== previousDoc._status) {

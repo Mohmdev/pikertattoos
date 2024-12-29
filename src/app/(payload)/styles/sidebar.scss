@@ -1,12 +1,12 @@
 .nav__wrap {
   .nav-group {
-    &.Content {
+    &.Studio {
       order: 1;
-      margin-top: 1rem;
       margin-bottom: 1.5rem;
     }
-    &.Studio {
+    &.Content {
       order: 2;
+      margin-top: 1rem;
       margin-bottom: 1.5rem;
     }
     &.Customize {
@@ -26,10 +26,25 @@
 }
 
 .nav nav a {
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1rem;
+  line-height: 1.825rem;
+
+  @media (max-width: 1024px) {
+    font-size:  1.125rem;
+    line-height: 1.825rem;
+  }
 }
+
+aside {
+  background-color: var(--sidebar-bg);
+}
+
 .nav-group__label {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   line-height: 2.25rem;
+
+  @media (max-width: 1024px) {
+    font-size: 1.225rem;
+    line-height: 2.25rem;
+  }
 }
