@@ -264,6 +264,7 @@ export interface UserPhoto {
     docs?: (number | User)[] | null;
     hasNextPage?: boolean | null;
   } | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -349,12 +350,10 @@ export interface Meta {
  */
 export interface Asset {
   id: number;
-  title: string;
   /**
-   * Alt text used for SEO and accessibility
+   * Used for SEO and accessibility
    */
-  alt: string;
-  altLock?: boolean | null;
+  alt?: string | null;
   /**
    * Dark variation of the asset for dark mode. (Optional)
    */
@@ -764,14 +763,12 @@ export interface Page {
  */
 export interface Media {
   id: number;
-  title: string;
   /**
-   * Alt text used for SEO and accessibility
+   * Used for SEO and accessibility
    */
-  alt: string;
-  altLock?: boolean | null;
+  alt?: string | null;
   /**
-   * Optional
+   * Caption for this media file.
    */
   caption?: {
     root: {
@@ -801,6 +798,14 @@ export interface Media {
   focalX?: number | null;
   focalY?: number | null;
   sizes?: {
+    original?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
     thumbnail?: {
       url?: string | null;
       width?: number | null;
@@ -1573,9 +1578,7 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  title?: T;
   alt?: T;
-  altLock?: T;
   caption?: T;
   prefix?: T;
   updatedAt?: T;
@@ -1592,6 +1595,16 @@ export interface MediaSelect<T extends boolean = true> {
   sizes?:
     | T
     | {
+        original?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
         thumbnail?:
           | T
           | {
@@ -1669,9 +1682,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "assets_select".
  */
 export interface AssetsSelect<T extends boolean = true> {
-  title?: T;
   alt?: T;
-  altLock?: T;
   assetDarkModeFallback?: T;
   prefix?: T;
   updatedAt?: T;
@@ -1693,6 +1704,7 @@ export interface AssetsSelect<T extends boolean = true> {
 export interface UserPhotoSelect<T extends boolean = true> {
   alt?: T;
   user?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

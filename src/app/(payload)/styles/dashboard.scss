@@ -61,21 +61,3 @@
   border-radius: 5px;
 }
 
-.document-fields__sidebar-wrap {
-  background-color: var(--secondary-sidebar-bg);
-}
-
-.auth-fields {
-  border: 1px solid var(--border-ui);
-  background-color: var(--bg-default-primary);
-}
-
-.doc-controls {
-  background-color: var(--doc-controls-bg);
-}
-.doc-header {
-  @media (max-width: 1024px) {
-    padding-inline: 1rem;
-    margin-top: var(--gutter-h);
-  }
-}

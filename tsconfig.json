@@ -29,7 +29,7 @@
       "@admin-components/*": ["src/CMS/_components/*"],
       "@CMS/*": ["src/CMS/*"],
       "@access/*": ["src/services/access/*"],
-      "@data/*": ["src/_data/*"],
+      "@data/*": ["src/app/_data/*"],
       "@providers": ["src/providers"],
       "@providers/*": ["src/providers/*"],
       "@forms/*": ["src/forms/*"],

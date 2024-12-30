@@ -23,22 +23,6 @@ const nextConfig: NextConfig = {
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year,
     remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: 'localhost'
-      },
-      {
-        protocol: 'http',
-        hostname: '127.0.0.1'
-      },
-      {
-        protocol: 'https',
-        hostname: 'ucarecdn.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos'
-      },
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
         const url = new URL(item)
 
