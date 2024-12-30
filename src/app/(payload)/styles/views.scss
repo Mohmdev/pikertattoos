@@ -1,0 +1,37 @@
+// Sidebar
+.document-fields__sidebar-wrap {
+  border-left: 1px solid var(--border-ui);
+  border-radius: 0;
+  
+  // background-color: var(--secondary-sidebar-bg);
+  @media (max-width: 1024px) {
+    background-color: none;
+    border: none;
+  }
+}
+
+// Main auth fields
+.auth-fields {
+  border: 1px solid var(--border-ui);
+  background-color: var(--bg-default-primary);
+}
+
+// Document controls
+.doc-controls {
+  border-color: var(--border-ui);
+    border-top-width: 1px;
+    border-bottom-width: 2px;
+    border-inline-width: 0;
+    border-style: solid;
+  // background-color: var(--doc-controls-bg);
+}
+.doc-header {
+  @media (max-width: 1024px) {
+    padding-inline: 1rem;
+    padding-top: var(--gutter-h);
+  }
+}
+
+.document-fields__edit {
+  border: none;
+}

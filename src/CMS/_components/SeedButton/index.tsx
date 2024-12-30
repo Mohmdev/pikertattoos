@@ -4,6 +4,8 @@ import React, { Fragment, useCallback, useState } from 'react'
 
 import { toast, useAuth } from '@payloadcms/ui'
 
+import type { User } from '@payload-types'
+
 import styles from './index.module.scss'
 
 const SuccessMessage: React.FC = () => (
@@ -16,10 +18,18 @@ const SuccessMessage: React.FC = () => (
 )
 
 export const SeedButton: React.FC = () => {
-  const { user } = useAuth()
+  const { user } = useAuth<User>()
   const [loading, setLoading] = useState(false)
   const [seeded, setSeeded] = useState(false)
   const [error, setError] = useState(null)
+
+  const getButtonText = () => {
+    if (user?.role !== 'admin') return 'You need admin access level to perform this action'
+    if (loading) return 'Seeding...'
+    if (seeded) return 'Database Seeded!'
+    if (error) return `Error: ${error}`
+    return 'Seed Database'
+  }
 
   const handleClick = useCallback(
     async (e) => {
@@ -73,25 +83,15 @@ export const SeedButton: React.FC = () => {
     [loading, seeded, error]
   )
 
-  let message = ''
-  if (loading) message = ' (seeding...)'
-  if (seeded) message = ' (done!)'
-  if (error) message = ` (error: ${error})`
-
-  if (user?.role !== 'admin') {
-    return (
-      <div className={styles['seedButton--disabled']}>
-        You need admin access level to perform this action
-      </div>
-    )
-  }
-
   return (
     <Fragment>
-      <button className={styles.seedButton} onClick={handleClick}>
-        Seed your database
+      <button
+        className={styles.seedButton}
+        onClick={handleClick}
+        disabled={loading || seeded || error || user?.role !== 'admin'}
+      >
+        {getButtonText()}
       </button>
-      {message}
     </Fragment>
   )
 }
