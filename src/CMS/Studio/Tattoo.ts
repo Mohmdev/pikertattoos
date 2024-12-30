@@ -39,8 +39,33 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
       type: 'tabs',
       tabs: [
         {
+          label: 'Gallery',
+          fields: [
+            {
+              name: 'video',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: false,
+              label: 'Video'
+            },
+            {
+              name: 'images',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: true,
+              minRows: 1,
+              maxRows: 12,
+              label: 'Images'
+            }
+          ]
+        },
+        {
           label: 'Details',
           fields: [
+            {
+              name: 'description',
+              type: 'textarea'
+            },
             {
               name: 'area',
               type: 'relationship',
@@ -71,7 +96,23 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
                 plural: 'Artists'
               }
             },
-            tagsField
+            tagsField,
+            {
+              name: 'relatedTattoos',
+              type: 'relationship',
+              filterOptions: ({ id }) => {
+                return {
+                  id: {
+                    not_in: [id]
+                  }
+                }
+              },
+              hasMany: true,
+              relationTo: 'tattoo',
+              admin: {
+                description: 'Select related tattoos.'
+              }
+            }
           ]
         },
         seoTab
