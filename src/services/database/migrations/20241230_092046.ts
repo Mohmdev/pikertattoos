@@ -637,9 +637,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE IF NOT EXISTS "media" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"title" varchar NOT NULL,
-  	"alt" varchar NOT NULL,
-  	"alt_lock" boolean DEFAULT false,
+  	"alt" varchar,
   	"caption" jsonb,
   	"prefix" varchar DEFAULT 'media',
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -699,9 +697,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE IF NOT EXISTS "assets" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"title" varchar NOT NULL,
-  	"alt" varchar NOT NULL,
-  	"alt_lock" boolean DEFAULT false,
+  	"alt" varchar,
   	"asset_dark_mode_fallback_id" integer,
   	"prefix" varchar DEFAULT 'assets',
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -720,6 +716,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE IF NOT EXISTS "user_photo" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"alt" varchar,
+  	"prefix" varchar DEFAULT 'user-photos',
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"url" varchar,
@@ -2467,7 +2464,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_posts_v_rels_tag_id_idx" ON "_posts_v_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "_posts_v_rels_tattoo_id_idx" ON "_posts_v_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "_posts_v_rels_posts_id_idx" ON "_posts_v_rels" USING btree ("posts_id");
-  CREATE INDEX IF NOT EXISTS "media_alt_idx" ON "media" USING btree ("alt");
   CREATE INDEX IF NOT EXISTS "media_updated_at_idx" ON "media" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "media_created_at_idx" ON "media" USING btree ("created_at");
   CREATE UNIQUE INDEX IF NOT EXISTS "media_filename_idx" ON "media" USING btree ("filename");
@@ -2478,7 +2474,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "media_sizes_large_sizes_large_filename_idx" ON "media" USING btree ("sizes_large_filename");
   CREATE INDEX IF NOT EXISTS "media_sizes_xlarge_sizes_xlarge_filename_idx" ON "media" USING btree ("sizes_xlarge_filename");
   CREATE INDEX IF NOT EXISTS "media_sizes_og_sizes_og_filename_idx" ON "media" USING btree ("sizes_og_filename");
-  CREATE INDEX IF NOT EXISTS "assets_alt_idx" ON "assets" USING btree ("alt");
   CREATE INDEX IF NOT EXISTS "assets_asset_dark_mode_fallback_idx" ON "assets" USING btree ("asset_dark_mode_fallback_id");
   CREATE INDEX IF NOT EXISTS "assets_updated_at_idx" ON "assets" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "assets_created_at_idx" ON "assets" USING btree ("created_at");

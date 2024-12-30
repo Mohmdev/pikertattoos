@@ -2,7 +2,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { assetDarkModeFallback } from '@fields/shared/darkModeFallback/asset'
-import { uploadAltField } from '@fields/shared/uploadAlt/config'
 
 import type { CollectionConfig } from 'payload'
 
@@ -35,16 +34,18 @@ export const Assets: CollectionConfig<'assets'> = {
     width: true
   },
   admin: {
-    useAsTitle: 'title',
-    defaultColumns: ['thumbnail', 'title', 'mimeType', 'authors', 'createdAt', 'updatedAt']
+    useAsTitle: 'alt',
+    defaultColumns: ['filename', 'mimeType', 'createdAt', 'updatedAt']
   },
   fields: [
     {
-      name: 'title',
+      name: 'alt',
       type: 'text',
-      required: true
+      //required: true,
+      admin: {
+        description: 'Used for SEO and accessibility'
+      }
     },
-    ...uploadAltField(),
     assetDarkModeFallback
   ],
   upload: {

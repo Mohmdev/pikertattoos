@@ -1,5 +1,5 @@
 {
-  "id": "a7928c55-6605-4d86-84c0-4f7f32b213b1",
+  "id": "ea9eb06e-6f81-4fcc-be2d-f009ee47d0fb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -8443,24 +8443,11 @@
           "primaryKey": true,
           "notNull": true
         },
-        "title": {
-          "name": "title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
         "alt": {
           "name": "alt",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
-        },
-        "alt_lock": {
-          "name": "alt_lock",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
+          "notNull": false
         },
         "caption": {
           "name": "caption",
@@ -8797,21 +8784,6 @@
         }
       },
       "indexes": {
-        "media_alt_idx": {
-          "name": "media_alt_idx",
-          "columns": [
-            {
-              "expression": "alt",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "media_updated_at_idx": {
           "name": "media_updated_at_idx",
           "columns": [
@@ -8980,24 +8952,11 @@
           "primaryKey": true,
           "notNull": true
         },
-        "title": {
-          "name": "title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
         "alt": {
           "name": "alt",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
-        },
-        "alt_lock": {
-          "name": "alt_lock",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
+          "notNull": false
         },
         "asset_dark_mode_fallback_id": {
           "name": "asset_dark_mode_fallback_id",
@@ -9082,21 +9041,6 @@
         }
       },
       "indexes": {
-        "assets_alt_idx": {
-          "name": "assets_alt_idx",
-          "columns": [
-            {
-              "expression": "alt",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "assets_asset_dark_mode_fallback_idx": {
           "name": "assets_asset_dark_mode_fallback_idx",
           "columns": [
@@ -9194,6 +9138,13 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
+        },
+        "prefix": {
+          "name": "prefix",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'user-photos'"
         },
         "updated_at": {
           "name": "updated_at",

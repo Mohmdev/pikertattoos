@@ -2,7 +2,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { basicLexical } from '@services/editor/basicLexical'
-import { uploadAltField } from '@fields/shared/uploadAlt/config'
 
 import type { CollectionConfig } from 'payload'
 
@@ -27,7 +26,6 @@ export const Media: CollectionConfig<'media'> = {
   },
   defaultPopulate: {
     alt: true,
-    mediaDarkModeFallback: true,
     filename: true,
     height: true,
     mimeType: true,
@@ -35,33 +33,54 @@ export const Media: CollectionConfig<'media'> = {
     width: true
   },
   admin: {
-    useAsTitle: 'title',
-    defaultColumns: ['thumbnail', 'title', 'mimeType', 'authors', 'createdAt', 'updatedAt']
+    useAsTitle: 'alt',
+    defaultColumns: ['filename', 'mimeType', 'createdAt', 'updatedAt']
   },
   fields: [
     {
-      name: 'title',
+      name: 'alt',
       type: 'text',
-      required: true
+      //required: true,
+      admin: {
+        description: 'Used for SEO and accessibility'
+      }
     },
-    ...uploadAltField(),
     {
       name: 'caption',
       type: 'richText',
       editor: basicLexical,
       admin: {
-        description: 'Optional'
+        description: 'Caption for this media file.'
       }
     }
-    // mediaDarkModeFallback
   ],
   upload: {
     crop: true,
     displayPreview: true,
     focalPoint: true,
     disableLocalStorage: true,
+    /**
+     * Restrict mimeTypes in the file picker. Array of valid mime types or mimetype wildcards
+     * @example ['image/*', 'application/pdf']
+     * @default undefined
+     */
+    mimeTypes: [
+      'image/*',
+      'image/webp',
+      'video/*',
+      'text/plain',
+      'application/json',
+      'application/pdf', // PDF documents
+      'application/msword' // DOC
+    ],
     adminThumbnail: 'thumbnail',
     imageSizes: [
+      {
+        name: 'original',
+        withoutEnlargement: true,
+        withoutReduction: true,
+        height: 1500
+      },
       {
         name: 'thumbnail',
         width: 300
