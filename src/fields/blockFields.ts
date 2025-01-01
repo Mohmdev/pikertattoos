@@ -8,27 +8,27 @@ interface Args {
   overrides?: Partial<GroupField>
 }
 
-export const themeField: (width?: number) => Field = (width) => ({
-  name: 'theme',
-  type: 'select',
-  admin: {
-    description: 'Leave blank for system default',
-    width: width ? `${width}%` : '50%'
-  },
-  options: [
-    {
-      label: 'Light',
-      value: 'light'
-    },
-    {
-      label: 'Dark',
-      value: 'dark'
-    }
-  ]
-})
+// export const themeFields: (width?: number) => Field = (width) => ({
+//   name: 'theme',
+//   type: 'select',
+//   admin: {
+//     description: 'Leave blank for system default',
+//     width: width ? `${width}%` : '50%'
+//   },
+//   options: [
+//     {
+//       label: 'Light',
+//       value: 'light'
+//     },
+//     {
+//       label: 'Dark',
+//       value: 'dark'
+//     }
+//   ]
+// })
 
-export const backgroundField: Field = {
-  name: 'background',
+export const backgroundFields: Field = {
+  name: 'bg',
   type: 'select',
   admin: {
     width: '50%'
@@ -40,15 +40,15 @@ export const backgroundField: Field = {
     },
     {
       label: 'Transparent',
-      value: 'transparent'
+      value: 'trnsprnt'
     },
     {
       label: 'Gradient Up',
-      value: 'gradientUp'
+      value: 'grdntup'
     },
     {
       label: 'Gradient Down',
-      value: 'gradientDown'
+      value: 'gtdntdwn'
     }
   ]
 }
@@ -79,7 +79,10 @@ export const blockFields = ({ name, fields, overrides }: Args): Field =>
               fields: [
                 {
                   type: 'row',
-                  fields: [themeField(), backgroundField]
+                  fields: [
+                    // themeFields(),
+                    backgroundFields
+                  ]
                 }
               ],
               label: false

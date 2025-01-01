@@ -8,12 +8,12 @@ export const SITE_NAME = 'Pikertattoos' as const
 
 export const LINKABLE_COLLECTIONS: CollectionSlug[] = [
   'pages',
+  'posts',
   'tattoo',
-  'tag',
   'artist',
+  'tag',
   'area',
   'style'
-  // 'posts',
 ] as const
 export const PREVIEWABLE_COLLECTIONS: CollectionSlug[] = ['pages', 'tattoo', 'posts'] as const
 export const RELATED_POSTS_COLLECTIONS: CollectionSlug[] = [

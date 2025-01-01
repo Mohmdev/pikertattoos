@@ -27,6 +27,7 @@ const prettierConfig = {
     '^@payload-config$',
     '^@CMS/(.*)$',
     '^@services/(.*)$',
+    '^@heros/(.*)$',
     '^@blocks/(.*)$',
     '^@fields/(.*)$',
     '',

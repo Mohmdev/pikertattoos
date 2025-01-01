@@ -1,0 +1,108 @@
+@use './vars.scss' as *;
+
+:root {
+  --theme-bg: hsl(var(--background));
+
+  --theme-elevation-100: var(--elevation-100);
+  --theme-elevation-150: var(--elevation-150);
+  --theme-elevation-200: var(--elevation-200);
+  --theme-elevation-250: var(--elevation-250);
+  --theme-elevation-300: var(--elevation-300);
+  --theme-elevation-350: var(--elevation-350);
+  --theme-elevation-400: var(--elevation-400);
+  --theme-elevation-450: var(--elevation-450);
+  --theme-elevation-500: var(--elevation-500);
+  --theme-elevation-550: var(--elevation-550);
+  --theme-elevation-600: var(--elevation-600);
+  --theme-elevation-650: var(--elevation-650);
+  --theme-elevation-700: var(--elevation-700);
+  --theme-elevation-750: var(--elevation-750);
+  --theme-elevation-800: var(--elevation-800);
+  --theme-elevation-850: var(--elevation-850);
+  --theme-elevation-900: var(--elevation-900);
+  --theme-elevation-950: var(--elevation-950);
+  --theme-elevation-1000: var(--elevation-1000);
+}
+:root {
+  --gutter-h: 1.5rem;
+  // --gutter-h: calc(50vw - 40rem);
+  --block-spacing: 1.5rem;
+
+  --font-body-size: 16px;
+
+  font-size: 18px;
+  --base: 16px;
+  --breakpoint-xs-width: $breakpoint-xs-width;
+  --breakpoint-s-width: $breakpoint-s-width;
+  --breakpoint-m-width: $breakpoint-m-width;
+  --breakpoint-mh-width: $breakpoint-mh-width;
+  --breakpoint-mp-width: $breakpoint-mp-width;
+  --breakpoint-lm-width: $breakpoint-lm-width;
+  --breakpoint-l-width: $breakpoint-l-width;
+  --breakpoint-xl-width: $breakpoint-xl-width;
+  --breakpoint-2xl-width: $breakpoint-2xl-width;
+
+  --breakpoint-l-height: $breakpoint-l-height;
+
+  --scrollbar-width: 6px;
+  --page-padding-top: var(--header-height);
+  --sticky-sidebar-top: calc(var(--header-height) + 1.25rem);
+  --header-height: 90px;
+  --top-bar-height: 46px;
+
+  --z-popup: 10;
+  --z-status: 30;
+  --z-nav: 40;
+  --z-modal: 50;
+
+  --grid-line-dark: rgba(255, 255, 255, 0.125);
+  --grid-line-light: rgba(0, 0, 0, 0.125);
+  --text-dark: rgba(255, 255, 255, 0.5);
+  --text-light: rgba(0, 0, 0, 0.5);
+
+  --block-spacing: 7rem;
+  --new-block-spacing: 8rem;
+  --default-border-width: 2px;
+
+  --trans-default: 150ms;
+
+  --column: calc((100vw - (var(--gutter-h) * 2)) / 16);
+
+  @include extra-large-break {
+    --font-body-size: 16px;
+    --gutter-h: 8rem;
+  }
+
+  @include large-break {
+    font-size: 16px;
+    --base: 16px;
+    --gutter-h: 4rem;
+    --block-spacing: 5rem;
+    --new-block-spacing: 6rem;
+    --header-height: 76px;
+  }
+
+  @include mobile-header-break {
+    --header-height: 66px;
+  }
+
+  @include mid-break {
+    --gutter-h: 2rem;
+    --block-spacing: 3.5rem;
+    --new-block-spacing: 4rem;
+    --page-padding-top: var(--header-height);
+  }
+
+  @include small-break {
+    --block-spacing: 2rem;
+    --gutter-h: 1rem;
+  }
+
+  @include mid-break {
+    --column: calc((100vw - (var(--gutter-h) * 2)) / 8);
+  }
+}
+
+// .dark {
+
+// }

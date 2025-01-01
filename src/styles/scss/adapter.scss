@@ -1,0 +1,49 @@
+:root {
+  --theme-bg: hsl(var(--background));
+  --theme-input-bg: hsl(var(--input));
+  --theme-text: hsl(var(--foreground));
+  --theme-border-color: hsl(var(--border));
+
+  h1 a,
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    color: var(--theme-elevation-750);
+
+    &:hover {
+      color: var(--theme-elevation-800);
+    }
+
+    &:visited {
+      color: var(--theme-elevation-750);
+
+      &:hover {
+        color: var(--theme-elevation-800);
+      }
+    }
+  }
+}
+.dark {
+  h1 a,
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    color: var(--theme-success-600);
+
+    &:hover {
+      color: var(--theme-success-400);
+    }
+
+    &:visited {
+      color: var(--theme-success-700);
+
+      &:hover {
+        color: var(--theme-success-500);
+      }
+    }
+  }
+}

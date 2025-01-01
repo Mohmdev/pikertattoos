@@ -1,25 +1,39 @@
 import deepMerge from '@utils/deepMerge'
 
+import type { ButtonProps } from '@ui/button'
 import type { Field, GroupField } from 'payload'
 
 import { LINKABLE_COLLECTIONS } from '@constants/featureFlags'
 
-export const appearanceOptions = {
+type ButtonVariants = NonNullable<ButtonProps['variant']>
+export type LinkAppearances = 'default' | 'outline' | ButtonVariants
+
+export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
   default: {
     label: 'Default',
     value: 'default'
   },
-  primary: {
-    label: 'Primary Button',
-    value: 'primary'
+  outline: {
+    label: 'Outline',
+    value: 'outline'
   },
   secondary: {
-    label: 'Secondary Button',
+    label: 'Secondary',
     value: 'secondary'
+  },
+  destructive: {
+    label: 'Destructive',
+    value: 'destructive'
+  },
+  ghost: {
+    label: 'Ghost',
+    value: 'ghost'
+  },
+  link: {
+    label: 'Link',
+    value: 'link'
   }
 }
-
-export type LinkAppearances = 'default' | 'primary' | 'secondary'
 
 type LinkType = (options?: {
   appearances?: LinkAppearances[] | false
@@ -98,6 +112,14 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
   ]
 
   if (!disableLabel) {
+    linkTypes.map((linkType) => ({
+      ...linkType,
+      admin: {
+        ...linkType.admin,
+        width: '50%'
+      }
+    }))
+
     linkResult.fields.push({
       type: 'row',
       fields: [
@@ -110,36 +132,15 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
           },
           label: 'Label',
           required: true
-        },
-        {
-          name: 'customId',
-          type: 'text',
-          admin: {
-            width: '25%'
-          }
         }
       ]
     })
   } else {
-    linkResult.fields = [
-      ...linkResult.fields,
-      ...linkTypes,
-      {
-        name: 'customId',
-        type: 'text',
-        admin: {
-          width: '25%'
-        }
-      }
-    ]
+    linkResult.fields = [...linkResult.fields, ...linkTypes]
   }
 
   if (appearances !== false) {
-    let appearanceOptionsToUse = [
-      appearanceOptions.default,
-      appearanceOptions.primary,
-      appearanceOptions.secondary
-    ]
+    let appearanceOptionsToUse = Object.values(appearanceOptions)
 
     if (appearances) {
       appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])

@@ -1,5 +1,7 @@
 import { blogEditor } from '@services/editor/blogEditor'
+import { authorsField } from '@fields/shared/authorsField'
 import { categoriesField } from '@fields/shared/categoriesField'
+import { noindexField } from '@fields/shared/noindexField'
 import { publishedAtField } from '@fields/shared/publishedAtField'
 import { relatedPostsField } from '@fields/shared/relatedPostsField'
 import { seoTab } from '@fields/shared/seoTab'
@@ -81,9 +83,9 @@ export const Posts: CollectionConfig<'posts'> = {
         seoTab
       ]
     },
-    // TODO: Investigate what these 2 fields do.
+    noindexField,
     publishedAtField,
-    // populatedAuthorsField,
+    authorsField,
     ...slugField()
   ],
   hooks: {

@@ -22,8 +22,13 @@
 // import { Statement } from '@blocks/Statement/config'
 // import { Steps } from '@blocks/Steps/config'
 // import { StickyHighlights } from '@blocks/StickyHighlights/config'
+import { BannerBlock } from '@blocks/BannerBlock/config'
+import { CallToActionBlock } from '@blocks/CallToActionBlock/config'
+import { MediaBlock } from '@blocks/MediaBlock/config'
+import { SpacerBlock } from '@blocks/SpacerBlock/config'
+import { UploadBlock } from '@blocks/UploadBlock/config'
 import { fullTitle } from '@fields/fullTitle/config'
-import { hero } from '@fields/hero/config'
+import { heroFields } from '@fields/hero/config'
 import { authorsField } from '@fields/shared/authorsField'
 import { noindexField } from '@fields/shared/noindexField'
 import { publishedAtField } from '@fields/shared/publishedAtField'
@@ -81,70 +86,47 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
-          fields: [hero],
-          label: 'Hero'
+          fields: [
+            heroFields,
+            {
+              name: 'layout',
+              type: 'blocks',
+              blocks: [
+                CallToActionBlock,
+                MediaBlock,
+                BannerBlock,
+                SpacerBlock,
+                UploadBlock
+                // ...(ENABLED_PAGE_BLOCKS.Callout ? [Callout] : []),
+                // ...(ENABLED_PAGE_BLOCKS.CallToAction ? [CallToAction] : []),
+                // ...(ENABLED_PAGE_BLOCKS.CardGrid ? [CardGrid] : []),
+                // ...(ENABLED_PAGE_BLOCKS.PortfolioCards ? [PortfolioCards] : []),
+                // ...(ENABLED_PAGE_BLOCKS.PortfolioHighlight ? [PortfolioHighlight] : []),
+                // ...(ENABLED_PAGE_BLOCKS.PortfolioParallax ? [PortfolioParallax] : []),
+                // ...(ENABLED_PAGE_BLOCKS.CodeFeature ? [CodeFeature] : []),
+                // ...(ENABLED_PAGE_BLOCKS.Content ? [Content] : []),
+                // ...(ENABLED_PAGE_BLOCKS.ContentGrid ? [ContentGrid] : []),
+                // ...(ENABLED_PAGE_BLOCKS.FormBlock ? [FormBlock] : []),
+                // ...(ENABLED_PAGE_BLOCKS.HoverCards ? [HoverCards] : []),
+                // ...(ENABLED_PAGE_BLOCKS.HoverHighlights ? [HoverHighlights] : []),
+                // ...(ENABLED_PAGE_BLOCKS.LinkGrid ? [LinkGrid] : []),
+                // ...(ENABLED_PAGE_BLOCKS.LogoGrid ? [LogoGrid] : []),
+                // ...(ENABLED_PAGE_BLOCKS.MediaBlock ? [MediaBlock] : []),
+                // ...(ENABLED_PAGE_BLOCKS.MediaContent ? [MediaContent] : []),
+                // ...(ENABLED_PAGE_BLOCKS.MediaContentAccordion ? [MediaContentAccordion] : []),
+                // ...(ENABLED_PAGE_BLOCKS.PricingBlock ? [PricingBlock] : []),
+                // ...(ENABLED_PAGE_BLOCKS.ReusableContent ? [ReusableContent] : []),
+                // ...(ENABLED_PAGE_BLOCKS.Slider ? [Slider] : []),
+                // ...(ENABLED_PAGE_BLOCKS.Statement ? [Statement] : []),
+                // ...(ENABLED_PAGE_BLOCKS.Steps ? [Steps] : []),
+                // ...(ENABLED_PAGE_BLOCKS.StickyHighlights ? [StickyHighlights] : []),
+                // ...(ENABLED_PAGE_BLOCKS.ExampleTabs ? [ExampleTabs] : [])
+              ],
+              required: true
+            }
+          ],
+          label: 'Content'
         },
-        // {
-        //   fields: [
-        //     {
-        //       name: 'layout',
-        //       type: 'blocks',
-        //       blocks: [
-        //         ...(ENABLED_PAGE_BLOCKS.Callout ? [Callout] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.CallToAction ? [CallToAction] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.CardGrid ? [CardGrid] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.PortfolioCards ? [PortfolioCards] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.PortfolioHighlight ? [PortfolioHighlight] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.PortfolioParallax ? [PortfolioParallax] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.CodeFeature ? [CodeFeature] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.Content ? [Content] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.ContentGrid ? [ContentGrid] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.FormBlock ? [FormBlock] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.HoverCards ? [HoverCards] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.HoverHighlights ? [HoverHighlights] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.LinkGrid ? [LinkGrid] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.LogoGrid ? [LogoGrid] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.MediaBlock ? [MediaBlock] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.MediaContent ? [MediaContent] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.MediaContentAccordion ? [MediaContentAccordion] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.PricingBlock ? [PricingBlock] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.ReusableContent ? [ReusableContent] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.Slider ? [Slider] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.Statement ? [Statement] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.Steps ? [Steps] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.StickyHighlights ? [StickyHighlights] : []),
-        //         ...(ENABLED_PAGE_BLOCKS.ExampleTabs ? [ExampleTabs] : [])
-        //       ],
-        //       required: true
-        //     }
-        //   ],
-        //   label: 'Content'
-        // }
-        // {
-        //   name: 'meta',
-        //   label: 'SEO',
-        //   fields: [
-        //     OverviewField({
-        //       titlePath: 'meta.title',
-        //       descriptionPath: 'meta.description',
-        //       imagePath: 'meta.image',
-        //     }),
-        //     MetaTitleField({
-        //       hasGenerateFn: true,
-        //     }),
-        //     MetaImageField({
-        //       relationTo: 'media',
-        //     }),
-        //     MetaDescriptionField({}),
-        //     PreviewField({
-        //       // if the `generateUrl` function is configured
-        //       hasGenerateFn: true,
-        //       // field paths to match the target field for data
-        //       titlePath: 'meta.title',
-        //       descriptionPath: 'meta.description',
-        //     }),
-        //   ],
-        // },
         seoTab
       ]
     }

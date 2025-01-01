@@ -1,24 +1,52 @@
 import {
-  // ItalicFeature,
-  // BoldFeature,
-  // LinkFeature,
-  // ParagraphFeature,
-  // UnderlineFeature,
   BlocksFeature,
+  BoldFeature,
+  EXPERIMENTAL_TableFeature,
+  ItalicFeature,
   lexicalEditor,
+  LinkFeature,
+  ParagraphFeature,
+  UnderlineFeature,
   UploadFeature
 } from '@payloadcms/richtext-lexical'
 import link from '@fields/link'
-import { LabelFeature } from '@fields/richText/features/label/server'
-import { LargeBodyFeature } from '@fields/richText/features/largeBody/server'
+import { LabelFeature } from '@fields/richTextField/features/label/server'
+import { LargeBodyFeature } from '@fields/richTextField/features/largeBody/server'
 
 import { Config } from 'payload'
 
-// import { LINKABLE_COLLECTIONS } from '@constants'
+import { LINKABLE_COLLECTIONS } from '@constants/featureFlags'
 
-export const defaultLexical: Config['editor'] = lexicalEditor({
+export const advancedLexical: Config['editor'] = lexicalEditor({
   features: ({ defaultFeatures }) => [
     ...defaultFeatures,
+    EXPERIMENTAL_TableFeature(),
+    ParagraphFeature(),
+    UnderlineFeature(),
+    BoldFeature(),
+    ItalicFeature(),
+    LinkFeature({
+      enabledCollections: LINKABLE_COLLECTIONS,
+      fields: ({ defaultFields }) => {
+        const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
+          if ('name' in field && field.name === 'url') return false
+          return true
+        })
+
+        return [
+          ...defaultFieldsWithoutUrl,
+          {
+            name: 'url',
+            type: 'text',
+            admin: {
+              condition: ({ linkType }) => linkType !== 'internal'
+            },
+            label: ({ t }) => t('fields:enterURL'),
+            required: true
+          }
+        ]
+      }
+    }),
     UploadFeature({
       collections: {
         media: {
@@ -108,82 +136,50 @@ export const defaultLexical: Config['editor'] = lexicalEditor({
             }
           ],
           interfaceName: 'CommandLineBlock'
-        },
-        {
-          slug: 'templateCards',
-          fields: [
-            {
-              name: 'templates',
-              type: 'array',
-              fields: [
-                {
-                  name: 'name',
-                  type: 'text',
-                  required: true
-                },
-                {
-                  name: 'description',
-                  type: 'textarea',
-                  required: true
-                },
-                {
-                  name: 'image',
-                  type: 'text',
-                  required: true
-                },
-                {
-                  name: 'slug',
-                  type: 'text',
-                  required: true
-                },
-                {
-                  name: 'order',
-                  type: 'number',
-                  required: true
-                }
-              ],
-              labels: {
-                plural: 'Templates',
-                singular: 'Template'
-              }
-            }
-          ],
-          interfaceName: 'TemplateCardsBlock'
-        },
-        {
-          slug: 'banner',
-          fields: [
-            {
-              name: 'type',
-              type: 'select',
-              defaultValue: 'default',
-              options: [
-                {
-                  label: 'Default',
-                  value: 'default'
-                },
-                {
-                  label: 'Success',
-                  value: 'success'
-                },
-                {
-                  label: 'Warning',
-                  value: 'warning'
-                },
-                {
-                  label: 'Error',
-                  value: 'error'
-                }
-              ]
-            },
-            {
-              name: 'content',
-              type: 'richText',
-              editor: lexicalEditor()
-            }
-          ],
-          interfaceName: 'BannerBlock'
         }
+        // {
+        //   slug: 'templateCards',
+        //   fields: [
+        //     {
+        //       name: 'templates',
+        //       type: 'array',
+        //       fields: [
+        //         {
+        //           name: 'name',
+        //           type: 'text',
+        //           required: true
+        //         },
+        //         {
+        //           name: 'description',
+        //           type: 'textarea',
+        //           required: true
+        //         },
+        //         {
+        //           name: 'image',
+        //           type: 'text',
+        //           required: true
+        //         },
+        //         {
+        //           name: 'slug',
+        //           type: 'text',
+        //           required: true
+        //         },
+        //         {
+        //           name: 'order',
+        //           type: 'number',
+        //           required: true
+        //         }
+        //       ],
+        //       labels: {
+        //         plural: 'Templates',
+        //         singular: 'Template'
+        //       }
+        //     }
+        //   ],
+        //   interfaceName: 'TemplateCardsBlock'
+        // }
+        // BannerBlock,
+        // CodeBlock,
       ]
     })
   ]

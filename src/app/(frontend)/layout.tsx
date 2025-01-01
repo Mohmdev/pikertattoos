@@ -1,12 +1,13 @@
 import { Plus_Jakarta_Sans } from 'next/font/google'
 
+// We are importing both globals.css and layout.scss in RootLayout
 import '@styles/globals.css'
+import '@scss/app.scss'
 
 import Head from 'next/head'
 import type { Metadata } from 'next'
 
 import { Providers } from '@providers'
-
 import { cn } from '@utils/cn'
 
 // import { mergeOpenGraph } from '@seo/mergeOpenGraph'

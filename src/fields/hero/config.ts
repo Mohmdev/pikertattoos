@@ -1,10 +1,10 @@
-import { themeField } from '@fields/blockFields'
+// import { themeField } from '@fields/blockFields'
 import link from '@fields/link'
 import linkGroup from '@fields/linkGroup'
 
 import type { Field } from 'payload'
 
-export const hero: Field = {
+export const heroFields: Field = {
   name: 'hero',
   type: 'group',
   fields: [
@@ -15,8 +15,24 @@ export const hero: Field = {
       label: 'Type',
       options: [
         {
+          label: 'None',
+          value: 'none'
+        },
+        {
           label: 'Default',
           value: 'default'
+        },
+        {
+          label: 'Home 1.0',
+          value: 'homeOne'
+        },
+        {
+          label: 'Home 2.0',
+          value: 'homeTwo'
+        },
+        {
+          label: 'Home 3.0',
+          value: 'homeThree'
         },
         {
           label: 'Content and Media',
@@ -27,28 +43,28 @@ export const hero: Field = {
           value: 'centeredContent'
         },
         {
-          label: 'Form',
-          value: 'form'
-        },
-        {
-          label: 'Home',
-          value: 'home'
-        },
-        {
-          label: 'Home New',
-          value: 'homeNew'
-        },
-        {
-          label: 'Livestream',
-          value: 'livestream'
-        },
-        {
           label: 'Gradient',
           value: 'gradient'
         },
+        // {
+        //   label: 'Livestream',
+        //   value: 'livestream'
+        // },
+        // {
+        //   label: 'Form',
+        //   value: 'form'
+        // },
         {
-          label: '3.0',
-          value: 'three'
+          label: 'High Impact',
+          value: 'highImpact'
+        },
+        {
+          label: 'Medium Impact',
+          value: 'mediumImpact'
+        },
+        {
+          label: 'Low Impact',
+          value: 'lowImpact'
         }
       ],
       required: true
@@ -60,7 +76,7 @@ export const hero: Field = {
         condition: (_, { type } = {}) => type === 'gradient'
       }
     },
-    themeField(100),
+    // themeField(100),
     {
       type: 'collapsible',
       fields: [
@@ -89,7 +105,7 @@ export const hero: Field = {
       name: 'enableAnnouncement',
       type: 'checkbox',
       admin: {
-        condition: (_, { type }) => ['home', 'homeNew'].includes(type)
+        condition: (_, { type }) => ['homeOne', 'homeTwo'].includes(type)
       },
       label: 'Enable Announcement?'
     },
@@ -114,21 +130,16 @@ export const hero: Field = {
       type: 'richText',
       admin: {
         condition: (_, { type } = {}) =>
-          type !== 'livestream' &&
-          type !== 'centeredContent' &&
-          type !== 'three' &&
-          type !== 'homeNew'
+          // type !== 'livestream' &&
+          type !== 'centeredContent' && type !== 'homeThree' && type !== 'homeTwo'
       }
     },
     linkGroup({
-      additions: {
-        npmCta: true
-      },
       appearances: false,
       overrides: {
         name: 'primaryButtons',
         admin: {
-          condition: (_, { type }) => ['home', 'homeNew'].includes(type)
+          condition: (_, { type }) => ['homeOne', 'homeTwo'].includes(type)
         },
         label: 'Primary Buttons'
       }
@@ -137,14 +148,14 @@ export const hero: Field = {
       name: 'secondaryHeading',
       type: 'richText',
       admin: {
-        condition: (_, { type }) => ['home'].includes(type)
+        condition: (_, { type }) => ['homeOne'].includes(type)
       }
     },
     {
       name: 'secondaryDescription',
       type: 'richText',
       admin: {
-        condition: (_, { type }) => type === 'home'
+        condition: (_, { type }) => type === 'homeOne'
       }
     },
     linkGroup({
@@ -159,7 +170,7 @@ export const hero: Field = {
       name: 'threeCTA',
       type: 'radio',
       admin: {
-        condition: (_, { type }) => type === 'three'
+        condition: (_, { type }) => type === 'homeThree'
       },
       label: 'CTA?',
       options: [
@@ -178,7 +189,7 @@ export const hero: Field = {
       name: 'newsletter',
       type: 'group',
       admin: {
-        condition: (_, { type, threeCTA }) => type === 'three' && threeCTA === 'newsletter',
+        condition: (_, { type, threeCTA }) => type === 'homeThree' && threeCTA === 'newsletter',
         hideGutter: true
       },
       fields: [
@@ -200,7 +211,7 @@ export const hero: Field = {
       name: 'buttons',
       type: 'blocks',
       admin: {
-        condition: (_, { type, threeCTA }) => type === 'three' && threeCTA === 'buttons'
+        condition: (_, { type, threeCTA }) => type === 'homeThree' && threeCTA === 'buttons'
       },
       blocks: [
         {
@@ -236,7 +247,7 @@ export const hero: Field = {
       overrides: {
         name: 'secondaryButtons',
         admin: {
-          condition: (_, { type }) => ['home'].includes(type)
+          condition: (_, { type }) => ['homeOne'].includes(type)
         },
         label: 'Secondary Buttons'
       }
@@ -245,7 +256,7 @@ export const hero: Field = {
       name: 'images',
       type: 'array',
       admin: {
-        condition: (_, { type } = {}) => ['gradient', 'homeNew', 'three'].includes(type)
+        condition: (_, { type } = {}) => ['gradient', 'homeTwo', 'homeThree'].includes(type)
       },
       fields: [
         {
@@ -270,7 +281,7 @@ export const hero: Field = {
       type: 'upload',
       admin: {
         condition: (_, { type, enableMedia } = {}) =>
-          ['contentMedia', 'home'].includes(type) || (enableMedia && type === 'centeredContent')
+          ['contentMedia', 'homeOne'].includes(type) || (enableMedia && type === 'centeredContent')
       },
       relationTo: 'media',
       required: true
@@ -279,7 +290,7 @@ export const hero: Field = {
       name: 'secondaryMedia',
       type: 'upload',
       admin: {
-        condition: (_, { type }) => type === 'home'
+        condition: (_, { type }) => type === 'homeOne'
       },
       relationTo: 'media',
       required: true
@@ -288,7 +299,7 @@ export const hero: Field = {
       name: 'featureVideo',
       type: 'upload',
       admin: {
-        condition: (_, { type }) => ['home'].includes(type)
+        condition: (_, { type }) => ['homeOne'].includes(type)
       },
       relationTo: 'media',
       required: true
@@ -305,7 +316,7 @@ export const hero: Field = {
       name: 'logos',
       type: 'array',
       admin: {
-        condition: (_, { type }) => type === 'home'
+        condition: (_, { type }) => type === 'homeOne'
       },
       fields: [
         {
@@ -321,14 +332,14 @@ export const hero: Field = {
       name: 'logoShowcaseLabel',
       type: 'richText',
       admin: {
-        condition: (_, { type }) => type === 'homeNew'
+        condition: (_, { type }) => type === 'homeTwo'
       }
     },
     {
       name: 'logoShowcase',
       type: 'upload',
       admin: {
-        condition: (_, { type }) => type === 'homeNew'
+        condition: (_, { type }) => type === 'homeTwo'
       },
       hasMany: true,
       minRows: 7,
