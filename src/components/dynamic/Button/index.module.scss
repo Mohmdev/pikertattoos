@@ -63,15 +63,15 @@ $curve: cubic-bezier(0.165, 0.84, 0.44, 1);
   }
 }
 
-:global([data-theme='light']) {
-  .appearance {
-    &--primary {
-      &:focus-visible {
-        border-color: var(--theme-elevation-950);
-      }
-    }
-  }
-}
+// :global([data-theme='light']) {
+//   .appearance {
+//     &--primary {
+//       &:focus-visible {
+//         border-color: var(--theme-elevation-950);
+//       }
+//     }
+//   }
+// }
 
 .appearance {
   &--default {
@@ -380,16 +380,16 @@ $curve: cubic-bezier(0.165, 0.84, 0.44, 1);
   transform: translate3d(0, 0, 0);
 }
 
-.appearance {
-  @include data-theme-selector('light') {
-    &--default {
-      border-color: var(--grid-line-light);
-    }
-  }
+// .appearance {
+//   @include data-theme-selector('light') {
+//     &--default {
+//       border-color: var(--grid-line-light);
+//     }
+//   }
 
-  @include data-theme-selector('dark') {
-    &--default {
-      border-color: var(--grid-line-dark);
-    }
-  }
-}
+//   @include data-theme-selector('dark') {
+//     &--default {
+//       border-color: var(--grid-line-dark);
+//     }
+//   }
+// }
