@@ -3,9 +3,9 @@ import React from 'react'
 import { Toaster } from 'sonner'
 
 import { NextThemeProvider } from './NextTheme'
-// import { HeaderThemeProvider } from './HeaderTheme'
 import { ReactQueryProvider } from './ReactQuery'
 
+// import { HeaderThemeProvider } from './HeaderTheme'
 // import { ScrollbarProvider } from './Scrollbar'
 // import { ThemeProvider } from './Theme'
 

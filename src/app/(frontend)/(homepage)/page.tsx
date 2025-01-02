@@ -33,7 +33,7 @@ export default function StudioPage() {
             }}
           >
             <GradientText
-              className="text-[35px] font-semibold leading-none md:text-[50px]"
+              className="text-[35px] font-semibold leading-none opacity-50 md:text-[50px]"
               element="H2"
             >
               Bia Bokhoresh
