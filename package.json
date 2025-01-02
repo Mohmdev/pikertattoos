@@ -1,6 +1,6 @@
 {
   "name": "pikertattoos",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -36,6 +36,7 @@
     "@neondatabase/serverless": "^0.10.4",
     "@payloadcms/db-vercel-postgres": "latest",
     "@payloadcms/email-resend": "latest",
+    "@payloadcms/live-preview-react": "^3.12.0",
     "@payloadcms/next": "latest",
     "@payloadcms/plugin-form-builder": "latest",
     "@payloadcms/plugin-nested-docs": "latest",

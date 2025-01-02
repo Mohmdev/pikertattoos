@@ -1,16 +1,20 @@
-@use './github.scss' as *;
-@use './grid.scss' as *;
 @use './vars.scss' as *;
 @use './queries.scss' as *;
-@use './type.scss' as *;
 @use './colors.scss';
-@use './docsearch.scss';
 @use './theme.scss';
+@use './grid.scss' as *;
+@use './type.scss' as *;
 @use './toasts.scss';
+@use './adapter.scss';
 
 :root {
-  font-size: 20px;
+  --font-body-size: 16px;
+  font-size: 18px;
   --base: 20px;
+  --gutter-h: 1.5rem;
+  // --gutter-h: calc(50vw - 40rem);
+  --block-spacing: 2.5rem;
+
   --breakpoint-xs-width: $breakpoint-xs-width;
   --breakpoint-s-width: $breakpoint-s-width;
   --breakpoint-m-width: $breakpoint-m-width;
@@ -23,13 +27,11 @@
 
   --breakpoint-l-height: $breakpoint-l-height;
 
-  --scrollbar-width: 17px;
+  --scrollbar-width: 6px;
   --page-padding-top: var(--header-height);
   --sticky-sidebar-top: calc(var(--header-height) + 1.25rem);
   --header-height: 90px;
   --top-bar-height: 46px;
-
-  --font-body-size: 18px;
 
   --z-popup: 10;
   --z-status: 30;
@@ -41,8 +43,6 @@
   --text-dark: rgba(255, 255, 255, 0.5);
   --text-light: rgba(0, 0, 0, 0.5);
 
-  --gutter-h: calc(50vw - 40rem);
-  --block-spacing: 7rem;
   --new-block-spacing: 8rem;
   --default-border-width: 2px;
 
@@ -99,19 +99,19 @@ html {
     font-family: var(--font-body);
     background: var(--theme-bg);
     -webkit-font-smoothing: antialiased;
-    opacity: 0;
+    // opacity: 0;
     scroll-behavior: smooth;
   }
 
-  &[data-theme='dark'],
-  &[data-theme='light'] {
-    opacity: initial;
-  }
+  // &[data-theme='dark'],
+  // &[data-theme='light'] {
+  //   opacity: initial;
+  // }
 
-  &[data-theme='dark'] {
-    background: var(--color-base-1000);
-    color-scheme: dark;
-  }
+  // &[data-theme='dark'] {
+  //   background: var(--color-base-1000);
+  //   color-scheme: dark;
+  // }
 }
 
 body {
@@ -244,16 +244,16 @@ code {
     padding: 2px 4px;
   }
 
-  @include data-theme-selector('light') {
-    background: var(--theme-elevation-50);
-    border: 1px solid var(--theme-elevation-200);
-    box-shadow: 0px 1px 2px -1px var(--theme-elevation-250);
-  }
+  // @include data-theme-selector('light') {
+  //   background: var(--theme-elevation-50);
+  //   border: 1px solid var(--theme-elevation-200);
+  //   box-shadow: 0px 1px 2px -1px var(--theme-elevation-250);
+  // }
 
-  @include data-theme-selector('dark') {
-    background: var(--theme-elevation-150);
-    border: 1px solid var(--theme-elevation-200);
-  }
+  // @include data-theme-selector('dark') {
+  //   background: var(--theme-elevation-150);
+  //   border: 1px solid var(--theme-elevation-200);
+  // }
 }
 
 hr {
@@ -302,16 +302,16 @@ dialog {
 }
 
 .background-scanline {
-  background-image: url('/images/scanline-dark.png');
+  background-image: url('/graphics/scanline-dark.png');
   background-repeat: repeat;
   opacity: 0.08;
   transition:
     transform 0.3s ease-in-out,
     opacity 0.3s ease-in-out;
 
-  [data-theme='dark'] & {
-    background-image: url('/images/scanline-light.png');
-  }
+  // [data-theme='dark'] & {
+  //   background-image: url('/graphics/scanline-light.png');
+  // }
 }
 
 .visually-hidden {

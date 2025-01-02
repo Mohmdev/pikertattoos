@@ -34,6 +34,7 @@
       "@providers/*": ["src/providers/*"],
       "@forms/*": ["src/forms/*"],
       "@blocks/*": ["src/blocks/*"],
+      "@heros/*": ["src/heros/*"],
       "@fields/*": ["src/fields/*"],
       "@ui/*": ["src/components/_ui/*"],
       "@components/*": ["src/components/*"],

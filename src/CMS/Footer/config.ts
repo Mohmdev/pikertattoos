@@ -49,5 +49,12 @@ export const Footer: GlobalConfig = {
   ],
   hooks: {
     afterChange: [revalidateFooter]
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100
+      }
+    }
   }
 }

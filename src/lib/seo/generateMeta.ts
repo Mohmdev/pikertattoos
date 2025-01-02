@@ -1,24 +1,34 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import type { Metadata } from 'next'
 
 import { getServerSideURL } from '@utils/getURL'
 
-import type { Page, Post } from '@payload-types'
+import type { GlobalSetting, Page, Post } from '@payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 
-import { getGlobalSettings } from '@data/globals/cachedSiteMeta'
+import { getCachedGlobals } from '@data/getGlobals'
 
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post>
 }): Promise<Metadata> => {
   const { doc } = args || {}
 
-  const siteName = (await getGlobalSettings.siteName()) || 'Nexweb'
-  const siteDescription =
-    (await getGlobalSettings.siteDescription()) || 'Nexweb Content Management Systems'
+  // const globaldata: GlobalSetting = await getCachedGlobal('global-settings', 1)()
+  const globaldata: GlobalSetting = await getCachedGlobals('global-settings', {
+    depth: 1,
+    select: {
+      branding: { favicon: true },
+      siteIdentity: {
+        siteName: true,
+        siteDescription: true
+      }
+    }
+  })()
+
+  const { siteName: cachedSiteName, siteDescription: cachedSiteDescription } =
+    globaldata.siteIdentity || {}
+  const siteName = cachedSiteName || 'Nexweb'
+  const siteDescription = cachedSiteDescription || 'Nexweb Content Management Systems'
 
   const ogImage =
     typeof doc?.meta?.image === 'object' &&

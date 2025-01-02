@@ -14,7 +14,7 @@ export const GettingStarted: React.FC = () => {
       </Banner>
       Here&apos;s what to do next:
       <div className={classes['getting-started__instructions']}>
-        <li>
+        <ul className={classes['getting-started__instructions']}>
           {'Modify your '}
           <a
             href="https://payloadcms.com/docs/beta/configuration/collections"

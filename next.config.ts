@@ -32,6 +32,9 @@ const nextConfig: NextConfig = {
         }
       })
     ]
+  },
+  sassOptions: {
+    silenceDeprecations: ['legacy-js-api', 'import'] // https://github.com/vercel/next.js/issues/71638
   }
 }
 
