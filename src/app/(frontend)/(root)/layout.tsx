@@ -1,10 +1,10 @@
 import { Navbar } from '@components/layout/navbar'
 
-type LandingLayoutProps = {
+type GlobalLayoutProps = {
   children: React.ReactNode
 }
 
-const LandingLayout = ({ children }: LandingLayoutProps) => {
+export default function GlobalLayout({ children }: GlobalLayoutProps) {
   return (
     <div className="box-border flex min-h-screen w-screen flex-col pb-10">
       <Navbar />
@@ -12,5 +12,3 @@ const LandingLayout = ({ children }: LandingLayoutProps) => {
     </div>
   )
 }
-
-export default LandingLayout

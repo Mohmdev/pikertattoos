@@ -4,10 +4,8 @@
 @use './theme.scss';
 @use './grid.scss' as *;
 @use './type.scss' as *;
+@use './toasts.scss';
 @use './adapter.scss';
-// @use './docsearch.scss';
-// @use './toasts.scss';
-// @use './github.scss' as *;
 
 :root {
   --font-body-size: 16px;
@@ -101,19 +99,19 @@ html {
     font-family: var(--font-body);
     background: var(--theme-bg);
     -webkit-font-smoothing: antialiased;
-    opacity: 0;
+    // opacity: 0;
     scroll-behavior: smooth;
   }
 
-  &[data-theme='dark'],
-  &[data-theme='light'] {
-    opacity: initial;
-  }
+  // &[data-theme='dark'],
+  // &[data-theme='light'] {
+  //   opacity: initial;
+  // }
 
-  &[data-theme='dark'] {
-    background: var(--color-base-1000);
-    color-scheme: dark;
-  }
+  // &[data-theme='dark'] {
+  //   background: var(--color-base-1000);
+  //   color-scheme: dark;
+  // }
 }
 
 body {
@@ -246,16 +244,16 @@ code {
     padding: 2px 4px;
   }
 
-  @include data-theme-selector('light') {
-    background: var(--theme-elevation-50);
-    border: 1px solid var(--theme-elevation-200);
-    box-shadow: 0px 1px 2px -1px var(--theme-elevation-250);
-  }
+  // @include data-theme-selector('light') {
+  //   background: var(--theme-elevation-50);
+  //   border: 1px solid var(--theme-elevation-200);
+  //   box-shadow: 0px 1px 2px -1px var(--theme-elevation-250);
+  // }
 
-  @include data-theme-selector('dark') {
-    background: var(--theme-elevation-150);
-    border: 1px solid var(--theme-elevation-200);
-  }
+  // @include data-theme-selector('dark') {
+  //   background: var(--theme-elevation-150);
+  //   border: 1px solid var(--theme-elevation-200);
+  // }
 }
 
 hr {
@@ -304,16 +302,16 @@ dialog {
 }
 
 .background-scanline {
-  background-image: url('/images/scanline-dark.png');
+  background-image: url('/graphics/scanline-dark.png');
   background-repeat: repeat;
   opacity: 0.08;
   transition:
     transform 0.3s ease-in-out,
     opacity 0.3s ease-in-out;
 
-  [data-theme='dark'] & {
-    background-image: url('/images/scanline-light.png');
-  }
+  // [data-theme='dark'] & {
+  //   background-image: url('/graphics/scanline-light.png');
+  // }
 }
 
 .visually-hidden {

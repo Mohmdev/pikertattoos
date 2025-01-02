@@ -16,30 +16,6 @@ import { PayloadRedirects } from '@components/dynamic/PayloadRedirects'
 
 import { fetchCachedPageBySlug } from '@data/pages'
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true
-    }
-  })
-
-  const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => {
-      return { slug }
-    })
-
-  return params
-}
-
 type Args = {
   params: Promise<{
     slug?: string
@@ -74,6 +50,30 @@ export default async function Page({ params: paramsPromise }: Args) {
       <RenderBlocks blocks={page.layout} />
     </article>
   )
+}
+
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise })
+  const pages = await payload.find({
+    collection: 'pages',
+    draft: false,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true
+    }
+  })
+
+  const params = pages.docs
+    ?.filter((doc) => {
+      return doc.slug !== 'home'
+    })
+    .map(({ slug }) => {
+      return { slug }
+    })
+
+  return params
 }
 
 export async function generateMetadata({ params: paramsPromise }): Promise<Metadata> {

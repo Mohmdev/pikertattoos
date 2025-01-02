@@ -13,6 +13,7 @@
   right: 0;
   bottom: 0;
   left: 0;
+  background-color: var(--color-base-1000);
   max-height: 100vh;
   pointer-events: none;
 
@@ -32,7 +33,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-image: url('./crt.gif');
+    background-image: url('/graphics/crt.gif');
     background-repeat: repeat;
     background-size: 256px;
     background-position: center center;
@@ -47,7 +48,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    // TODO: Add light mode support
-    box-shadow: inset 0 100px 120px 100px hsl(224 71.4% 4.1%);
+    box-shadow: inset 0 100px 120px 100px var(--color-base-1000);
   }
 }

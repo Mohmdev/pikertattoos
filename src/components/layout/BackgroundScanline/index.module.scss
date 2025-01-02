@@ -12,7 +12,7 @@
     position: absolute;
     width: 1rem;
     height: auto;
-    // color: var(--theme-elevation-1000);
+    color: var(--theme-elevation-1000);
     opacity: 0.5;
     z-index: 1;
   }
@@ -44,18 +44,18 @@
   left: 1px;
   width: calc(100% - 2px);
   height: calc(100% - 2px);
-  background-image: url('./scanline-dark.png');
+  background-image: url('/graphics/scanline-dark.png');
   background-repeat: repeat;
   opacity: 0.08;
   box-sizing: border-box;
 
   // @include data-theme-selector('light') {
-  //   background-image: url('./scanline-dark.png');
+  //   background-image: url('/graphics/scanline-dark.png');
   //   opacity: 0.08;
   // }
 
   // @include data-theme-selector('dark') {
-  //   background-image: url('./scanline-light.png');
+  //   background-image: url('/graphics/scanline-light.png');
   //   opacity: 0.1;
   // }
 }
@@ -73,9 +73,6 @@
   // }
 }
 
-.crosshair {
-  color: var(--grid-line-light);
-}
 // :global([data-theme='light']) {
 //   .crosshair {
 //     color: var(--theme-elevation-400);
