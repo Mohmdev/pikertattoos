@@ -8,7 +8,7 @@ const defaultOpenGraph: Metadata['openGraph'] = {
     'Nexweb is a modern web development platform that lets you build, deploy, and scale websites and web applications with ease.',
   images: [
     {
-      url: `${getServerSideURL()}/website-template-OG.webp`
+      url: `${getServerSideURL()}/assets/website-template-OG.webp`
     }
   ],
   siteName: 'Nexweb - Modern Web Development Platform',

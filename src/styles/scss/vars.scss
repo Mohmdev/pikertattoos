@@ -122,6 +122,8 @@ $breakpoint-l-height: 1000px;
     line-height: 1rem;
     padding: 0.5rem 0.75rem;
     -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   &::-webkit-input-placeholder {
@@ -246,28 +248,28 @@ $breakpoint-l-height: 1000px;
   * @param {string} 'light' | 'dark' - The theme to apply the styles for.
   * @param {boolean} - Apply only the complex exclusive :not selector without the generic data-theme one.
   */
-@mixin data-theme-selector($theme, $exclusive: false) {
-  @if $exclusive == true {
-    @if $theme == 'light' {
-      [data-theme='light']:not(:has([data-theme='dark'])) & {
-        @content;
-      }
-    } @else if $theme == 'dark' {
-      [data-theme='dark']:not(:has([data-theme='light'])) & {
-        @content;
-      }
-    }
-  } @else {
-    @if $theme == 'light' {
-      [data-theme='light'] &,
-      [data-theme='light']:not(:has([data-theme='dark'])) & {
-        @content;
-      }
-    } @else if $theme == 'dark' {
-      [data-theme='dark'] &,
-      [data-theme='dark']:not(:has([data-theme='light'])) & {
-        @content;
-      }
-    }
-  }
-}
+// @mixin data-theme-selector($theme, $exclusive: false) {
+//   @if $exclusive == true {
+//     @if $theme == 'light' {
+//       [data-theme='light']:not(:has([data-theme='dark'])) & {
+//         @content;
+//       }
+//     } @else if $theme == 'dark' {
+//       [data-theme='dark']:not(:has([data-theme='light'])) & {
+//         @content;
+//       }
+//     }
+//   } @else {
+//     @if $theme == 'light' {
+//       [data-theme='light'] &,
+//       [data-theme='light']:not(:has([data-theme='dark'])) & {
+//         @content;
+//       }
+//     } @else if $theme == 'dark' {
+//       [data-theme='dark'] &,
+//       [data-theme='dark']:not(:has([data-theme='light'])) & {
+//         @content;
+//       }
+//     }
+//   }
+// }

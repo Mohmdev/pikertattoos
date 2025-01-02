@@ -2,10 +2,10 @@ import React from 'react'
 
 import { Toaster } from 'sonner'
 
-import { ThemeProvider } from './NextTheme'
-// import { HeaderThemeProvider } from './HeaderTheme'
+import { NextThemeProvider } from './NextTheme'
 import { ReactQueryProvider } from './ReactQuery'
 
+// import { HeaderThemeProvider } from './HeaderTheme'
 // import { ScrollbarProvider } from './Scrollbar'
 // import { ThemeProvider } from './Theme'
 
@@ -13,13 +13,18 @@ export const Providers: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <NextThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      // disableTransitionOnChange
+    >
       <ReactQueryProvider>
         {/* <ScrollbarProvider> */}
         {children}
         {/* </ScrollbarProvider> */}
         <Toaster />
       </ReactQueryProvider>
-    </ThemeProvider>
+    </NextThemeProvider>
   )
 }

@@ -1,0 +1,59 @@
+@use '@lib/fonts/poppins-v22-latin.scss';
+@use 'styles/sidebar.scss';
+@use 'styles/dashboard.scss';
+@use 'styles/misc.scss';
+@use 'styles/views.scss';
+
+[data-theme='light'] {
+  --color-base-50: #f5f5f5;
+  --theme-elevation-0: var(--color-base-0);
+  --theme-elevation-50: var(--color-base-50);
+
+  --space-bg: hsl(0, 0%, 96%);
+  --space-bg-less: hsl(0, 0%, 100%);
+  --deep-blue: hsl(232.12 13% 98%);
+}
+
+[data-theme='dark'] {
+  --space-bg: hsl(224 71.4% 4.1%);
+  --space-bg-less: hsl(224 11% 6%);
+  --deep-blue: hsl(220 14% 8%);
+
+  --theme-elevation-0: var(--color-base-1000);
+  --theme-elevation-50: var(--color-base-950);
+  --theme-elevation-100: var(--color-base-900);
+  --theme-elevation-150: var(--color-base-850);
+}
+
+:root {
+  --bg-default-primary: var(--deep-blue);
+  --bg-default-secondary: var(--space-bg-less);
+  --border-ui: var(--theme-elevation-150);
+  --text-default: var(--theme-elevation-800);
+
+  --theme-bg: var(--bg-default-secondary);
+  --sidebar-bg: var(--bg-default-primary);
+  --secondary-sidebar-bg: var(--bg-default-primary);
+  --dashboard-bg: var(--bg-default-secondary);
+  --dashboard-card-bg: var(--bg-default-primary);
+  --doc-controls-bg: var(--bg-default-primary);
+
+  --theme-input-bg: var(--deep-blue);
+  --theme-text: var(--text-default);
+  --theme-overlay: rgba(5, 5, 5, 0.5);
+  --font-body: 'Poppins', Tahoma, Geneva, sans-serif;
+  // --font-mono: monospace;
+  // --font-serif: 'Merriweather', serif;
+  // --style-radius-s: 4px;
+  // --style-radius-m: 8px;
+  // --style-radius-l: 16px;
+  // --nav-width: 224px;
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+}

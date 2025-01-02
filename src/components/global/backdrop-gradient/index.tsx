@@ -8,8 +8,8 @@ type Props = {
 
 const BackdropGradient = ({ children, className, container }: Props) => {
   return (
-    <div className={cn('relative w-full flex flex-col', container)}>
-      <div className={cn('absolute rounded-[50%] radial--blur mx-10', className)} />
+    <div className={cn('relative flex w-full flex-col', container)}>
+      <div className={cn('radial--blur absolute mx-10 rounded-[50%]', className)} />
       {children}
     </div>
   )

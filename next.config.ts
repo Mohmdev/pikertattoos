@@ -1,16 +1,17 @@
 import type { NextConfig } from 'next'
 
+import { withPayload } from '@payloadcms/next/withPayload'
+
 import redirects from './redirects.cjs'
 
-// const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
-//   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-//   : undefined || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
-/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
-    reactCompiler: true
+    reactCompiler: false
   },
   eslint: {
     ignoreDuringBuilds: true
@@ -20,25 +21,21 @@ const nextConfig: NextConfig = {
   },
   redirects,
   images: {
+    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year,
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'ucarecdn.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos'
-      }
-      // ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
-      //   const url = new URL(item)
+      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
+        const url = new URL(item)
 
-      //   return {
-      //     hostname: url.hostname,
-      //     protocol: url.protocol.replace(':', '')
-      //   }
-      // })
+        return {
+          hostname: url.hostname,
+          protocol: url.protocol.replace(':', '') as 'http' | 'https'
+        }
+      })
     ]
+  },
+  sassOptions: {
+    silenceDeprecations: ['legacy-js-api', 'import'] // https://github.com/vercel/next.js/issues/71638
   }
 }
 
-export default nextConfig
+export default withPayload(nextConfig)

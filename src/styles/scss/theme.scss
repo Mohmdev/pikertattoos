@@ -1,4 +1,4 @@
-[data-theme='light'] {
+:root {
   --theme-success-50: var(--color-success-50);
   --theme-success-100: var(--color-success-100);
   --theme-success-150: var(--color-success-150);
@@ -121,11 +121,7 @@
   --theme-elevation-950: var(--color-base-950);
   --theme-elevation-1000: var(--color-base-1000);
 
-  --theme-bg: var(--theme-elevation-0);
-  --theme-input-bg: #efefef;
-  --theme-text: var(--theme-elevation-1000);
   --theme-text-success: var(--theme-success-650);
-  --theme-border-color: var(--grid-line-light);
 
   --theme-blue-text: var(--color-blue-text-light);
   --theme-blue-bg: var(--color-blue-bg-light);
@@ -139,9 +135,6 @@
   --theme-red-bg: var(--color-red-bg-light);
   --theme-red-border: var(--color-red-border-light);
 
-  color-scheme: light;
-  color: var(--theme-text);
-
   --highlight-success-bg-color: var(--theme-success-400);
   --highlight-success-text-color: var(--theme-success-850);
 
@@ -153,6 +146,9 @@
 
   --highlight-info-bg-color: var(--theme-elevation-100);
   --highlight-info-text-color: var(--theme-elevation-850);
+
+  color-scheme: light;
+  color: var(--theme-text);
 
   h1 a,
   h2 a,
@@ -176,7 +172,7 @@
   }
 }
 
-[data-theme='dark'] {
+.dark {
   --theme-elevation-0: var(--color-base-1000);
   --theme-elevation-50: var(--color-base-950);
   --theme-elevation-100: var(--color-base-900);
@@ -299,14 +295,7 @@
   --theme-purple-900: var(--color-purple-100);
   --theme-purple-950: var(--color-purple-50);
 
-  --theme-bg: var(--theme-elevation-0);
-  --theme-text: var(--theme-elevation-1000);
   --theme-text-success: var(--theme-success-500);
-  --theme-input-bg: #101010;
-  --theme-border-color: var(--grid-line-dark);
-
-  color-scheme: dark;
-  color: var(--theme-text);
 
   --highlight-success-bg-color: var(--theme-success-100);
   --highlight-success-text-color: var(--theme-success-600);
@@ -331,6 +320,9 @@
   --theme-red-text: var(--color-red-text-dark);
   --theme-red-bg: var(--color-red-bg-dark);
   --theme-red-border: var(--color-red-border-dark);
+
+  color-scheme: dark;
+  color: var(--theme-text);
 
   h1 a,
   h2 a,

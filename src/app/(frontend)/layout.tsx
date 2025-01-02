@@ -1,24 +1,22 @@
 import { Plus_Jakarta_Sans } from 'next/font/google'
-
-import '@styles/globals.css'
-
 import Head from 'next/head'
 import type { Metadata } from 'next'
 
 import { Providers } from '@providers'
-
+import { mergeOpenGraph } from '@seo/mergeOpenGraph'
 import { cn } from '@utils/cn'
+import { getServerSideURL } from '@utils/getURL'
 
-// import { mergeOpenGraph } from '@seo/mergeOpenGraph'
-// import { getServerSideURL } from '@utils/getURL'
+import '@styles/globals.css'
+import '@styles/scss/app.scss'
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
-export default function RootLayout({
-  children
-}: Readonly<{
+type RootLayoutProps = {
   children: React.ReactNode
-}>) {
+}
+
+export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <Head>
@@ -33,8 +31,9 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  // metadataBase: new URL(getServerSideURL()),
-  // openGraph: mergeOpenGraph()
-  title: 'Piker Tattoos',
-  description: 'Tattoo studio'
+  metadataBase: new URL(getServerSideURL()),
+  openGraph: mergeOpenGraph(),
+  title: 'Piker Tattoos Studio',
+  description:
+    'Piker Studio, where artistry meets skin! We transform your ideas, blend them with creativity and precision and we create tattoos that tell your unique story.'
 }

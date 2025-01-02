@@ -43,7 +43,8 @@ const eslingConfig = [
       '**/node_modules',
       '**/temp',
       'playwright.config.ts',
-      'jest.config.js'
+      'jest.config.js',
+      '**/migrations'
     ]
   }
 ]

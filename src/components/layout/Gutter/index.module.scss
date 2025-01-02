@@ -8,9 +8,9 @@
   padding-right: var(--gutter-h);
 }
 
-.gutter.disableMobile {
-  @include mid-break {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
+// .gutter.disableMobile {
+//   @include mid-break {
+//     padding-left: 0;
+//     padding-right: 0;
+//   }
+// }

@@ -24,16 +24,17 @@
     "baseUrl": ".",
     "paths": {
       "react": ["node_modules/@types/react"],
-      "@payload-config": ["src/CMS/payload-config.ts"],
-      "@payload-types": ["src/CMS/payload-types.ts"],
+      "@payload-config": ["src/payload.config.ts"],
+      "@payload-types": ["src/payload-types.ts"],
       "@admin-components/*": ["src/CMS/_components/*"],
       "@CMS/*": ["src/CMS/*"],
       "@access/*": ["src/services/access/*"],
-      "@data/*": ["src/_data/*"],
+      "@data/*": ["src/app/_data/*"],
       "@providers": ["src/providers"],
       "@providers/*": ["src/providers/*"],
       "@forms/*": ["src/forms/*"],
       "@blocks/*": ["src/blocks/*"],
+      "@heros/*": ["src/heros/*"],
       "@fields/*": ["src/fields/*"],
       "@ui/*": ["src/components/_ui/*"],
       "@components/*": ["src/components/*"],
@@ -49,6 +50,15 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    "src/environment.d.ts",
+    ".next/types/**/*.ts",
+    "redirects.cjs",
+    "next.config.ts",
+    "next-sitemap.config.cjs"
+  ],
   "exclude": ["node_modules", ".temp"]
 }

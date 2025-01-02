@@ -1,0 +1,38 @@
+.seedButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  border-radius: 0.375rem;
+
+  min-height: 3rem;
+  font-size: 1rem;
+  width: 100%;
+  font-weight: 500;
+  margin-block: 2rem;
+
+  padding: 0.5rem 1rem;
+  background: var(--theme-elevation-150);
+  color: var(--theme-text);
+  transition: opacity 150ms;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--theme-text);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.8;
+    color: var(--theme-error-500);
+  }
+}
