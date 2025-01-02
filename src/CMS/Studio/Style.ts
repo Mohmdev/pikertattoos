@@ -1,10 +1,9 @@
 import { slugField } from '@fields/shared/slug/config'
-
-import type { CollectionConfig } from 'payload'
-
 import { anyone } from '@access/anyone'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
+
+import type { CollectionConfig } from 'payload'
 
 export const Style: CollectionConfig<'style'> = {
   slug: 'style',
@@ -19,7 +18,8 @@ export const Style: CollectionConfig<'style'> = {
     update: isAdminOrSelf
   },
   admin: {
-    useAsTitle: 'title'
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'tattoos', 'artists', 'createdAt', 'updatedAt']
   },
   fields: [
     {

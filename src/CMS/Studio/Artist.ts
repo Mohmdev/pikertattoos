@@ -1,12 +1,11 @@
 import { basicLexical } from '@services/editor/basicLexical'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
-
-import type { CollectionConfig } from 'payload'
-
 import { anyone } from '@access/anyone'
 import { isAdmin } from '@access/isAdmin'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
+
+import type { CollectionConfig } from 'payload'
 
 export const Artist: CollectionConfig<'artist'> = {
   slug: 'artist',
@@ -21,7 +20,8 @@ export const Artist: CollectionConfig<'artist'> = {
     update: isAdminOrSelf
   },
   admin: {
-    useAsTitle: 'title'
+    useAsTitle: 'title',
+    defaultColumns: ['user', 'title', 'style', 'tattoos', 'createdAt', 'updatedAt']
   },
   fields: [
     {
@@ -65,6 +65,18 @@ export const Artist: CollectionConfig<'artist'> = {
           }
         }
       ]
+    },
+    {
+      name: 'tattoos',
+      type: 'join',
+      collection: 'tattoo',
+      on: 'artist',
+      label: 'Portfolio',
+      required: true,
+      admin: {
+        description:
+          'Associate this artist with a user account to enable them to log in and manage their own content.'
+      }
     },
     tagsField,
     ...slugField()

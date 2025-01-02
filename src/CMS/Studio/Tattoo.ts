@@ -1,15 +1,14 @@
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
+import { anyone } from '@access/anyone'
+import { isAdminOrEditor } from '@access/isAdminOrEditor'
+import { isAdminOrSelf } from '@access/isAdminOrSelf'
 
 import { getLivePreviewUrl } from '@utils/getLivePreviewUrl'
 import { getPreviewUrl } from '@utils/getPreviewUrl'
 
 import type { CollectionConfig } from 'payload'
-
-import { anyone } from '@access/anyone'
-import { isAdminOrEditor } from '@access/isAdminOrEditor'
-import { isAdminOrSelf } from '@access/isAdminOrSelf'
 
 export const Tattoo: CollectionConfig<'tattoo'> = {
   slug: 'tattoo',
@@ -25,6 +24,7 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
   },
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['title', 'area', 'style', 'artist', 'createdAt', 'updatedAt'],
     livePreview: getLivePreviewUrl('pages'),
     preview: getPreviewUrl('pages')
   },

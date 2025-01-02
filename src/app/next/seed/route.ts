@@ -36,7 +36,7 @@ export async function POST(): Promise<Response> {
 
     return Response.json({ success: true })
   } catch (error) {
-    console.error('Error seeding radio data:', error)
-    return new Response('Error seeding radio data.', { status: 500 })
+    console.error('Error seeding studio data:', error)
+    return new Response('Error seeding studio data.', { status: 500 })
   }
 }

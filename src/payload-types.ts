@@ -38,6 +38,9 @@ export interface Config {
       tattoos: 'tattoo';
       artists: 'artist';
     };
+    artist: {
+      tattoos: 'tattoo';
+    };
     tag: {
       tattoos: 'tattoo';
       artists: 'artist';
@@ -336,6 +339,13 @@ export interface Artist {
    * Associate this artist with a user account to enable them to log in and manage their own content.
    */
   user: number | User;
+  /**
+   * Associate this artist with a user account to enable them to log in and manage their own content.
+   */
+  tattoos: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
   tags?: (number | Tag)[] | null;
   slug: string;
   slugLock?: boolean | null;
@@ -1607,6 +1617,7 @@ export interface ArtistSelect<T extends boolean = true> {
   bio?: T;
   style?: T;
   user?: T;
+  tattoos?: T;
   tags?: T;
   slug?: T;
   slugLock?: T;

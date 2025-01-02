@@ -13,7 +13,7 @@ export default function StudioPage() {
           className="text-center text-[40px] font-semibold leading-none md:text-[55px] lg:text-[90px]"
           element="H1"
         >
-          Piker Studio
+          Piker Tattoos
         </GradientText>
         <span className="relative mt-10 flex flex-row items-center justify-center gap-2 pt-2 leading-none text-themeTextGray">
           <Spinner size="sm" className="bg-themeTextGray" />
