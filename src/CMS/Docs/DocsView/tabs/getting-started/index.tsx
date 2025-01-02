@@ -13,8 +13,8 @@ export const GettingStarted: React.FC = () => {
         <h3>Welcome to your dashboard!</h3>
       </Banner>
       Here&apos;s what to do next:
-      <div className={classes['getting-started__instructions']}>
-        <ul className={classes['getting-started__instructions']}>
+      <ul className={classes['getting-started__instructions']}>
+        <li className={classes['getting-started__instructions']}>
           {'Modify your '}
           <a
             href="https://payloadcms.com/docs/beta/configuration/collections"
@@ -31,9 +31,7 @@ export const GettingStarted: React.FC = () => {
           >
             fields
           </a>
-          {
-            ' as needed. If you are new to Payload, we also recommend you check out the '
-          }
+          {' as needed. If you are new to Payload, we also recommend you check out the '}
           <a
             href="https://payloadcms.com/docs/beta/getting-started/what-is-payload"
             rel="noopener noreferrer"
@@ -50,7 +48,7 @@ export const GettingStarted: React.FC = () => {
           </a>
           {'.'}
         </li>
-      </div>
+      </ul>
       {'Tip: '}
       You can{' '}
       <span>
