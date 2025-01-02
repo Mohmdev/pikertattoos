@@ -1,6 +1,8 @@
-import { Spinner } from '@ui/spinner'
+import { cn } from '@utils/cn'
+
 import BackdropGradient from '@components/global/backdrop-gradient'
 import GradientText from '@components/global/gradient-text'
+import { Spinner } from '@ui/spinner'
 
 export default function StudioPage() {
   // const user = await onAuthenticatedUser()
@@ -22,7 +24,10 @@ export default function StudioPage() {
           container="items-center"
         >
           <div
-            className="relative mt-28 flex w-max max-w-full flex-col items-center overflow-x-hidden"
+            className={cn(
+              'mb-36',
+              'relative flex w-max max-w-full flex-col items-center overflow-x-hidden'
+            )}
             style={{
               maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.4) 50%,rgba(0, 0, 0, 0.4) 50%,rgba(0, 0, 0, 0))`
             }}
