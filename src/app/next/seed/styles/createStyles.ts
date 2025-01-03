@@ -1,47 +1,23 @@
 import { Payload } from 'payload'
 
-import stylesJson from './styles.json'
-
-type Style = {
-  title?: string
-  slug: string
-}
-
-const stylesData: Style[] = stylesJson.docs
+import { stylesData } from './stylesData'
 
 export const createStyles = async (payload: Payload): Promise<void> => {
   for (const style of stylesData) {
     try {
-      if (!style.title) {
-        throw new Error(`Style title is required but was not provided`)
-      }
-
-      // Check if style already exists
-      const existingStyle = await payload.find({
+      await payload.create({
         collection: 'style',
-        where: {
-          title: {
-            equals: style.title
-          }
+        data: {
+          _status: 'published',
+          // id: style.id,
+          title: style.title,
+          slug: style.slug
         }
       })
-
-      if (existingStyle.docs.length === 0) {
-        await payload.create({
-          collection: 'style',
-          overrideAccess: true,
-          data: {
-            _status: 'published',
-            title: style.title,
-            slug: style.slug
-          }
-        })
-        payload.logger.info(`Created style "${style.title}"`)
-      } else {
-        payload.logger.info(`Style "${style.title}" already exists, skipping...`)
-      }
+      payload.logger.info(`✓ ${style.title}`)
     } catch (error) {
-      throw new Error(`Failed to create style "${style.title}": ${error}`)
+      payload.logger.error(`✕ ${style.title}`)
+      throw new Error(`${style.title} - ${error}`)
     }
   }
 }

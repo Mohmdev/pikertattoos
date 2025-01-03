@@ -21,6 +21,10 @@ export const Tag: CollectionConfig<'tag'> = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'tattoos', 'artists', 'createdAt', 'updatedAt']
   },
+  defaultPopulate: {
+    title: true,
+    slug: true
+  },
   fields: [
     {
       name: 'title',

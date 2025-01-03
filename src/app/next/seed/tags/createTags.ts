@@ -1,47 +1,23 @@
 import { Payload } from 'payload'
 
-import tagsJson from './tags.json'
-
-type Tag = {
-  title?: string
-  slug: string
-}
-
-const tagsData: Tag[] = tagsJson.docs
+import { tagsData } from './tagsData'
 
 export const createTags = async (payload: Payload): Promise<void> => {
   for (const tag of tagsData) {
     try {
-      if (!tag.title) {
-        throw new Error(`Tag title is required but was not provided`)
-      }
-
-      // Check if tag already exists
-      const existingTag = await payload.find({
+      await payload.create({
         collection: 'tag',
-        where: {
-          title: {
-            equals: tag.title
-          }
+        data: {
+          _status: 'published',
+          // id: tag.id,
+          title: tag.title,
+          slug: tag.slug
         }
       })
-
-      if (existingTag.docs.length === 0) {
-        await payload.create({
-          collection: 'tag',
-          overrideAccess: true,
-          data: {
-            _status: 'published',
-            title: tag.title,
-            slug: tag.slug
-          }
-        })
-        payload.logger.info(`Created tag "${tag.title}"`)
-      } else {
-        payload.logger.info(`Tag "${tag.title}" already exists, skipping...`)
-      }
+      payload.logger.info(`✓ ${tag.title}`)
     } catch (error) {
-      throw new Error(`Failed to create tag "${tag.title}": ${error}`)
+      payload.logger.error(`✕ ${tag.title}`)
+      throw new Error(`${tag.title} - ${error}`)
     }
   }
 }

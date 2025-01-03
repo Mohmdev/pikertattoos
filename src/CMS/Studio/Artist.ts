@@ -23,6 +23,11 @@ export const Artist: CollectionConfig<'artist'> = {
     useAsTitle: 'title',
     defaultColumns: ['user', 'title', 'style', 'tattoos', 'createdAt', 'updatedAt']
   },
+  defaultPopulate: {
+    title: true,
+    slug: true,
+    user: true
+  },
   fields: [
     {
       name: 'title',

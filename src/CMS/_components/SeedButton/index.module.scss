@@ -13,11 +13,12 @@
   margin-block: 2rem;
 
   padding: 0.5rem 1rem;
-  background: var(--theme-elevation-150);
-  color: var(--theme-text);
-  transition: opacity 150ms;
+  // background: var(--color-success-900);
+  background-color: var(--bg-default-primary);
+  color: var(--color-base-150);
+  border: 1px solid var(--border-ui);
+  transition: opacity 250ms;
   text-decoration: none;
-  border: none;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
   &:hover {

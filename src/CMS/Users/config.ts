@@ -1,8 +1,5 @@
 import { generateForgotPasswordEmail } from '@services/email/generateForgotPasswordEmail'
 import { generateVerificationEmail } from '@services/email/generateVerificationEmail'
-
-import type { CollectionConfig } from 'payload'
-
 import { anyone } from '@access/anyone'
 import { hasAdminPanelAccess } from '@access/hasAdminPanelAccess'
 import { isAdminFieldLevel } from '@access/isAdmin'
@@ -10,8 +7,9 @@ import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrEditorOrSelf } from '@access/isAdminOrEditorOrSelf'
 import { isAdminOrSelf, isAdminOrSelfFieldLevel } from '@access/isAdminOrSelf'
 
-import { ensureFirstUserIsAdmin } from './ensureFirstUserIsAdmin'
+import type { CollectionConfig } from 'payload'
 
+import { ensureFirstUserIsAdmin } from './ensureFirstUserIsAdmin'
 import { ROLES_WITH_ADMIN_ACCESS } from '@constants/featureFlags'
 
 export const Users: CollectionConfig<'users'> = {

@@ -21,6 +21,10 @@ export const Area: CollectionConfig<'area'> = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'parent', 'tattoos', 'createdAt', 'updatedAt']
   },
+  defaultPopulate: {
+    title: true,
+    slug: true
+  },
   fields: [
     {
       name: 'title',

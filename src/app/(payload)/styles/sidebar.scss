@@ -38,6 +38,12 @@
 aside {
   background-color: var(--sidebar-bg);
   border-right: solid 1px var(--border-ui);
+  max-height: 100vh;
+  max-height: 100dvh;
+
+  .nav__wrap {
+    margin-bottom: 3rem;
+  }
 }
 
 .nav-group__label {

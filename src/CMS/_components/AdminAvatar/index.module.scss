@@ -10,6 +10,7 @@
   font-weight: 500;
   text-transform: uppercase;
   user-select: none;
+  border: 1px solid var(--border-ui);
 
   &__text {
     text-decoration: none !important;

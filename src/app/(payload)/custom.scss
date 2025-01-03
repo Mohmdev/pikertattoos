@@ -40,10 +40,15 @@
   --dashboard-card-bg: var(--bg-default-primary);
   --doc-controls-bg: var(--bg-default-primary);
 
+  /* ----------------------------------- // ----------------------------------- */
+
+  --font-body: 'Poppins', Tahoma, Geneva, sans-serif;
   --theme-input-bg: var(--deep-blue);
   --theme-text: var(--text-default);
   --theme-overlay: rgba(5, 5, 5, 0.5);
-  --font-body: 'Poppins', Tahoma, Geneva, sans-serif;
+  --theme-border-color: var(--border-ui);
+  --theme-error-500: hsl(-4 95% 47% / 1);
+
   // --font-mono: monospace;
   // --font-serif: 'Merriweather', serif;
   // --style-radius-s: 4px;
@@ -58,4 +63,8 @@ html {
   width: 100vw;
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+input:-internal-autofill-selected {
+  background-color: light-dark(hsla(219, 92%, 95%, 0.83), hsla(220, 29%, 38%, 0.17)) !important;
 }
