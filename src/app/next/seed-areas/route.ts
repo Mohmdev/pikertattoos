@@ -18,10 +18,6 @@ export async function POST(): Promise<Response> {
   }
 
   try {
-    // Create a Payload request object to pass to the Local API for transactions
-    // At this point you should pass in a user, locale, and any other context you need for the Local API
-    // const payloadReq = await createLocalReq({ user }, payload)
-
     await createAreas({ payload })
     await updateAreas({ payload })
 
@@ -34,18 +30,30 @@ export async function POST(): Promise<Response> {
 const createAreas = async ({ payload }): Promise<void> => {
   for (const area of areasData) {
     try {
-      await payload.create({
+      // Check if area already exists
+      const existingArea = await payload.find({
         collection: 'area',
-        data: {
-          _status: 'published',
-          title: area.title,
-          slug: area.slug
+        where: {
+          slug: { equals: area.slug }
         }
       })
-      payload.logger.info(`✓ ${area.title}`)
+
+      if (existingArea.docs.length === 0) {
+        await payload.create({
+          collection: 'area',
+          data: {
+            _status: 'published',
+            title: area.title,
+            slug: area.slug
+          }
+        })
+        payload.logger.info(`✓ Created area "${area.title}"`)
+      } else {
+        payload.logger.info(`Area "${area.title}" already exists, skipping...`)
+      }
     } catch (error) {
-      payload.logger.info(`✕ ${area.title}`)
-      throw new Error(`${area.title} - ${error}`)
+      payload.logger.error(`Error creating area "${area.title}":`, error)
+      throw error
     }
   }
 }
@@ -54,6 +62,17 @@ const updateAreas = async ({ payload }): Promise<void> => {
   for (const area of areasData) {
     try {
       if (area.parent) {
+        // Check if area exists
+        const existingArea = await payload.find({
+          collection: 'area',
+          where: { slug: { equals: area.slug } }
+        })
+
+        if (!existingArea.docs.length) {
+          payload.logger.warn(`Area "${area.title}" not found, skipping parent update...`)
+          continue
+        }
+
         // Find parent area ID
         const existingParent = await payload.find({
           collection: 'area',
@@ -73,15 +92,14 @@ const updateAreas = async ({ payload }): Promise<void> => {
           data: {
             _status: 'published',
             parent: {
-              // slug: area.parent.slug,
               id: parentId
             }
           }
         })
-        payload.logger.info(`✓ Updated parent for ${area.title}`)
+        payload.logger.info(`✓ Updated parent for "${area.title}"`)
       }
     } catch (error) {
-      payload.logger.error(`✕ Failed to update ${area.title} - ${error.message}`)
+      payload.logger.error(`Error updating area "${area.title}":`, error.message)
     }
   }
 }

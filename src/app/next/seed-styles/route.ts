@@ -33,21 +33,32 @@ export async function POST(): Promise<Response> {
 const createStyles = async ({ payload, req }): Promise<void> => {
   for (const style of stylesData) {
     try {
-      await payload.create({
-        req,
+      // Check if style already exists
+      const existingStyle = await payload.find({
         collection: 'style',
-        data: {
-          _status: 'published',
-          // id: style.id,
-          title: style.title,
-          slug: style.slug
-        },
-        overrideLock: true
+        where: {
+          slug: { equals: style.slug }
+        }
       })
-      payload.logger.info(`✓ ${style.title}`)
+
+      if (existingStyle.docs.length === 0) {
+        await payload.create({
+          req,
+          collection: 'style',
+          data: {
+            _status: 'published',
+            title: style.title,
+            slug: style.slug
+          },
+          overrideLock: true
+        })
+        payload.logger.info(`✓ Created style "${style.title}"`)
+      } else {
+        payload.logger.info(`Style "${style.title}" already exists, skipping...`)
+      }
     } catch (error) {
-      payload.logger.error(`✕ ${style.title}`)
-      throw new Error(`${style.title} - ${error}`)
+      payload.logger.error(`Error creating style "${style.title}":`, error)
+      throw error
     }
   }
 }

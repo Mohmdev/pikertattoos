@@ -29,20 +29,31 @@ export async function POST(): Promise<Response> {
 export const createTags = async ({ payload }): Promise<void> => {
   for (const tag of tagsData) {
     try {
-      await payload.create({
-        overrideLock: true,
+      // Check if tag already exists
+      const existingTag = await payload.find({
         collection: 'tag',
-        data: {
-          _status: 'published',
-          // id: tag.id,
-          title: tag.title,
-          slug: tag.slug
+        where: {
+          slug: { equals: tag.slug }
         }
       })
-      payload.logger.info(`✓ ${tag.title}`)
+
+      if (existingTag.docs.length === 0) {
+        await payload.create({
+          overrideLock: true,
+          collection: 'tag',
+          data: {
+            _status: 'published',
+            title: tag.title,
+            slug: tag.slug
+          }
+        })
+        payload.logger.info(`✓ Created tag "${tag.title}"`)
+      } else {
+        payload.logger.info(`Tag "${tag.title}" already exists, skipping...`)
+      }
     } catch (error) {
-      payload.logger.error(`✕ ${tag.title}`)
-      throw new Error(`${tag.title} - ${error}`)
+      payload.logger.error(`Error creating tag "${tag.title}":`, error)
+      throw error
     }
   }
 }

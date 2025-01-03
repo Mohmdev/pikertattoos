@@ -33,17 +33,30 @@ export async function POST(): Promise<Response> {
 const createTattoos = async ({ payload }): Promise<void> => {
   for (const tattoo of tattoosData) {
     try {
-      await payload.create({
+      // Check if tattoo already exists
+      const existingTattoo = await payload.find({
         collection: 'tattoo',
-        data: {
-          _status: 'published',
-          title: tattoo.title,
-          slug: tattoo.slug
+        where: {
+          slug: { equals: tattoo.slug }
         }
       })
-      payload.logger.info(`✓ ${tattoo.title}`)
+
+      if (existingTattoo.docs.length === 0) {
+        await payload.create({
+          collection: 'tattoo',
+          data: {
+            _status: 'published',
+            title: tattoo.title,
+            slug: tattoo.slug
+          }
+        })
+        payload.logger.info(`✓ Created tattoo "${tattoo.title}"`)
+      } else {
+        payload.logger.info(`Tattoo "${tattoo.title}" already exists, skipping...`)
+      }
     } catch (error) {
-      throw new Error(`✕  ${tattoo.title} - ${error}`)
+      payload.logger.error(`Error creating tattoo "${tattoo.title}":`, error)
+      throw error
     }
   }
 }
@@ -51,6 +64,17 @@ const createTattoos = async ({ payload }): Promise<void> => {
 const updateTattoos = async ({ payload }): Promise<void> => {
   for (const tattoo of tattoosData) {
     try {
+      // Check if tattoo exists before updating
+      const existingTattoo = await payload.find({
+        collection: 'tattoo',
+        where: { slug: { equals: tattoo.slug } }
+      })
+
+      if (!existingTattoo.docs.length) {
+        payload.logger.warn(`Tattoo "${tattoo.title}" not found, skipping update...`)
+        continue
+      }
+
       // Find all relationship IDs with error checking
       const styleIds = await Promise.all(
         tattoo.style.map(async (style) => {
@@ -101,9 +125,9 @@ const updateTattoos = async ({ payload }): Promise<void> => {
           tags: tagIds
         }
       })
-      payload.logger.info(`✓ ${tattoo.title}`)
+      payload.logger.info(`✓ Updated relationships for "${tattoo.title}"`)
     } catch (error) {
-      payload.logger.error(`✕ ${tattoo.title} - ${error.message}`)
+      payload.logger.error(`Error updating tattoo "${tattoo.title}":`, error.message)
     }
   }
 }
