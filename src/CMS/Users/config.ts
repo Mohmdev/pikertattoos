@@ -86,15 +86,59 @@ export const Users: CollectionConfig<'users'> = {
     },
     {
       type: 'ui',
-      name: 'seedButton',
+      name: 'seedAreasButton',
       label: '',
       admin: {
         components: {
-          Field: '@admin-components/SeedButton#SeedButton'
+          Field: '@admin-components/SeedAreasButton#SeedAreasButton'
         },
         position: 'sidebar'
       }
     },
+    {
+      type: 'ui',
+      name: 'seedStylesButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/SeedStylesButton#SeedStylesButton'
+        },
+        position: 'sidebar'
+      }
+    },
+    {
+      type: 'ui',
+      name: 'seedTagsButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/SeedTagsButton#SeedTagsButton'
+        },
+        position: 'sidebar'
+      }
+    },
+    {
+      type: 'ui',
+      name: 'seedTattoosButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/SeedTattoosButton#SeedTattoosButton'
+        },
+        position: 'sidebar'
+      }
+    },
+    // {
+    //   type: 'ui',
+    //   name: 'seedButton',
+    //   label: '',
+    //   admin: {
+    //     components: {
+    //       Field: '@admin-components/SeedButton#SeedButton'
+    //     },
+    //     position: 'sidebar'
+    //   }
+    // },
     {
       type: 'ui',
       name: 'resetButton',

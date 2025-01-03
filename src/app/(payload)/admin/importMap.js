@@ -31,7 +31,10 @@ import { TableFeatureClient as TableFeatureClient_e70f5e05f09f93e00b997edb1ef0c8
 import { LabelFeatureClient as LabelFeatureClient_0e0dc9b13efd592bba257c287877ac3a } from '@fields/richTextField/features/label/client'
 import { LargeBodyFeatureClient as LargeBodyFeatureClient_ad8dd75a2bc19e103cfd5c485c075dc6 } from '@fields/richTextField/features/largeBody/client'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { SeedButton as SeedButton_384accf5985d4a2d0f28d85632b92854 } from '@admin-components/SeedButton'
+import { SeedAreasButton as SeedAreasButton_7deff4c56957a5715c75df6031bfed9d } from '@admin-components/SeedAreasButton'
+import { SeedStylesButton as SeedStylesButton_dabbe5c3811ecbf94c093638780bba16 } from '@admin-components/SeedStylesButton'
+import { SeedTagsButton as SeedTagsButton_e9ca057e13a03c1abd09ea1954d9c295 } from '@admin-components/SeedTagsButton'
+import { SeedTattoosButton as SeedTattoosButton_60db1723f6672a4847b71181cdb2855f } from '@admin-components/SeedTattoosButton'
 import { ResetButton as ResetButton_ef5a666877bac4002083d3cdf84024ab } from '@admin-components/ResetButton'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
@@ -73,7 +76,10 @@ export const importMap = {
   "@fields/richTextField/features/label/client#LabelFeatureClient": LabelFeatureClient_0e0dc9b13efd592bba257c287877ac3a,
   "@fields/richTextField/features/largeBody/client#LargeBodyFeatureClient": LargeBodyFeatureClient_ad8dd75a2bc19e103cfd5c485c075dc6,
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@admin-components/SeedButton#SeedButton": SeedButton_384accf5985d4a2d0f28d85632b92854,
+  "@admin-components/SeedAreasButton#SeedAreasButton": SeedAreasButton_7deff4c56957a5715c75df6031bfed9d,
+  "@admin-components/SeedStylesButton#SeedStylesButton": SeedStylesButton_dabbe5c3811ecbf94c093638780bba16,
+  "@admin-components/SeedTagsButton#SeedTagsButton": SeedTagsButton_e9ca057e13a03c1abd09ea1954d9c295,
+  "@admin-components/SeedTattoosButton#SeedTattoosButton": SeedTattoosButton_60db1723f6672a4847b71181cdb2855f,
   "@admin-components/ResetButton#ResetButton": ResetButton_ef5a666877bac4002083d3cdf84024ab,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
