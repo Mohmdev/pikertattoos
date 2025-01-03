@@ -1,54 +1,12 @@
-import { headers } from 'next/headers'
-
 import config from '@payload-config'
 
-import {
-  //  createLocalReq,
-  getPayload
-} from 'payload'
+import { getPayload } from 'payload'
 
 import { tattoosData } from './tattosData'
 
-export const maxDuration = 60 // This function can run for a maximum of 60 seconds
-
-export async function POST(): Promise<Response> {
+const updateTattoos = async () => {
   const payload = await getPayload({ config })
-  const requestHeaders = await headers()
-  // Authenticate by passing request headers
-  const { user } = await payload.auth({ headers: requestHeaders })
-  if (!user) {
-    return new Response('Action forbidden.', { status: 403 })
-  }
 
-  try {
-    await createTattoos({ payload })
-    await updateTattoos({ payload })
-
-    return Response.json({ success: true })
-  } catch {
-    return new Response('Error seeding data.', { status: 500 })
-  }
-}
-
-const createTattoos = async ({ payload }): Promise<void> => {
-  for (const tattoo of tattoosData) {
-    try {
-      await payload.create({
-        collection: 'tattoo',
-        data: {
-          _status: 'published',
-          title: tattoo.title,
-          slug: tattoo.slug
-        }
-      })
-      payload.logger.info(`✓ ${tattoo.title}`)
-    } catch (error) {
-      throw new Error(`✕  ${tattoo.title} - ${error}`)
-    }
-  }
-}
-
-const updateTattoos = async ({ payload }): Promise<void> => {
   for (const tattoo of tattoosData) {
     try {
       // Find all relationship IDs with error checking
@@ -107,3 +65,6 @@ const updateTattoos = async ({ payload }): Promise<void> => {
     }
   }
 }
+
+// Call the function here to run your seed script
+await updateTattoos()

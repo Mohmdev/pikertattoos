@@ -1,82 +1,250 @@
 export const tattoosData = [
   {
-    id: 1,
     title: 'Japanese Dragon Sleeve',
     slug: 'japanese-dragon-sleeve',
-    style: [3], // japanese
-    area: [4], // upper-boddy
-    tags: [4, 11] // dragons, mythology
+    style: [
+      {
+        title: 'Japanese',
+        slug: 'japanese'
+      }
+    ],
+    area: [
+      {
+        title: 'Upper Boddy',
+        slug: 'upper-boddy'
+      }
+    ],
+    tags: [
+      {
+        title: 'Dragons',
+        slug: 'dragons'
+      },
+      {
+        title: 'Mythology',
+        slug: 'mythology'
+      }
+    ]
   },
   {
-    id: 2,
     title: 'Traditional Rose',
     slug: 'traditional-rose',
-    style: [1], // traditional
-    area: [10], // chest
-    tags: [3, 1] // flowers, nature
+    style: [
+      {
+        title: 'Traditional',
+        slug: 'traditional'
+      }
+    ],
+    area: [
+      {
+        title: 'Chest',
+        slug: 'chest'
+      }
+    ],
+    tags: [
+      {
+        title: 'Flowers',
+        slug: 'flowers'
+      },
+      {
+        title: 'Nature',
+        slug: 'nature'
+      }
+    ]
   },
   {
-    id: 3,
     title: 'Geometric Wolf',
     slug: 'geometric-wolf',
-    style: [7], // geometric
-    area: [8], // leg
-    tags: [2, 15] // animals, symbols
+    style: [
+      {
+        title: 'Geometric',
+        slug: 'geometric'
+      }
+    ],
+    area: [
+      {
+        title: 'Leg',
+        slug: 'leg'
+      }
+    ],
+    tags: [
+      {
+        title: 'Animals',
+        slug: 'animals'
+      },
+      {
+        title: 'Symbols',
+        slug: 'symbols'
+      }
+    ]
   },
   {
-    id: 4,
     title: 'Realistic Portrait',
     slug: 'realistic-portrait',
-    style: [4], // realism
-    area: [4], // upper-boddy
-    tags: [6] // portrait
+    style: [
+      {
+        title: 'Realism',
+        slug: 'realism'
+      }
+    ],
+    area: [
+      {
+        title: 'Upper Boddy',
+        slug: 'upper-boddy'
+      }
+    ],
+    tags: [
+      {
+        title: 'Portrait',
+        slug: 'portrait'
+      }
+    ]
   },
   {
-    id: 5,
     title: 'Mandala Finger Band',
     slug: 'mandala-finger-band',
-    style: [6], // minimalist
-    area: [9], // finger
-    tags: [7, 13] // mandala, spiritual
+    style: [
+      {
+        title: 'Minimalist',
+        slug: 'minimalist'
+      }
+    ],
+    area: [
+      {
+        title: 'Finger',
+        slug: 'finger'
+      }
+    ],
+    tags: [
+      {
+        title: 'Mandala',
+        slug: 'mandala'
+      },
+      {
+        title: 'Spiritual',
+        slug: 'spiritual'
+      }
+    ]
   },
   {
-    id: 6,
     title: 'Celtic Cross Cover-up',
     slug: 'celtic-cross-cover-up',
-    style: [5], // blackwork
-    area: [2], // cover-up
-    tags: [12, 8] // celtic, religious
+    style: [
+      {
+        title: 'Blackwork',
+        slug: 'blackwork'
+      }
+    ],
+    area: [
+      {
+        title: 'Cover-up',
+        slug: 'cover-up'
+      }
+    ],
+    tags: [
+      {
+        title: 'Celtic',
+        slug: 'celtic'
+      },
+      {
+        title: 'Religious',
+        slug: 'religious'
+      }
+    ]
   },
   {
-    id: 7,
     title: 'Watercolor Abstract',
     slug: 'watercolor-abstract',
-    style: [8], // watercolor
-    area: [7], // neck
-    tags: [10] // abstract
+    style: [
+      {
+        title: 'Watercolor',
+        slug: 'watercolor'
+      }
+    ],
+    area: [
+      {
+        title: 'Neck',
+        slug: 'neck'
+      }
+    ],
+    tags: [
+      {
+        title: 'Abstract',
+        slug: 'abstract'
+      }
+    ]
   },
   {
-    id: 8,
     title: 'Neo Traditional Skull',
     slug: 'neo-traditional-skull',
-    style: [2], // neo traditional
-    area: [3], // lower body
-    tags: [5] // skull
+    style: [
+      {
+        title: 'Neo Traditional',
+        slug: 'neo-traditional'
+      }
+    ],
+    area: [
+      {
+        title: 'Lower Body',
+        slug: 'lower-body'
+      }
+    ],
+    tags: [
+      {
+        title: 'Skull',
+        slug: 'skull'
+      }
+    ]
   },
   {
-    id: 9,
     title: 'Musical Notes Script',
     slug: 'musical-notes-script',
-    style: [6], // minimalist
-    area: [1], // custom
-    tags: [14, 9] // music, script
+    style: [
+      {
+        title: 'Minimalist',
+        slug: 'minimalist'
+      }
+    ],
+    area: [
+      {
+        title: 'Custom',
+        slug: 'custom'
+      }
+    ],
+    tags: [
+      {
+        title: 'Music',
+        slug: 'music'
+      },
+      {
+        title: 'Script',
+        slug: 'script'
+      }
+    ]
   },
   {
-    id: 10,
     title: 'Tribal Phoenix',
     slug: 'tribal-phoenix',
-    style: [9], // tribal
-    area: [6], // full body
-    tags: [2, 11] // animals, mythology
+    style: [
+      {
+        title: 'Tribal',
+        slug: 'tribal'
+      }
+    ],
+    area: [
+      {
+        title: 'Full Body',
+        slug: 'full-body'
+      }
+    ],
+    tags: [
+      {
+        title: 'Animals',
+        slug: 'animals'
+      },
+      {
+        title: 'Mythology',
+        slug: 'mythology'
+      }
+    ]
   }
 ]

@@ -38,7 +38,7 @@ const createStyles = async ({ payload, req }): Promise<void> => {
         collection: 'style',
         data: {
           _status: 'published',
-          id: style.id,
+          // id: style.id,
           title: style.title,
           slug: style.slug
         },

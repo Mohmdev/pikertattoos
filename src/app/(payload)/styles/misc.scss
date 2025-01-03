@@ -33,8 +33,20 @@
 }
 
 .btn--style-pill, .pill {
-  background-color: var(--bg-default-primary) !important;
-  border: 1px solid var(--border-ui) !important;
+  background-color: var(--bg-default-primary);
+  border: 1px solid var(--border-ui);
+}
+
+.list-controls__buttons-wrap{
+  .btn--style-pill, .pill {
+    background: transparent;
+    border: none;
+    
+    @media (max-width: 1024px) {
+      background-color: var(--bg-default-primary);
+      border: 1px solid var(--border-ui);
+    }
+  }
 }
 .nav__log-out {
   color: var(--theme-elevation-500);
@@ -67,7 +79,9 @@
   @media (max-width: 1024px) {
     background-color: transparent;
     border: 0;
-
+  }
+  
+  @media (max-width: 768px) {
     .list-controls__buttons-wrap .pill {
       background-color: var(--bg-default-primary);
       border: 1px solid var(--border-ui);

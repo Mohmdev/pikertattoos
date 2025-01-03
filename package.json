@@ -30,7 +30,8 @@
     "migrate:reset": "payload migrate:reset",
     "migrate:fresh": "payload migrate:fresh",
     "migrate:create": "payload migrate:create",
-    "ci": "payload migrate && next build"
+    "ci": "payload migrate && next build",
+    "seed": "payload run src/app/next/updateTattoosScript.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
