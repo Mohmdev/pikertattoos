@@ -6,34 +6,34 @@ import { toast, useAuth } from '@payloadcms/ui'
 
 import type { User } from '@payload-types'
 
-import styles from './index.module.scss'
+import styles from '../SeedButton/index.module.scss'
 
 const SuccessMessage: React.FC = () => (
   <div>
-    Database seeded! You can now{' '}
+    Database reset complete! You can now{' '}
     <a target="_blank" href="/">
       visit your website
     </a>
   </div>
 )
 
-export const SeedButton: React.FC = () => {
+export const ResetButton: React.FC = () => {
   const { user } = useAuth<User>()
   const [loading, setLoading] = useState(false)
-  const [seeded, setSeeded] = useState(false)
+  const [reset, setReset] = useState(false)
   const [error, setError] = useState(null)
 
   const getButtonText = () => {
     if (user?.role !== 'admin') return 'You need admin access level to perform this action'
-    if (loading) return 'Seeding...'
-    if (seeded) return 'Database Seeded!'
+    if (loading) return 'Resetting...'
+    if (reset) return 'Database Reset Complete!'
     if (error) return `Error: ${error}`
-    return 'Seed Database'
+    return 'Reset Database'
   }
 
   const resetStates = useCallback(() => {
     setLoading(false)
-    setSeeded(false)
+    setReset(false)
     setError(null)
   }, [])
 
@@ -41,12 +41,12 @@ export const SeedButton: React.FC = () => {
     async (e) => {
       e.preventDefault()
 
-      if (seeded) {
-        toast.info('Database already seeded.')
+      if (reset) {
+        toast.info('Database already reset.')
         return
       }
       if (loading) {
-        toast.info('Seeding already in progress.')
+        toast.info('Reset already in progress.')
         return
       }
       if (error) {
@@ -58,20 +58,20 @@ export const SeedButton: React.FC = () => {
 
       try {
         toast.promise(
-          fetch('/next/seed', {
+          fetch('/next/reset-db', {
             method: 'POST',
             credentials: 'include'
           }).then((res) => {
             if (!res.ok) {
-              throw new Error('An error occurred while seeding.')
+              throw new Error('An error occurred while resetting.')
             }
-            setSeeded(true)
+            setReset(true)
             return res
           }),
           {
-            loading: 'Seeding with data....',
+            loading: 'Resetting database and clearing data...',
             success: <SuccessMessage />,
-            error: 'An error occurred while seeding.'
+            error: 'An error occurred while resetting the database.'
           }
         )
 
@@ -87,7 +87,7 @@ export const SeedButton: React.FC = () => {
         return () => clearTimeout(timeoutId)
       }
     },
-    [loading, seeded, error, resetStates]
+    [loading, reset, error, resetStates]
   )
 
   return (
@@ -95,7 +95,7 @@ export const SeedButton: React.FC = () => {
       <button
         className={styles.seedButton}
         onClick={handleClick}
-        disabled={loading || seeded || error || user?.role !== 'admin'}
+        disabled={loading || reset || error || user?.role !== 'admin'}
       >
         {getButtonText()}
       </button>

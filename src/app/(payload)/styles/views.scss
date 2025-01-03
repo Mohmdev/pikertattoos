@@ -90,3 +90,31 @@
     }
   }
 }
+
+
+.table tbody tr:nth-child(odd) {
+  background-color: var(--bg-default-primary);
+}
+
+.column-selector {
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+
+  @media (max-width: 1024px) {
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+  }
+
+  .column-selector__column {
+    background-color: var(--bg-default-primary);
+    box-shadow: none;
+    border: 1px solid var(--border-ui);
+  }
+}
+
+.where-builder {
+  background: transparent;
+  padding: 0;
+}

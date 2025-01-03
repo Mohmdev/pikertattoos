@@ -94,6 +94,17 @@ export const Users: CollectionConfig<'users'> = {
         },
         position: 'sidebar'
       }
+    },
+    {
+      type: 'ui',
+      name: 'resetButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/ResetButton#ResetButton'
+        },
+        position: 'sidebar'
+      }
     }
   ],
   access: {
