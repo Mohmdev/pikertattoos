@@ -4,7 +4,7 @@ import { getPayload } from 'payload'
 
 import { tattoosData } from './tattosData'
 
-const updateTattoos = async () => {
+export const seedTattoos = async () => {
   const payload = await getPayload({ config })
 
   for (const tattoo of tattoosData) {
@@ -65,6 +65,3 @@ const updateTattoos = async () => {
     }
   }
 }
-
-// Call the function here to run your seed script
-await updateTattoos()

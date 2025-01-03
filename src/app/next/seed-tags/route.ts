@@ -2,7 +2,7 @@ import { headers } from 'next/headers'
 
 import config from '@payload-config'
 
-import { createLocalReq, getPayload } from 'payload'
+import { getPayload } from 'payload'
 
 import { tagsData } from './tagsData'
 
@@ -18,11 +18,7 @@ export async function POST(): Promise<Response> {
   }
 
   try {
-    // Create a Payload request object to pass to the Local API for transactions
-    // At this point you should pass in a user, locale, and any other context you need for the Local API
-    const payloadReq = await createLocalReq({ user }, payload)
-
-    await createTags({ payload, req: payloadReq })
+    await createTags({ payload })
 
     return Response.json({ success: true })
   } catch {
@@ -30,11 +26,10 @@ export async function POST(): Promise<Response> {
   }
 }
 
-export const createTags = async ({ payload, req }): Promise<void> => {
+export const createTags = async ({ payload }): Promise<void> => {
   for (const tag of tagsData) {
     try {
       await payload.create({
-        req,
         overrideLock: true,
         collection: 'tag',
         data: {

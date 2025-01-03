@@ -4,7 +4,7 @@ import { getPayload } from 'payload'
 
 import { areasData } from './areasData'
 
-const updateAreas = async () => {
+export const seedAreas = async () => {
   const payload = await getPayload({ config })
 
   // First, create all areas
@@ -56,6 +56,3 @@ const updateAreas = async () => {
     }
   }
 }
-
-// Call the function to run the seed script
-await updateAreas()

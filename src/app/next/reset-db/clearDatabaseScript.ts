@@ -1,8 +1,6 @@
-import { headers } from 'next/headers'
-
 import config from '@payload-config'
 
-import { createLocalReq, getPayload, Payload } from 'payload'
+import { getPayload } from 'payload'
 
 import type { CollectionSlug, PayloadRequest } from 'payload'
 
@@ -19,35 +17,16 @@ const collections: CollectionSlug[] = [
   // 'forms',
   // 'form-submissions',
 ]
-
-export const maxDuration = 60
-
-export async function POST(): Promise<Response> {
+export const clearDatabase = async () => {
   const payload = await getPayload({ config })
-  const requestHeaders = await headers()
-  const { user } = await payload.auth({ headers: requestHeaders })
-  if (!user) {
-    return new Response('Action forbidden.', { status: 403 })
+
+  // Create minimal mock headers
+  const req: Partial<PayloadRequest> = {
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    })
   }
 
-  try {
-    const payloadReq = await createLocalReq({ user }, payload)
-
-    await clearDBScript({ payload, req: payloadReq })
-
-    return Response.json({ success: true })
-  } catch (error) {
-    return new Response(`Script failed to finish; ${error.message}`, { status: 500 })
-  }
-}
-
-const clearDBScript = async ({
-  payload,
-  req
-}: {
-  payload: Payload
-  req: PayloadRequest
-}): Promise<void> => {
   try {
     payload.logger.info('↪ Script initiated')
 

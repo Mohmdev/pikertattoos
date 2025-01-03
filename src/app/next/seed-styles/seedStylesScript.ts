@@ -4,7 +4,7 @@ import { getPayload } from 'payload'
 
 import { stylesData } from './stylesData'
 
-const updateStyles = async () => {
+export const seedStyles = async () => {
   const payload = await getPayload({ config })
 
   for (const style of stylesData) {
@@ -23,6 +23,3 @@ const updateStyles = async () => {
     }
   }
 }
-
-// Call the function to run the seed script
-await updateStyles()

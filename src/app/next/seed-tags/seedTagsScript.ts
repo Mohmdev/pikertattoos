@@ -4,7 +4,7 @@ import { getPayload } from 'payload'
 
 import { tagsData } from './tagsData'
 
-const updateTags = async () => {
+export const seedTags = async () => {
   const payload = await getPayload({ config })
 
   for (const tag of tagsData) {
@@ -23,6 +23,3 @@ const updateTags = async () => {
     }
   }
 }
-
-// Call the function to run the seed script
-await updateTags()
