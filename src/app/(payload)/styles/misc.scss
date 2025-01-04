@@ -1,65 +1,12 @@
-.btn {
-  border-radius: 5px;
-  font-weight: 400;
-  padding-inline: 2rem;
-  padding-block: 0.25rem;
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
-}
-
-.btn--style-primary {
-  box-shadow: none !important;
-  border: 1px solid var(--border-ui) !important;
-  // background-color: var(--bg-default-secondary) !important;
-  color: var(--text-default) !important;
-
-  background-color: light-dark(hsla(204, 21%, 50%, 1), hsla(198, 38%, 15%, 1)) !important;
-  // box-shadow: light-dark(inset 0px 1px 4px -1px hsla(0, 0%, 100%, 0.22), inset 0px 1px 4px -2px hsla(0, 0%, 100%, 0.22));
-}
-
-.btn--style-primary.btn--disabled,
-.btn--disabled {
-  pointer-events: none !important;
-  font-weight: 500 !important;
-  background-color: light-dark(hsla(203, 12%, 78%, 1), hsla(203, 12%, 17%, 1)) !important;
-  color: light-dark(hsla(0, 0%, 100%, 1), hsla(207, 10%, 30%, 1)) !important;
-}
-
-.btn--style-secondary {
-  background-color: var(--bg-default-secondary);
+.popup--active .popup__content {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
   border: 1px solid var(--border-ui);
-  box-shadow: none;
-
-  color: light-dark(hsla(0, 0%, 100%, 1), hsla(225, 19%, 87%, 1));
-}
-
-.btn--style-pill, .pill {
-  background-color: var(--bg-default-primary);
-  border: 1px solid var(--border-ui);
-}
-
-.list-controls__buttons-wrap{
-  .btn--style-pill, .pill {
-    background: transparent;
-    border: none;
-    
-    @media (max-width: 1024px) {
-      background-color: var(--bg-default-primary);
-      border: 1px solid var(--border-ui);
-    }
-  }
-}
-.nav__log-out {
-  color: var(--theme-elevation-500);
-}
-
-#action-save {
-  padding-block: 1px;
-}
-
-
-// Admin Avatar
-.app-header__account {
-  text-decoration: none;
+  transition:
+    opacity 0.2s ease-out,
+    visibility 0.2s ease-out,
+    transform 0.2s ease-out;
 }
 
 .dropzone {
@@ -67,45 +14,36 @@
   border: 1px dashed var(--border-ui);
   border-radius: var(--style-radius-s);
   box-shadow: 0 0 0 0 transparent;
-  transition: all .1s cubic-bezier(0,.2,.2,1);
+  transition: all 0.1s cubic-bezier(0, 0.2, 0.2, 1);
 }
 
-
-.list-controls__wrap{
-
+// Main auth fields
+.auth-fields {
+  border: 1px solid var(--border-ui);
   background-color: var(--bg-default-primary);
-  border: 1px solid var(--border-ui);
 
-  @media (max-width: 1024px) {
-    background-color: transparent;
-    border: 0;
-  }
-  
-  @media (max-width: 768px) {
-    .list-controls__buttons-wrap .pill {
-      background-color: var(--bg-default-primary);
-      border: 1px solid var(--border-ui);
-    }
-    
-    .search-filter {
-      background-color: var(--bg-default-primary);
-      border: 1px solid var(--border-ui);
-      border-radius: 3px;
-    }
-  }
-
-  .search-filter__input {
-    background-color: transparent;
+  // .field-type.email input {
+  //   background-color: var(--bg-default-secondary);
+  // }
+  //  #field-password, #field-firstName, #field-lastName,
+  #field-email,
+  #field-username {
+    background-color: var(--bg-default-secondary);
   }
 }
 
+input:-internal-autofill-selected {
+  background-color: light-dark(hsla(219, 92%, 95%, 0.83), hsla(220, 29%, 38%, 0.17)) !important;
+}
+input:disabled {
+  background: var(--theme-elevation-50);
+  color: var(--theme-elevation-300);
+}
 
-.popup--active .popup__content {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-  border: 1px solid var(--border-ui);
-  transition: opacity 0.2s ease-out,
-              visibility 0.2s ease-out,
-              transform 0.2s ease-out;
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
 }

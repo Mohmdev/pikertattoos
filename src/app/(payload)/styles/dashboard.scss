@@ -3,12 +3,11 @@
   --margin-block: 1.125rem;
 
   .dashboard__group {
-
     // 1. Studio
     &:nth-of-type(1) {
       order: 1;
       margin-block: var(--margin-block);
-    
+
       .dashboard__card-list {
         min-height: var(--card-list-height);
       }
@@ -60,4 +59,3 @@
   border: 1px solid var(--border-ui);
   border-radius: 5px;
 }
-

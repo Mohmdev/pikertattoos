@@ -7,7 +7,7 @@ import { getPayload } from 'payload'
 import { fetchImageByURL } from './fetchFile'
 import { tattoosData } from './tattosData'
 
-export const maxDuration = 90
+export const maxDuration = 60
 
 export async function POST(): Promise<Response> {
   const payload = await getPayload({ config })
