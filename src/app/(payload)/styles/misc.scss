@@ -1,43 +1,9 @@
-.popup--active .popup__content {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-  border: 1px solid var(--border-ui);
-  transition:
-    opacity 0.2s ease-out,
-    visibility 0.2s ease-out,
-    transform 0.2s ease-out;
-}
-
-.dropzone {
-  background: transparent;
-  border: 1px dashed var(--border-ui);
-  border-radius: var(--style-radius-s);
-  box-shadow: 0 0 0 0 transparent;
-  transition: all 0.1s cubic-bezier(0, 0.2, 0.2, 1);
-}
-
-// Main auth fields
-.auth-fields {
-  border: 1px solid var(--border-ui);
-  background-color: var(--bg-default-primary);
-
-  // .field-type.email input {
-  //   background-color: var(--bg-default-secondary);
-  // }
-  //  #field-password, #field-firstName, #field-lastName,
-  #field-email,
-  #field-username {
-    background-color: var(--bg-default-secondary);
-  }
-}
-
 input:-internal-autofill-selected {
   background-color: light-dark(hsla(219, 92%, 95%, 0.83), hsla(220, 29%, 38%, 0.17)) !important;
 }
 input:disabled {
   background: var(--theme-elevation-50);
-  color: var(--theme-elevation-300);
+  color: light-dark(hsla(0, 0%, 100%, 1), hsla(207, 10%, 30%, 1));
 }
 
 html {

@@ -1,11 +1,12 @@
 @use '@lib/fonts/poppins-v22-latin.scss';
-@use '@lib/fonts/inter-v18-latin.scss.scss';
+@use '@lib/fonts/inter-v18-latin.scss';
+@use 'styles/views.dashboard.scss' as views-dashboard;
+@use 'styles/views.edit.scss' as views-edit;
+@use 'styles/views.list.scss' as views-list;
 @use 'styles/header.scss';
 @use 'styles/sidebar.scss';
-@use 'styles/dashboard.scss';
-@use 'styles/collection.document.scss' as collection-document;
-@use 'styles/collection.list.scss' as collection-list;
 @use 'styles/buttons.scss';
+@use 'styles/components.scss';
 @use 'styles/misc.scss';
 
 [data-theme='light'] {

@@ -51,3 +51,12 @@
   background: transparent;
   padding: 0;
 }
+
+.file__filename {
+  display: none;
+}
+.collection-list--media .file__filename,
+.collection-list--assets .file__filename,
+.collection-list--user-photo .file__filename {
+  display: block;
+}

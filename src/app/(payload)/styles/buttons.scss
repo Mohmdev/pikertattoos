@@ -1,27 +1,14 @@
 .btn {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
   border-radius: 5px;
   font-weight: 400;
-  padding-inline: 2rem;
-  padding-block: 0.25rem;
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
 .btn--style-primary {
-  box-shadow: none !important;
-  border: 1px solid var(--border-ui) !important;
-  // background-color: var(--bg-default-secondary) !important;
-  color: var(--text-default) !important;
-
-  background-color: light-dark(hsla(204, 21%, 50%, 1), hsla(198, 38%, 15%, 1)) !important;
-  // box-shadow: light-dark(inset 0px 1px 4px -1px hsla(0, 0%, 100%, 0.22), inset 0px 1px 4px -2px hsla(0, 0%, 100%, 0.22));
-}
-
-.btn--style-primary.btn--disabled,
-.btn--disabled {
-  pointer-events: none !important;
-  font-weight: 500 !important;
-  background-color: light-dark(hsla(203, 12%, 78%, 1), hsla(203, 12%, 17%, 1)) !important;
-  color: light-dark(hsla(0, 0%, 100%, 1), hsla(207, 10%, 30%, 1)) !important;
+  box-shadow: none;
+  border: 1px solid var(--border-ui);
+  color: var(--text-default);
+  background-color: light-dark(hsla(204, 21%, 50%, 1), hsla(198, 38%, 15%, 1));
 }
 
 .btn--style-secondary {
@@ -32,14 +19,24 @@
   color: light-dark(hsla(0, 0%, 100%, 1), hsla(225, 19%, 87%, 1));
 }
 
+.btn--disabled {
+  pointer-events: none;
+  font-weight: 500;
+  background-color: light-dark(hsla(203, 12%, 78%, 1), hsla(203, 12%, 17%, 1));
+  color: light-dark(hsla(0, 0%, 100%, 1), hsla(207, 10%, 30%, 1));
+  border: 0;
+}
+
 .btn--style-pill,
 .pill {
   background-color: var(--bg-default-primary);
   border: 1px solid var(--border-ui);
 }
 
-#action-save {
-  padding-block: 1px;
+.doc-controls__controls {
+  button {
+    padding-block: 1px !important;
+  }
 }
 
 .list-controls__buttons-wrap {
