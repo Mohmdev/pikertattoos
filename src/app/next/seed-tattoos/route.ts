@@ -2,14 +2,12 @@ import { headers } from 'next/headers'
 
 import config from '@payload-config'
 
-import {
-  //  createLocalReq,
-  getPayload
-} from 'payload'
+import { getPayload } from 'payload'
 
+import { fetchImageByURL } from './fetchFile'
 import { tattoosData } from './tattosData'
 
-export const maxDuration = 60 // This function can run for a maximum of 60 seconds
+export const maxDuration = 90
 
 export async function POST(): Promise<Response> {
   const payload = await getPayload({ config })
@@ -42,12 +40,22 @@ const createTattoos = async ({ payload }): Promise<void> => {
       })
 
       if (existingTattoo.docs.length === 0) {
+        const imageBuffer = await fetchImageByURL(tattoo.images[0].url)
+        const mediaDoc = await payload.create({
+          collection: 'media',
+          data: {
+            alt: tattoo.images[0].alt || tattoo.title // Fallback to title if no alt
+          },
+          file: imageBuffer
+        })
+
         await payload.create({
           collection: 'tattoo',
           data: {
             _status: 'published',
             title: tattoo.title,
-            slug: tattoo.slug
+            slug: tattoo.slug,
+            images: [mediaDoc.id]
           }
         })
         payload.logger.info(`✓ Created tattoo "${tattoo.title}"`)

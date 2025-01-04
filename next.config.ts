@@ -30,7 +30,12 @@ const nextConfig: NextConfig = {
           hostname: url.hostname,
           protocol: url.protocol.replace(':', '') as 'http' | 'https'
         }
-      })
+      }),
+      {
+        hostname: 'res.cloudinary.com',
+        protocol: 'https',
+        pathname: '/mohmdevcloud/**'
+      }
     ]
   },
   sassOptions: {
