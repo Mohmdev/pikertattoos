@@ -1,7 +1,7 @@
-import type { CollectionConfig } from 'payload'
-
 import { anyone } from '@access/anyone'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
+
+import type { CollectionConfig } from 'payload'
 
 export const UserPhotos: CollectionConfig<'user-photo'> = {
   slug: 'user-photo',
@@ -25,7 +25,7 @@ export const UserPhotos: CollectionConfig<'user-photo'> = {
   },
   admin: {
     useAsTitle: 'user',
-    defaultColumns: ['filename', 'user', 'createdAt', 'updatedAt']
+    defaultColumns: ['user', 'filename', 'filesize', 'mimeType', 'createdAt', 'updatedAt']
   },
   fields: [
     {

@@ -33,7 +33,7 @@ export const Media: CollectionConfig<'media'> = {
   },
   admin: {
     useAsTitle: 'alt',
-    defaultColumns: ['filename', 'mimeType', 'filesize', 'createdAt', 'updatedAt']
+    defaultColumns: ['filename', 'category', 'filesize', 'mimeType', 'createdAt', 'updatedAt']
   },
   fields: [
     {
