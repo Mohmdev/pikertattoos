@@ -128,12 +128,29 @@ export interface UserAuthOperations {
 export interface Tattoo {
   id: number;
   title: string;
-  video?: (number | null) | Media;
+  /**
+   * Up to 12 images.
+   */
   images?: (number | Media)[] | null;
-  description?: string | null;
+  video?: (number | null) | Media;
   area?: (number | Area)[] | null;
   style?: (number | Style)[] | null;
   artist?: (number | Artist)[] | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   tags?: (number | Tag)[] | null;
   /**
    * Select related tattoos.
@@ -152,12 +169,13 @@ export interface Tattoo {
  */
 export interface Media {
   id: number;
+  category?: ('tattoo' | 'video' | 'style' | 'tag' | 'other') | null;
   /**
-   * Used for SEO and accessibility
+   * For SEO and accessibility
    */
   alt?: string | null;
   /**
-   * Caption for this media file.
+   * Custom caption for the image
    */
   caption?: {
     root: {
@@ -294,6 +312,11 @@ export interface Style {
     docs?: (number | Artist)[] | null;
     hasNextPage?: boolean | null;
   } | null;
+  /**
+   * Optional
+   */
+  image?: (number | null) | Media;
+  description?: string | null;
   slug: string;
   slugLock?: boolean | null;
   parent?: (number | null) | Style;
@@ -316,9 +339,11 @@ export interface Style {
 export interface Artist {
   id: number;
   title: string;
+  style?: (number | Style)[] | null;
   /**
-   * Optional
+   * Associate this artist with a user account to enable them to log in and manage their own content.
    */
+  user?: (number | null) | User;
   bio?: {
     root: {
       type: string;
@@ -334,15 +359,10 @@ export interface Artist {
     };
     [k: string]: unknown;
   } | null;
-  style: (number | Style)[];
   /**
    * Associate this artist with a user account to enable them to log in and manage their own content.
    */
-  user: number | User;
-  /**
-   * Associate this artist with a user account to enable them to log in and manage their own content.
-   */
-  tattoos: {
+  tattoos?: {
     docs?: (number | Tattoo)[] | null;
     hasNextPage?: boolean | null;
   } | null;
@@ -359,7 +379,7 @@ export interface Artist {
  */
 export interface User {
   id: number;
-  firstName?: string | null;
+  firstName: string;
   lastName?: string | null;
   photo?: (number | null) | UserPhoto;
   role: 'admin' | 'editor' | 'public';
@@ -450,6 +470,11 @@ export interface Tag {
     docs?: (number | Artist)[] | null;
     hasNextPage?: boolean | null;
   } | null;
+  /**
+   * Optional
+   */
+  image?: (number | null) | Media;
+  description?: string | null;
   slug: string;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1539,12 +1564,12 @@ export interface PayloadMigration {
  */
 export interface TattooSelect<T extends boolean = true> {
   title?: T;
-  video?: T;
   images?: T;
-  description?: T;
+  video?: T;
   area?: T;
   style?: T;
   artist?: T;
+  description?: T;
   tags?: T;
   relatedTattoos?: T;
   meta?: T | MetaSelect<T>;
@@ -1593,6 +1618,8 @@ export interface StyleSelect<T extends boolean = true> {
   title?: T;
   tattoos?: T;
   artists?: T;
+  image?: T;
+  description?: T;
   slug?: T;
   slugLock?: T;
   parent?: T;
@@ -1614,9 +1641,9 @@ export interface StyleSelect<T extends boolean = true> {
  */
 export interface ArtistSelect<T extends boolean = true> {
   title?: T;
-  bio?: T;
   style?: T;
   user?: T;
+  bio?: T;
   tattoos?: T;
   tags?: T;
   slug?: T;
@@ -1633,6 +1660,8 @@ export interface TagSelect<T extends boolean = true> {
   title?: T;
   tattoos?: T;
   artists?: T;
+  image?: T;
+  description?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1946,6 +1975,7 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  category?: T;
   alt?: T;
   caption?: T;
   prefix?: T;

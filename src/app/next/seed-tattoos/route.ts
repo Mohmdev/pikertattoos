@@ -44,7 +44,8 @@ const createTattoos = async ({ payload }): Promise<void> => {
         const mediaDoc = await payload.create({
           collection: 'media',
           data: {
-            alt: tattoo.images[0].alt || tattoo.title // Fallback to title if no alt
+            alt: tattoo.images[0].alt || tattoo.title,
+            category: tattoo.images[0].category
           },
           file: imageBuffer
         })

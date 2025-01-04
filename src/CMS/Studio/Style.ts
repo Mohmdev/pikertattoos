@@ -19,7 +19,7 @@ export const Style: CollectionConfig<'style'> = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'tattoos', 'artists', 'createdAt', 'updatedAt']
+    defaultColumns: ['image', 'title', 'tattoos', 'artists', 'createdAt', 'updatedAt']
   },
   defaultPopulate: {
     title: true,
@@ -33,16 +33,51 @@ export const Style: CollectionConfig<'style'> = {
       label: 'Style Name'
     },
     {
-      name: 'tattoos',
-      type: 'join',
-      collection: 'tattoo',
-      on: 'style'
+      type: 'tabs',
+      tabs: [
+        // Tattoo
+        {
+          label: 'Tattoos',
+          fields: [
+            {
+              name: 'tattoos',
+              type: 'join',
+              collection: 'tattoo',
+              on: 'style'
+            }
+          ]
+        },
+        // Artists
+        {
+          label: 'Artists',
+          fields: [
+            {
+              name: 'artists',
+              type: 'join',
+              collection: 'artist',
+              on: 'style'
+            }
+          ]
+        }
+      ]
     },
     {
-      name: 'artists',
-      type: 'join',
-      collection: 'artist',
-      on: 'style'
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: false,
+      label: 'Style Image',
+      admin: {
+        description: 'Optional'
+      }
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      label: 'Description',
+      admin: {
+        placeholder: 'Optional'
+      }
     },
     ...slugField()
   ],

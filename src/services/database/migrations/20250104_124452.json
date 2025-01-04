@@ -1,5 +1,5 @@
 {
-  "id": "198b321b-c5af-44c4-8ec6-4d391ec8da29",
+  "id": "8422cad2-a248-4d2d-9704-411716656df4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -28,7 +28,7 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         },
@@ -543,7 +543,7 @@
         },
         "version_description": {
           "name": "version_description",
-          "type": "varchar",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         },
@@ -1937,6 +1937,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "slug": {
           "name": "slug",
           "type": "varchar",
@@ -1980,6 +1992,21 @@
         }
       },
       "indexes": {
+        "style_image_idx": {
+          "name": "style_image_idx",
+          "columns": [
+            {
+              "expression": "image_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "style_slug_idx": {
           "name": "style_slug_idx",
           "columns": [
@@ -2057,6 +2084,19 @@
         }
       },
       "foreignKeys": {
+        "style_image_id_media_id_fk": {
+          "name": "style_image_id_media_id_fk",
+          "tableFrom": "style",
+          "tableTo": "media",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "style_parent_id_style_id_fk": {
           "name": "style_parent_id_style_id_fk",
           "tableFrom": "style",
@@ -2227,6 +2267,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version_image_id": {
+          "name": "version_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description": {
+          "name": "version_description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "version_slug": {
           "name": "version_slug",
           "type": "varchar",
@@ -2293,6 +2345,21 @@
           "columns": [
             {
               "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_style_v_version_version_image_idx": {
+          "name": "_style_v_version_version_image_idx",
+          "columns": [
+            {
+              "expression": "version_image_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -2438,6 +2505,19 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
+        "_style_v_version_image_id_media_id_fk": {
+          "name": "_style_v_version_image_id_media_id_fk",
+          "tableFrom": "_style_v",
+          "tableTo": "media",
+          "columnsFrom": [
+            "version_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "_style_v_version_parent_id_style_id_fk": {
           "name": "_style_v_version_parent_id_style_id_fk",
           "tableFrom": "_style_v",
@@ -2474,15 +2554,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "bio": {
-          "name": "bio",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
         "user_id": {
           "name": "user_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         },
@@ -2523,6 +2603,21 @@
         }
       },
       "indexes": {
+        "artist_title_idx": {
+          "name": "artist_title_idx",
+          "columns": [
+            {
+              "expression": "title",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "artist_user_idx": {
           "name": "artist_user_idx",
           "columns": [
@@ -2807,15 +2902,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_bio": {
-          "name": "version_bio",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
         "version_user_id": {
           "name": "version_user_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_bio": {
+          "name": "version_bio",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         },
@@ -2879,6 +2974,21 @@
           "columns": [
             {
               "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_artist_v_version_version_title_idx": {
+          "name": "_artist_v_version_version_title_idx",
+          "columns": [
+            {
+              "expression": "version_title",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -3225,6 +3335,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "slug": {
           "name": "slug",
           "type": "varchar",
@@ -3262,6 +3384,21 @@
         }
       },
       "indexes": {
+        "tag_image_idx": {
+          "name": "tag_image_idx",
+          "columns": [
+            {
+              "expression": "image_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "tag_slug_idx": {
           "name": "tag_slug_idx",
           "columns": [
@@ -3323,7 +3460,21 @@
           "with": {}
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "tag_image_id_media_id_fk": {
+          "name": "tag_image_id_media_id_fk",
+          "tableFrom": "tag",
+          "tableTo": "media",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -3348,6 +3499,18 @@
         },
         "version_title": {
           "name": "version_title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_image_id": {
+          "name": "version_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_description": {
+          "name": "version_description",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -3412,6 +3575,21 @@
           "columns": [
             {
               "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_tag_v_version_version_image_idx": {
+          "name": "_tag_v_version_version_image_idx",
+          "columns": [
+            {
+              "expression": "version_image_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -3535,6 +3713,19 @@
           "tableTo": "tag",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "_tag_v_version_image_id_media_id_fk": {
+          "name": "_tag_v_version_image_id_media_id_fk",
+          "tableFrom": "_tag_v",
+          "tableTo": "media",
+          "columnsFrom": [
+            "version_image_id"
           ],
           "columnsTo": [
             "id"
@@ -10391,6 +10582,13 @@
           "primaryKey": true,
           "notNull": true
         },
+        "category": {
+          "name": "category",
+          "type": "enum_media_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
         "alt": {
           "name": "alt",
           "type": "varchar",
@@ -10808,7 +11006,7 @@
               "nulls": "last"
             }
           ],
-          "isUnique": true,
+          "isUnique": false,
           "concurrently": false,
           "method": "btree",
           "with": {}
@@ -11486,7 +11684,7 @@
           "name": "first_name",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "last_name": {
           "name": "last_name",
@@ -17927,6 +18125,17 @@
       "values": [
         "draft",
         "published"
+      ]
+    },
+    "public.enum_media_category": {
+      "name": "enum_media_category",
+      "schema": "public",
+      "values": [
+        "tattoo",
+        "video",
+        "style",
+        "tag",
+        "other"
       ]
     },
     "public.enum_users_role": {

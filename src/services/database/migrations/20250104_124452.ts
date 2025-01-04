@@ -56,6 +56,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__pages_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_posts_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__posts_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_media_category" AS ENUM('tattoo', 'video', 'style', 'tag', 'other');
   CREATE TYPE "public"."enum_users_role" AS ENUM('admin', 'editor', 'public');
   CREATE TYPE "public"."enum_forms_confirmation_type" AS ENUM('message', 'redirect');
   CREATE TYPE "public"."enum_redirects_to_type" AS ENUM('reference', 'custom');
@@ -74,7 +75,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
   	"video_id" integer,
-  	"description" varchar,
+  	"description" jsonb,
   	"meta_title" varchar,
   	"meta_image_id" integer,
   	"meta_description" varchar,
@@ -103,7 +104,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"parent_id" integer,
   	"version_title" varchar,
   	"version_video_id" integer,
-  	"version_description" varchar,
+  	"version_description" jsonb,
   	"version_meta_title" varchar,
   	"version_meta_image_id" integer,
   	"version_meta_description" varchar,
@@ -188,6 +189,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE IF NOT EXISTS "style" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
+  	"image_id" integer,
+  	"description" varchar,
   	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
   	"parent_id" integer,
@@ -210,6 +213,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_title" varchar,
+  	"version_image_id" integer,
+  	"version_description" varchar,
   	"version_slug" varchar,
   	"version_slug_lock" boolean DEFAULT true,
   	"version_parent_id" integer,
@@ -224,8 +229,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE IF NOT EXISTS "artist" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
-  	"bio" jsonb,
   	"user_id" integer,
+  	"bio" jsonb,
   	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -246,8 +251,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_title" varchar,
-  	"version_bio" jsonb,
   	"version_user_id" integer,
+  	"version_bio" jsonb,
   	"version_slug" varchar,
   	"version_slug_lock" boolean DEFAULT true,
   	"version_updated_at" timestamp(3) with time zone,
@@ -270,6 +275,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE IF NOT EXISTS "tag" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
+  	"image_id" integer,
+  	"description" varchar,
   	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -281,6 +288,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_title" varchar,
+  	"version_image_id" integer,
+  	"version_description" varchar,
   	"version_slug" varchar,
   	"version_slug_lock" boolean DEFAULT true,
   	"version_updated_at" timestamp(3) with time zone,
@@ -806,6 +815,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE IF NOT EXISTS "media" (
   	"id" serial PRIMARY KEY NOT NULL,
+  	"category" "enum_media_category",
   	"alt" varchar,
   	"caption" jsonb,
   	"prefix" varchar DEFAULT 'media',
@@ -931,7 +941,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE IF NOT EXISTS "users" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"first_name" varchar,
+  	"first_name" varchar NOT NULL,
   	"last_name" varchar,
   	"photo_id" integer,
   	"role" "enum_users_role" DEFAULT 'public' NOT NULL,
@@ -1563,6 +1573,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "style" ADD CONSTRAINT "style_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "style" ADD CONSTRAINT "style_parent_id_style_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -1582,6 +1598,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "_style_v" ADD CONSTRAINT "_style_v_parent_id_style_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."style"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_style_v" ADD CONSTRAINT "_style_v_version_image_id_media_id_fk" FOREIGN KEY ("version_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1647,7 +1669,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "tag" ADD CONSTRAINT "tag_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "_tag_v" ADD CONSTRAINT "_tag_v_parent_id_tag_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."tag"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tag_v" ADD CONSTRAINT "_tag_v_version_image_id_media_id_fk" FOREIGN KEY ("version_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -2730,6 +2764,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "style_breadcrumbs_order_idx" ON "style_breadcrumbs" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "style_breadcrumbs_parent_id_idx" ON "style_breadcrumbs" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "style_breadcrumbs_doc_idx" ON "style_breadcrumbs" USING btree ("doc_id");
+  CREATE INDEX IF NOT EXISTS "style_image_idx" ON "style" USING btree ("image_id");
   CREATE UNIQUE INDEX IF NOT EXISTS "style_slug_idx" ON "style" USING btree ("slug");
   CREATE INDEX IF NOT EXISTS "style_parent_idx" ON "style" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "style_updated_at_idx" ON "style" USING btree ("updated_at");
@@ -2739,6 +2774,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_style_v_version_breadcrumbs_parent_id_idx" ON "_style_v_version_breadcrumbs" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "_style_v_version_breadcrumbs_doc_idx" ON "_style_v_version_breadcrumbs" USING btree ("doc_id");
   CREATE INDEX IF NOT EXISTS "_style_v_parent_idx" ON "_style_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_style_v_version_version_image_idx" ON "_style_v" USING btree ("version_image_id");
   CREATE INDEX IF NOT EXISTS "_style_v_version_version_slug_idx" ON "_style_v" USING btree ("version_slug");
   CREATE INDEX IF NOT EXISTS "_style_v_version_version_parent_idx" ON "_style_v" USING btree ("version_parent_id");
   CREATE INDEX IF NOT EXISTS "_style_v_version_version_updated_at_idx" ON "_style_v" USING btree ("version_updated_at");
@@ -2747,6 +2783,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_style_v_created_at_idx" ON "_style_v" USING btree ("created_at");
   CREATE INDEX IF NOT EXISTS "_style_v_updated_at_idx" ON "_style_v" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "_style_v_latest_idx" ON "_style_v" USING btree ("latest");
+  CREATE INDEX IF NOT EXISTS "artist_title_idx" ON "artist" USING btree ("title");
   CREATE INDEX IF NOT EXISTS "artist_user_idx" ON "artist" USING btree ("user_id");
   CREATE UNIQUE INDEX IF NOT EXISTS "artist_slug_idx" ON "artist" USING btree ("slug");
   CREATE INDEX IF NOT EXISTS "artist_updated_at_idx" ON "artist" USING btree ("updated_at");
@@ -2758,6 +2795,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "artist_rels_style_id_idx" ON "artist_rels" USING btree ("style_id");
   CREATE INDEX IF NOT EXISTS "artist_rels_tag_id_idx" ON "artist_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "_artist_v_parent_idx" ON "_artist_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_artist_v_version_version_title_idx" ON "_artist_v" USING btree ("version_title");
   CREATE INDEX IF NOT EXISTS "_artist_v_version_version_user_idx" ON "_artist_v" USING btree ("version_user_id");
   CREATE INDEX IF NOT EXISTS "_artist_v_version_version_slug_idx" ON "_artist_v" USING btree ("version_slug");
   CREATE INDEX IF NOT EXISTS "_artist_v_version_version_updated_at_idx" ON "_artist_v" USING btree ("version_updated_at");
@@ -2771,11 +2809,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_artist_v_rels_path_idx" ON "_artist_v_rels" USING btree ("path");
   CREATE INDEX IF NOT EXISTS "_artist_v_rels_style_id_idx" ON "_artist_v_rels" USING btree ("style_id");
   CREATE INDEX IF NOT EXISTS "_artist_v_rels_tag_id_idx" ON "_artist_v_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "tag_image_idx" ON "tag" USING btree ("image_id");
   CREATE UNIQUE INDEX IF NOT EXISTS "tag_slug_idx" ON "tag" USING btree ("slug");
   CREATE INDEX IF NOT EXISTS "tag_updated_at_idx" ON "tag" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "tag_created_at_idx" ON "tag" USING btree ("created_at");
   CREATE INDEX IF NOT EXISTS "tag__status_idx" ON "tag" USING btree ("_status");
   CREATE INDEX IF NOT EXISTS "_tag_v_parent_idx" ON "_tag_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_tag_v_version_version_image_idx" ON "_tag_v" USING btree ("version_image_id");
   CREATE INDEX IF NOT EXISTS "_tag_v_version_version_slug_idx" ON "_tag_v" USING btree ("version_slug");
   CREATE INDEX IF NOT EXISTS "_tag_v_version_version_updated_at_idx" ON "_tag_v" USING btree ("version_updated_at");
   CREATE INDEX IF NOT EXISTS "_tag_v_version_version_created_at_idx" ON "_tag_v" USING btree ("version_created_at");
@@ -2957,7 +2997,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_posts_v_rels_users_id_idx" ON "_posts_v_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "media_updated_at_idx" ON "media" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "media_created_at_idx" ON "media" USING btree ("created_at");
-  CREATE UNIQUE INDEX IF NOT EXISTS "media_filename_idx" ON "media" USING btree ("filename");
+  CREATE INDEX IF NOT EXISTS "media_filename_idx" ON "media" USING btree ("filename");
   CREATE INDEX IF NOT EXISTS "media_sizes_original_sizes_original_filename_idx" ON "media" USING btree ("sizes_original_filename");
   CREATE INDEX IF NOT EXISTS "media_sizes_thumbnail_sizes_thumbnail_filename_idx" ON "media" USING btree ("sizes_thumbnail_filename");
   CREATE INDEX IF NOT EXISTS "media_sizes_square_sizes_square_filename_idx" ON "media" USING btree ("sizes_square_filename");
@@ -3285,6 +3325,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__pages_v_version_status";
   DROP TYPE "public"."enum_posts_status";
   DROP TYPE "public"."enum__posts_v_version_status";
+  DROP TYPE "public"."enum_media_category";
   DROP TYPE "public"."enum_users_role";
   DROP TYPE "public"."enum_forms_confirmation_type";
   DROP TYPE "public"."enum_redirects_to_type";

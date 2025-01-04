@@ -35,7 +35,6 @@ export const Users: CollectionConfig<'users'> = {
       name: 'username',
       type: 'text',
       required: true,
-      index: true,
       unique: true,
       hooks: {
         beforeValidate: [
@@ -51,7 +50,8 @@ export const Users: CollectionConfig<'users'> = {
       fields: [
         {
           name: 'firstName',
-          type: 'text'
+          type: 'text',
+          required: true
         },
         {
           name: 'lastName',

@@ -33,16 +33,8 @@ export const Artist: CollectionConfig<'artist'> = {
       name: 'title',
       label: 'Artist Name',
       type: 'text',
-      required: true
-    },
-    {
-      name: 'bio',
-      label: 'Bio',
-      type: 'richText',
-      editor: basicLexical,
-      admin: {
-        description: 'Optional'
-      }
+      required: true,
+      index: true
     },
     {
       type: 'row',
@@ -52,7 +44,6 @@ export const Artist: CollectionConfig<'artist'> = {
           type: 'relationship',
           relationTo: 'style',
           hasMany: true,
-          required: true,
           label: {
             singular: 'Style',
             plural: 'Styles'
@@ -63,7 +54,6 @@ export const Artist: CollectionConfig<'artist'> = {
           type: 'relationship',
           relationTo: 'users',
           label: 'Artist Profile',
-          required: true,
           admin: {
             description:
               'Associate this artist with a user account to enable them to log in and manage their own content.'
@@ -72,17 +62,23 @@ export const Artist: CollectionConfig<'artist'> = {
       ]
     },
     {
+      name: 'bio',
+      label: 'Bio',
+      type: 'richText',
+      editor: basicLexical
+    },
+    {
       name: 'tattoos',
       type: 'join',
       collection: 'tattoo',
       on: 'artist',
       label: 'Portfolio',
-      required: true,
       admin: {
         description:
           'Associate this artist with a user account to enable them to log in and manage their own content.'
       }
     },
+
     tagsField,
     ...slugField()
   ],

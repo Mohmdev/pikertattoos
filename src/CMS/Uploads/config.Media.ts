@@ -2,12 +2,11 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { basicLexical } from '@services/editor/basicLexical'
-
-import type { CollectionConfig } from 'payload'
-
 import { anyone } from '@access/anyone'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
+
+import type { CollectionConfig } from 'payload'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,23 +33,29 @@ export const Media: CollectionConfig<'media'> = {
   },
   admin: {
     useAsTitle: 'alt',
-    defaultColumns: ['filename', 'mimeType', 'createdAt', 'updatedAt']
+    defaultColumns: ['filename', 'mimeType', 'filesize', 'createdAt', 'updatedAt']
   },
   fields: [
     {
+      name: 'category',
+      type: 'radio',
+      defaultValue: undefined,
+      options: ['tattoo', 'video', 'style', 'tag', 'other']
+    },
+    {
       name: 'alt',
       type: 'text',
-      //required: true,
       admin: {
-        description: 'Used for SEO and accessibility'
+        description: 'For SEO and accessibility'
       }
     },
     {
       name: 'caption',
       type: 'richText',
+      label: 'Caption',
       editor: basicLexical,
       admin: {
-        description: 'Caption for this media file.'
+        description: 'Custom caption for the image'
       }
     }
   ],
@@ -59,11 +64,7 @@ export const Media: CollectionConfig<'media'> = {
     displayPreview: true,
     focalPoint: true,
     disableLocalStorage: true,
-    /**
-     * Restrict mimeTypes in the file picker. Array of valid mime types or mimetype wildcards
-     * @example ['image/*', 'application/pdf']
-     * @default undefined
-     */
+    filenameCompoundIndex: ['category'],
     mimeTypes: [
       'image/*',
       'image/webp',

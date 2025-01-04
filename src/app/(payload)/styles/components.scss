@@ -17,7 +17,32 @@
   box-shadow: 0 0 0 0 transparent;
   transition: all 0.1s cubic-bezier(0, 0.2, 0.2, 1);
 }
+.file-details {
+  border: 1px solid var(--border-ui);
+  border-radius: 5px;
+  overflow: hidden;
+  background: var(--bg-default-primary);
+  padding: 2px;
 
+  header {
+    @media (max-width: 1024px) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  .thumbnail {
+    border: 1px solid var(--border-ui);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 1024px) {
+  .file-details .thumbnail {
+    width: 50%;
+    order: 1;
+  }
+}
 /* ------------------------------- Auth fields ------------------------------ */
 .auth-fields {
   border: 1px solid var(--border-ui);

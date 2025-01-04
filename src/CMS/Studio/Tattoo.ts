@@ -1,3 +1,4 @@
+import { basicLexical } from '@services/editor/basicLexical'
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
@@ -24,9 +25,9 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'area', 'style', 'artist', 'createdAt', 'updatedAt'],
-    livePreview: getLivePreviewUrl('pages'),
-    preview: getPreviewUrl('pages')
+    defaultColumns: ['images', 'title', 'area', 'style', 'artist', 'createdAt', 'updatedAt'],
+    livePreview: getLivePreviewUrl('tattoo'),
+    preview: getPreviewUrl('tattoo')
   },
   fields: [
     {
@@ -39,8 +40,20 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Gallery',
+          label: 'Details',
           fields: [
+            {
+              name: 'images',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: true,
+              minRows: 1,
+              maxRows: 12,
+              label: 'Images',
+              admin: {
+                description: 'Up to 12 images.'
+              }
+            },
             {
               name: 'video',
               type: 'upload',
@@ -49,42 +62,30 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
               label: 'Video'
             },
             {
-              name: 'images',
-              type: 'upload',
-              relationTo: 'media',
-              hasMany: true,
-              minRows: 1,
-              maxRows: 12,
-              label: 'Images'
-            }
-          ]
-        },
-        {
-          label: 'Details',
-          fields: [
-            {
-              name: 'description',
-              type: 'textarea'
-            },
-            {
-              name: 'area',
-              type: 'relationship',
-              relationTo: 'area',
-              hasMany: true,
-              label: {
-                singular: 'Area',
-                plural: 'Areas'
-              }
-            },
-            {
-              name: 'style',
-              type: 'relationship',
-              relationTo: 'style',
-              hasMany: true,
-              label: {
-                singular: 'Style',
-                plural: 'Styles'
-              }
+              type: 'row',
+              required: true,
+              fields: [
+                {
+                  name: 'area',
+                  type: 'relationship',
+                  relationTo: 'area',
+                  hasMany: true,
+                  label: {
+                    singular: 'Area',
+                    plural: 'Areas'
+                  }
+                },
+                {
+                  name: 'style',
+                  type: 'relationship',
+                  relationTo: 'style',
+                  hasMany: true,
+                  label: {
+                    singular: 'Style',
+                    plural: 'Styles'
+                  }
+                }
+              ]
             },
             {
               name: 'artist',
@@ -94,6 +95,17 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
               label: {
                 singular: 'Artist',
                 plural: 'Artists'
+              },
+              admin: {
+                position: 'sidebar'
+              }
+            },
+            {
+              name: 'description',
+              type: 'richText',
+              editor: basicLexical,
+              admin: {
+                position: 'sidebar'
               }
             },
             tagsField,

@@ -6,6 +6,7 @@ type MockTatttoo = {
     url: string
     filename: string
     mimeType: string
+    category: string
   }[]
   style: {
     title: string
@@ -30,7 +31,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Japanese Dragon Sleeve Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/ykpvl9ajtzadjwusn4dy.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -64,7 +66,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Traditional Rose Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920721/pikertattoos/mock/bv4bu9vttjtqhth8mg0n.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -98,7 +101,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Geometric Wolf Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/wmrcsg3ubakmjys2tv5d.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -132,7 +136,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Realistic Portrait Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/udufsuhd2kfmilo0lp8r.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -162,7 +167,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Mandala Finger Band Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/gt9omn3w8cdzteqkyrvm.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -196,7 +202,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Celtic Cross Cover-up Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/augjyyr6hziqpwcfimte.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -230,7 +237,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Watercolor Abstract Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920721/pikertattoos/mock/kmpqe5npmq4ihnxpxb6t.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -260,7 +268,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Neo Traditional Skull Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/sj33gbeypqcdk3tb7mj5.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -290,7 +299,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Musical Notes Script Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/kaepqqxuhpomj4vjy5s2.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
@@ -324,7 +334,8 @@ export const tattoosData: MockTatttoo[] = [
         alt: 'Tribal Phoenix Tattoo',
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/w9jeag64fhigleddffrq.jpg',
         filename: 'sample-tattoo-image.jpg',
-        mimeType: 'image/jpeg'
+        mimeType: 'image/jpeg',
+        category: 'tattoo'
       }
     ],
     style: [
