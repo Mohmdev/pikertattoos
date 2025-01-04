@@ -8,6 +8,7 @@ import type { Media as MediaType } from '@payload-types'
 import { Media } from '@components/dynamic/Media'
 
 import { InView } from './in-view'
+import { TiltSpotlight } from './TiltSpotlight'
 
 type InViewImagesGridProps = {
   images: MediaType[]
@@ -35,27 +36,28 @@ export const InViewImagesGrid = ({ images }: InViewImagesGridProps) => {
           <div className="columns-2 gap-4 px-8 sm:columns-3">
             {images.map((image) => {
               return (
-                <motion.div
-                  variants={{
-                    hidden: { opacity: 0, scale: 0.8, filter: 'blur(10px)' },
-                    visible: {
-                      opacity: 1,
-                      scale: 1,
-                      filter: 'blur(0px)'
-                    }
-                  }}
-                  key={image.id}
-                  className={cn(
-                    // 'aspect-auto h-max w-full',
-                    'relative mb-4 size-full overflow-hidden rounded-sm'
-                  )}
-                >
-                  <Media
-                    resource={image}
-                    className="size-full rounded-lg object-contain"
-                    objectFit="contain"
-                  />
-                </motion.div>
+                <TiltSpotlight key={image.id} title={image.alt}>
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, scale: 0.8, filter: 'blur(10px)' },
+                      visible: {
+                        opacity: 1,
+                        scale: 1,
+                        filter: 'blur(0px)'
+                      }
+                    }}
+                    className={cn(
+                      // 'aspect-auto h-max w-full',
+                      'relative mb-4 size-full overflow-hidden rounded-sm'
+                    )}
+                  >
+                    <Media
+                      resource={image}
+                      className="size-full rounded-lg object-contain"
+                      objectFit="contain"
+                    />
+                  </motion.div>
+                </TiltSpotlight>
               )
             })}
           </div>
