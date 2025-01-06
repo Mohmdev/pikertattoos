@@ -1,5 +1,5 @@
 {
-  "id": "8422cad2-a248-4d2d-9704-411716656df4",
+  "id": "f18fdd80-ac81-49bf-a2d6-1dfed93601d5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -15176,8 +15176,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.global_settings": {
-      "name": "global_settings",
+    "public.homepage": {
+      "name": "homepage",
       "schema": "",
       "columns": {
         "id": {
@@ -15186,113 +15186,55 @@
           "primaryKey": true,
           "notNull": true
         },
-        "site_identity_site_name": {
-          "name": "site_identity_site_name",
+        "title": {
+          "name": "title",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
-        "site_identity_site_description": {
-          "name": "site_identity_site_description",
+        "subtitle": {
+          "name": "subtitle",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
-        "branding_logo_id": {
-          "name": "branding_logo_id",
+        "meta_title": {
+          "name": "meta_title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "meta_image_id": {
+          "name": "meta_image_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "branding_logo_square_id": {
-          "name": "branding_logo_square_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "branding_favicon_id": {
-          "name": "branding_favicon_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact_info_contact_name": {
-          "name": "contact_info_contact_name",
+        "meta_description": {
+          "name": "meta_description",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
-        "contact_info_contact_email": {
-          "name": "contact_info_contact_email",
-          "type": "varchar",
+        "noindex": {
+          "name": "noindex",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": false
         },
-        "contact_info_contact_phone": {
-          "name": "contact_info_contact_phone",
-          "type": "varchar",
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
         },
-        "contact_info_contact_address": {
-          "name": "contact_info_contact_address",
-          "type": "varchar",
+        "_status": {
+          "name": "_status",
+          "type": "enum_homepage_status",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false
-        },
-        "contact_info_social_media_facebook": {
-          "name": "contact_info_social_media_facebook",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact_info_social_media_twitter": {
-          "name": "contact_info_social_media_twitter",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact_info_social_media_instagram": {
-          "name": "contact_info_social_media_instagram",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact_info_social_media_linkedin": {
-          "name": "contact_info_social_media_linkedin",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact_info_social_media_youtube": {
-          "name": "contact_info_social_media_youtube",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact_info_social_media_whatsapp": {
-          "name": "contact_info_social_media_whatsapp",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact_info_social_media_telegram": {
-          "name": "contact_info_social_media_telegram",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "global_seo_keywords": {
-          "name": "global_seo_keywords",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "global_seo_og_image_id": {
-          "name": "global_seo_og_image_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'draft'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -15308,11 +15250,11 @@
         }
       },
       "indexes": {
-        "global_settings_branding_branding_logo_idx": {
-          "name": "global_settings_branding_branding_logo_idx",
+        "homepage_meta_meta_image_idx": {
+          "name": "homepage_meta_meta_image_idx",
           "columns": [
             {
-              "expression": "branding_logo_id",
+              "expression": "meta_image_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -15323,41 +15265,11 @@
           "method": "btree",
           "with": {}
         },
-        "global_settings_branding_branding_logo_square_idx": {
-          "name": "global_settings_branding_branding_logo_square_idx",
+        "homepage__status_idx": {
+          "name": "homepage__status_idx",
           "columns": [
             {
-              "expression": "branding_logo_square_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "global_settings_branding_branding_favicon_idx": {
-          "name": "global_settings_branding_branding_favicon_idx",
-          "columns": [
-            {
-              "expression": "branding_favicon_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "global_settings_global_seo_global_seo_og_image_idx": {
-          "name": "global_settings_global_seo_global_seo_og_image_idx",
-          "columns": [
-            {
-              "expression": "global_seo_og_image_id",
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -15370,56 +15282,559 @@
         }
       },
       "foreignKeys": {
-        "global_settings_branding_logo_id_assets_id_fk": {
-          "name": "global_settings_branding_logo_id_assets_id_fk",
-          "tableFrom": "global_settings",
+        "homepage_meta_image_id_assets_id_fk": {
+          "name": "homepage_meta_image_id_assets_id_fk",
+          "tableFrom": "homepage",
           "tableTo": "assets",
           "columnsFrom": [
-            "branding_logo_id"
+            "meta_image_id"
           ],
           "columnsTo": [
             "id"
           ],
           "onDelete": "set null",
           "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.homepage_rels": {
+      "name": "homepage_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
         },
-        "global_settings_branding_logo_square_id_assets_id_fk": {
-          "name": "global_settings_branding_logo_square_id_assets_id_fk",
-          "tableFrom": "global_settings",
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "media_id": {
+          "name": "media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "users_id": {
+          "name": "users_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "homepage_rels_order_idx": {
+          "name": "homepage_rels_order_idx",
+          "columns": [
+            {
+              "expression": "order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "homepage_rels_parent_idx": {
+          "name": "homepage_rels_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "homepage_rels_path_idx": {
+          "name": "homepage_rels_path_idx",
+          "columns": [
+            {
+              "expression": "path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "homepage_rels_media_id_idx": {
+          "name": "homepage_rels_media_id_idx",
+          "columns": [
+            {
+              "expression": "media_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "homepage_rels_users_id_idx": {
+          "name": "homepage_rels_users_id_idx",
+          "columns": [
+            {
+              "expression": "users_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "homepage_rels_parent_fk": {
+          "name": "homepage_rels_parent_fk",
+          "tableFrom": "homepage_rels",
+          "tableTo": "homepage",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "homepage_rels_media_fk": {
+          "name": "homepage_rels_media_fk",
+          "tableFrom": "homepage_rels",
+          "tableTo": "media",
+          "columnsFrom": [
+            "media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "homepage_rels_users_fk": {
+          "name": "homepage_rels_users_fk",
+          "tableFrom": "homepage_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._homepage_v": {
+      "name": "_homepage_v",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "version_title": {
+          "name": "version_title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_subtitle": {
+          "name": "version_subtitle",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_meta_title": {
+          "name": "version_meta_title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_meta_image_id": {
+          "name": "version_meta_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_meta_description": {
+          "name": "version_meta_description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_noindex": {
+          "name": "version_noindex",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_published_at": {
+          "name": "version_published_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__homepage_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
+        "version_updated_at": {
+          "name": "version_updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_created_at": {
+          "name": "version_created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_homepage_v_version_meta_version_meta_image_idx": {
+          "name": "_homepage_v_version_meta_version_meta_image_idx",
+          "columns": [
+            {
+              "expression": "version_meta_image_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_version_version__status_idx": {
+          "name": "_homepage_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_created_at_idx": {
+          "name": "_homepage_v_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_updated_at_idx": {
+          "name": "_homepage_v_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_latest_idx": {
+          "name": "_homepage_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_autosave_idx": {
+          "name": "_homepage_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_homepage_v_version_meta_image_id_assets_id_fk": {
+          "name": "_homepage_v_version_meta_image_id_assets_id_fk",
+          "tableFrom": "_homepage_v",
           "tableTo": "assets",
           "columnsFrom": [
-            "branding_logo_square_id"
+            "version_meta_image_id"
           ],
           "columnsTo": [
             "id"
           ],
           "onDelete": "set null",
           "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._homepage_v_rels": {
+      "name": "_homepage_v_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
         },
-        "global_settings_branding_favicon_id_assets_id_fk": {
-          "name": "global_settings_branding_favicon_id_assets_id_fk",
-          "tableFrom": "global_settings",
-          "tableTo": "assets",
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "media_id": {
+          "name": "media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "users_id": {
+          "name": "users_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_homepage_v_rels_order_idx": {
+          "name": "_homepage_v_rels_order_idx",
+          "columns": [
+            {
+              "expression": "order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_rels_parent_idx": {
+          "name": "_homepage_v_rels_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_rels_path_idx": {
+          "name": "_homepage_v_rels_path_idx",
+          "columns": [
+            {
+              "expression": "path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_rels_media_id_idx": {
+          "name": "_homepage_v_rels_media_id_idx",
+          "columns": [
+            {
+              "expression": "media_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_rels_users_id_idx": {
+          "name": "_homepage_v_rels_users_id_idx",
+          "columns": [
+            {
+              "expression": "users_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_homepage_v_rels_parent_fk": {
+          "name": "_homepage_v_rels_parent_fk",
+          "tableFrom": "_homepage_v_rels",
+          "tableTo": "_homepage_v",
           "columnsFrom": [
-            "branding_favicon_id"
+            "parent_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "global_settings_global_seo_og_image_id_assets_id_fk": {
-          "name": "global_settings_global_seo_og_image_id_assets_id_fk",
-          "tableFrom": "global_settings",
-          "tableTo": "assets",
+        "_homepage_v_rels_media_fk": {
+          "name": "_homepage_v_rels_media_fk",
+          "tableFrom": "_homepage_v_rels",
+          "tableTo": "media",
           "columnsFrom": [
-            "global_seo_og_image_id"
+            "media_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_homepage_v_rels_users_fk": {
+          "name": "_homepage_v_rels_users_fk",
+          "tableFrom": "_homepage_v_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -17626,6 +18041,259 @@
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
+    },
+    "public.global_settings": {
+      "name": "global_settings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "site_identity_site_name": {
+          "name": "site_identity_site_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "site_identity_site_description": {
+          "name": "site_identity_site_description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "branding_logo_id": {
+          "name": "branding_logo_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "branding_logo_square_id": {
+          "name": "branding_logo_square_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "branding_favicon_id": {
+          "name": "branding_favicon_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_contact_name": {
+          "name": "contact_info_contact_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_contact_email": {
+          "name": "contact_info_contact_email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_contact_phone": {
+          "name": "contact_info_contact_phone",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_contact_address": {
+          "name": "contact_info_contact_address",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_social_media_facebook": {
+          "name": "contact_info_social_media_facebook",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_social_media_twitter": {
+          "name": "contact_info_social_media_twitter",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_social_media_instagram": {
+          "name": "contact_info_social_media_instagram",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_social_media_linkedin": {
+          "name": "contact_info_social_media_linkedin",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_social_media_youtube": {
+          "name": "contact_info_social_media_youtube",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_social_media_whatsapp": {
+          "name": "contact_info_social_media_whatsapp",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact_info_social_media_telegram": {
+          "name": "contact_info_social_media_telegram",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "global_seo_keywords": {
+          "name": "global_seo_keywords",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "global_seo_og_image_id": {
+          "name": "global_seo_og_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "global_settings_branding_branding_logo_idx": {
+          "name": "global_settings_branding_branding_logo_idx",
+          "columns": [
+            {
+              "expression": "branding_logo_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "global_settings_branding_branding_logo_square_idx": {
+          "name": "global_settings_branding_branding_logo_square_idx",
+          "columns": [
+            {
+              "expression": "branding_logo_square_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "global_settings_branding_branding_favicon_idx": {
+          "name": "global_settings_branding_branding_favicon_idx",
+          "columns": [
+            {
+              "expression": "branding_favicon_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "global_settings_global_seo_global_seo_og_image_idx": {
+          "name": "global_settings_global_seo_global_seo_og_image_idx",
+          "columns": [
+            {
+              "expression": "global_seo_og_image_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "global_settings_branding_logo_id_assets_id_fk": {
+          "name": "global_settings_branding_logo_id_assets_id_fk",
+          "tableFrom": "global_settings",
+          "tableTo": "assets",
+          "columnsFrom": [
+            "branding_logo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "global_settings_branding_logo_square_id_assets_id_fk": {
+          "name": "global_settings_branding_logo_square_id_assets_id_fk",
+          "tableFrom": "global_settings",
+          "tableTo": "assets",
+          "columnsFrom": [
+            "branding_logo_square_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "global_settings_branding_favicon_id_assets_id_fk": {
+          "name": "global_settings_branding_favicon_id_assets_id_fk",
+          "tableFrom": "global_settings",
+          "tableTo": "assets",
+          "columnsFrom": [
+            "branding_favicon_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "global_settings_global_seo_og_image_id_assets_id_fk": {
+          "name": "global_settings_global_seo_og_image_id_assets_id_fk",
+          "tableFrom": "global_settings",
+          "tableTo": "assets",
+          "columnsFrom": [
+            "global_seo_og_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {
@@ -18161,6 +18829,22 @@
       "values": [
         "reference",
         "custom"
+      ]
+    },
+    "public.enum_homepage_status": {
+      "name": "enum_homepage_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum__homepage_v_version_status": {
+      "name": "enum__homepage_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum_main_menu_tabs_description_links_link_type": {

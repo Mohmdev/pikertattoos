@@ -1,4 +1,4 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
+import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
@@ -60,6 +60,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_users_role" AS ENUM('admin', 'editor', 'public');
   CREATE TYPE "public"."enum_forms_confirmation_type" AS ENUM('message', 'redirect');
   CREATE TYPE "public"."enum_redirects_to_type" AS ENUM('reference', 'custom');
+  CREATE TYPE "public"."enum_homepage_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__homepage_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_main_menu_tabs_description_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_main_menu_tabs_nav_items_featured_link_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_main_menu_tabs_nav_items_list_links_links_link_type" AS ENUM('reference', 'custom');
@@ -1216,28 +1218,54 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
-  CREATE TABLE IF NOT EXISTS "global_settings" (
+  CREATE TABLE IF NOT EXISTS "homepage" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"site_identity_site_name" varchar,
-  	"site_identity_site_description" varchar,
-  	"branding_logo_id" integer,
-  	"branding_logo_square_id" integer,
-  	"branding_favicon_id" integer,
-  	"contact_info_contact_name" varchar,
-  	"contact_info_contact_email" varchar,
-  	"contact_info_contact_phone" varchar,
-  	"contact_info_contact_address" varchar,
-  	"contact_info_social_media_facebook" varchar,
-  	"contact_info_social_media_twitter" varchar,
-  	"contact_info_social_media_instagram" varchar,
-  	"contact_info_social_media_linkedin" varchar,
-  	"contact_info_social_media_youtube" varchar,
-  	"contact_info_social_media_whatsapp" varchar,
-  	"contact_info_social_media_telegram" varchar,
-  	"global_seo_keywords" varchar,
-  	"global_seo_og_image_id" integer,
+  	"title" varchar,
+  	"subtitle" varchar,
+  	"meta_title" varchar,
+  	"meta_image_id" integer,
+  	"meta_description" varchar,
+  	"noindex" boolean,
+  	"published_at" timestamp(3) with time zone,
+  	"_status" "enum_homepage_status" DEFAULT 'draft',
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
+  );
+  
+  CREATE TABLE IF NOT EXISTS "homepage_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"media_id" integer,
+  	"users_id" integer
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_homepage_v" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"version_title" varchar,
+  	"version_subtitle" varchar,
+  	"version_meta_title" varchar,
+  	"version_meta_image_id" integer,
+  	"version_meta_description" varchar,
+  	"version_noindex" boolean,
+  	"version_published_at" timestamp(3) with time zone,
+  	"version__status" "enum__homepage_v_version_status" DEFAULT 'draft',
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_homepage_v_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"media_id" integer,
+  	"users_id" integer
   );
   
   CREATE TABLE IF NOT EXISTS "main_menu_tabs_description_links" (
@@ -1402,6 +1430,30 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"tag_id" integer,
   	"area_id" integer,
   	"style_id" integer
+  );
+  
+  CREATE TABLE IF NOT EXISTS "global_settings" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"site_identity_site_name" varchar,
+  	"site_identity_site_description" varchar,
+  	"branding_logo_id" integer,
+  	"branding_logo_square_id" integer,
+  	"branding_favicon_id" integer,
+  	"contact_info_contact_name" varchar,
+  	"contact_info_contact_email" varchar,
+  	"contact_info_contact_phone" varchar,
+  	"contact_info_contact_address" varchar,
+  	"contact_info_social_media_facebook" varchar,
+  	"contact_info_social_media_twitter" varchar,
+  	"contact_info_social_media_instagram" varchar,
+  	"contact_info_social_media_linkedin" varchar,
+  	"contact_info_social_media_youtube" varchar,
+  	"contact_info_social_media_whatsapp" varchar,
+  	"contact_info_social_media_telegram" varchar,
+  	"global_seo_keywords" varchar,
+  	"global_seo_og_image_id" integer,
+  	"updated_at" timestamp(3) with time zone,
+  	"created_at" timestamp(3) with time zone
   );
   
   DO $$ BEGIN
@@ -2485,25 +2537,49 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "global_settings" ADD CONSTRAINT "global_settings_branding_logo_id_assets_id_fk" FOREIGN KEY ("branding_logo_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "homepage" ADD CONSTRAINT "homepage_meta_image_id_assets_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "global_settings" ADD CONSTRAINT "global_settings_branding_logo_square_id_assets_id_fk" FOREIGN KEY ("branding_logo_square_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "homepage_rels" ADD CONSTRAINT "homepage_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."homepage"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "global_settings" ADD CONSTRAINT "global_settings_branding_favicon_id_assets_id_fk" FOREIGN KEY ("branding_favicon_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "homepage_rels" ADD CONSTRAINT "homepage_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "global_settings" ADD CONSTRAINT "global_settings_global_seo_og_image_id_assets_id_fk" FOREIGN KEY ("global_seo_og_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "homepage_rels" ADD CONSTRAINT "homepage_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_homepage_v" ADD CONSTRAINT "_homepage_v_version_meta_image_id_assets_id_fk" FOREIGN KEY ("version_meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_homepage_v_rels" ADD CONSTRAINT "_homepage_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_homepage_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_homepage_v_rels" ADD CONSTRAINT "_homepage_v_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_homepage_v_rels" ADD CONSTRAINT "_homepage_v_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -2702,6 +2778,30 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "_footer_v_rels" ADD CONSTRAINT "_footer_v_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "global_settings" ADD CONSTRAINT "global_settings_branding_logo_id_assets_id_fk" FOREIGN KEY ("branding_logo_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "global_settings" ADD CONSTRAINT "global_settings_branding_logo_square_id_assets_id_fk" FOREIGN KEY ("branding_logo_square_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "global_settings" ADD CONSTRAINT "global_settings_branding_favicon_id_assets_id_fk" FOREIGN KEY ("branding_favicon_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "global_settings" ADD CONSTRAINT "global_settings_global_seo_og_image_id_assets_id_fk" FOREIGN KEY ("global_seo_og_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -3109,10 +3209,24 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "payload_preferences_rels_users_id_idx" ON "payload_preferences_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "global_settings_branding_branding_logo_idx" ON "global_settings" USING btree ("branding_logo_id");
-  CREATE INDEX IF NOT EXISTS "global_settings_branding_branding_logo_square_idx" ON "global_settings" USING btree ("branding_logo_square_id");
-  CREATE INDEX IF NOT EXISTS "global_settings_branding_branding_favicon_idx" ON "global_settings" USING btree ("branding_favicon_id");
-  CREATE INDEX IF NOT EXISTS "global_settings_global_seo_global_seo_og_image_idx" ON "global_settings" USING btree ("global_seo_og_image_id");
+  CREATE INDEX IF NOT EXISTS "homepage_meta_meta_image_idx" ON "homepage" USING btree ("meta_image_id");
+  CREATE INDEX IF NOT EXISTS "homepage__status_idx" ON "homepage" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "homepage_rels_order_idx" ON "homepage_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "homepage_rels_parent_idx" ON "homepage_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "homepage_rels_path_idx" ON "homepage_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "homepage_rels_media_id_idx" ON "homepage_rels" USING btree ("media_id");
+  CREATE INDEX IF NOT EXISTS "homepage_rels_users_id_idx" ON "homepage_rels" USING btree ("users_id");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_version_meta_version_meta_image_idx" ON "_homepage_v" USING btree ("version_meta_image_id");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_version_version__status_idx" ON "_homepage_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_created_at_idx" ON "_homepage_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_updated_at_idx" ON "_homepage_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_latest_idx" ON "_homepage_v" USING btree ("latest");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_autosave_idx" ON "_homepage_v" USING btree ("autosave");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_rels_order_idx" ON "_homepage_v_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_rels_parent_idx" ON "_homepage_v_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_rels_path_idx" ON "_homepage_v_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_rels_media_id_idx" ON "_homepage_v_rels" USING btree ("media_id");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_rels_users_id_idx" ON "_homepage_v_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "main_menu_tabs_description_links_order_idx" ON "main_menu_tabs_description_links" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "main_menu_tabs_description_links_parent_id_idx" ON "main_menu_tabs_description_links" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "main_menu_tabs_nav_items_featured_link_links_order_idx" ON "main_menu_tabs_nav_items_featured_link_links" USING btree ("_order");
@@ -3166,7 +3280,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_footer_v_rels_artist_id_idx" ON "_footer_v_rels" USING btree ("artist_id");
   CREATE INDEX IF NOT EXISTS "_footer_v_rels_tag_id_idx" ON "_footer_v_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "_footer_v_rels_area_id_idx" ON "_footer_v_rels" USING btree ("area_id");
-  CREATE INDEX IF NOT EXISTS "_footer_v_rels_style_id_idx" ON "_footer_v_rels" USING btree ("style_id");`)
+  CREATE INDEX IF NOT EXISTS "_footer_v_rels_style_id_idx" ON "_footer_v_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "global_settings_branding_branding_logo_idx" ON "global_settings" USING btree ("branding_logo_id");
+  CREATE INDEX IF NOT EXISTS "global_settings_branding_branding_logo_square_idx" ON "global_settings" USING btree ("branding_logo_square_id");
+  CREATE INDEX IF NOT EXISTS "global_settings_branding_branding_favicon_idx" ON "global_settings" USING btree ("branding_favicon_id");
+  CREATE INDEX IF NOT EXISTS "global_settings_global_seo_global_seo_og_image_idx" ON "global_settings" USING btree ("global_seo_og_image_id");`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
@@ -3255,7 +3373,10 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "payload_preferences" CASCADE;
   DROP TABLE "payload_preferences_rels" CASCADE;
   DROP TABLE "payload_migrations" CASCADE;
-  DROP TABLE "global_settings" CASCADE;
+  DROP TABLE "homepage" CASCADE;
+  DROP TABLE "homepage_rels" CASCADE;
+  DROP TABLE "_homepage_v" CASCADE;
+  DROP TABLE "_homepage_v_rels" CASCADE;
   DROP TABLE "main_menu_tabs_description_links" CASCADE;
   DROP TABLE "main_menu_tabs_nav_items_featured_link_links" CASCADE;
   DROP TABLE "main_menu_tabs_nav_items_list_links_links" CASCADE;
@@ -3271,6 +3392,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "_footer_v_version_columns" CASCADE;
   DROP TABLE "_footer_v" CASCADE;
   DROP TABLE "_footer_v_rels" CASCADE;
+  DROP TABLE "global_settings" CASCADE;
   DROP TYPE "public"."enum_tattoo_status";
   DROP TYPE "public"."enum__tattoo_v_version_status";
   DROP TYPE "public"."enum_area_status";
@@ -3329,6 +3451,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_users_role";
   DROP TYPE "public"."enum_forms_confirmation_type";
   DROP TYPE "public"."enum_redirects_to_type";
+  DROP TYPE "public"."enum_homepage_status";
+  DROP TYPE "public"."enum__homepage_v_version_status";
   DROP TYPE "public"."enum_main_menu_tabs_description_links_link_type";
   DROP TYPE "public"."enum_main_menu_tabs_nav_items_featured_link_links_link_type";
   DROP TYPE "public"."enum_main_menu_tabs_nav_items_list_links_links_link_type";

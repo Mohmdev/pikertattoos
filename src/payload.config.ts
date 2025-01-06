@@ -17,7 +17,7 @@ import { Media } from '@CMS/Uploads/config.Media'
 import { UserPhotos } from '@CMS/Uploads/config.UserPhotos'
 import { Users } from '@CMS/Users/config'
 import { adminConfig } from '@services/admin/config'
-import { databaseAdapter } from '@services/database/config'
+import { postgres } from '@services/database/config.postgres'
 import { advancedLexical } from '@services/editor/advancedLexical'
 import { emailAdapter } from '@services/email/config'
 import { pluginsConfig } from '@services/plugins'
@@ -42,7 +42,7 @@ export default buildConfig({
   globals: [...globalGroup('Customize', [HomePage, MainMenu, Footer, GlobalSettings])],
   editor: advancedLexical,
   admin: adminConfig,
-  db: databaseAdapter,
+  db: postgres,
   email: emailAdapter,
   sharp,
   plugins: [...pluginsConfig],
