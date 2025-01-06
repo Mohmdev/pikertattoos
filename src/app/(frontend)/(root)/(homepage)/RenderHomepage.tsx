@@ -1,49 +1,31 @@
-import configPromise from '@payload-config'
+import React from 'react'
 
-import { getPayload } from 'payload'
 import { cn } from '@utils/cn'
 
-import type { Payload } from 'payload'
+import type { Homepage, Media } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
 import GradientText from '@components/global/gradient-text'
 
 import { InViewImagesGrid } from './InViewImagesGrid'
 
-const getTaggedMedia = async (payload: Payload) => {
-  const results = await payload.find({
-    collection: 'media',
-    limit: 21,
-    pagination: false,
-    where: {
-      category: {
-        equals: 'tattoo'
-      }
-    },
-    select: {
-      url: true,
-      alt: true,
-      updatedAt: true,
-      createdAt: true
-    }
-  })
+export const RenderHomepage = ({ homeData }: { homeData: Homepage }) => {
+  const { featured, title, subtitle } = homeData
+  const images = featured.filter((item): item is Media => typeof item === 'object' && item !== null)
 
-  return results || { docs: [] }
-}
-
-export default async function HomePage() {
-  // const user = await onAuthenticatedUser()
-  const payload = await getPayload({ config: configPromise })
-  const { docs: images } = await getTaggedMedia(payload)
+  // if (!homeData) return null
 
   return (
-    <div className="flex flex-1 flex-col gap-60 px-0 xl:px-10">
+    <>
       <GradientText
         className="text-center text-[40px] font-semibold leading-none md:text-[55px] lg:text-[90px]"
         element="H1"
       >
-        Piker Tattoos
+        {title ? title : 'Nexweb Studio'}
       </GradientText>
+      <p className="pt-2 leading-none text-themeTextGray">
+        {subtitle ? subtitle : 'Web Technology Solutions'}
+      </p>
       <BackdropGradient
         className={cn(
           'w-full',
@@ -62,9 +44,9 @@ export default async function HomePage() {
             maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.4) 50%,rgba(0, 0, 0, 0.4) 50%,rgba(0, 0, 0, 0))`
           }}
         >
-          <InViewImagesGrid images={images} />
+          {images && <InViewImagesGrid images={images} />}
         </div>
       </BackdropGradient>
-    </div>
+    </>
   )
 }

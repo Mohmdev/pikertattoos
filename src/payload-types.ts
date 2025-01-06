@@ -73,14 +73,16 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
-    'global-settings': GlobalSetting;
+    homepage: Homepage;
     'main-menu': MainMenu;
     footer: Footer;
+    'global-settings': GlobalSetting;
   };
   globalsSelect: {
-    'global-settings': GlobalSettingsSelect<false> | GlobalSettingsSelect<true>;
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
     'main-menu': MainMenuSelect<false> | MainMenuSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'global-settings': GlobalSettingsSelect<false> | GlobalSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -2405,50 +2407,24 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "global-settings".
+ * via the `definition` "homepage".
  */
-export interface GlobalSetting {
+export interface Homepage {
   id: number;
-  siteIdentity?: {
-    siteName?: string | null;
-    siteDescription?: string | null;
-  };
-  branding?: {
-    /**
-     * Light-colored version of your logo optimized for dark backgrounds and dark mode displays.
-     */
-    logo?: (number | null) | Asset;
-    /**
-     * Dark-colored version of your logo optimized for light backgrounds and standard displays.
-     */
-    logoSquare?: (number | null) | Asset;
-    /**
-     * The small icon that is displayed in the browser tab. Recommended size: 32x32px.
-     */
-    favicon?: (number | null) | Asset;
-  };
-  contactInfo?: {
-    contactName?: string | null;
-    contactEmail?: string | null;
-    contactPhone?: string | null;
-    contactAddress?: string | null;
-    socialMedia?: {
-      facebook?: string | null;
-      twitter?: string | null;
-      instagram?: string | null;
-      linkedin?: string | null;
-      youtube?: string | null;
-      whatsapp?: string | null;
-      telegram?: string | null;
-    };
-  };
-  globalSeo?: {
-    keywords?: string | null;
-    /**
-     * The image that will appear when sharing your site on social media.
-     */
-    ogImage?: (number | null) | Asset;
-  };
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Upload new images or choose from existing ones.
+   */
+  featured: (number | Media)[];
+  meta?: Meta;
+  /**
+   * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
+   */
+  noindex?: boolean | null;
+  authors?: (number | User)[] | null;
+  publishedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2782,47 +2758,66 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "global-settings_select".
+ * via the `definition` "global-settings".
  */
-export interface GlobalSettingsSelect<T extends boolean = true> {
-  siteIdentity?:
-    | T
-    | {
-        siteName?: T;
-        siteDescription?: T;
-      };
-  branding?:
-    | T
-    | {
-        logo?: T;
-        logoSquare?: T;
-        favicon?: T;
-      };
-  contactInfo?:
-    | T
-    | {
-        contactName?: T;
-        contactEmail?: T;
-        contactPhone?: T;
-        contactAddress?: T;
-        socialMedia?:
-          | T
-          | {
-              facebook?: T;
-              twitter?: T;
-              instagram?: T;
-              linkedin?: T;
-              youtube?: T;
-              whatsapp?: T;
-              telegram?: T;
-            };
-      };
-  globalSeo?:
-    | T
-    | {
-        keywords?: T;
-        ogImage?: T;
-      };
+export interface GlobalSetting {
+  id: number;
+  siteIdentity?: {
+    siteName?: string | null;
+    siteDescription?: string | null;
+  };
+  branding?: {
+    /**
+     * Light-colored version of your logo optimized for dark backgrounds and dark mode displays.
+     */
+    logo?: (number | null) | Asset;
+    /**
+     * Dark-colored version of your logo optimized for light backgrounds and standard displays.
+     */
+    logoSquare?: (number | null) | Asset;
+    /**
+     * The small icon that is displayed in the browser tab. Recommended size: 32x32px.
+     */
+    favicon?: (number | null) | Asset;
+  };
+  contactInfo?: {
+    contactName?: string | null;
+    contactEmail?: string | null;
+    contactPhone?: string | null;
+    contactAddress?: string | null;
+    socialMedia?: {
+      facebook?: string | null;
+      twitter?: string | null;
+      instagram?: string | null;
+      linkedin?: string | null;
+      youtube?: string | null;
+      whatsapp?: string | null;
+      telegram?: string | null;
+    };
+  };
+  globalSeo?: {
+    keywords?: string | null;
+    /**
+     * The image that will appear when sharing your site on social media.
+     */
+    ogImage?: (number | null) | Asset;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  featured?: T;
+  meta?: T | MetaSelect<T>;
+  noindex?: T;
+  authors?: T;
+  publishedAt?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -2961,6 +2956,53 @@ export interface FooterSelect<T extends boolean = true> {
         id?: T;
       };
   _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "global-settings_select".
+ */
+export interface GlobalSettingsSelect<T extends boolean = true> {
+  siteIdentity?:
+    | T
+    | {
+        siteName?: T;
+        siteDescription?: T;
+      };
+  branding?:
+    | T
+    | {
+        logo?: T;
+        logoSquare?: T;
+        favicon?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        contactName?: T;
+        contactEmail?: T;
+        contactPhone?: T;
+        contactAddress?: T;
+        socialMedia?:
+          | T
+          | {
+              facebook?: T;
+              twitter?: T;
+              instagram?: T;
+              linkedin?: T;
+              youtube?: T;
+              whatsapp?: T;
+              telegram?: T;
+            };
+      };
+  globalSeo?:
+    | T
+    | {
+        keywords?: T;
+        ogImage?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

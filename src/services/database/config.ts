@@ -10,5 +10,6 @@ const dirname = path.dirname(filename)
 
 export const databaseAdapter: Config['db'] = vercelPostgresAdapter({
   forceUseVercelPostgres: true,
-  migrationDir: path.resolve(dirname, './migrations')
+  migrationDir: path.resolve(dirname, './migrations'),
+  push: false
 })
