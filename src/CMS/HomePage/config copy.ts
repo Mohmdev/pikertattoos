@@ -1,4 +1,3 @@
-import { generateGlobalPreviewPath } from '@services/preview/generateGlobalPreviewPath'
 import { authorsField } from '@fields/shared/authorsField'
 import { noindexField } from '@fields/shared/noindexField'
 import { publishedAtField } from '@fields/shared/publishedAtField'
@@ -22,18 +21,9 @@ export const HomePage: GlobalConfig = {
     readDrafts: isAdminOrEditor
   },
   admin: {
-    // livePreview: {
-    //   url: () => {
-    //     return `${getServerSideURL()}/`
-    //   }
-    // },
     livePreview: {
-      url: ({ req }) => {
-        return generateGlobalPreviewPath({
-          global: 'homepage',
-          slug: 'home',
-          req
-        })
+      url: () => {
+        return `${getServerSideURL()}/next/preview/.....`
       }
     },
     preview: () => {

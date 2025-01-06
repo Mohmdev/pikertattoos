@@ -1,4 +1,6 @@
 import { blogEditor } from '@services/editor/blogEditor'
+import { getLivePreviewUrl } from '@services/preview/getLivePreviewUrl'
+import { getPreviewUrl } from '@services/preview/getPreviewUrl'
 import { authorsField } from '@fields/shared/authorsField'
 import { categoriesField } from '@fields/shared/categoriesField'
 import { noindexField } from '@fields/shared/noindexField'
@@ -7,17 +9,14 @@ import { relatedPostsField } from '@fields/shared/relatedPostsField'
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
+import { isAdminOrEditor } from '@access/isAdminOrEditor'
+import { isAdminOrSelf } from '@access/isAdminOrSelf'
+import { publishedOnly } from '@access/publishedOnly'
 
-import { getLivePreviewUrl } from '@utils/getLivePreviewUrl'
-import { getPreviewUrl } from '@utils/getPreviewUrl'
 import { populateAuthors } from '@hooks/populateAuthors'
 import { populatePublishedAt } from '@hooks/populatePublishedAt'
 
 import type { CollectionConfig } from 'payload'
-
-import { isAdminOrEditor } from '@access/isAdminOrEditor'
-import { isAdminOrSelf } from '@access/isAdminOrSelf'
-import { publishedOnly } from '@access/publishedOnly'
 
 import { revalidateDelete, revalidatePost } from './revalidatePost'
 

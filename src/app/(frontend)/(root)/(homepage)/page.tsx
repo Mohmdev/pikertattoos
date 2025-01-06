@@ -2,7 +2,7 @@ import { cache } from 'react'
 import { draftMode } from 'next/headers'
 import type { Metadata } from 'next'
 
-import config from '@payload-config'
+import configPromise from '@payload-config'
 
 import { mergeOpenGraph } from '@seo/mergeOpenGraph'
 import { getPayload } from 'payload'
@@ -17,29 +17,48 @@ import GradientText from '@components/global/gradient-text'
 
 import { InViewImagesGrid } from './InViewImagesGrid'
 
-const cachedHomepage = cache(async () => {
-  const payload = await getPayload({ config })
-  const doc = await payload.findGlobal({
-    slug: 'homepage',
-    depth: 1,
-    draft: false,
-    select: {
-      title: true,
-      subtitle: true,
-      featured: true
-    }
-  })
+// const cachedHomepage = cache(async () => {
+//   const payload = await getPayload({ config: configPromise })
+//   const doc = await payload.findGlobal({
+//     slug: 'homepage',
+//     depth: 1,
+//     draft: false,
+//     select: {
+//       title: true,
+//       subtitle: true,
+//       featured: true
+//     }
+//   })
 
-  return doc || null
-})
+//   return doc || null
+// })
 
-const fetchHomepage = async (): Promise<Homepage> => {
+// const fetchHomepage = async (draft: boolean): Promise<Homepage> => {
+//   // const { isEnabled: draft } = await draftMode()
+//   const payload = await getPayload({ config })
+//   const doc = await payload.findGlobal({
+//     slug: 'homepage',
+//     depth: 1,
+//     draft: draft,
+//     overrideAccess: draft,
+//     select: {
+//       title: true,
+//       subtitle: true,
+//       featured: true
+//     }
+//   })
+
+//   return doc
+// }
+
+const getHomepage = cache(async () => {
   const { isEnabled: draft } = await draftMode()
-  const payload = await getPayload({ config })
+  const payload = await getPayload({ config: configPromise })
   const doc = await payload.findGlobal({
     slug: 'homepage',
     depth: 1,
     draft,
+    overrideAccess: draft,
     select: {
       title: true,
       subtitle: true,
@@ -48,20 +67,30 @@ const fetchHomepage = async (): Promise<Homepage> => {
   })
 
   return doc
-}
+})
 
 // const getHomepage = async () => unstable_cache(fetchHomepage, ['global_homepage'])
 
-export const dynamic = 'force-dynamic'
+// export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   const { isEnabled: draft } = await draftMode()
-  const getHomepage = draft ? fetchHomepage : cachedHomepage
+  // const getHomepage = draft ? () => fetchHomepage(draft) : cachedHomepage
 
-  const homepage: Homepage = await getHomepage()
+  // const homepage: Homepage = await getHomepage()
 
-  const { title, subtitle } = homepage
-  const images = homepage.featured as Media[]
+  let page: Homepage | null
+  // eslint-disable-next-line prefer-const
+  page = await getHomepage()
+
+  if (!page) {
+    return {}
+  }
+
+  const { title, subtitle, featured: images } = page
+
+  // const { title, subtitle } = homepage
+  // const images = homepage.featured as Media[]
 
   return (
     <div className="flex flex-1 flex-col items-center gap-60 px-0 xl:px-10">
@@ -97,7 +126,11 @@ export default async function HomePage() {
             maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.4) 50%,rgba(0, 0, 0, 0.4) 50%,rgba(0, 0, 0, 0))`
           }}
         >
-          {images && <InViewImagesGrid images={images} />}
+          {images &&
+            Array.isArray(images) &&
+            images.every((item): item is Media => typeof item === 'object' && item !== null) && (
+              <InViewImagesGrid images={images} />
+            )}
         </div>
       </BackdropGradient>
     </div>

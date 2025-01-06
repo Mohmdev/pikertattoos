@@ -17,7 +17,7 @@ type Props = {
   req: PayloadRequest
 }
 
-export const generatePreviewPath = ({ collection, slug, req }: Props) => {
+export const generateCollectionPreviewPath = ({ collection, slug, req }: Props) => {
   const path = `${collectionPrefixMap[collection]}/${slug}`
 
   const params = {

@@ -1,10 +1,10 @@
-import { generatePreviewPath } from '@utils/generatePreviewPath'
+import { generateCollectionPreviewPath } from '@services/preview/generateCollectionPreviewPath'
 
 import type { CollectionSlug, LivePreviewConfig } from 'payload'
 
 export const getLivePreviewUrl = (collection: CollectionSlug): LivePreviewConfig => ({
   url: ({ data, req }) => {
-    const path = generatePreviewPath({
+    const path = generateCollectionPreviewPath({
       slug: typeof data?.slug === 'string' ? data.slug : '',
       collection,
       req

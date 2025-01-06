@@ -1,13 +1,12 @@
 import { basicLexical } from '@services/editor/basicLexical'
+import { getLivePreviewUrl } from '@services/preview/getLivePreviewUrl'
+import { getPreviewUrl } from '@services/preview/getPreviewUrl'
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
 import { anyone } from '@access/anyone'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
-
-import { getLivePreviewUrl } from '@utils/getLivePreviewUrl'
-import { getPreviewUrl } from '@utils/getPreviewUrl'
 
 import type { CollectionConfig } from 'payload'
 

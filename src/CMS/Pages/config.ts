@@ -1,3 +1,5 @@
+import { getLivePreviewUrl } from '@services/preview/getLivePreviewUrl'
+import { getPreviewUrl } from '@services/preview/getPreviewUrl'
 import { BannerBlock } from '@blocks/BannerBlock/config'
 import { CallToActionBlock } from '@blocks/CallToActionBlock/config'
 import { MediaBlock } from '@blocks/MediaBlock/config'
@@ -14,8 +16,6 @@ import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
 import { publishedOnly } from '@access/publishedOnly'
 
-import { getLivePreviewUrl } from '@utils/getLivePreviewUrl'
-import { getPreviewUrl } from '@utils/getPreviewUrl'
 import { populateAuthors } from '@hooks/populateAuthors'
 import { populatePublishedAt } from '@hooks/populatePublishedAt'
 
