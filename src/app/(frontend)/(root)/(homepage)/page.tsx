@@ -1,4 +1,4 @@
-import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
 import { draftMode } from 'next/headers'
 import type { Metadata } from 'next'
 
@@ -17,46 +17,33 @@ import GradientText from '@components/global/gradient-text'
 
 import { InViewImagesGrid } from './InViewImagesGrid'
 
-// const cachedHomepage = cache(async () => {
-//   const payload = await getPayload({ config: configPromise })
-//   const doc = await payload.findGlobal({
-//     slug: 'homepage',
-//     depth: 1,
-//     draft: false,
-//     select: {
-//       title: true,
-//       subtitle: true,
-//       featured: true
-//     }
-//   })
+export const dynamic = 'force-static'
 
-//   return doc || null
-// })
+const getCachedHomepage = unstable_cache(async () => {
+  const payload = await getPayload({ config: configPromise })
+  const doc = await payload.findGlobal({
+    slug: 'homepage',
 
-// const fetchHomepage = async (draft: boolean): Promise<Homepage> => {
-//   // const { isEnabled: draft } = await draftMode()
-//   const payload = await getPayload({ config })
-//   const doc = await payload.findGlobal({
-//     slug: 'homepage',
-//     depth: 1,
-//     draft: draft,
-//     overrideAccess: draft,
-//     select: {
-//       title: true,
-//       subtitle: true,
-//       featured: true
-//     }
-//   })
+    depth: 0,
+    draft: false,
 
-//   return doc
-// }
+    // overrideAccess: draft
+    select: {
+      title: true,
+      subtitle: true,
+      featured: true
+    }
+  })
 
-const getHomepage = cache(async () => {
+  return doc
+}, ['global_homepage'])
+
+const getDraftHomepage = async () => {
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
   const doc = await payload.findGlobal({
     slug: 'homepage',
-    depth: 1,
+    depth: 0,
     draft,
     overrideAccess: draft,
     select: {
@@ -67,30 +54,24 @@ const getHomepage = cache(async () => {
   })
 
   return doc
-})
-
-// const getHomepage = async () => unstable_cache(fetchHomepage, ['global_homepage'])
-
-// export const dynamic = 'force-dynamic'
+}
 
 export default async function HomePage() {
   const { isEnabled: draft } = await draftMode()
-  // const getHomepage = draft ? () => fetchHomepage(draft) : cachedHomepage
 
-  // const homepage: Homepage = await getHomepage()
+  const getHomepage = draft ? getDraftHomepage : getCachedHomepage
 
-  let page: Homepage | null
-  // eslint-disable-next-line prefer-const
-  page = await getHomepage()
+  // let page: Homepage | null
+  // page = await getHomepage()
+
+  const page: Homepage = await getHomepage()
+  // let page: Homepage = draft ? getDraftHomepage : getCachedHomepage || null
 
   if (!page) {
     return {}
   }
 
   const { title, subtitle, featured: images } = page
-
-  // const { title, subtitle } = homepage
-  // const images = homepage.featured as Media[]
 
   return (
     <div className="flex flex-1 flex-col items-center gap-60 px-0 xl:px-10">
@@ -144,3 +125,38 @@ export const metadata: Metadata = {
   description:
     'TESTING Piker Studio, where artistry meets skin! We transform your ideas, blend them with creativity and precision and we create tattoos that tell your unique story.'
 }
+
+// const getHomepage = cache(async () => {
+//   const { isEnabled: draft } = await draftMode()
+//   const payload = await getPayload({ config: configPromise })
+//   const doc = await payload.findGlobal({
+//     slug: 'homepage',
+//     depth: 1,
+//     draft,
+//     overrideAccess: draft,
+//     select: {
+//       title: true,
+//       subtitle: true,
+//       featured: true
+//     }
+//   })
+
+//   return doc
+// })
+
+// const getCachedHomepage = cache(async () => {
+//   const payload = await getPayload({ config: configPromise })
+//   const doc = await payload.findGlobal({
+//     slug: 'homepage',
+//     depth: 0,
+//     draft: false,
+//     // overrideAccess: draft
+//     select: {
+//       title: true,
+//       subtitle: true,
+//       featured: true
+//     }
+//   })
+
+//   return doc
+// })

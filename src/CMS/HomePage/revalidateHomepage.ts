@@ -1,31 +1,30 @@
-import { revalidatePath } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 
 import type { GlobalAfterChangeHook } from 'payload'
 
 export const revalidateHomepage: GlobalAfterChangeHook = ({
   doc,
-  previousDoc,
+  // previousDoc,
   req: { payload, context }
 }) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
-      const path = '/'
+      // const path = '/'
+      const tag = 'global_homepage'
 
-      payload.logger.info(`Revalidating Homepage at path: ${path}`)
-
-      revalidatePath(path)
+      revalidateTag(tag)
+      payload.logger.info(`✓ Homepage Tag Revalidated.`)
       // revalidateTag('homepage-sitemap')
     }
 
     // If the post was previously published, we need to revalidate the old path
-    if (previousDoc._status === 'published' && doc._status !== 'published') {
-      const oldPath = `/${previousDoc}`
+    // if (previousDoc._status === 'published' && doc._status !== 'published') {
+    //   const oldPath = `/${previousDoc}`
 
-      payload.logger.info(`Revalidating old Homepage at path: ${oldPath}`)
-
-      revalidatePath(oldPath)
-      // revalidateTag('homepage-sitemap')
-    }
+    //   revalidatePath(oldPath)
+    //   payload.logger.info(`✓ Revalidated old Homepage at path "${oldPath}".`)
+    //   // revalidateTag('homepage-sitemap')
+    // }
   }
   return doc
 }
