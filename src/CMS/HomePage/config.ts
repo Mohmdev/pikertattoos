@@ -22,11 +22,6 @@ export const HomePage: GlobalConfig = {
     readDrafts: isAdminOrEditor
   },
   admin: {
-    // livePreview: {
-    //   url: () => {
-    //     return `${getServerSideURL()}/`
-    //   }
-    // },
     livePreview: {
       url: ({ req }) => {
         return generateGlobalPreviewPath({
@@ -37,7 +32,7 @@ export const HomePage: GlobalConfig = {
       }
     },
     preview: () => {
-      return getServerSideURL()
+      return `${getServerSideURL()}`
     }
   },
   label: 'Home Page',
@@ -89,7 +84,6 @@ export const HomePage: GlobalConfig = {
   ],
   hooks: {
     afterChange: [revalidateHomepage]
-    // afterChange: [() => revalidateTag('global_homepage')]
   },
   versions: {
     drafts: {

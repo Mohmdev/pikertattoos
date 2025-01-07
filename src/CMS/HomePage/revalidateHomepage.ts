@@ -1,44 +1,37 @@
-import { revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { GlobalAfterChangeHook } from 'payload'
 
+export const homepageSitemapTag = 'cahce-homepage-sitemap'
+
 export const revalidateHomepage: GlobalAfterChangeHook = ({
   doc,
-  // previousDoc,
+  previousDoc,
   req: { payload, context }
 }) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
-      // const path = '/'
-      const tag = 'global_homepage'
+      const path = '/'
 
-      revalidateTag(tag)
-      payload.logger.info(`✓ Homepage Tag Revalidated.`)
-      // revalidateTag('homepage-sitemap')
+      revalidatePath(path)
+      payload.logger.info(`✓ Published Homepage Revalidated at path: "${path}"`)
+
+      revalidateTag(homepageSitemapTag)
+      payload.logger.info(`✓ Published Homepage Sitemap "${homepageSitemapTag}" Revalidated`)
     }
 
-    // If the post was previously published, we need to revalidate the old path
-    // if (previousDoc._status === 'published' && doc._status !== 'published') {
-    //   const oldPath = `/${previousDoc}`
+    // If the doc was previously published, we need to revalidate the old path
+    if (previousDoc._status === 'published' && doc._status !== 'published') {
+      const oldPath = `/homepage/${previousDoc.slug}`
 
-    //   revalidatePath(oldPath)
-    //   payload.logger.info(`✓ Revalidated old Homepage at path "${oldPath}".`)
-    //   // revalidateTag('homepage-sitemap')
-    // }
+      revalidatePath(oldPath)
+      payload.logger.info(`✓ Previously Published Homepage Revalidated at path: "${oldPath}"`)
+      revalidateTag(homepageSitemapTag)
+      payload.logger.info(
+        `✓ Previously Published Homepage Sitemap "${homepageSitemapTag}" Revalidated`
+      )
+    }
   }
+
   return doc
 }
-
-// export const revalidateHomepage: GlobalAfterChangeHook = ({ doc, req: { payload, context } }) => {
-//   if (!context.disableRevalidate) {
-//     if (doc._status === 'published') {
-//       revalidateTag('global_homepage') // For reusable homepage components
-//       revalidateTag('pages-sitemap') // For sitemap updates
-
-//       payload.logger.info(`✔ Homepage Tag Revalidated.`)
-//       // payload.logger.info(`✔ Homepage Revalidated at path: /`)
-//     }
-//   }
-
-//   return doc
-// }
