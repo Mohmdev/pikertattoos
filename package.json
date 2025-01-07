@@ -31,7 +31,8 @@
     "migrate:fresh": "payload migrate:fresh",
     "migrate:create": "payload migrate:create",
     "ci": "NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install --frozen-lockfile",
-    "seed:all": "payload run src/app/next/seedScript.ts"
+    "seed:all": "payload run src/app/next/seedScript.ts",
+    "update-deps": "rm node_modules -R -Force && pnpm i"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",

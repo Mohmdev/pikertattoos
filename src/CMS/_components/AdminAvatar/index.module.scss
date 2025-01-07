@@ -5,12 +5,13 @@
   justify-content: center;
   border-radius: 50%;
   overflow: hidden;
-  background-color: var(--theme-elevation-150);
-  color: var(--theme-elevation-400);
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
   user-select: none;
+  background-color: light-dark(hsl(0 0% 100%), hsl(0, 0%, 13%));
+  color: light-dark(white, var(--theme-elevation-400));
   border: 1px solid var(--border-ui);
+  border-color: light-dark(hsl(0 0% 100%), var(--border-ui));
 
   &__text {
     text-decoration: none !important;

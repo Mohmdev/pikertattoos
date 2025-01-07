@@ -4,6 +4,8 @@ import React, { Fragment, useCallback, useState } from 'react'
 
 import { toast, useAuth } from '@payloadcms/ui'
 
+import { cn } from '@utils/cn'
+
 import type { User } from '@payload-types'
 
 import styles from './index.module.scss'
@@ -93,7 +95,7 @@ export const SeedButton: React.FC = () => {
   return (
     <Fragment>
       <button
-        className={styles.seedButton}
+        className={cn(styles.seedButton, styles.firstChild)}
         onClick={handleClick}
         disabled={loading || seeded || error || user?.role !== 'admin'}
       >

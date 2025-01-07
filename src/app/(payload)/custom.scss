@@ -9,6 +9,8 @@
 @use 'styles/components.scss';
 @use 'styles/misc.scss';
 
+// @forward 'styles/tailwind.css';
+
 [data-theme='light'] {
   --color-base-50: #f5f5f5;
   --theme-elevation-0: var(--color-base-0);
