@@ -1,13 +1,16 @@
+import { motion } from 'motion/react'
+import { cn } from '@utils/cn'
+
 import { Spotlight } from './spotlight'
 import { Tilt } from './tilt'
 
 type TiltSpotlightProps = {
   children: React.ReactNode
-  title?: string | null
+  className?: string
 }
-export function TiltSpotlight({ children, title }: TiltSpotlightProps) {
+export function TiltSpotlight({ children, className }: TiltSpotlightProps) {
   return (
-    <div className="aspect-video max-w-sm">
+    <div className={cn('aspect-video max-w-sm', className)}>
       <Tilt
         rotationFactor={6}
         isRevese
@@ -30,15 +33,20 @@ export function TiltSpotlight({ children, title }: TiltSpotlightProps) {
             mass: 0.2
           }}
         />
-        {children}
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, scale: 0.8, filter: 'blur(10px)' },
+            visible: {
+              opacity: 1,
+              scale: 1,
+              filter: 'blur(0px)'
+            }
+          }}
+          className={cn('relative overflow-hidden rounded-sm')}
+        >
+          {children}
+        </motion.div>
       </Tilt>
-      <div className="flex flex-col space-y-0.5 pb-0 pt-3">
-        <h3 className="font-mono text-sm font-medium text-zinc-500 dark:text-zinc-400">
-          {/* 2001: A Space Odyssey */}
-          {title}
-        </h3>
-        <p className="text-sm text-black dark:text-white">Stanley Kubrick</p>
-      </div>
     </div>
   )
 }

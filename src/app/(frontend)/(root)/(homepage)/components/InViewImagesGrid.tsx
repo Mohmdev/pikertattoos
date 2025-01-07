@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'motion/react'
 import { cn } from '@utils/cn'
 
 import type { Media as MediaType } from '@payload-types'
@@ -12,6 +11,7 @@ import { TiltSpotlight } from './TiltSpotlight'
 
 type InViewImagesGridProps = {
   images: MediaType[]
+  title?: string | null
 }
 
 export const InViewImagesGrid = ({ images }: InViewImagesGridProps) => {
@@ -33,30 +33,26 @@ export const InViewImagesGrid = ({ images }: InViewImagesGridProps) => {
             }
           }}
         >
-          <div className="columns-2 gap-4 px-8 sm:columns-3">
+          <div className="w-full max-w-[1920px] columns-2 gap-4 px-0 sm:columns-3">
             {images.map((image) => {
               return (
-                <TiltSpotlight key={image.id} title={image.alt}>
-                  <motion.div
-                    variants={{
-                      hidden: { opacity: 0, scale: 0.8, filter: 'blur(10px)' },
-                      visible: {
-                        opacity: 1,
-                        scale: 1,
-                        filter: 'blur(0px)'
-                      }
-                    }}
+                <TiltSpotlight key={image.id} className="mb-4 space-x-3 space-y-3">
+                  <Media
+                    resource={image}
+                    className="size-full rounded-lg object-contain"
+                    objectFit="contain"
+                  />
+                  <div
                     className={cn(
-                      // 'aspect-auto h-max w-full',
-                      'relative mb-4 size-full overflow-hidden rounded-sm'
+                      'absolute inset-x-0 bottom-0 mx-0 h-max w-full',
+                      'flex flex-col gap-3 space-y-0.5 p-5'
                     )}
                   >
-                    <Media
-                      resource={image}
-                      className="size-full rounded-lg object-contain"
-                      objectFit="contain"
-                    />
-                  </motion.div>
+                    <h3 className="font-mono text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                      {image.alt ? image.alt : '2001: A Space Odyssey'}
+                    </h3>
+                    <p className="text-sm text-black dark:text-white">Stanley Kubrick</p>
+                  </div>
                 </TiltSpotlight>
               )
             })}
