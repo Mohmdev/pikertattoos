@@ -21,7 +21,7 @@ export const InViewImagesGrid = ({ data }: InViewImagesGridProps) => {
       className={cn(
         'overflow-auto',
         'h-max max-w-[1920px]',
-        'flex items-end justify-center px-0 pb-12'
+        'flex items-end justify-center px-6 pb-12'
       )}
     >
       {/* <div className="mb-20 py-12 text-center text-sm">Scroll down</div> */}
@@ -56,12 +56,12 @@ export const InViewImagesGrid = ({ data }: InViewImagesGridProps) => {
             if (!image) return null
 
             return (
-              // mb-4
               <TiltSpotlight key={tattoo.id} className="mb-4">
                 <Media
                   resource={image}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   alt={image?.alt ? image.alt : '2001: A Space Odyssey'}
+                  className="grayscale duration-700 group-hover:grayscale-0"
                 />
                 <div
                   className={cn(

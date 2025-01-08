@@ -32,6 +32,7 @@ export function TiltSpotlight({ children, className }: TiltSpotlightProps) {
             mass: 0.2
           }}
         />
+
         {children}
       </Tilt>
     </div>
