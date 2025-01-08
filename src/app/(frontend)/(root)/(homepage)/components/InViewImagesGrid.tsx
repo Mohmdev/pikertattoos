@@ -21,7 +21,7 @@ export const InViewImagesGrid = ({ data }: InViewImagesGridProps) => {
       className={cn(
         'overflow-auto',
         'h-max max-w-[1920px]',
-        'flex items-end justify-center px-6 pb-12'
+        'flex items-end justify-center px-2 pb-12 md:px-4'
       )}
     >
       {/* <div className="mb-20 py-12 text-center text-sm">Scroll down</div> */}
@@ -41,7 +41,7 @@ export const InViewImagesGrid = ({ data }: InViewImagesGridProps) => {
       >
         <div className="w-full columns-2 sm:columns-3">
           {data.map((tattoo) => {
-            const title = tattoo.title
+            // const title = tattoo.title
 
             const style =
               Array.isArray(tattoo.style) && tattoo.style[0]
@@ -66,14 +66,16 @@ export const InViewImagesGrid = ({ data }: InViewImagesGridProps) => {
                 <div
                   className={cn(
                     'absolute inset-x-0 bottom-0 mx-0 h-max w-max',
-                    'flex flex-col gap-0 space-y-0.5 p-5',
-                    'before:absolute before:inset-0 before:-z-0 before:bg-yellow-100 before:opacity-20 before:blur-xl before:content-[""]'
+                    'flex flex-col gap-0 space-y-0.5 p-5'
                   )}
                 >
-                  <h3 className="font-mono text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                  {/* <h3 className="font-mono text-sm font-medium text-zinc-500 dark:text-zinc-400">
                     {style && style.title}
-                  </h3>
-                  <p className="text-sm text-black dark:text-white">{title}</p>
+                  </h3> */}
+                  <p className="m-0 text-sm text-black dark:text-white">
+                    {/* {title}  */}
+                    {style && style.title}
+                  </p>
                 </div>
               </TiltSpotlight>
             )
