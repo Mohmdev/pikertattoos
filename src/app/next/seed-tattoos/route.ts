@@ -45,7 +45,7 @@ const createTattoos = async ({ payload }): Promise<void> => {
           collection: 'media',
           data: {
             alt: tattoo.images[0].alt || tattoo.title,
-            category: tattoo.images[0].category,
+            // category: tattoo.images[0].category,
             width: tattoo.images[0].width,
             height: tattoo.images[0].height
           },

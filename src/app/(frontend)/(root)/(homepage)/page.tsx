@@ -49,7 +49,7 @@ const getCachedHomepage = unstable_cache(
     const payload = await getPayload({ config: configPromise })
     const doc = await payload.findGlobal({
       slug: 'homepage',
-      depth: 1,
+      depth: 2,
       draft: false,
       overrideAccess: false,
       select: {
@@ -69,7 +69,7 @@ const getDraftHomepage = async () => {
   const payload = await getPayload({ config: configPromise })
   const doc = await payload.findGlobal({
     slug: 'homepage',
-    depth: 1,
+    depth: 2,
     draft,
     overrideAccess: draft,
     select: {

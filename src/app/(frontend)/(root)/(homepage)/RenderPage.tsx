@@ -2,7 +2,7 @@ import React from 'react'
 
 import { cn } from '@utils/cn'
 
-import type { Homepage, Media } from '@payload-types'
+import type { Homepage, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
 import GradientText from '@components/global/gradient-text'
@@ -14,7 +14,8 @@ interface RenderPageProps {
 }
 
 export const RenderPage = ({ data }: RenderPageProps) => {
-  const { title, subtitle, featured: images } = data
+  const { title, subtitle, featured } = data
+  const tattoos = featured as Tattoo[]
 
   return (
     <div
@@ -55,11 +56,12 @@ export const RenderPage = ({ data }: RenderPageProps) => {
             maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.4) 50%,rgba(0, 0, 0, 0.4) 50%,rgba(0, 0, 0, 0))`
           }}
         >
-          {images &&
+          {/* {images &&
             Array.isArray(images) &&
             images.every((item): item is Media => typeof item === 'object' && item !== null) && (
               <InViewImagesGrid images={images} />
-            )}
+            )} */}
+          <InViewImagesGrid data={tattoos} />
         </div>
       </BackdropGradient>
     </div>

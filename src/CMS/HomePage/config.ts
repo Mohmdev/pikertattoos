@@ -62,14 +62,11 @@ export const HomePage: GlobalConfig = {
               fields: [
                 {
                   name: 'featured',
-                  type: 'upload',
-                  relationTo: 'media',
+                  type: 'relationship',
+                  relationTo: 'tattoo',
                   hasMany: true,
                   minRows: 6,
-                  maxRows: 21,
-                  required: true,
-                  label: 'Featured Images',
-                  admin: { description: 'Upload new images or choose from existing ones.' }
+                  maxRows: 18
                 }
               ]
             }

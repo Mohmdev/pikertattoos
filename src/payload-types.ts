@@ -2421,10 +2421,7 @@ export interface Homepage {
   id: number;
   title: string;
   subtitle?: string | null;
-  /**
-   * Upload new images or choose from existing ones.
-   */
-  featured: (number | Media)[];
+  featured?: (number | Tattoo)[] | null;
   meta?: Meta;
   /**
    * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
