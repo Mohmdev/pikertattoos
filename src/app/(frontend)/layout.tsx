@@ -10,6 +10,8 @@ import { getServerSideURL } from '@utils/getURL'
 import '@styles/globals.css'
 import '@styles/scss/app.scss'
 
+import Favicon from '@services/admin/Favicon'
+
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
 type RootLayoutProps = {
@@ -20,8 +22,9 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <Head>
-        <link href="/assets/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/assets/vercel.svg" rel="icon" type="image/svg+xml" />
+        <Favicon />
+        {/* <link href="/assets/favicon.ico" rel="icon" sizes="32x32" />
+        <link href="/assets/vercel.svg" rel="icon" type="image/svg+xml" /> */}
       </Head>
       <body className={cn(jakarta.className, 'antialiased')}>
         <Providers>{children}</Providers>

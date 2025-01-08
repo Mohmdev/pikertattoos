@@ -16,11 +16,11 @@ export const adminConfig: Config['admin'] = {
   },
   components: {
     graphics: {
-      // icon in the navigation
-      // Icon: '@graphics/Nexweb/SquareLogo#SquareLogo',
-      // logo on the login page
-      // Logo: '@graphics/Nexweb/NamedLogo#NamedLogo'
+      Icon: '@services/admin/DynamicLogo#NavbarLogo',
+      Logo: '@services/admin/DynamicLogo#MainLogo'
     }
+    // beforeNavLinks: ['@services/admin/DynamicLogo#SidebarLogo'],
+    // afterNavLinks: ['@services/admin/AfterNav#AfterNavComponent']
     // beforeLogin: ['@admin-components/BeforeLogin']
     // beforeDashboard: ['@admin-components/BeforeDashboard']
   },
@@ -46,7 +46,7 @@ export const adminConfig: Config['admin'] = {
       ]
     },
     // Text that appends the meta/page title displayed in the browser tab.
-    titleSuffix: '| Nexweb'
+    titleSuffix: '| Pikertattos'
   },
   importMap: {
     baseDir: path.resolve(dirname)
