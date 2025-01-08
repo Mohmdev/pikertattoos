@@ -5,12 +5,13 @@ import React, { useRef } from 'react'
 import {
   motion,
   MotionStyle,
-  SpringOptions,
   useMotionTemplate,
   useMotionValue,
   useSpring,
   useTransform
 } from 'motion/react'
+
+import type { SpringOptions } from 'motion-dom'
 
 type TiltProps = {
   children: React.ReactNode

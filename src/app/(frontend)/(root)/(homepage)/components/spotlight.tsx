@@ -2,8 +2,10 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import { motion, SpringOptions, useSpring, useTransform } from 'motion/react'
+import { motion, useSpring, useTransform } from 'motion/react'
 import { cn } from '@utils/cn'
+
+import type { SpringOptions } from 'motion-dom'
 
 type SpotlightProps = {
   className?: string

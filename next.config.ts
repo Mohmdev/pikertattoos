@@ -30,13 +30,14 @@ const nextConfig: NextConfig = {
           hostname: url.hostname,
           protocol: url.protocol.replace(':', '') as 'http' | 'https'
         }
-      }),
-      {
-        hostname: 'res.cloudinary.com',
-        protocol: 'https',
-        pathname: '/mohmdevcloud/**'
-      }
-    ]
+      })
+      // {
+      //   hostname: 'res.cloudinary.com',
+      //   protocol: 'https',
+      //   pathname: '/mohmdevcloud/**'
+      // }
+    ],
+    domains: ['127.0.0.1', 'localhost', 'res.cloudinary.com']
   },
   sassOptions: {
     silenceDeprecations: ['legacy-js-api', 'import'] // https://github.com/vercel/next.js/issues/71638

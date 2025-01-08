@@ -2,6 +2,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { basicLexical } from '@services/editor/basicLexical'
+import { tagsField } from '@fields/shared/tagsField'
 import { anyone } from '@access/anyone'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
@@ -30,18 +31,14 @@ export const Media: CollectionConfig<'media'> = {
     mimeType: true,
     url: true,
     width: true
+    // relatedTattoo: true,
+    // tags: true
   },
   admin: {
     useAsTitle: 'alt',
-    defaultColumns: ['filename', 'category', 'filesize', 'mimeType', 'createdAt', 'updatedAt']
+    defaultColumns: ['filename', 'relatedTattoo', 'tags', 'mimeType', 'createdAt', 'updatedAt']
   },
   fields: [
-    {
-      name: 'category',
-      type: 'radio',
-      defaultValue: undefined,
-      options: ['tattoo', 'video', 'style', 'tag', 'other']
-    },
     {
       name: 'alt',
       type: 'text',
@@ -57,14 +54,21 @@ export const Media: CollectionConfig<'media'> = {
       admin: {
         description: 'Custom caption for the image'
       }
-    }
+    },
+    {
+      type: 'join',
+      name: 'relatedTattoo',
+      label: false,
+      collection: 'tattoo',
+      on: 'images'
+    },
+    tagsField
   ],
   upload: {
     crop: true,
     displayPreview: true,
     focalPoint: true,
     disableLocalStorage: true,
-    filenameCompoundIndex: ['category'],
     mimeTypes: [
       'image/*',
       'image/webp',

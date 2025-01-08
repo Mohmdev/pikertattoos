@@ -8,10 +8,10 @@
   font-weight: 400;
   text-transform: uppercase;
   user-select: none;
-  background-color: light-dark(hsl(0 0% 100%), hsl(0, 0%, 13%));
+  background-color: light-dark(hsl(217 12% 72%), hsl(0, 0%, 13%));
   color: light-dark(white, var(--theme-elevation-400));
   border: 1px solid var(--border-ui);
-  border-color: light-dark(hsl(0 0% 100%), var(--border-ui));
+  border-color: light-dark(hsl(217 12% 72%), var(--border-ui));
 
   &__text {
     text-decoration: none !important;

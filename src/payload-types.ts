@@ -45,6 +45,9 @@ export interface Config {
       tattoos: 'tattoo';
       artists: 'artist';
     };
+    media: {
+      relatedTattoo: 'tattoo';
+    };
     'user-photo': {
       user: 'users';
     };
@@ -171,7 +174,6 @@ export interface Tattoo {
  */
 export interface Media {
   id: number;
-  category?: ('tattoo' | 'video' | 'style' | 'tag' | 'other') | null;
   /**
    * For SEO and accessibility
    */
@@ -194,6 +196,11 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  relatedTattoo?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  tags?: (number | Tag)[] | null;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -275,35 +282,9 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "area".
+ * via the `definition` "tag".
  */
-export interface Area {
-  id: number;
-  title: string;
-  tattoos?: {
-    docs?: (number | Tattoo)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  slug: string;
-  slugLock?: boolean | null;
-  parent?: (number | null) | Area;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Area;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "style".
- */
-export interface Style {
+export interface Tag {
   id: number;
   title: string;
   tattoos?: {
@@ -321,15 +302,6 @@ export interface Style {
   description?: string | null;
   slug: string;
   slugLock?: boolean | null;
-  parent?: (number | null) | Style;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Style;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -371,6 +343,41 @@ export interface Artist {
   tags?: (number | Tag)[] | null;
   slug: string;
   slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "style".
+ */
+export interface Style {
+  id: number;
+  title: string;
+  tattoos?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  artists?: {
+    docs?: (number | Artist)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  /**
+   * Optional
+   */
+  image?: (number | null) | Media;
+  description?: string | null;
+  slug: string;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Style;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Style;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -459,26 +466,26 @@ export interface UserPhoto {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tag".
+ * via the `definition` "area".
  */
-export interface Tag {
+export interface Area {
   id: number;
   title: string;
   tattoos?: {
     docs?: (number | Tattoo)[] | null;
     hasNextPage?: boolean | null;
   } | null;
-  artists?: {
-    docs?: (number | Artist)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  /**
-   * Optional
-   */
-  image?: (number | null) | Media;
-  description?: string | null;
   slug: string;
   slugLock?: boolean | null;
+  parent?: (number | null) | Area;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Area;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1977,9 +1984,10 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  category?: T;
   alt?: T;
   caption?: T;
+  relatedTattoo?: T;
+  tags?: T;
   prefix?: T;
   updatedAt?: T;
   createdAt?: T;

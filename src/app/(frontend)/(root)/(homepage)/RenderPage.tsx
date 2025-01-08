@@ -17,8 +17,16 @@ export const RenderPage = ({ data }: RenderPageProps) => {
   const { title, subtitle, featured: images } = data
 
   return (
-    <div className="flex flex-1 flex-col items-center gap-60 px-0 xl:px-10">
-      <div className="flex flex-col items-center gap-2">
+    <div
+      className={cn(
+        //
+        'flex flex-1 flex-col',
+        'items-center justify-center',
+        'my-10 gap-10 px-0 xl:px-10',
+        'min-h-screen'
+      )}
+    >
+      <div className="mt-10 flex flex-col items-center gap-2">
         <GradientText
           className="text-center text-[40px] font-semibold leading-none md:text-[55px] lg:text-[90px]"
           element="H1"
@@ -40,7 +48,7 @@ export const RenderPage = ({ data }: RenderPageProps) => {
       >
         <div
           className={cn(
-            'mb-36',
+            // 'mb-36',
             'relative flex w-max max-w-full flex-col items-center overflow-x-hidden'
           )}
           style={{

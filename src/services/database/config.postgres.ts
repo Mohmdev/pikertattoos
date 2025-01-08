@@ -12,7 +12,7 @@ export const postgres: Config['db'] = postgresAdapter({
   pool: {
     connectionString: process.env.DATABASE_URI
   },
-  migrationDir: path.resolve(dirname, './migrations'),
-  push: false
+  migrationDir: path.resolve(dirname, './migrations')
+  // push: false
   // prodMigrations: migrations,
 })

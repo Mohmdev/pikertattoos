@@ -9,7 +9,7 @@ export default function Error() {
   return (
     <Gutter>
       <h2>Something went wrong</h2>
-      <NextError statusCode={0} />
+      <NextError statusCode={0} withDarkMode />
     </Gutter>
   )
 }
