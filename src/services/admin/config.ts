@@ -26,13 +26,23 @@ export const adminConfig: Config['admin'] = {
   },
   meta: {
     description: 'Pikertattos Studio Admin',
-    // icons: [
-    //   {
-    //     type: 'image/svg',
-    //     rel: 'icon',
-    //     url: '/assets/nexweb-favicon.svg'
-    //   }
-    // ],
+    icons: [
+      {
+        rel: 'icon',
+        type: 'image/svg',
+        url: '/assets/nextjs-favicon.svg'
+      },
+      {
+        rel: 'favicon',
+        type: 'image/svg',
+        url: '/assets/nextjs-favicon.svg'
+      },
+      {
+        rel: 'apple-touch-icon',
+        type: 'image/svg',
+        url: '/assets/nextjs-favicon.svg'
+      }
+    ],
     // you share links to your admin panel online and through social media.
     openGraph: {
       title: 'Pikertattos Studio Admin',

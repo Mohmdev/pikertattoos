@@ -1,6 +1,6 @@
 {
   "name": "pikertattoos",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -36,6 +36,7 @@
     "update-deps": "rm node_modules -R -Force && pnpm i"
   },
   "dependencies": {
+    "@geist-ui/icons": "^1.0.2",
     "@neondatabase/serverless": "^0.10.4",
     "@payloadcms/db-postgres": "latest",
     "@payloadcms/email-resend": "latest",
