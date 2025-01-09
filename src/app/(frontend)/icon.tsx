@@ -1,5 +1,7 @@
 /* eslint-disable  */
 
+import fs from 'fs'
+import path from 'path'
 import React from 'react'
 import { ImageResponse } from 'next/og'
 import { getCachedGlobal } from '@data/getGlobal'
@@ -13,30 +15,53 @@ export const size = {
   width: 32,
   height: 32
 }
-export const contentType = 'image/svg+xml'
+export const contentType = 'image/png'
 
 // Image generation
 export default async function Icon() {
-  const fallbackIcon = '/assets/nextjs-favicon.svg'
   const alt = 'favicon'
+
   try {
+    // Try to get dynamic favicon from CMS
     const graphics = (await getCachedGlobal('global-settings', 1)()) as GlobalSetting
     const favicon = graphics?.branding?.logoSquare as Asset
 
-    // Ensure we have a valid URL, defaulting to local asset if needed
-    const imageUrl = favicon?.url
-      ? `${getServerSideURL() || ''}${favicon.url}`
-      : new URL(fallbackIcon, getServerSideURL()).toString()
+    if (favicon?.url) {
+      // Use dynamic favicon from CMS
+      const imageUrl = `${getServerSideURL()}${favicon.url}`
+      return new ImageResponse(
+        <img src={imageUrl} alt={alt} width={size.width} height={size.height} />,
+        { ...size }
+      )
+    }
+
+    // Fallback to static favicon
+    const staticIconPath = path.join(process.cwd(), 'public', 'assets', 'next-logo.png')
+    const staticIconBuffer = await fs.promises.readFile(staticIconPath)
+    const staticIconBase64 = `data:image/png;base64,${staticIconBuffer.toString('base64')}`
 
     return new ImageResponse(
-      <img src={imageUrl} alt={alt} width={size.width} height={size.height} />,
+      <img src={staticIconBase64} alt={alt} width={size.width} height={size.height} />,
       { ...size }
     )
   } catch (error) {
-    // Log error for monitoring but don't expose details
     console.error('Favicon generation error:', error)
+
+    // Emergency fallback using inline SVG
     return new ImageResponse(
-      <img src={fallbackIcon} alt={alt} width={size.width} height={size.height} />,
+      (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            backgroundColor: '#000',
+            color: '#fff'
+          }}
+        >
+          X
+        </div>
+      ),
       { ...size }
     )
   }
