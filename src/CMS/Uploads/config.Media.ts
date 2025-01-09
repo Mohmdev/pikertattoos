@@ -2,12 +2,12 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { basicLexical } from '@services/editor/basicLexical'
-
-import type { CollectionConfig } from 'payload'
-
+import { tagsField } from '@fields/shared/tagsField'
 import { anyone } from '@access/anyone'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
+
+import type { CollectionConfig } from 'payload'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,39 +31,44 @@ export const Media: CollectionConfig<'media'> = {
     mimeType: true,
     url: true,
     width: true
+    // relatedTattoo: true,
+    // tags: true
   },
   admin: {
     useAsTitle: 'alt',
-    defaultColumns: ['filename', 'mimeType', 'createdAt', 'updatedAt']
+    defaultColumns: ['filename', 'relatedTattoo', 'tags', 'mimeType', 'createdAt', 'updatedAt']
   },
   fields: [
     {
       name: 'alt',
       type: 'text',
-      //required: true,
       admin: {
-        description: 'Used for SEO and accessibility'
+        description: 'For SEO and accessibility'
       }
     },
     {
       name: 'caption',
       type: 'richText',
+      label: 'Caption',
       editor: basicLexical,
       admin: {
-        description: 'Caption for this media file.'
+        description: 'Custom caption for the image'
       }
-    }
+    },
+    {
+      type: 'join',
+      name: 'relatedTattoo',
+      label: false,
+      collection: 'tattoo',
+      on: 'images'
+    },
+    tagsField
   ],
   upload: {
     crop: true,
     displayPreview: true,
     focalPoint: true,
     disableLocalStorage: true,
-    /**
-     * Restrict mimeTypes in the file picker. Array of valid mime types or mimetype wildcards
-     * @example ['image/*', 'application/pdf']
-     * @default undefined
-     */
     mimeTypes: [
       'image/*',
       'image/webp',

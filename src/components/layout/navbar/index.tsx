@@ -5,14 +5,13 @@ import Link from 'next/link'
 
 import { CheckBadge, Logout } from '@icons'
 import { MenuIcon } from 'lucide-react'
-
-import { ModeToggle } from '@providers/NextTheme/mode-toggle'
 import { mockGroups, mockUser } from '@lib/data/mock-data'
 import { cn } from '@utils/cn'
 
-import { Button } from '@ui/button'
+import { ModeToggle } from '@providers/NextTheme/mode-toggle'
 import GlassSheet from '@components/global/glass-sheet'
 import { UserWidget } from '@components/global/user-widget'
+import { Button } from '@ui/button'
 
 import { GroupDropDown } from './group-dropdown'
 
@@ -23,7 +22,7 @@ export const Navbar = async () => {
   const groups = mockGroups
 
   return (
-    <div className="w-full flex px-5 py-3 items-center bg-background dark:bg-themeBlack border-b-[1px] border-border dark:border-themeDarkGray fixed z-50  bg-clip-padding backdrop--blur__safari backdrop-filter backdrop-blur-2xl bg-opacity-60">
+    <div className="backdrop--blur__safari fixed z-50 flex w-full items-center border-b-[1px] border-border bg-background bg-opacity-60 bg-clip-padding px-5 py-3 backdrop-blur-2xl backdrop-filter dark:border-themeDarkGray dark:bg-themeBlack">
       <div className="hidden lg:inline">
         {user.status === 200 ? (
           <GroupDropDown members={groups.members} groups={groups} />
@@ -36,8 +35,8 @@ export const Navbar = async () => {
         trigger={
           <span
             className={cn(
-              'lg:hidden flex items-center gap-2 py-2',
-              'text-primary-foreground/80 dark:text-foreground hover:text-primary-foreground'
+              'flex items-center gap-2 py-2 lg:hidden',
+              'text-primary-foreground/80 hover:text-primary-foreground dark:text-foreground'
             )}
           >
             <MenuIcon className="cursor-pointer" />
@@ -48,16 +47,16 @@ export const Navbar = async () => {
         <div>Content</div>
       </GlassSheet>
 
-      <div className="flex-1 lg:flex hidden justify-end gap-3">
+      <div className="hidden flex-1 justify-end gap-3 lg:flex">
         {/* <ThemeSelector /> */}
         <ModeToggle />
         <Link href={user.status === 200 ? `/group/create` : '/sign-in'}>
           <Button
             variant="outline"
             className={cn(
-              'flex gap-2 border-border rounded-xl',
-              'dark:bg-themeBlack bg-foreground dark:border-themeGray hover:bg-themeGray',
-              'text-primary-foreground/80 dark:text-foreground hover:text-primary-foreground'
+              'flex gap-2 rounded-xl border-border',
+              'bg-foreground hover:bg-themeGray dark:border-themeGray dark:bg-themeBlack',
+              'text-primary-foreground/80 hover:text-primary-foreground dark:text-foreground'
             )}
           >
             <CheckBadge />
@@ -70,7 +69,7 @@ export const Navbar = async () => {
           <Link href="/sign-in">
             <Button
               variant="outline"
-              className="bg-themeBlack rounded-2xl flex gap-2 border-themeGray hover:bg-themeGray"
+              className="flex gap-2 rounded-2xl border-themeGray bg-themeBlack hover:bg-themeGray"
             >
               <Logout />
               Login

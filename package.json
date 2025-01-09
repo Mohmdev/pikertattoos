@@ -1,21 +1,23 @@
 {
   "name": "pikertattoos",
-  "version": "0.9.0",
+  "version": "0.14.1",
   "private": true,
   "license": "MIT",
   "type": "module",
   "author": "Mohmdev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mohmdev/nexweb-base-template"
+    "url": "https://github.com/Mohmdev/pikertattoos"
   },
   "scripts": {
     "ii": "cross-env NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install",
     "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
-    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start -p 3000",
+    "start:private": "cross-env NODE_OPTIONS=--no-deprecation next start --hostname :: -p 3000",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbopack -p 3000",
+    "dev:inspect": "cross-env NODE_OPTIONS='--inspect' next dev --turbopack -p 3000",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev --turbopack -p 3000",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "lint:fix": "cross-env NODE_OPTIONS=--no-deprecation next lint --fix",
@@ -30,13 +32,16 @@
     "migrate:reset": "payload migrate:reset",
     "migrate:fresh": "payload migrate:fresh",
     "migrate:create": "payload migrate:create",
-    "ci": "payload migrate && next build"
+    "ci": "NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install --frozen-lockfile",
+    "seed:all": "payload run src/app/next/seedScript.ts",
+    "update-deps": "rm node_modules -R -Force && pnpm i"
   },
   "dependencies": {
+    "@geist-ui/icons": "^1.0.2",
     "@neondatabase/serverless": "^0.10.4",
-    "@payloadcms/db-vercel-postgres": "latest",
+    "@payloadcms/db-postgres": "latest",
     "@payloadcms/email-resend": "latest",
-    "@payloadcms/live-preview-react": "^3.12.0",
+    "@payloadcms/live-preview-react": "latest",
     "@payloadcms/next": "latest",
     "@payloadcms/plugin-form-builder": "latest",
     "@payloadcms/plugin-nested-docs": "latest",
@@ -44,7 +49,7 @@
     "@payloadcms/plugin-search": "latest",
     "@payloadcms/plugin-seo": "latest",
     "@payloadcms/richtext-lexical": "latest",
-    "@payloadcms/storage-vercel-blob": "latest",
+    "@payloadcms/storage-s3": "latest",
     "@payloadcms/ui": "latest",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-aspect-ratio": "^1.1.1",
@@ -67,6 +72,7 @@
     "@tanstack/react-query": "^5.62.10",
     "@types/ejs": "^3.1.5",
     "@vercel/postgres": "^0.10.0",
+    "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
@@ -75,6 +81,7 @@
     "graphql": "^16.10.0",
     "juice": "^11.0.0",
     "lucide-react": "^0.469.0",
+    "motion": "^11.15.0",
     "next": "^15.1.3",
     "next-sitemap": "^4.2.3",
     "next-themes": "^0.4.4",
@@ -107,8 +114,11 @@
     "postcss": "^8",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5",
     "typescript-eslint": "^8.18.2"
+  },
+  "engines": {
+    "node": ">=18.20.2 <23.0.0"
   }
 }

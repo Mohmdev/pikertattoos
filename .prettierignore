@@ -10,7 +10,7 @@
 **/node_modules
 **/temp
 src/services/database/migrations/**/*
-src/app/(payload)/**/*
-!src/app/(payload)/custom.scss
+src/app/(payload)/**/*.{js,jsx,ts,tsx,json,md}
+!src/app/(payload)/**/*.scss
 pnpm-lock.yaml
 package-lock.json

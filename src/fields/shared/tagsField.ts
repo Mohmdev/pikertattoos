@@ -5,5 +5,8 @@ export const tagsField: Field = {
   type: 'relationship',
   relationTo: 'tag',
   hasMany: true,
-  label: 'Tags'
+  label: 'Tags',
+  admin: {
+    position: 'sidebar'
+  }
 }

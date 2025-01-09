@@ -1,6 +1,6 @@
 {
-  "name": "Node.js Development",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-22",
+  "name": "Node_v22/pnpm",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
   
   "features": {
       "ghcr.io/devcontainers/features/node:1": {
@@ -12,13 +12,35 @@
   "customizations": {
       "vscode": {
           "extensions": [
-              "dbaeumer.vscode-eslint",
-              "esbenp.prettier-vscode"
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "myaaghubi.andromeda-mariana-vscode",
+            "ms-vscode-remote.remote-containers",
+            "dsznajder.es7-react-js-snippets",
+            "tamasfe.even-better-toml",
+            "GitHub.codespaces",
+            "GitHub.copilot",
+            "GitHub.copilot-chat",
+            "mhutchie.git-graph",
+            "heybourn.headwind",
+            "codezombiech.gitignore",
+            "ecmel.vscode-html-css",
+            "VisualStudioExptTeam.vscodeintellicode",
+            "VisualStudioExptTeam.intellicode-api-usage-examples",
+            "Zignd.html-css-class-completion",
+            "christian-kohler.npm-intellisense",
+            "christian-kohler.path-intellisense",
+            "YoavBls.pretty-ts-errors",
+            "jakob101.RelativePath",
+            "SimonSiefke.svg-preview",
+            "bradlc.vscode-tailwindcss",
+            "OmriGrossman.tailwind-color-matcher",
+            "Gruntfuggly.todo-tree"
           ]
       }
   },
 
-  "postCreateCommand": "npm install -g pnpm vercel",
+  "postCreateCommand": "npm install -g pnpm vercel railway",
 
   "remoteUser": "node"
 }

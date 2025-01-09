@@ -1,14 +1,15 @@
-.btn {
-  border-radius: 5px;
-  font-weight: 600;
-  border-radius: 5px;
-  font-weight: 500;
-  padding-inline: 1.5rem;
-  padding-block: 0.25rem;
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
+input:-internal-autofill-selected {
+  background-color: light-dark(hsla(219, 92%, 95%, 0.83), hsla(220, 29%, 38%, 0.17)) !important;
+}
+input:disabled {
+  background: var(--theme-elevation-50);
+  color: light-dark(hsla(0, 0%, 100%, 1), hsla(207, 10%, 30%, 1));
 }
 
-// Admin Avatar
-.app-header__account {
-  text-decoration: none;
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
 }

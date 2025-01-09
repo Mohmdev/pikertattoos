@@ -30,7 +30,19 @@ const nextConfig: NextConfig = {
           hostname: url.hostname,
           protocol: url.protocol.replace(':', '') as 'http' | 'https'
         }
-      })
+      }),
+      {
+        hostname: '127.0.0.1',
+        protocol: 'http'
+      },
+      {
+        hostname: 'localhost',
+        protocol: 'http'
+      },
+      {
+        hostname: 'res.cloudinary.com',
+        protocol: 'https'
+      }
     ]
   },
   sassOptions: {

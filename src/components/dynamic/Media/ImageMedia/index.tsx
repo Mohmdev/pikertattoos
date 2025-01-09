@@ -6,7 +6,8 @@ import type { StaticImageData } from 'next/image'
 
 import { cssVariables } from 'src/cssVariables'
 import { cn } from '@utils/cn'
-import { getClientSideURL } from '@utils/getURL'
+
+// import { getClientSideURL } from '@utils/getURL'
 
 import type { Props as MediaProps } from '../types'
 
@@ -19,7 +20,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     imgClassName,
     priority,
     resource,
-    size: sizeFromProps,
+    sizes: sizeFromProps,
     src: srcFromProps,
     loading: loadingFromProps,
     objectFit = 'cover'
@@ -44,7 +45,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     height = fullHeight!
     alt = altFromResource || ''
 
-    src = `${getClientSideURL()}${url}`
+    src = url as string
+    // src = `${getClientSideURL()}${url}`
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
@@ -63,7 +65,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         alt={alt || ''}
         fill={fill}
         height={!fill ? height : undefined}
-        placeholder="blur"
+        // placeholder="blur"
         priority={priority}
         quality={100}
         loading={loading}
@@ -77,7 +79,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
             ? 'opacity-0' // Start fully transparent
             : 'opacity-100' // Fade to fully visible
         )}
-        style={{ objectFit }}
+        style={fill ? { objectFit: objectFit } : undefined}
         onLoad={() => setIsLoading(false)}
       />
     </picture>

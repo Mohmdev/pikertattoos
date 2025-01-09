@@ -38,9 +38,15 @@ export interface Config {
       tattoos: 'tattoo';
       artists: 'artist';
     };
+    artist: {
+      tattoos: 'tattoo';
+    };
     tag: {
       tattoos: 'tattoo';
       artists: 'artist';
+    };
+    media: {
+      relatedTattoo: 'tattoo';
     };
     'user-photo': {
       user: 'users';
@@ -70,14 +76,16 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
-    'global-settings': GlobalSetting;
+    homepage: Homepage;
     'main-menu': MainMenu;
     footer: Footer;
+    'global-settings': GlobalSetting;
   };
   globalsSelect: {
-    'global-settings': GlobalSettingsSelect<false> | GlobalSettingsSelect<true>;
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
     'main-menu': MainMenuSelect<false> | MainMenuSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'global-settings': GlobalSettingsSelect<false> | GlobalSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -125,12 +133,29 @@ export interface UserAuthOperations {
 export interface Tattoo {
   id: number;
   title: string;
-  video?: (number | null) | Media;
+  /**
+   * Up to 12 images.
+   */
   images?: (number | Media)[] | null;
-  description?: string | null;
+  video?: (number | null) | Media;
   area?: (number | Area)[] | null;
   style?: (number | Style)[] | null;
   artist?: (number | Artist)[] | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   tags?: (number | Tag)[] | null;
   /**
    * Select related tattoos.
@@ -150,11 +175,11 @@ export interface Tattoo {
 export interface Media {
   id: number;
   /**
-   * Used for SEO and accessibility
+   * For SEO and accessibility
    */
   alt?: string | null;
   /**
-   * Caption for this media file.
+   * Custom caption for the image
    */
   caption?: {
     root: {
@@ -171,6 +196,11 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  relatedTattoo?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  tags?: (number | Tag)[] | null;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -252,26 +282,67 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "area".
+ * via the `definition` "tag".
  */
-export interface Area {
+export interface Tag {
   id: number;
   title: string;
   tattoos?: {
     docs?: (number | Tattoo)[] | null;
     hasNextPage?: boolean | null;
   } | null;
+  artists?: {
+    docs?: (number | Artist)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  /**
+   * Optional
+   */
+  image?: (number | null) | Media;
+  description?: string | null;
   slug: string;
   slugLock?: boolean | null;
-  parent?: (number | null) | Area;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Area;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "artist".
+ */
+export interface Artist {
+  id: number;
+  title: string;
+  style?: (number | Style)[] | null;
+  /**
+   * Associate this artist with a user account to enable them to log in and manage their own content.
+   */
+  user?: (number | null) | User;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Associate this artist with a user account to enable them to log in and manage their own content.
+   */
+  tattoos?: {
+    docs?: (number | Tattoo)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  tags?: (number | Tag)[] | null;
+  slug: string;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -291,6 +362,11 @@ export interface Style {
     docs?: (number | Artist)[] | null;
     hasNextPage?: boolean | null;
   } | null;
+  /**
+   * Optional
+   */
+  image?: (number | null) | Media;
+  description?: string | null;
   slug: string;
   slugLock?: boolean | null;
   parent?: (number | null) | Style;
@@ -308,48 +384,11 @@ export interface Style {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "artist".
- */
-export interface Artist {
-  id: number;
-  title: string;
-  /**
-   * Optional
-   */
-  bio?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  style: (number | Style)[];
-  /**
-   * Associate this artist with a user account to enable them to log in and manage their own content.
-   */
-  user: number | User;
-  tags?: (number | Tag)[] | null;
-  slug: string;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
-  firstName?: string | null;
+  firstName: string;
   lastName?: string | null;
   photo?: (number | null) | UserPhoto;
   role: 'admin' | 'editor' | 'public';
@@ -427,21 +466,26 @@ export interface UserPhoto {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tag".
+ * via the `definition` "area".
  */
-export interface Tag {
+export interface Area {
   id: number;
   title: string;
   tattoos?: {
     docs?: (number | Tattoo)[] | null;
     hasNextPage?: boolean | null;
   } | null;
-  artists?: {
-    docs?: (number | Artist)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
   slug: string;
   slugLock?: boolean | null;
+  parent?: (number | null) | Area;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Area;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1529,12 +1573,12 @@ export interface PayloadMigration {
  */
 export interface TattooSelect<T extends boolean = true> {
   title?: T;
-  video?: T;
   images?: T;
-  description?: T;
+  video?: T;
   area?: T;
   style?: T;
   artist?: T;
+  description?: T;
   tags?: T;
   relatedTattoos?: T;
   meta?: T | MetaSelect<T>;
@@ -1583,6 +1627,8 @@ export interface StyleSelect<T extends boolean = true> {
   title?: T;
   tattoos?: T;
   artists?: T;
+  image?: T;
+  description?: T;
   slug?: T;
   slugLock?: T;
   parent?: T;
@@ -1604,9 +1650,10 @@ export interface StyleSelect<T extends boolean = true> {
  */
 export interface ArtistSelect<T extends boolean = true> {
   title?: T;
-  bio?: T;
   style?: T;
   user?: T;
+  bio?: T;
+  tattoos?: T;
   tags?: T;
   slug?: T;
   slugLock?: T;
@@ -1622,6 +1669,8 @@ export interface TagSelect<T extends boolean = true> {
   title?: T;
   tattoos?: T;
   artists?: T;
+  image?: T;
+  description?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1937,6 +1986,8 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  relatedTattoo?: T;
+  tags?: T;
   prefix?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2364,50 +2415,21 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "global-settings".
+ * via the `definition` "homepage".
  */
-export interface GlobalSetting {
+export interface Homepage {
   id: number;
-  siteIdentity?: {
-    siteName?: string | null;
-    siteDescription?: string | null;
-  };
-  branding?: {
-    /**
-     * Light-colored version of your logo optimized for dark backgrounds and dark mode displays.
-     */
-    logo?: (number | null) | Asset;
-    /**
-     * Dark-colored version of your logo optimized for light backgrounds and standard displays.
-     */
-    logoSquare?: (number | null) | Asset;
-    /**
-     * The small icon that is displayed in the browser tab. Recommended size: 32x32px.
-     */
-    favicon?: (number | null) | Asset;
-  };
-  contactInfo?: {
-    contactName?: string | null;
-    contactEmail?: string | null;
-    contactPhone?: string | null;
-    contactAddress?: string | null;
-    socialMedia?: {
-      facebook?: string | null;
-      twitter?: string | null;
-      instagram?: string | null;
-      linkedin?: string | null;
-      youtube?: string | null;
-      whatsapp?: string | null;
-      telegram?: string | null;
-    };
-  };
-  globalSeo?: {
-    keywords?: string | null;
-    /**
-     * The image that will appear when sharing your site on social media.
-     */
-    ogImage?: (number | null) | Asset;
-  };
+  title: string;
+  subtitle?: string | null;
+  featured?: (number | Tattoo)[] | null;
+  meta?: Meta;
+  /**
+   * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
+   */
+  noindex?: boolean | null;
+  authors?: (number | User)[] | null;
+  publishedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2741,47 +2763,66 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "global-settings_select".
+ * via the `definition` "global-settings".
  */
-export interface GlobalSettingsSelect<T extends boolean = true> {
-  siteIdentity?:
-    | T
-    | {
-        siteName?: T;
-        siteDescription?: T;
-      };
-  branding?:
-    | T
-    | {
-        logo?: T;
-        logoSquare?: T;
-        favicon?: T;
-      };
-  contactInfo?:
-    | T
-    | {
-        contactName?: T;
-        contactEmail?: T;
-        contactPhone?: T;
-        contactAddress?: T;
-        socialMedia?:
-          | T
-          | {
-              facebook?: T;
-              twitter?: T;
-              instagram?: T;
-              linkedin?: T;
-              youtube?: T;
-              whatsapp?: T;
-              telegram?: T;
-            };
-      };
-  globalSeo?:
-    | T
-    | {
-        keywords?: T;
-        ogImage?: T;
-      };
+export interface GlobalSetting {
+  id: number;
+  siteIdentity?: {
+    siteName?: string | null;
+    siteDescription?: string | null;
+  };
+  branding?: {
+    /**
+     * Light-colored version of your logo optimized for dark backgrounds and dark mode displays.
+     */
+    logo?: (number | null) | Asset;
+    /**
+     * Dark-colored version of your logo optimized for light backgrounds and standard displays.
+     */
+    logoSquare?: (number | null) | Asset;
+    /**
+     * The small icon that is displayed in the browser tab. Recommended size: 32x32px.
+     */
+    favicon?: (number | null) | Asset;
+  };
+  contactInfo?: {
+    contactName?: string | null;
+    contactEmail?: string | null;
+    contactPhone?: string | null;
+    contactAddress?: string | null;
+    socialMedia?: {
+      facebook?: string | null;
+      twitter?: string | null;
+      instagram?: string | null;
+      linkedin?: string | null;
+      youtube?: string | null;
+      whatsapp?: string | null;
+      telegram?: string | null;
+    };
+  };
+  globalSeo?: {
+    keywords?: string | null;
+    /**
+     * The image that will appear when sharing your site on social media.
+     */
+    ogImage?: (number | null) | Asset;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  featured?: T;
+  meta?: T | MetaSelect<T>;
+  noindex?: T;
+  authors?: T;
+  publishedAt?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -2920,6 +2961,53 @@ export interface FooterSelect<T extends boolean = true> {
         id?: T;
       };
   _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "global-settings_select".
+ */
+export interface GlobalSettingsSelect<T extends boolean = true> {
+  siteIdentity?:
+    | T
+    | {
+        siteName?: T;
+        siteDescription?: T;
+      };
+  branding?:
+    | T
+    | {
+        logo?: T;
+        logoSquare?: T;
+        favicon?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        contactName?: T;
+        contactEmail?: T;
+        contactPhone?: T;
+        contactAddress?: T;
+        socialMedia?:
+          | T
+          | {
+              facebook?: T;
+              twitter?: T;
+              instagram?: T;
+              linkedin?: T;
+              youtube?: T;
+              whatsapp?: T;
+              telegram?: T;
+            };
+      };
+  globalSeo?:
+    | T
+    | {
+        keywords?: T;
+        ogImage?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

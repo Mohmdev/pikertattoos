@@ -1,8 +1,5 @@
 import { generateForgotPasswordEmail } from '@services/email/generateForgotPasswordEmail'
 import { generateVerificationEmail } from '@services/email/generateVerificationEmail'
-
-import type { CollectionConfig } from 'payload'
-
 import { anyone } from '@access/anyone'
 import { hasAdminPanelAccess } from '@access/hasAdminPanelAccess'
 import { isAdminFieldLevel } from '@access/isAdmin'
@@ -10,8 +7,9 @@ import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrEditorOrSelf } from '@access/isAdminOrEditorOrSelf'
 import { isAdminOrSelf, isAdminOrSelfFieldLevel } from '@access/isAdminOrSelf'
 
-import { ensureFirstUserIsAdmin } from './ensureFirstUserIsAdmin'
+import type { CollectionConfig } from 'payload'
 
+import { ensureFirstUserIsAdmin } from './ensureFirstUserIsAdmin'
 import { ROLES_WITH_ADMIN_ACCESS } from '@constants/featureFlags'
 
 export const Users: CollectionConfig<'users'> = {
@@ -37,7 +35,6 @@ export const Users: CollectionConfig<'users'> = {
       name: 'username',
       type: 'text',
       required: true,
-      index: true,
       unique: true,
       hooks: {
         beforeValidate: [
@@ -53,7 +50,8 @@ export const Users: CollectionConfig<'users'> = {
       fields: [
         {
           name: 'firstName',
-          type: 'text'
+          type: 'text',
+          required: true
         },
         {
           name: 'lastName',
@@ -88,11 +86,66 @@ export const Users: CollectionConfig<'users'> = {
     },
     {
       type: 'ui',
-      name: 'seedButton',
+      name: 'seedAreasButton',
       label: '',
       admin: {
         components: {
-          Field: '@admin-components/SeedButton#SeedButton'
+          Field: '@admin-components/SeedAreasButton#SeedAreasButton'
+        },
+        position: 'sidebar'
+      }
+    },
+    {
+      type: 'ui',
+      name: 'seedStylesButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/SeedStylesButton#SeedStylesButton'
+        },
+        position: 'sidebar'
+      }
+    },
+    {
+      type: 'ui',
+      name: 'seedTagsButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/SeedTagsButton#SeedTagsButton'
+        },
+        position: 'sidebar'
+      }
+    },
+    {
+      type: 'ui',
+      name: 'seedTattoosButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/SeedTattoosButton#SeedTattoosButton'
+        },
+        position: 'sidebar'
+      }
+    },
+    // {
+    //   type: 'ui',
+    //   name: 'seedButton',
+    //   label: '',
+    //   admin: {
+    //     components: {
+    //       Field: '@admin-components/SeedButton#SeedButton'
+    //     },
+    //     position: 'sidebar'
+    //   }
+    // },
+    {
+      type: 'ui',
+      name: 'resetButton',
+      label: '',
+      admin: {
+        components: {
+          Field: '@admin-components/ResetButton#ResetButton'
         },
         position: 'sidebar'
       }

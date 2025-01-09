@@ -1,6 +1,6 @@
 @use 'queries.scss' as q;
 
-.grid {
+.grid-container {
   display: grid;
   grid-template-columns: repeat(16, 1fr);
 

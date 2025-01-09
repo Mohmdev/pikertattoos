@@ -1,0 +1,34 @@
+providers = ['node']
+buildImage = 'ghcr.io/railwayapp/nixpacks:ubuntu-1733184274'
+
+[variables]
+CI = 'true'
+NIXPACKS_METADATA = 'node'
+NODE_ENV = 'production'
+NPM_CONFIG_PRODUCTION = 'true'
+
+
+[phases.setup]
+nixPkgs = ['nodejs_22', 'pnpm-9_x', 'openssl']
+nixLibs = ['gcc-unwrapped']
+nixOverlays = [
+  'https://github.com/railwayapp/nix-npm-overlay/archive/main.tar.gz',
+]
+nixpkgsArchive = '5624e1334b26ddc18da37e132b6fa8e93b481468'
+
+
+[phases.install]
+dependsOn = ['setup']
+cmds = ['pnpm run ci']
+cacheDirectories = ['/root/.local/share/pnpm/store/v3']
+paths = ['/app/node_modules/.bin']
+
+
+[phases.build]
+dependsOn = ['install']
+cmd = 'pnpm build'
+cacheDirectories = ['.next/cache', 'node_modules/.cache']
+
+
+[start]
+cmd = 'pnpm start'

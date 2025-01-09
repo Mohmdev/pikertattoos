@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 
 import { Footer } from '@CMS/Footer/config'
 import { GlobalSettings } from '@CMS/GlobalSettings/config'
+import { HomePage } from '@CMS/HomePage/config'
 import { MainMenu } from '@CMS/MainMenu/config'
 import { Pages } from '@CMS/Pages/config'
 import { Posts } from '@CMS/Posts/config'
@@ -16,7 +17,7 @@ import { Media } from '@CMS/Uploads/config.Media'
 import { UserPhotos } from '@CMS/Uploads/config.UserPhotos'
 import { Users } from '@CMS/Users/config'
 import { adminConfig } from '@services/admin/config'
-import { databaseAdapter } from '@services/database/config'
+import { postgres } from '@services/database/config.postgres'
 import { advancedLexical } from '@services/editor/advancedLexical'
 import { emailAdapter } from '@services/email/config'
 import { pluginsConfig } from '@services/plugins'
@@ -38,10 +39,10 @@ export default buildConfig({
     ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
     ...collectionGroup('Settings', [Users])
   ],
-  globals: [...globalGroup('Customize', [GlobalSettings, MainMenu, Footer])],
+  globals: [...globalGroup('Customize', [HomePage, MainMenu, Footer, GlobalSettings])],
   editor: advancedLexical,
   admin: adminConfig,
-  db: databaseAdapter,
+  db: postgres,
   email: emailAdapter,
   sharp,
   plugins: [...pluginsConfig],
