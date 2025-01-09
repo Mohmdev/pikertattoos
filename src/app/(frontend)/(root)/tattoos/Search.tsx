@@ -9,9 +9,9 @@ import { Input } from '@ui/input'
 import { Label } from '@ui/label'
 
 export const Search: React.FC = () => {
-  const [value, setValue] = useState('')
   const router = useRouter()
 
+  const [value, setValue] = useState('')
   const debouncedValue = useDebounce(value)
 
   useEffect(() => {

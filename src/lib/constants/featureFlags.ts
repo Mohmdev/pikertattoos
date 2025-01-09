@@ -45,8 +45,8 @@ export const SEO_ENABLED_GLOBALS: GlobalSlug[] = [
 ] as const
 /* --------------------------------- Search --------------------------------- */
 export const INDEXED_COLLECTIONS: CollectionSlug[] = [
-  'tattoo',
-  'artist'
+  'tattoo'
+  // 'artist'
   // 'posts',
 ] as const
 export const INDEXED_TAXONOMY_COLLECTIONS: CollectionSlug[] = [

@@ -1433,15 +1433,10 @@ export interface Search {
   id: number;
   title?: string | null;
   priority?: number | null;
-  doc:
-    | {
-        relationTo: 'tattoo';
-        value: number | Tattoo;
-      }
-    | {
-        relationTo: 'artist';
-        value: number | Artist;
-      };
+  doc: {
+    relationTo: 'tattoo';
+    value: number | Tattoo;
+  };
   slug?: string | null;
   meta?: {
     title?: string | null;
