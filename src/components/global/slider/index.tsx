@@ -17,7 +17,7 @@ export const Slider = ({ children, overlay, label, ...rest }: SliderProps) => {
       style={{
         maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 1) 20%,rgba(0, 0, 0, 1) 80%,rgba(0, 0, 0, 0))`
       }}
-      className="relative mt-5 w-full max-w-full overflow-x-hidden"
+      className="relative mt-5 w-full max-w-[100vw] overflow-x-hidden"
     >
       {overlay && (
         <>
