@@ -16,18 +16,15 @@ import { CardDocData } from '../tattoos/Card'
 import { RenderPage } from './RenderPage'
 
 type Args = {
-  searchParams: Promise<{
-    q: string
-  }>
+  searchParams: {
+    q?: string
+  }
 }
-export const dynamic = 'force-static'
-export const revalidate = 86400 // 24 hours
+export const dynamic = 'force-dynamic'
 
-export default async function HomePage({ searchParams: searchParamsPromise }: Args) {
+export default async function HomePage({ searchParams }: Args) {
   const { isEnabled: draft } = await draftMode()
-
   const getHomepage = draft ? getDraftHomepage : getCachedHomepage
-
   const homepage: Homepage = (await getHomepage()) || null
 
   if (!homepage) {
@@ -35,48 +32,41 @@ export default async function HomePage({ searchParams: searchParamsPromise }: Ar
   }
 
   const payload = await getPayload({ config: configPromise })
-  const { q: query } = await searchParamsPromise
-  const queryTattoos = await payload.find({
-    collection: 'search',
-    depth: 2,
-    limit: 6,
-    select: {
-      title: true,
-      slug: true,
-      styles: true,
-      image: true
-    },
-    // pagination: false reduces overhead if you don't need totalDocs
-    pagination: false,
-    ...(query
-      ? {
-          where: {
-            or: [
-              {
-                title: {
-                  like: query
-                }
-              },
-              {
-                image: {
-                  like: query
-                }
-              },
-              {
-                styles: {
-                  like: query
-                }
-              },
-              {
-                slug: {
-                  like: query
-                }
+  const query = searchParams.q
+
+  console.log('Server-side searchParams:', searchParams) // Debug log
+
+  const queryTattoos = query
+    ? await payload.find({
+        collection: 'search',
+        depth: 1,
+        limit: 6,
+        select: {
+          title: true,
+          slug: true,
+          styles: true,
+          image: true
+        },
+        pagination: false,
+        where: {
+          or: [
+            {
+              title: {
+                contains: query
               }
-            ]
-          }
+            },
+            {
+              'styles.title': {
+                contains: query
+              }
+            }
+          ]
         }
-      : {})
-  })
+      })
+    : { docs: [], totalDocs: 0 }
+
+  console.log('Search Query:', query)
+  console.log('Search Results:', queryTattoos)
 
   return (
     <>
@@ -84,6 +74,7 @@ export default async function HomePage({ searchParams: searchParamsPromise }: Ar
       <RenderPage
         data={homepage}
         docs={queryTattoos.totalDocs > 0 ? (queryTattoos.docs as CardDocData[]) : null}
+        searchQuery={query}
       />
     </>
   )

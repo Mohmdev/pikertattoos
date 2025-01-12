@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 
 import { cn } from '@utils/cn'
 
@@ -16,11 +18,19 @@ import { Search } from './Search'
 interface RenderPageProps {
   data: Homepage
   docs: CardDocData[] | null
+  searchQuery?: string
 }
-
-export const RenderPage = ({ data, docs }: RenderPageProps) => {
+export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageProps) => {
+  const [searchResults, setSearchResults] = useState<CardDocData[] | null>(initialDocs)
   const { title, subtitle, featured } = data
   const tattoos = featured as Tattoo[]
+
+  useEffect(() => {
+    setSearchResults(initialDocs)
+  }, [initialDocs])
+
+  console.log('RenderPage - initialDocs:', initialDocs)
+  console.log('RenderPage - searchResults:', searchResults)
 
   return (
     <div
@@ -62,17 +72,21 @@ export const RenderPage = ({ data, docs }: RenderPageProps) => {
             placeholder="Search for anything"
             inputClassName="lg:w-[500px] text-lg h-auto z-[9999]"
             className="mb-3 mt-10 rounded-3xl border-themeGray px-5 py-2"
+            initialValue={searchQuery}
+            onResultsChange={setSearchResults}
           />
           <div className="w-full md:w-[800px]">
             <CategoryListSlider overlay route />
           </div>
         </BackdropGradient>
 
-        {docs ? (
-          <CollectionArchive docs={docs} />
-        ) : (
-          <div className="container">No results found.</div>
-        )}
+        {searchQuery ? (
+          searchResults ? (
+            <CollectionArchive docs={searchResults} />
+          ) : (
+            <div className="container">No results found for &quot;{searchQuery}&quot;</div>
+          )
+        ) : null}
       </div>
 
       <div

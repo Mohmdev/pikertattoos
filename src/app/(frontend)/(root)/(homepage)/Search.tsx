@@ -9,6 +9,8 @@ import { useDebounce } from '@utils/useDebounce'
 
 import { Input } from '@ui/input'
 
+import { CardDocData } from '../tattoos/Card'
+
 type Props = {
   className?: string
   inputClassName?: string
@@ -16,6 +18,8 @@ type Props = {
   // searchType: 'GROUPS' | 'POSTS'
   iconClassName?: string
   glass?: boolean
+  initialValue?: string
+  onResultsChange?: (results: CardDocData[] | null) => void
 }
 
 export const Search = ({
@@ -24,16 +28,43 @@ export const Search = ({
   glass,
   iconClassName,
   inputClassName,
-  placeholder = 'Search'
+  placeholder = 'Search',
+  initialValue = '',
+  onResultsChange
 }: Props) => {
   const router = useRouter()
-
-  const [value, setValue] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [value, setValue] = useState(initialValue)
   const debouncedValue = useDebounce(value)
 
+  console.log('Search - value:', value)
+  console.log('Search - debouncedValue:', debouncedValue)
+
   useEffect(() => {
-    router.push(`/${debouncedValue ? `?q=${debouncedValue}` : ''}`)
-  }, [debouncedValue, router])
+    async function fetchResults() {
+      if (debouncedValue) {
+        setIsLoading(true)
+        try {
+          onResultsChange?.(null)
+          router.push(`/?q=${encodeURIComponent(debouncedValue)}`, {
+            scroll: false
+          })
+        } catch (error) {
+          console.error('Search error:', error)
+          onResultsChange?.(null)
+        } finally {
+          setIsLoading(false)
+        }
+      } else {
+        onResultsChange?.(null)
+        router.push('/', {
+          scroll: false
+        })
+      }
+    }
+
+    fetchResults()
+  }, [debouncedValue, router, onResultsChange])
 
   return (
     <div>
@@ -48,21 +79,20 @@ export const Search = ({
             'backdrop--blur__safari bg-opacity-20 bg-clip-padding backdrop-blur-2xl backdrop-filter'
         )}
       >
-        <SearchIcon type="submit" className={cn(iconClassName || 'text-themeTextGray')} />
+        <SearchIcon
+          className={cn(iconClassName || 'text-themeTextGray', isLoading && 'animate-spin')}
+        />
         <Input
           id="search"
+          value={value}
           onChange={(event) => {
             setValue(event.target.value)
           }}
-          // onChange={onSearchQuery}
-          // value={query}
           placeholder={placeholder}
           className={cn('border-0 bg-transparent', inputClassName)}
           type="text"
+          disabled={isLoading}
         />
-        {/* <button type="submit" className="sr-only">
-          submit
-        </button> */}
       </form>
     </div>
   )

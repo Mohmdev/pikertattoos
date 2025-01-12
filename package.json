@@ -34,7 +34,7 @@
     "migrate:create": "payload migrate:create",
     "ci": "NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install --frozen-lockfile",
     "seed:all": "payload run src/app/next/seedScript.ts",
-    "update-deps": "rm node_modules -R -Force && pnpm i"
+    "update-deps": "rm node_modules pnpm-lock.yaml -rf && pnpm i"
   },
   "dependencies": {
     "@geist-ui/icons": "^1.0.2",

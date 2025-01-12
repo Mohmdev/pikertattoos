@@ -3,18 +3,24 @@
 import React, { Fragment } from 'react'
 import Link from 'next/link'
 
-import { cn } from '@utils/cn'
+import { Media as MediaType } from '@payload-types'
 
-import type { Search, Tattoo } from '@payload-types'
+import { cn } from '@utils/cn'
 
 import { Media } from '@components/dynamic/Media'
 
 import useClickableCard from './useClickableCard'
 
-// export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'>
-// export type CardDocData = Pick<Tattoo, 'slug' | 'style' | 'title'  > & { image?: (number | null) | Media;}
-export type CardDocData = Pick<Search, 'slug' | 'title' | 'image' | 'description'> &
-  Exclude<Tattoo, 'style'>
+export type CardDocData = {
+  id: string
+  title: string
+  slug: string
+  image?: MediaType | null
+  description?: string
+  style?: {
+    title: string
+  }[]
+}
 
 export const Card: React.FC<{
   alignItems?: 'center'
