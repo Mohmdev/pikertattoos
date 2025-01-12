@@ -1438,16 +1438,19 @@ export interface Search {
     value: number | Tattoo;
   };
   slug?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (number | null) | Media;
-  };
-  categories?:
+  image?: (number | null) | Media;
+  styles?:
     | {
         relationTo?: string | null;
-        id?: string | null;
         title?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  areas?:
+    | {
+        relationTo?: string | null;
+        title?: string | null;
+        id?: string | null;
       }[]
     | null;
   updatedAt: string;
@@ -2359,19 +2362,20 @@ export interface SearchSelect<T extends boolean = true> {
   priority?: T;
   doc?: T;
   slug?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  categories?:
+  image?: T;
+  styles?:
     | T
     | {
         relationTo?: T;
-        id?: T;
         title?: T;
+        id?: T;
+      };
+  areas?:
+    | T
+    | {
+        relationTo?: T;
+        title?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

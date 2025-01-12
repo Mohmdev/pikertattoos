@@ -5,11 +5,11 @@ import configPromise from '@payload-config'
 
 import { getPayload } from 'payload'
 
-import { CardDocData } from './Card'
-import { CollectionArchive } from './CollectionArchive'
 // import type { Tattoo } from '@payload-types'
 
-import { Search } from './Search'
+import { Search } from '../(homepage)/Search'
+import { CardDocData } from './Card'
+import { CollectionArchive } from './CollectionArchive'
 
 type Args = {
   searchParams: Promise<{

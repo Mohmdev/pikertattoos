@@ -5,15 +5,20 @@ import { cn } from '@utils/cn'
 import type { Homepage, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
+import { CategoryListSlider } from '@components/global/category-list-slider'
 import GradientText from '@components/global/gradient-text'
 
+import { CardDocData } from '../tattoos/Card'
+import { CollectionArchive } from '../tattoos/CollectionArchive'
 import { InViewImagesGrid } from './components/InViewImagesGrid'
+import { Search } from './Search'
 
 interface RenderPageProps {
   data: Homepage
+  docs: CardDocData[] | null
 }
 
-export const RenderPage = ({ data }: RenderPageProps) => {
+export const RenderPage = ({ data, docs }: RenderPageProps) => {
   const { title, subtitle, featured } = data
   const tattoos = featured as Tattoo[]
 
@@ -46,6 +51,28 @@ export const RenderPage = ({ data }: RenderPageProps) => {
             {subtitle ? subtitle : 'Web Technology Solutions'}
           </p>
         </BackdropGradient>
+
+        <BackdropGradient
+          className="h-3/6 w-4/12 md:w-5/12 xl:h-2/6 xl:w-3/12"
+          container="items-center"
+        >
+          <Search
+            glass
+            // searchType="GROUPS"
+            placeholder="Search for anything"
+            inputClassName="lg:w-[500px] text-lg h-auto z-[9999]"
+            className="mb-3 mt-10 rounded-3xl border-themeGray px-5 py-2"
+          />
+          <div className="w-full md:w-[800px]">
+            <CategoryListSlider overlay route />
+          </div>
+        </BackdropGradient>
+
+        {docs ? (
+          <CollectionArchive docs={docs} />
+        ) : (
+          <div className="container">No results found.</div>
+        )}
       </div>
 
       <div

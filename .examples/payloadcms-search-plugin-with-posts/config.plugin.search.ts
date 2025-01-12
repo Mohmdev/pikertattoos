@@ -5,7 +5,7 @@ import type { Plugin } from 'payload'
 import { beforeSyncWithSearch } from './beforeSync'
 
 export const searchPluginConfig: Plugin = searchPlugin({
-  collections: ['tattoo'],
+  collections: ['posts'],
   beforeSync: beforeSyncWithSearch,
   searchOverrides: {
     fields: ({ defaultFields }) => [
@@ -19,19 +19,36 @@ export const searchPluginConfig: Plugin = searchPlugin({
         }
       },
       {
-        name: 'image',
-        label: 'Image',
-        type: 'upload',
-        relationTo: 'media',
+        name: 'meta',
+        label: 'Meta',
+        type: 'group',
         index: true,
         admin: {
           readOnly: true
-        }
+        },
+        fields: [
+          {
+            type: 'text',
+            name: 'title',
+            label: 'Title'
+          },
+          {
+            type: 'text',
+            name: 'description',
+            label: 'Description'
+          },
+          {
+            name: 'image',
+            label: 'Image',
+            type: 'upload',
+            relationTo: 'media'
+          }
+        ]
       },
       {
-        name: 'styles',
+        label: 'Categories',
+        name: 'categories',
         type: 'array',
-        index: true,
         admin: {
           readOnly: true
         },
@@ -41,21 +58,7 @@ export const searchPluginConfig: Plugin = searchPlugin({
             type: 'text'
           },
           {
-            name: 'title',
-            type: 'text'
-          }
-        ]
-      },
-      {
-        name: 'areas',
-        type: 'array',
-        index: true,
-        admin: {
-          readOnly: true
-        },
-        fields: [
-          {
-            name: 'relationTo',
+            name: 'id',
             type: 'text'
           },
           {
@@ -64,11 +67,6 @@ export const searchPluginConfig: Plugin = searchPlugin({
           }
         ]
       }
-    ],
-    admin: {
-      useAsTitle: 'title',
-      defaultColumns: ['title', 'image', 'styles', 'areas', 'description'],
-      group: 'Content'
-    }
+    ]
   }
 })

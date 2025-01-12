@@ -5,31 +5,34 @@ import Link from 'next/link'
 
 import { cn } from '@utils/cn'
 
-import type { Post } from '@/payload-types'
+import type { Search, Tattoo } from '@payload-types'
 
 import { Media } from '@components/dynamic/Media'
 
 import useClickableCard from './useClickableCard'
 
-export type CardDocData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'>
+// export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'>
+// export type CardDocData = Pick<Tattoo, 'slug' | 'style' | 'title'  > & { image?: (number | null) | Media;}
+export type CardDocData = Pick<Search, 'slug' | 'title' | 'image' | 'description'> &
+  Exclude<Tattoo, 'style'>
 
 export const Card: React.FC<{
   alignItems?: 'center'
   className?: string
   doc?: CardDocData
-  relationTo?: 'posts' //
+  relationTo?: 'tattoo' //
   showCategories?: boolean
   title?: string
 }> = (props) => {
   const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title } = doc || {}
-  const { description, image: metaImage } = meta || {}
+  const { title, slug, style: styles, image } = doc || {}
 
-  const hasCategories = categories && Array.isArray(categories) && categories.length > 0
+  const hasStyles = styles && Array.isArray(styles) && styles.length > 0
+
   const titleToUse = titleFromProps || title
-  const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
+  // const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
   const href = `/${relationTo}/${slug}`
 
   return (
@@ -41,21 +44,21 @@ export const Card: React.FC<{
       ref={card.ref}
     >
       <div className="relative w-full">
-        {!metaImage && <div className="">No image</div>}
-        {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
+        {!image && <div className="">No image</div>}
+        {image && typeof image !== 'number' && <Media resource={image} sizes="33vw" />}
       </div>
       <div className="p-4">
-        {showCategories && hasCategories && (
+        {showCategories && hasStyles && (
           <div className="mb-4 text-sm uppercase">
-            {showCategories && hasCategories && (
+            {showCategories && hasStyles && (
               <div>
-                {categories?.map((category, index) => {
-                  if (typeof category === 'object') {
-                    const { title: titleFromCategory } = category
+                {styles?.map((style, index) => {
+                  if (typeof style === 'object') {
+                    const { title: titleFromCategory } = style
 
                     const categoryTitle = titleFromCategory || 'Untitled category'
 
-                    const isLast = index === categories.length - 1
+                    const isLast = index === styles.length - 1
 
                     return (
                       <Fragment key={index}>
@@ -80,7 +83,7 @@ export const Card: React.FC<{
             </h3>
           </div>
         )}
-        {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>}
+        {/* {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>} */}
       </div>
     </article>
   )

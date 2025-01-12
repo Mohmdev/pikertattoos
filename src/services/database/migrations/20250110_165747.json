@@ -1,5 +1,5 @@
 {
-  "id": "67abec47-4192-4ab1-9649-db23e9eaece3",
+  "id": "6aa25841-5ffd-4e2b-9763-bb73a1738ebe",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -13913,8 +13913,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.search_categories": {
-      "name": "search_categories",
+    "public.search_styles": {
+      "name": "search_styles",
       "schema": "",
       "columns": {
         "_order": {
@@ -13949,8 +13949,8 @@
         }
       },
       "indexes": {
-        "search_categories_order_idx": {
-          "name": "search_categories_order_idx",
+        "search_styles_order_idx": {
+          "name": "search_styles_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -13964,8 +13964,8 @@
           "method": "btree",
           "with": {}
         },
-        "search_categories_parent_id_idx": {
-          "name": "search_categories_parent_id_idx",
+        "search_styles_parent_id_idx": {
+          "name": "search_styles_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -13981,9 +13981,9 @@
         }
       },
       "foreignKeys": {
-        "search_categories_parent_id_fk": {
-          "name": "search_categories_parent_id_fk",
-          "tableFrom": "search_categories",
+        "search_styles_parent_id_fk": {
+          "name": "search_styles_parent_id_fk",
+          "tableFrom": "search_styles",
           "tableTo": "search",
           "columnsFrom": [
             "_parent_id"
@@ -14029,20 +14029,14 @@
           "primaryKey": false,
           "notNull": false
         },
-        "meta_title": {
-          "name": "meta_title",
+        "description": {
+          "name": "description",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
-        "meta_description": {
-          "name": "meta_description",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "meta_image_id": {
-          "name": "meta_image_id",
+        "image_id": {
+          "name": "image_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -14078,11 +14072,26 @@
           "method": "btree",
           "with": {}
         },
-        "search_meta_meta_image_idx": {
-          "name": "search_meta_meta_image_idx",
+        "search_description_idx": {
+          "name": "search_description_idx",
           "columns": [
             {
-              "expression": "meta_image_id",
+              "expression": "description",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "search_image_idx": {
+          "name": "search_image_idx",
+          "columns": [
+            {
+              "expression": "image_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -14125,12 +14134,12 @@
         }
       },
       "foreignKeys": {
-        "search_meta_image_id_media_id_fk": {
-          "name": "search_meta_image_id_media_id_fk",
+        "search_image_id_media_id_fk": {
+          "name": "search_image_id_media_id_fk",
           "tableFrom": "search",
           "tableTo": "media",
           "columnsFrom": [
-            "meta_image_id"
+            "image_id"
           ],
           "columnsTo": [
             "id"
@@ -14175,12 +14184,6 @@
         },
         "tattoo_id": {
           "name": "tattoo_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "artist_id": {
-          "name": "artist_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -14246,21 +14249,6 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
-        },
-        "search_rels_artist_id_idx": {
-          "name": "search_rels_artist_id_idx",
-          "columns": [
-            {
-              "expression": "artist_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
         }
       },
       "foreignKeys": {
@@ -14283,19 +14271,6 @@
           "tableTo": "tattoo",
           "columnsFrom": [
             "tattoo_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "search_rels_artist_fk": {
-          "name": "search_rels_artist_fk",
-          "tableFrom": "search_rels",
-          "tableTo": "artist",
-          "columnsFrom": [
-            "artist_id"
           ],
           "columnsTo": [
             "id"
