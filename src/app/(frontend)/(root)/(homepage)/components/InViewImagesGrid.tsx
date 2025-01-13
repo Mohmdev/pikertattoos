@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import { cn } from '@utils/cn'
 
 import type { Media as MediaType, Style, Tattoo } from '@payload-types'
@@ -57,26 +59,28 @@ export const InViewImagesGrid = ({ data }: InViewImagesGridProps) => {
 
             return (
               <TiltSpotlight key={tattoo.id} className="mb-4">
-                <Media
-                  resource={image}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  alt={image?.alt ? image.alt : '2001: A Space Odyssey'}
-                  className="grayscale duration-700 group-hover:grayscale-0"
-                />
-                <div
-                  className={cn(
-                    'absolute inset-x-0 bottom-0 mx-0 h-max w-max',
-                    'flex flex-col gap-0 space-y-0.5 p-5'
-                  )}
-                >
-                  {/* <h3 className="font-mono text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                    {style && style.title}
-                  </h3> */}
-                  <p className="m-0 text-sm text-black dark:text-white">
-                    {/* {title}  */}
-                    {style && style.title}
-                  </p>
-                </div>
+                <Link href={`/tattoo/${tattoo.slug}`} aria-label={tattoo.title}>
+                  <Media
+                    resource={image}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    alt={image?.alt ? image.alt : '2001: A Space Odyssey'}
+                    className="grayscale duration-700 group-hover:grayscale-0"
+                  />
+                  <div
+                    className={cn(
+                      'absolute inset-x-0 bottom-0 mx-0 h-max w-max',
+                      'flex flex-col gap-0 space-y-0.5 p-5'
+                    )}
+                  >
+                    {/* <h3 className="font-mono text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                      {style && style.title}
+                    </h3> */}
+                    <p className="m-0 text-sm text-black dark:text-white">
+                      {/* {title}  */}
+                      {style && style.title}
+                    </p>
+                  </div>
+                </Link>
               </TiltSpotlight>
             )
           })}

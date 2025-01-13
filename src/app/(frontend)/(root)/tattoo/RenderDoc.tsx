@@ -2,6 +2,8 @@ import React from 'react'
 
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
+import { cn } from '@utils/cn'
+
 import type { Area, Artist, Media as MediaType, Style, Tag, Tattoo, User } from '@payload-types'
 
 import { Media } from '@components/dynamic/Media'
@@ -9,7 +11,7 @@ import RichText from '@components/RichTextBasic'
 
 import { RelatedDocs } from './RelatedDocs'
 
-export const RenderDoc = ({ doc }: { doc: Partial<Tattoo> }) => {
+export const RenderDoc = ({ doc, className }: { doc: Partial<Tattoo>; className?: string }) => {
   const { title, description, relatedDocs } = doc
 
   const images = Array.isArray(doc.images) ? (doc.images as MediaType[]) : undefined
@@ -23,14 +25,14 @@ export const RenderDoc = ({ doc }: { doc: Partial<Tattoo> }) => {
   const artistsUsernames = artists?.map((artist) => (artist?.user as User)?.username)
 
   return (
-    <article className="min-h-screen">
+    <article className={cn('min-h-screen', className)}>
       {doc && (
         <>
           {/* Hero Section with Main Image */}
           <section className="group relative h-[80vh] w-full select-none">
             {mainImage ? (
               <div className="relative h-full w-full overflow-hidden">
-                <div className="duration-[2000ms] absolute inset-0 scale-[1.15] transform transition-all ease-out group-hover:scale-100">
+                <div className="absolute inset-0 scale-[1.15] transform transition-all duration-1000 ease-out group-hover:scale-100">
                   <Media resource={mainImage} priority={true} fill className="object-cover" />
                 </div>
               </div>
