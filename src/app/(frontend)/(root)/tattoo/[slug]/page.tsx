@@ -28,11 +28,15 @@ export async function generateStaticParams() {
     }
   })
 
-  const params = tattoos.docs.map(({ slug }) => {
-    return { slug }
-  })
+  return tattoos.docs.map((doc) => ({
+    slug: String(doc.slug) // Ensure slug is a string
+  }))
 
-  return params
+  // const params = tattoos.docs.map(({ slug }) => {
+  //   return { slug }
+  // })
+
+  // return params
 }
 
 type Args = {
