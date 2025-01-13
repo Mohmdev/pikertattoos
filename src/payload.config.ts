@@ -18,7 +18,7 @@ import { UserPhotos } from '@CMS/Uploads/config.UserPhotos'
 import { Users } from '@CMS/Users/config'
 import { adminConfig } from '@services/admin/config'
 import { postgres } from '@services/database/config.postgres'
-import { advancedLexical } from '@services/editor/advancedLexical'
+import { basicLexical } from '@services/editor/basicLexical'
 import { emailAdapter } from '@services/email/config'
 import { pluginsConfig } from '@services/plugins'
 
@@ -40,7 +40,7 @@ export default buildConfig({
     ...collectionGroup('Settings', [Users])
   ],
   globals: [...globalGroup('Customize', [HomePage, MainMenu, Footer, GlobalSettings])],
-  editor: advancedLexical,
+  editor: basicLexical,
   admin: adminConfig,
   db: postgres,
   email: emailAdapter,
