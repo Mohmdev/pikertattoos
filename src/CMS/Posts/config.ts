@@ -5,7 +5,7 @@ import { authorsField } from '@fields/shared/authorsField'
 import { categoriesField } from '@fields/shared/categoriesField'
 import { noindexField } from '@fields/shared/noindexField'
 import { publishedAtField } from '@fields/shared/publishedAtField'
-import { relatedPostsField } from '@fields/shared/relatedPostsField'
+import { relatedDocsField } from '@fields/shared/relatedDocsField'
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
@@ -77,7 +77,7 @@ export const Posts: CollectionConfig<'posts'> = {
         },
         {
           label: 'Options',
-          fields: [categoriesField, tagsField, relatedPostsField]
+          fields: [categoriesField, tagsField, relatedDocsField]
         },
         seoTab
       ]

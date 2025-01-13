@@ -156,11 +156,22 @@ export interface Tattoo {
     };
     [k: string]: unknown;
   } | null;
-  tags?: (number | Tag)[] | null;
   /**
-   * Select related tattoos.
+   * Content that are related to this one. Could be a post, or a tattoo that's featured in this document.
    */
-  relatedTattoos?: (number | Tattoo)[] | null;
+  relatedDocs?:
+    | (
+        | {
+            relationTo: 'tattoo';
+            value: number | Tattoo;
+          }
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+      )[]
+    | null;
+  tags?: (number | Tag)[] | null;
   meta?: Meta;
   slug: string;
   slugLock?: boolean | null;
@@ -486,6 +497,70 @@ export interface Area {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  heroImage?: (number | null) | Media;
+  editor: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  categories?:
+    | (
+        | {
+            relationTo: 'area';
+            value: number | Area;
+          }
+        | {
+            relationTo: 'style';
+            value: number | Style;
+          }
+      )[]
+    | null;
+  tags?: (number | Tag)[] | null;
+  /**
+   * Content that are related to this one. Could be a post, or a tattoo that's featured in this document.
+   */
+  relatedDocs?:
+    | (
+        | {
+            relationTo: 'tattoo';
+            value: number | Tattoo;
+          }
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+      )[]
+    | null;
+  meta?: Meta;
+  /**
+   * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
+   */
+  noindex?: boolean | null;
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  slug: string;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -924,70 +999,6 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  heroImage?: (number | null) | Media;
-  editor: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  categories?:
-    | (
-        | {
-            relationTo: 'area';
-            value: number | Area;
-          }
-        | {
-            relationTo: 'style';
-            value: number | Style;
-          }
-      )[]
-    | null;
-  tags?: (number | Tag)[] | null;
-  /**
-   * Posts that are related to this one. Could be a post, or a tattoo that's featured in this post.
-   */
-  relatedPosts?:
-    | (
-        | {
-            relationTo: 'tattoo';
-            value: number | Tattoo;
-          }
-        | {
-            relationTo: 'posts';
-            value: number | Post;
-          }
-      )[]
-    | null;
-  meta?: Meta;
-  /**
-   * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
-   */
-  noindex?: boolean | null;
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  slug: string;
-  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1577,8 +1588,8 @@ export interface TattooSelect<T extends boolean = true> {
   style?: T;
   artist?: T;
   description?: T;
+  relatedDocs?: T;
   tags?: T;
-  relatedTattoos?: T;
   meta?: T | MetaSelect<T>;
   slug?: T;
   slugLock?: T;
@@ -1966,7 +1977,7 @@ export interface PostsSelect<T extends boolean = true> {
   editor?: T;
   categories?: T;
   tags?: T;
-  relatedPosts?: T;
+  relatedDocs?: T;
   meta?: T | MetaSelect<T>;
   noindex?: T;
   publishedAt?: T;

@@ -10,8 +10,8 @@ import BackdropGradient from '@components/global/backdrop-gradient'
 import { CategoryListSlider } from '@components/global/category-list-slider'
 import GradientText from '@components/global/gradient-text'
 
-import { CardDocData } from '../tattoos/Card'
-import { CollectionArchive } from '../tattoos/CollectionArchive'
+import { CardDocData } from './components/Card'
+import { CollectionArchive } from './components/CollectionArchive'
 import { InViewImagesGrid } from './components/InViewImagesGrid'
 import { Search } from './Search'
 

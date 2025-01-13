@@ -1,6 +1,7 @@
 import { basicLexical } from '@services/editor/basicLexical'
 import { getLivePreviewUrl } from '@services/preview/getLivePreviewUrl'
 import { getPreviewUrl } from '@services/preview/getPreviewUrl'
+import { relatedDocsField } from '@fields/shared/relatedDocsField'
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
@@ -107,23 +108,8 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
                 position: 'sidebar'
               }
             },
-            tagsField,
-            {
-              name: 'relatedTattoos',
-              type: 'relationship',
-              filterOptions: ({ id }) => {
-                return {
-                  id: {
-                    not_in: [id]
-                  }
-                }
-              },
-              hasMany: true,
-              relationTo: 'tattoo',
-              admin: {
-                description: 'Select related tattoos.'
-              }
-            }
+            relatedDocsField,
+            tagsField
           ]
         },
         seoTab

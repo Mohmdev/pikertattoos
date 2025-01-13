@@ -14,9 +14,9 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default function RichText(props: Props) {
-  const { className, enableProse = false, enableGutter = true, content } = props
+  const { className, enableProse = false, enableGutter = true, data } = props
 
-  if (!content) {
+  if (!data) {
     return null
   }
 
@@ -32,7 +32,7 @@ export default function RichText(props: Props) {
         },
         className
       )}
-      data={content}
+      data={data}
     />
   )
 }

@@ -7,6 +7,8 @@ import { Media as MediaType } from '@payload-types'
 
 import { cn } from '@utils/cn'
 
+import type { RELATABLE_COLLECTIONS_TYPES } from '@constants/featureFlags'
+
 import { Media } from '@components/dynamic/Media'
 
 import useClickableCard from './useClickableCard'
@@ -26,7 +28,7 @@ export const Card: React.FC<{
   alignItems?: 'center'
   className?: string
   doc?: CardDocData
-  relationTo?: 'tattoo' //
+  relationTo?: RELATABLE_COLLECTIONS_TYPES
   showCategories?: boolean
   title?: string
 }> = (props) => {

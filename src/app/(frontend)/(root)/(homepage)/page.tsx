@@ -12,7 +12,7 @@ import type { Homepage } from '@payload-types'
 
 import { LivePreviewListener } from '@components/dynamic/LivePreviewListener'
 
-import { CardDocData } from '../tattoos/Card'
+import { CardDocData } from './components/Card'
 import { RenderPage } from './RenderPage'
 
 type Args = {

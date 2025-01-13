@@ -16,11 +16,12 @@ export const LINKABLE_COLLECTIONS: CollectionSlug[] = [
   'style'
 ] as const
 export const PREVIEWABLE_COLLECTIONS: CollectionSlug[] = ['pages', 'tattoo', 'posts'] as const
-export const RELATED_POSTS_COLLECTIONS: CollectionSlug[] = [
+export const RELATABLE_COLLECTIONS: CollectionSlug[] = [
   //
   'tattoo',
   'posts'
 ] as const
+export type RELATABLE_COLLECTIONS_TYPES = 'tattoo' | 'posts'
 
 export const ENABLED_PLUGINS = {
   storage: true,

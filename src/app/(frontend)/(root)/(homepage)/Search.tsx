@@ -9,7 +9,7 @@ import { useDebounce } from '@utils/useDebounce'
 
 import { Input } from '@ui/input'
 
-import { CardDocData } from '../tattoos/Card'
+import { CardDocData } from './components/Card'
 
 type Props = {
   className?: string
