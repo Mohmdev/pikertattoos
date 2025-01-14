@@ -6,12 +6,11 @@ import Link from 'next/link'
 import { Media as MediaType } from '@payload-types'
 
 import { cn } from '@utils/cn'
+import useClickableCard from '@hooks/useClickableCard'
 
 import type { RELATABLE_COLLECTIONS_TYPES } from '@constants/featureFlags'
 
 import { Media } from '@components/dynamic/Media'
-
-import useClickableCard from './useClickableCard'
 
 export type CardDocData = {
   id: string
