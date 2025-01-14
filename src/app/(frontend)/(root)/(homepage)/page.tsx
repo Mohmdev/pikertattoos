@@ -17,9 +17,9 @@ import { CardDocData } from './components/Card'
 import { RenderPage } from './RenderPage'
 
 type Args = {
-  searchParams: {
+  searchParams: Promise<{
     q?: string
-  }
+  }>
 }
 export const dynamic = 'force-dynamic'
 
@@ -33,9 +33,10 @@ export default async function HomePage({ searchParams }: Args) {
   }
 
   const payload = await getPayload({ config: configPromise })
-  const query = searchParams.q
+  const params = await searchParams
+  const query = params.q
 
-  console.log('Server-side searchParams:', searchParams) // Debug log
+  console.log('Server-side searchParams:', params) // Debug log
 
   const queryTattoos = query
     ? await payload.find({
