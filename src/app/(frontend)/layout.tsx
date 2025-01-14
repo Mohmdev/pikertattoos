@@ -2,6 +2,7 @@ import { Plus_Jakarta_Sans } from 'next/font/google'
 import type { Metadata } from 'next'
 
 import { Providers } from '@providers'
+import { getDynamicMeta } from '@seo/getDynamicMeta'
 import { mergeOpenGraph } from '@seo/mergeOpenGraph'
 import { cn } from '@utils/cn'
 import { getServerSideURL } from '@utils/getURL'
@@ -28,10 +29,17 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   )
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph(),
-  title: 'Piker Tattoos Studio',
-  description:
-    'Piker Studio, where artistry meets skin! We transform your ideas, blend them with creativity and precision and we create tattoos that tell your unique story.'
+export async function generateMetadata(): Promise<Metadata> {
+  const { siteName, siteDescription, favicon } = await getDynamicMeta()
+
+  return {
+    metadataBase: new URL(getServerSideURL()),
+    title: siteName,
+    description: siteDescription,
+    icons: favicon ? [{ rel: 'icon', url: favicon.url }] : undefined,
+    openGraph: mergeOpenGraph(undefined, {
+      siteName,
+      description: siteDescription
+    })
+  }
 }

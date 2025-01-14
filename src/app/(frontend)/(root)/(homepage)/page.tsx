@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 
 import configPromise from '@payload-config'
 
+import { getDynamicMeta } from '@seo/getDynamicMeta'
 import { mergeOpenGraph } from '@seo/mergeOpenGraph'
 import { getPayload } from 'payload'
 import { getServerSideURL } from '@utils/getURL'
@@ -80,12 +81,25 @@ export default async function HomePage({ searchParams }: Args) {
   )
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph(),
-  title: 'Piker Tattoos Studio',
-  description:
-    'Piker Studio, where artistry meets skin! We transform your ideas, blend them with creativity and precision and we create tattoos that tell your unique story.'
+export async function generateMetadata(): Promise<Metadata> {
+  const { siteName, siteDescription } = await getDynamicMeta()
+
+  return {
+    metadataBase: new URL(getServerSideURL()),
+    title: siteName,
+    description: siteDescription,
+    openGraph: mergeOpenGraph(
+      {
+        title: siteName,
+        description: siteDescription,
+        url: '/'
+      },
+      {
+        siteName,
+        description: siteDescription
+      }
+    )
+  }
 }
 
 const getCachedHomepage = unstable_cache(

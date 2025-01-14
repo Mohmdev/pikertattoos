@@ -1,47 +1,40 @@
 import type { Metadata } from 'next'
-import { getCachedGlobals } from '@data/getGlobals'
 
 import { getServerSideURL } from '@utils/getURL'
 
-import type { GlobalSetting, Page, Post } from '@payload-types'
+import type { Page, Post, Tattoo } from '@payload-types'
 
+import { getDynamicMeta } from './getDynamicMeta'
 import { mergeOpenGraph } from './mergeOpenGraph'
 
 export const generateMeta = async (args: {
-  doc: Partial<Page> | Partial<Post>
+  doc: Partial<Page> | Partial<Post> | Partial<Tattoo>
 }): Promise<Metadata> => {
   const { doc } = args || {}
 
-  // const globaldata: GlobalSetting = await getCachedGlobal('global-settings', 1)()
-  const globaldata: GlobalSetting = await getCachedGlobals('global-settings', {
-    depth: 1,
-    select: {
-      branding: { favicon: true },
-      siteIdentity: {
-        siteName: true,
-        siteDescription: true
-      }
-    }
-  })()
-
-  const { siteName: cachedSiteName, siteDescription: cachedSiteDescription } =
-    globaldata.siteIdentity || {}
-  const siteName = cachedSiteName || 'Nexweb'
-  const siteDescription = cachedSiteDescription || 'Nexweb Content Management Systems'
+  const { siteName, siteDescription } = await getDynamicMeta()
 
   const ogImage =
     typeof doc?.meta?.image === 'object' &&
     doc.meta.image !== null &&
     'url' in doc.meta.image &&
-    `${getServerSideURL()}`
+    doc.meta.image.url
+      ? `${getServerSideURL()}${doc.meta.image.url}`
+      : undefined
 
   // Base OpenGraph configuration
-  const openGraphBase = mergeOpenGraph({
-    siteName: siteName,
-    title: siteName,
-    description: siteDescription,
-    images: ogImage ? [{ url: ogImage }] : undefined
-  })
+  const openGraphBase = mergeOpenGraph(
+    {
+      siteName: siteName,
+      title: siteName,
+      description: siteDescription,
+      images: ogImage ? [{ url: ogImage }] : undefined
+    },
+    {
+      siteName,
+      description: siteDescription
+    }
+  )
 
   // Special handling for homepage
   if (doc?.slug === 'home') {
@@ -83,8 +76,14 @@ export const generateMeta = async (args: {
 
   // All other docs
   const documentTitle = doc?.meta?.title ? `${doc.meta.title} | ${siteName}` : siteName
-
   const documentDescription = doc?.meta?.description || siteDescription
+  const documentUrl = doc?.slug
+    ? Array.isArray(doc.slug)
+      ? doc.slug.join('/')
+      : 'collection' in doc
+        ? `/${doc.collection}/${doc.slug}`
+        : `/${doc.slug}`
+    : '/'
 
   return {
     title: documentTitle,
@@ -93,7 +92,7 @@ export const generateMeta = async (args: {
       ...openGraphBase,
       title: documentTitle,
       description: documentDescription,
-      url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/'
+      url: documentUrl
     }
   }
 }
