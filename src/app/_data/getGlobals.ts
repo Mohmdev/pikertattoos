@@ -39,5 +39,5 @@ async function getGlobal<T extends Global>(
  */
 export const getCachedGlobals = <T extends Global>(slug: T, options: GlobalOptions<T> = {}) =>
   unstable_cache(async () => getGlobal(slug, options), [slug], {
-    tags: [`global_${slug}`]
+    tags: [`globals_${slug}`]
   })

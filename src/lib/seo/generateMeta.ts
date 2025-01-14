@@ -1,12 +1,11 @@
 import type { Metadata } from 'next'
+import { getCachedGlobals } from '@data/getGlobals'
 
 import { getServerSideURL } from '@utils/getURL'
 
 import type { GlobalSetting, Page, Post } from '@payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
-
-import { getCachedGlobals } from '@data/getGlobals'
 
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post>
