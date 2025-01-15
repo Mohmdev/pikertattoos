@@ -57,7 +57,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
         className={cn(
           //
           'grid',
-          'w-full max-w-[550px] px-10 md:px-0',
+          'w-full max-w-[650px] px-10 md:px-0',
           'mb-[-100px] mt-[-80px] min-h-[250px]'
         )}
       >
@@ -66,7 +66,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
           blurClassName={cn(
             //
             'inset-y-0 w-[90%]',
-            'top-[30%] bottom-[46%]'
+            'top-[30%] bottom-[49%]'
           )}
         >
           <Search
@@ -114,9 +114,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
           )}
         >
           <div
-            className={cn(
-              'relative flex w-full flex-col items-center overflow-hidden px-4 md:px-0'
-            )}
+            className={cn('relative flex w-full flex-col items-center overflow-hidden')}
             style={{
               maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.6) 40%,rgba(0, 0, 0, 0.6) 60%,rgba(0, 0, 0, 0))`
             }}
@@ -125,7 +123,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
               className={cn(
                 'overflow-auto',
                 'h-max max-w-[1920px]',
-                'flex items-end justify-center px-2 pb-12 md:px-4'
+                'flex items-end justify-center pb-12 md:px-4'
               )}
             >
               <InView

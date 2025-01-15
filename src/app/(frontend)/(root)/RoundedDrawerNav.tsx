@@ -4,8 +4,11 @@ import React, { Dispatch, ReactNode, SetStateAction, useMemo, useState } from 'r
 import Link from 'next/link'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { MenuIcon } from 'lucide-react'
 import { cn } from '@utils/cn'
+
+import { Button } from '@ui/button'
+
+import { HamburgerButton } from './HamburgerButton'
 
 type LinkType = {
   title: string
@@ -40,7 +43,7 @@ export const RoundedDrawerNav = ({
   return (
     <>
       <nav onMouseLeave={() => setHovered(null)} className={cn('p-4', navBackground, className)}>
-        <div className="flex items-start justify-between">
+        <div className="flex flex-row items-center justify-between gap-12 overflow-x-hidden">
           <div className="flex items-start">
             <Link href="/">
               <Logo />
@@ -52,15 +55,16 @@ export const RoundedDrawerNav = ({
               activeSublinks={activeSublinks}
             />
           </div>
-          <button className="hidden rounded-md bg-indigo-500 px-3 py-1.5 text-sm text-neutral-50 transition-colors hover:bg-indigo-600 md:block">
-            <span className="font-bold">Start Your Design</span> - Free Consultation
-          </button>
-          <button
-            onClick={() => setMobileNavOpen((pv) => !pv)}
-            className="mt-0.5 block text-2xl text-neutral-50 md:hidden"
-          >
-            <MenuIcon />
-          </button>
+          <Button className="grow-1 hidden h-auto items-center justify-center overflow-x-hidden rounded-md bg-indigo-500 px-3 py-1.5 transition-colors hover:bg-indigo-600 md:flex">
+            <div className="overflow-x-auto whitespace-normal">
+              <span className="text-sm font-bold text-neutral-50">Request </span>a custom design
+            </div>
+          </Button>
+          <HamburgerButton
+            active={mobileNavOpen}
+            setActive={setMobileNavOpen}
+            className="block md:hidden"
+          />
         </div>
         <MobileLinks links={links} open={mobileNavOpen} />
       </nav>
