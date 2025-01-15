@@ -4,7 +4,8 @@ import configPromise from '@payload-config'
 
 import { getPayload } from 'payload'
 
-import DocModal from './DocModal'
+import { DocModalContent } from './DocModalContent'
+import { DocModalProvider } from './DocModalProvider'
 
 type Args = {
   params: Promise<{
@@ -19,9 +20,9 @@ export default async function TattooModal({ params: paramsPromise }: Args) {
   if (!doc) return null
 
   return (
-    <div className="relative min-h-screen">
-      <DocModal doc={doc} />
-    </div>
+    <DocModalProvider>
+      <DocModalContent doc={doc} />
+    </DocModalProvider>
   )
 }
 

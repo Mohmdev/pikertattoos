@@ -12,7 +12,8 @@ import GradientText from '@components/global/gradient-text'
 
 import { CardDocData } from './components/Card'
 import { CollectionArchive } from './components/CollectionArchive'
-import { InViewImagesGrid } from './components/InViewImagesGrid'
+import { InView } from './components/in-view'
+import { TriggerCard } from './components/TriggerCard'
 import { Search } from './Search'
 
 interface RenderPageProps {
@@ -100,7 +101,34 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
                 maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.6) 40%,rgba(0, 0, 0, 0.6) 60%,rgba(0, 0, 0, 0))`
               }}
             >
-              <InViewImagesGrid data={tattoos} />
+              <div
+                className={cn(
+                  'overflow-auto',
+                  'h-max max-w-[1920px]',
+                  'flex items-end justify-center px-2 pb-12 md:px-4'
+                )}
+              >
+                <InView
+                  viewOptions={{ once: true, margin: '0px 0px -250px 0px' }}
+                  variants={{
+                    hidden: {
+                      opacity: 0
+                    },
+                    visible: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.09
+                      }
+                    }
+                  }}
+                >
+                  <div className="w-full columns-2 sm:columns-3">
+                    {tattoos.map((tattoo) => (
+                      <TriggerCard enableLink key={tattoo.id} doc={tattoo} />
+                    ))}
+                  </div>
+                </InView>
+              </div>
             </div>
           </div>
         </div>

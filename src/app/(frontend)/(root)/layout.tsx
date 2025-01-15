@@ -8,11 +8,8 @@ type GlobalLayoutProps = {
 export default async function GlobalLayout({ children, modal }: GlobalLayoutProps) {
   return (
     <div className="box-border flex min-h-screen w-screen flex-col pb-10">
-      {/* <Navbar
-      //  mainMenu={mainMenu}
-      /> */}
-      {children}
       {modal}
+      {children}
     </div>
   )
 }
