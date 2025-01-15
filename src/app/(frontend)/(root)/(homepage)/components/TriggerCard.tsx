@@ -12,13 +12,15 @@ type TriggerCardProps = {
   hideTitle?: boolean
   enableSpotlight?: boolean
   enableLink?: boolean
+  className?: string
 }
 
 export const TriggerCard = ({
   doc,
   hideTitle = true,
   enableSpotlight = true,
-  enableLink = true
+  enableLink = true,
+  className
 }: TriggerCardProps) => {
   const tattoo = doc as Tattoo
 
@@ -31,7 +33,7 @@ export const TriggerCard = ({
   if (!image) return null
 
   const content = (
-    <>
+    <div className={cn('group relative overflow-hidden rounded-lg', className)}>
       {enableSpotlight && (
         <Spotlight
           className="z-10 from-white/50 via-white/20 to-white/10 blur-2xl"
@@ -60,7 +62,7 @@ export const TriggerCard = ({
           <p className="m-0 text-sm text-black dark:text-white">{style && style.title}</p>
         </div>
       )}
-    </>
+    </div>
   )
 
   return enableLink ? (

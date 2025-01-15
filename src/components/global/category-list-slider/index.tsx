@@ -10,7 +10,6 @@ import { Label } from '@ui/label'
 import 'swiper/css/bundle'
 
 import { SwiperProps, SwiperSlide } from 'swiper/react'
-
 import { PIKER_DATA } from '@lib/tattoo'
 
 import { Slider } from '../slider'
@@ -64,7 +63,7 @@ export const CategoryListSlider = ({
                     value={item.path}
                     {...register('category')}
                   />
-                  <GroupListItem {...item} selected={selected} />
+                  <GroupListItem {...item} selected={selected} iconSize={18} />
                 </span>
               </Label>
             )

@@ -20,6 +20,7 @@ type Props = {
   glass?: boolean
   initialValue?: string
   onResultsChange?: (results: CardDocData[] | null) => void
+  iconSize?: number
 }
 
 export const Search = ({
@@ -30,7 +31,8 @@ export const Search = ({
   inputClassName,
   placeholder = 'Search',
   initialValue = '',
-  onResultsChange
+  onResultsChange,
+  iconSize = 24
 }: Props) => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
@@ -67,21 +69,23 @@ export const Search = ({
   }, [debouncedValue, router, onResultsChange])
 
   return (
-    <div>
+    <div
+      className={cn(
+        'flex flex-row items-center gap-2 border-2',
+        glass &&
+          'backdrop--blur__safari bg-opacity-20 bg-clip-padding backdrop-blur-2xl backdrop-filter',
+        className
+      )}
+    >
+      <SearchIcon
+        size={iconSize}
+        className={cn('text-themeTextGray', isLoading && 'animate-spin', iconClassName)}
+      />
       <form
         onSubmit={(e) => {
           e.preventDefault()
         }}
-        className={cn(
-          'flex items-center gap-2 border-2',
-          className,
-          glass &&
-            'backdrop--blur__safari bg-opacity-20 bg-clip-padding backdrop-blur-2xl backdrop-filter'
-        )}
       >
-        <SearchIcon
-          className={cn(iconClassName || 'text-themeTextGray', isLoading && 'animate-spin')}
-        />
         <Input
           id="search"
           value={value}
@@ -89,7 +93,10 @@ export const Search = ({
             setValue(event.target.value)
           }}
           placeholder={placeholder}
-          className={cn('border-0 bg-transparent', inputClassName)}
+          className={cn(
+            'border-0 bg-transparent focus-within:bg-transparent focus:bg-transparent',
+            inputClassName
+          )}
           type="text"
           disabled={isLoading}
         />
