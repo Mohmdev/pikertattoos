@@ -35,19 +35,19 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
       className={cn(
         'flex flex-1 flex-col',
         'items-center justify-center',
-        'mb-10 mt-20 gap-2 px-0 lg:mt-36 xl:px-10',
+        'gap-2 px-0 pb-10 pt-14 lg:pt-36 xl:px-10',
         'min-h-screen max-w-[100vw]'
       )}
     >
       {/* Hero Section */}
-      <div className="flex flex-col items-center">
+      <div className="mb-6 flex flex-col items-center gap-3">
         <GradientText
           className="text-center text-[40px] font-semibold leading-none md:text-[55px] lg:text-[90px]"
           element="H1"
         >
           {title ? title : 'Nexweb Studio'}
         </GradientText>
-        <p className="pt-2 leading-none text-themeTextGray">
+        <p className="my-0 leading-none text-themeTextGray">
           {subtitle ? subtitle : 'Web Technology Solutions'}
         </p>
       </div>
@@ -66,7 +66,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
           blurClassName={cn(
             //
             'inset-y-0 w-[90%]',
-            'top-[37%] bottom-[50%]'
+            'top-[30%] bottom-[46%]'
           )}
         >
           <Search
