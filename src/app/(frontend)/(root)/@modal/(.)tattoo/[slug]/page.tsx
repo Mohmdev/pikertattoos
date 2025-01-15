@@ -4,7 +4,7 @@ import configPromise from '@payload-config'
 
 import { getPayload } from 'payload'
 
-import { MorphingDocModal } from '@components/motion/MorphingDialog/MorphingDocModal'
+import DocModal from './DocModal'
 
 type Args = {
   params: Promise<{
@@ -18,7 +18,11 @@ export default async function TattooModal({ params: paramsPromise }: Args) {
   const doc = await getCachedDocBySlug({ slug })
   if (!doc) return null
 
-  return <MorphingDocModal doc={doc} />
+  return (
+    <div className="relative min-h-screen">
+      <DocModal doc={doc} />
+    </div>
+  )
 }
 
 export async function generateStaticParams() {

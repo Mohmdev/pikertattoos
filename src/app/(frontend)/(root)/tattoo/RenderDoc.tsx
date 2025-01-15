@@ -11,7 +11,12 @@ import RichText from '@components/RichTextBasic'
 
 import { RelatedDocs } from './RelatedDocs'
 
-export const RenderDoc = ({ doc, className }: { doc: Partial<Tattoo>; className?: string }) => {
+type Props = {
+  doc: Partial<Tattoo>
+  className?: string
+}
+
+export const RenderDoc = ({ doc, className }: Props) => {
   const { title, description, relatedDocs } = doc
 
   const images = Array.isArray(doc.images) ? (doc.images as MediaType[]) : undefined
