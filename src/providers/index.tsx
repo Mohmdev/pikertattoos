@@ -1,9 +1,10 @@
 import React from 'react'
 
-import { Toaster } from 'sonner'
+// import { Toaster } from 'sonner'
 
 import { NextThemeProvider } from './NextTheme'
-import { ReactQueryProvider } from './ReactQuery'
+
+// import { ReactQueryProvider } from './ReactQuery'
 
 // import { HeaderThemeProvider } from './HeaderTheme'
 // import { ScrollbarProvider } from './Scrollbar'
@@ -19,12 +20,12 @@ export const Providers: React.FC<{
       enableSystem
       // disableTransitionOnChange
     >
-      <ReactQueryProvider>
-        {/* <ScrollbarProvider> */}
-        {children}
-        {/* </ScrollbarProvider> */}
-        <Toaster />
-      </ReactQueryProvider>
+      {/* <ReactQueryProvider> */}
+      {/* <ScrollbarProvider> */}
+      {children}
+      {/* </ScrollbarProvider> */}
+      {/* <Toaster /> */}
+      {/* </ReactQueryProvider> */}
     </NextThemeProvider>
   )
 }

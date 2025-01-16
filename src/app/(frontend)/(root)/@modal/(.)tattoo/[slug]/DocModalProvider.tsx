@@ -17,8 +17,8 @@ export const DocModalProvider = ({ children }: Props) => {
 
   return (
     <Dialog modal={true} defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DialogOverlay>
-        <DialogContent className="overflow-y-hidden">{children}</DialogContent>
+      <DialogOverlay className="bg-background/25 backdrop-blur-sm">
+        <DialogContent className="overflow-y-auto">{children}</DialogContent>
       </DialogOverlay>
     </Dialog>
   )

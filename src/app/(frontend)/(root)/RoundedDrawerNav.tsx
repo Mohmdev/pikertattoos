@@ -38,13 +38,19 @@ export const RoundedDrawerNav = ({
     const link = links.find((l) => l.title === hovered)
 
     return link ? link.sublinks : []
-  }, [hovered])
+  }, [hovered, links])
 
   return (
-    <>
-      <nav onMouseLeave={() => setHovered(null)} className={cn('p-4', navBackground, className)}>
-        <div className="flex flex-row items-center justify-between gap-12 overflow-x-hidden">
-          <div className="flex items-start">
+    <div className="relative">
+      <motion.main layout className={cn('', navBackground, className)}>
+        <div className={cn(bodyBackground, gutter ? 'rounded-3xl px-2' : '')}>{children}</div>
+      </motion.main>
+      <nav
+        onMouseLeave={() => setHovered(null)}
+        className={cn('absolute inset-x-0 top-0 p-4', navBackground, className)}
+      >
+        <div className="flex flex-row items-start justify-between gap-12 overflow-x-hidden">
+          <div className="flex flex-row items-start">
             <Link href="/">
               <Logo />
             </Link>
@@ -68,10 +74,7 @@ export const RoundedDrawerNav = ({
         </div>
         <MobileLinks links={links} open={mobileNavOpen} />
       </nav>
-      <motion.main layout className={cn('px-2 pb-2', navBackground, className)}>
-        <div className={cn(bodyBackground, gutter ? 'rounded-3xl px-2' : '')}>{children}</div>
-      </motion.main>
-    </>
+    </div>
   )
 }
 

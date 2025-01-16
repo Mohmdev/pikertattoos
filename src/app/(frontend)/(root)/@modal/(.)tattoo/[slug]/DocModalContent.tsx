@@ -50,8 +50,10 @@ export const DocModalContent = ({ doc, className }: Props) => {
         </div>
       )}
       <DialogTitle>{title || ''}</DialogTitle>
-      <DialogDescription>
-        <div dangerouslySetInnerHTML={{ __html: description?.toString() ?? '' }} />
+      <DialogDescription asChild>
+        <div className="text-sm text-muted-foreground">
+          <div dangerouslySetInnerHTML={{ __html: description?.toString() ?? '' }} />
+        </div>
       </DialogDescription>
 
       {/* Artists Section */}
@@ -59,12 +61,12 @@ export const DocModalContent = ({ doc, className }: Props) => {
         <h2 className="mb-6 text-xl font-semibold tracking-tight">Artists</h2>
         <div className="space-y-3">
           {artists && artistsUsernames
-            ? artistsUsernames?.map((username) => (
+            ? artists.map((artist) => (
                 <div
-                  key={username}
+                  key={artist.id}
                   className="font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                 >
-                  {username}
+                  {(artist.user as User)?.username}
                 </div>
               ))
             : artists?.map((artist) => (

@@ -8,9 +8,8 @@ import { cn } from '@utils/cn'
 import { getServerSideURL } from '@utils/getURL'
 
 import '@styles/globals.css'
-import '@styles/scss/app.scss'
 
-// import Favicon from '@services/admin/Favicon'
+// import '@styles/scss/app.scss'
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -22,7 +21,7 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>{/* <Favicon /> */}</head>
-      <body className={cn(jakarta.className, 'antialiased')}>
+      <body className={cn(jakarta.className, 'relative w-full antialiased')}>
         <Providers>{children}</Providers>
       </body>
     </html>

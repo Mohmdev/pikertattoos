@@ -10,7 +10,7 @@ type GlobalLayoutProps = {
 
 export default async function GlobalLayout({ children, modal }: GlobalLayoutProps) {
   return (
-    <div className="box-border flex min-h-screen w-screen flex-col pb-10">
+    <div className="relative box-border flex min-h-screen w-full max-w-[100vw] flex-col pb-10">
       <RoundedDrawerNav
         links={mockNavLinks}
         // navBackground="bg-neutral-950"
@@ -18,8 +18,8 @@ export default async function GlobalLayout({ children, modal }: GlobalLayoutProp
         // bodyBackground="bg-neutral-950"
         gutter={false}
       >
-        {modal}
         {children}
+        {modal}
       </RoundedDrawerNav>
     </div>
   )

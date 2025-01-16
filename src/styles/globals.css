@@ -82,15 +82,19 @@
   outline: 0px solid transparent !important;
   outline-offset: 0px !important;
 } */
+
 @layer base {
+  [data-scroll-locked][data-scroll-locked] {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+  }
+
   html {
     /* Keep other properties */
     --scroll-behavior: smooth !important;
     scroll-behavior: var(--scroll-behavior);
-    /* scrollbar-width: thin; */
-
-    overflow: auto;
-    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
 
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
@@ -99,10 +103,6 @@
   body {
     max-width: 100vw;
     min-width: 320px;
-    width: 100vw;
-    scrollbar-gutter: stable !important;
-    inset: 0;
-    overflow-y: auto;
 
     @apply font-sans antialiased;
   }
@@ -120,7 +120,6 @@
 
   /* Scrollbar styling */
   ::-webkit-scrollbar-track {
-    /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
     background-color: rgba(0, 0, 0, 0);
   }
 
