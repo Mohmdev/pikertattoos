@@ -35,7 +35,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
       className={cn(
         'flex flex-1 flex-col',
         'items-center justify-center',
-        'gap-2 px-0 pb-10 pt-[100px] lg:px-2 lg:pt-28',
+        'gap-2 px-0 pb-10 pt-12 lg:px-2 lg:pt-28',
         'min-h-screen max-w-[100vw]'
       )}
     >
@@ -74,20 +74,14 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
             onResultsChange={setSearchResults}
             placeholder="Search for anything"
             glass
-            className={cn(
-              //
-              'my-auto w-[95%]',
-              'flex rounded-3xl px-5 py-2',
-              'border-themeGray'
-            )}
-            inputClassName="w-full flex-1 text-md lg:text-lg h-[30px] lg:h-[36px]"
+            className="my-auto"
             iconClassName="text-themeTextGray"
             iconSize={21}
             // searchType="GROUPS"
           />
         </BackdropGradient>
       </div>
-      <div className="w-full max-w-[800px] overflow-hidden px-4 md:px-0">
+      <div className="w-full max-w-[800px] overflow-hidden px-0 md:px-0">
         <CategoryListSlider overlay route />
       </div>
 
@@ -103,7 +97,9 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
           {searchResults ? (
             <CollectionArchive docs={searchResults} />
           ) : (
-            <div className="container px-4">No results found for &quot;{searchQuery}&quot;</div>
+            <div className="container px-4 text-center">
+              No results found for &quot;{searchQuery}&quot;
+            </div>
           )}
         </div>
 

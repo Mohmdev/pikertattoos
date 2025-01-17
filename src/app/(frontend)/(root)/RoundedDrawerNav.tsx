@@ -9,6 +9,7 @@ import { cn } from '@utils/cn'
 import { Button } from '@ui/button'
 
 import { HamburgerButton } from './HamburgerButton'
+import classes from './RoundedDrawerNav.module.scss'
 
 type LinkType = {
   title: string
@@ -71,7 +72,7 @@ export const RoundedDrawerNav = ({
         </div>
         <MobileLinks links={links} open={mobileNavOpen} />
       </nav>
-      <motion.main layout className={cn(navBackground, className)}>
+      <motion.main layout className={cn(classes.homepageFilter, navBackground, className)}>
         <div className={cn('relative z-50', bodyBackground, gutter ? 'rounded-3xl px-2' : '')}>
           {children}
         </div>

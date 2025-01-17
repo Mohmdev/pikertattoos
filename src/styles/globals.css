@@ -42,7 +42,8 @@
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
+    --background: 235 95% 2.6%;
+    /* --background: 224 71.4% 4.1%; */
     --foreground: 210 20% 98%;
 
     --card: 224 71.4% 4.1%;
@@ -77,6 +78,12 @@
     --chart-5: 340 75% 55%;
   }
 }
+/* input:-internal-autofill-selected {
+  appearance: menulist-button;
+  background-image: none !important;
+  background-color: light-dark(rgb(232, 240, 254), rgba(126, 70, 84, 0.4)) !important;
+  color: fieldtext !important;
+} */
 
 /* .focus-visible\:outline-none:focus-visible {
   outline: 0px solid transparent !important;
@@ -84,6 +91,17 @@
 } */
 
 @layer base {
+  input:-webkit-autofill {
+    -webkit-background-clip: text !important;
+    /* appearance: textfield !important; */
+    color: unset !important;
+    /* background-color: red !important; */
+    /* background-image: none !important; */
+    /* -webkit-text-fill-color: hsl(var(--foreground)) !important; */
+    box-shadow: 0 0 15px -3px rgba(0, 0, 0, 0.4) !important;
+    transition: background-color 300s ease-out;
+  }
+
   [data-scroll-locked][data-scroll-locked] {
     overflow-x: hidden !important;
     overflow-y: hidden !important;

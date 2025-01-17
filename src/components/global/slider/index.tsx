@@ -21,8 +21,8 @@ export const Slider = ({ children, overlay, label, ...rest }: SliderProps) => {
     >
       {overlay && (
         <>
-          <div className="slider-overlay absolute left-0 z-50 h-full w-[40px]" />
-          <div className="slider-overlay-rev absolute right-0 z-50 h-full w-[40px]" />
+          <div className="slider-overlay absolute left-0 z-50 h-full w-[20px]" />
+          <div className="slider-overlay-rev absolute right-0 z-50 h-full w-[20px]" />
         </>
       )}
       {label && <Label className="mb-3 pl-7 text-themeTextGray">{label}</Label>}
