@@ -42,7 +42,10 @@ export const RoundedDrawerNav = ({
 
   return (
     <>
-      <nav onMouseLeave={() => setHovered(null)} className={cn('p-4', navBackground, className)}>
+      <nav
+        onMouseLeave={() => setHovered(null)}
+        className={cn('z-40 p-4', navBackground, className)}
+      >
         <div className="flex flex-row items-start justify-between gap-12 overflow-x-hidden">
           <div className="flex flex-row items-start">
             <Link href="/">
@@ -69,7 +72,9 @@ export const RoundedDrawerNav = ({
         <MobileLinks links={links} open={mobileNavOpen} />
       </nav>
       <motion.main layout className={cn(navBackground, className)}>
-        <div className={cn(bodyBackground, gutter ? 'rounded-3xl px-2' : '')}>{children}</div>
+        <div className={cn('relative z-50', bodyBackground, gutter ? 'rounded-3xl px-2' : '')}>
+          {children}
+        </div>
       </motion.main>
     </>
   )

@@ -30,7 +30,7 @@ export const RenderDoc = ({ doc, className }: Props) => {
   const artistsUsernames = artists?.map((artist) => (artist?.user as User)?.username)
 
   return (
-    <article className={cn('min-h-screen', className)}>
+    <article className={cn('relative min-h-screen', className)}>
       {doc && (
         <>
           {/* Hero Section with Main Image */}
@@ -128,23 +128,14 @@ export const RenderDoc = ({ doc, className }: Props) => {
                   <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
                     <h2 className="mb-6 text-xl font-semibold tracking-tight">Artists</h2>
                     <div className="space-y-3">
-                      {artists && artistsUsernames
-                        ? artistsUsernames?.map((username) => (
-                            <div
-                              key={username}
-                              className="font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                            >
-                              {username}
-                            </div>
-                          ))
-                        : artists?.map((artist) => (
-                            <div
-                              key={artist.id}
-                              className="font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                            >
-                              {artist.title}
-                            </div>
-                          ))}
+                      {artists?.map((artist) => (
+                        <div
+                          key={artist.id}
+                          className="font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                        >
+                          {(artist?.user as User)?.username || artist.title}
+                        </div>
+                      ))}
                     </div>
                   </div>
 
