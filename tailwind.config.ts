@@ -116,4 +116,9 @@ export default {
       }
     }
   }
+  // variants: {
+  //   extend: {
+  //     display: ['sticky-active']
+  //   }
+  // }
 } satisfies Config

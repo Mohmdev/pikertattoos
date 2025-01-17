@@ -35,7 +35,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
       className={cn(
         'flex flex-1 flex-col',
         'items-center justify-center',
-        'gap-2 px-0 pb-10 pt-[100px] lg:pt-36 xl:px-10',
+        'gap-2 px-0 pb-10 pt-[100px] lg:px-2 lg:pt-36',
         'min-h-screen max-w-[100vw]'
       )}
     >
@@ -123,7 +123,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
               className={cn(
                 'overflow-auto',
                 'h-max max-w-[1920px]',
-                'flex items-end justify-center pb-12 md:px-4'
+                'flex items-end justify-center pb-12'
               )}
             >
               <InView
