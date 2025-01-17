@@ -3,10 +3,13 @@
 import React from 'react'
 import Image from 'next/image'
 
+import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+
 import { cn } from '@utils/cn'
 
 import type { Area, Artist, Media as MediaType, Style, Tag, Tattoo, User } from '@payload-types'
 
+import RichText from '@components/RichText'
 import { DialogDescription, DialogTitle } from '@ui/dialog'
 
 type Props = {
@@ -25,14 +28,19 @@ export const DocModalContent = ({ doc, className }: Props) => {
   const tags = Array.isArray(doc.tags) ? (doc.tags as Tag[]) : undefined
   const areas = Array.isArray(doc.area) ? (doc.area as Area[]) : undefined
   const artists = Array.isArray(doc.artist) ? (doc.artist as Artist[]) : undefined
-  const artistsUsernames = artists?.map((artist) => (artist?.user as User)?.username)
 
   return (
-    <article className={cn('h-full max-h-screen', className)}>
+    <article
+      className={cn(
+        'relative size-full overflow-y-auto',
+        // 'flex flex-col items-center justify-center',
+        className
+      )}
+    >
       {/* Main Image */}
-      {mainImage ? (
-        <div className="relative h-full w-full overflow-hidden">
-          <div className="absolute inset-0 scale-[1.15] transform transition-all duration-1000 ease-out group-hover:scale-100">
+      <section className="group relative h-full max-h-[60%] w-full select-none overflow-hidden">
+        {mainImage ? (
+          <div className="absolute inset-0 scale-[1.06] transform transition-all duration-1000 ease-out group-hover:scale-100">
             {mainImage.url && (
               <Image
                 src={mainImage.url}
@@ -43,88 +51,113 @@ export const DocModalContent = ({ doc, className }: Props) => {
               />
             )}
           </div>
-        </div>
-      ) : (
-        <div className="bg-gradient-to-br inset-0 m-0 flex h-full w-full items-center justify-center from-gray-800 to-gray-900">
-          <div className="text-white/80">No Image Available</div>
-        </div>
-      )}
-      <DialogTitle>{title || ''}</DialogTitle>
-      <DialogDescription asChild>
-        <div className="text-sm text-muted-foreground">
-          <div dangerouslySetInnerHTML={{ __html: description?.toString() ?? '' }} />
-        </div>
-      </DialogDescription>
+        ) : (
+          <div className="bg-gradient-to-br inset-0 m-0 flex h-full w-full items-center justify-center from-gray-800 to-gray-900">
+            <div className="text-white/80">No Image Available</div>
+          </div>
+        )}
+      </section>
 
-      {/* Artists Section */}
-      <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
-        <h2 className="mb-6 text-xl font-semibold tracking-tight">Artists</h2>
-        <div className="space-y-3">
-          {artists && artistsUsernames
-            ? artists.map((artist) => (
-                <div
-                  key={artist.id}
-                  className="font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  {(artist.user as User)?.username}
-                </div>
-              ))
-            : artists?.map((artist) => (
-                <div
-                  key={artist.id}
-                  className="font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  {artist.title}
-                </div>
-              ))}
-        </div>
-      </div>
+      {/* Doc info */}
+      <section className="p-6">
+        <div className="flex flex-row flex-wrap items-center justify-between gap-6">
+          <DialogTitle className="mb-2 text-2xl font-bold">{title || ''}</DialogTitle>
 
-      {/* Styles Section */}
-      <div className="flex flex-wrap gap-3">
-        {styles?.map((style) => (
-          <span
-            key={style.id}
-            className="rounded-full border border-gray-200 bg-white px-6 py-2 text-sm font-medium tracking-wide shadow-sm transition-all hover:border-gray-300 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700"
-          >
-            {style.title}
-          </span>
-        ))}
-      </div>
-
-      {/* Areas Section */}
-      {areas && areas.length > 0 && (
-        <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
-          <h2 className="mb-6 text-xl font-semibold tracking-tight">Placement</h2>
-          <div className="flex flex-wrap gap-2">
-            {areas.map((area) => (
-              <span
-                key={area.id}
-                className="rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium shadow-sm transition-all hover:border-gray-300 hover:shadow dark:border-gray-800 dark:bg-gray-800 dark:hover:border-gray-700"
+          <div className="flex flex-row flex-wrap items-center justify-between gap-6">
+            {(artists?.filter(isArtist) ?? []).map((artist) => (
+              <div
+                key={artist.id}
+                className="font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
               >
-                {area.title}
-              </span>
+                {(artist.user as User)?.username}
+              </div>
             ))}
           </div>
         </div>
-      )}
 
-      {/* Tags Section */}
-      {tags && tags.length > 0 && (
-        <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
-          <h2 className="mb-6 text-xl font-semibold tracking-tight">Tags</h2>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
+        <div className="mb-6 flex flex-col gap-2">
+          {/* Styles Section */}
+          <div className="flex flex-wrap gap-3">
+            {(styles?.filter(isStyle) ?? []).length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {(styles?.filter(isStyle) ?? []).map((style) => (
+                  <span
+                    key={style.id}
+                    className="rounded-full bg-muted px-3 py-1 text-xs font-semibold"
+                  >
+                    {style.title}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Areas Section */}
+          {(areas?.filter(isArea) ?? []).length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {(areas?.filter(isArea) ?? []).map((area) => (
+                <span
+                  key={area.id}
+                  className="rounded-full bg-muted px-3 py-1 text-xs font-semibold"
+                >
+                  {area.title}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <DialogDescription asChild className="mb-6">
+          {description ? (
+            <RichText
+              data={description as SerializedEditorState}
+              enableGutter={false}
+              className="mx-auto"
+            />
+          ) : (
+            ''
+          )}
+        </DialogDescription>
+
+        {/* Tags Section */}
+        {(tags?.filter(isTag) ?? []).length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {tags?.filter(isTag).map((tag) => (
               <span
                 key={tag.id}
-                className="rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium shadow-sm transition-all hover:border-gray-300 hover:shadow dark:border-gray-800 dark:bg-gray-800 dark:hover:border-gray-700"
+                className={cn(
+                  //
+                  'rounded-md px-0 py-1',
+                  // 'bg-muted',
+                  'text-xs text-muted-foreground'
+                )}
               >
+                <span className="mr-0.5 text-[0.825rem]">#</span>
                 {tag.title}
               </span>
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </section>
     </article>
   )
+}
+
+// const isMedia = (media: Media | number): media is Media & { url: string } => {
+//   return typeof media !== 'number' && 'url' in media && typeof media.url === 'string'
+// }
+
+const isStyle = (style: Style | number): style is Style => {
+  return typeof style !== 'number' && 'title' in style
+}
+
+const isArtist = (artist: Artist | number): artist is Artist => {
+  return typeof artist !== 'number' && 'title' in artist
+}
+
+const isArea = (area: Area | number): area is Area => {
+  return typeof area !== 'number' && 'title' in area
+}
+
+const isTag = (tag: Tag | number): tag is Tag => {
+  return typeof tag !== 'number' && 'title' in tag
 }

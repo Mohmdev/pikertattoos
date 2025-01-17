@@ -77,7 +77,8 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
             className={cn(
               //
               'my-auto w-[95%]',
-              'flex rounded-3xl border-themeGray px-5 py-2'
+              'flex rounded-3xl px-5 py-2',
+              'border-themeGray'
             )}
             inputClassName="w-full flex-1 text-md lg:text-lg h-[30px] lg:h-[36px]"
             iconClassName="text-themeTextGray"

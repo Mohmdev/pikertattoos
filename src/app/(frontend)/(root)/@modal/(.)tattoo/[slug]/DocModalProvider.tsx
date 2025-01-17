@@ -3,6 +3,8 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 
+import { cn } from '@utils/cn'
+
 import { Dialog, DialogContent, DialogOverlay } from '@ui/dialog'
 
 type Props = {
@@ -18,7 +20,16 @@ export const DocModalProvider = ({ children }: Props) => {
   return (
     <Dialog modal={true} defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
       <DialogOverlay className="bg-background/25 backdrop-blur-sm">
-        <DialogContent className="overflow-y-auto">{children}</DialogContent>
+        <DialogContent
+          className={cn(
+            //
+            'overflow-hidden',
+            'h-full max-h-[90vh] w-full max-w-[90vw]',
+            'p-0'
+          )}
+        >
+          {children}
+        </DialogContent>
       </DialogOverlay>
     </Dialog>
   )
