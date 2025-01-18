@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { cn } from '@utils/cn'
@@ -13,24 +13,33 @@ type Props = {
 
 export const DocModalProvider = ({ children }: Props) => {
   const router = useRouter()
-  const handleOpenChange = () => {
-    router.back()
+  const [open, setOpen] = useState(true)
+
+  const handleOpenChange = (open: boolean) => {
+    setOpen(open)
+    if (!open) {
+      // Delay the navigation to allow the exit animation to play
+      setTimeout(() => {
+        router.back()
+      }, 1000) // Match this with your animation duration
+    }
   }
 
   return (
-    <Dialog modal={true} defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DialogOverlay className="bg-background/25 backdrop-blur-sm">
-        <DialogContent
-          className={cn(
-            //
-            'overflow-hidden',
-            'h-full max-h-[90vh] w-full max-w-[90vw]',
-            'p-0'
-          )}
-        >
-          {children}
-        </DialogContent>
-      </DialogOverlay>
+    <Dialog modal={true} open={open} onOpenChange={handleOpenChange}>
+      <DialogOverlay />
+      <DialogContent
+        className={cn(
+          'overflow-hidden p-0',
+          'aspect-[3/4] max-h-[85vh]',
+          'w-full max-w-[min(85vw,600px)]',
+          'rounded-lg border-0 border-border',
+          'bg-background/70 backdrop-blur-xl',
+          'shadow-lg shadow-black/70'
+        )}
+      >
+        {children}
+      </DialogContent>
     </Dialog>
   )
 }

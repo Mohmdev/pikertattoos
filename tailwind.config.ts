@@ -1,4 +1,4 @@
-import tailwindcssAnimate from 'tailwindcss-animate'
+import animate from 'tailwindcss-animate'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 import type { Config } from 'tailwindcss'
@@ -15,7 +15,7 @@ export default {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}'
   ],
-  plugins: [tailwindcssAnimate],
+  plugins: [animate],
   theme: {
     container: {
       center: true,
@@ -107,12 +107,42 @@ export default {
           '50%': {
             opacity: '1'
           }
+        },
+        'fade-in': {
+          from: { opacity: '0' },
+          to: { opacity: '1' }
+        },
+        'fade-out': {
+          from: { opacity: '1' },
+          to: { opacity: '0' }
+        },
+        'zoom-in': {
+          from: { transform: 'scale(0.95)' },
+          to: { transform: 'scale(1)' }
+        },
+        'zoom-out': {
+          from: { transform: 'scale(1)' },
+          to: { transform: 'scale(0.95)' }
+        },
+        'slide-in-from-top': {
+          from: { transform: 'translateY(-100%)' },
+          to: { transform: 'translateY(0)' }
+        },
+        'slide-out-to-top': {
+          from: { transform: 'translateY(0)' },
+          to: { transform: 'translateY(-100%)' }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'spinner-leaf-fade': 'spinner-leaf-fade 800ms linear infinite'
+        'spinner-leaf-fade': 'spinner-leaf-fade 800ms linear infinite',
+        'fade-in': 'fade-in 150ms ease-out',
+        'fade-out': 'fade-out 150ms ease-in',
+        'zoom-in': 'zoom-in 150ms ease-out',
+        'zoom-out': 'zoom-out 150ms ease-in',
+        'slide-in-from-top': 'slide-in-from-top 150ms ease-out',
+        'slide-out-to-top': 'slide-out-to-top 150ms ease-in'
       }
     }
   }

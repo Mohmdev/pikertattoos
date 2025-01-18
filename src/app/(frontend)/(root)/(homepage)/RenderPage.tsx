@@ -137,9 +137,9 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
                   }
                 }}
               >
-                <div className="w-full columns-2 sm:columns-3">
+                <div className="w-full columns-2 gap-2 sm:columns-3 md:gap-3">
                   {tattoos.map((tattoo) => (
-                    <TriggerCard enableLink key={tattoo.id} doc={tattoo} className="mb-4" />
+                    <TriggerCard enableLink key={tattoo.id} doc={tattoo} className="mb-2 md:mb-3" />
                   ))}
                 </div>
               </InView>

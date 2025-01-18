@@ -32,37 +32,42 @@ export const DocModalContent = ({ doc, className }: Props) => {
   return (
     <article
       className={cn(
-        'relative size-full overflow-y-auto',
-        // 'flex flex-col items-center justify-center',
+        'relative size-full overflow-hidden overflow-y-auto rounded-lg border-2',
         className
       )}
     >
       {/* Main Image */}
-      <section className="group relative h-full max-h-[60%] w-full select-none overflow-hidden">
-        {mainImage ? (
-          <div className="absolute inset-0 scale-[1.06] transform transition-all duration-1000 ease-out group-hover:scale-100">
-            {mainImage.url && (
-              <Image
-                src={mainImage.url}
-                alt={mainImage.alt || ''}
-                fill
-                className="object-cover"
-                priority
-              />
-            )}
-          </div>
-        ) : (
-          <div className="bg-gradient-to-br inset-0 m-0 flex h-full w-full items-center justify-center from-gray-800 to-gray-900">
-            <div className="text-white/80">No Image Available</div>
-          </div>
+      <section
+        className={cn(
+          'group sticky -top-[30%] aspect-square size-full max-h-[60%] select-none overflow-hidden',
+          'shadow-lg shadow-black/50',
+          'mx-auto w-full rounded-sm transition-all duration-1000 ease-out hover:scale-105'
         )}
+      >
+        <div className="relative size-full">
+          {mainImage ? (
+            <div className="absolute inset-0 scale-[1.06] transform transition-all duration-1000 ease-out group-hover:scale-100">
+              {mainImage.url && (
+                <Image
+                  src={mainImage.url}
+                  alt={mainImage.alt || ''}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              )}
+            </div>
+          ) : (
+            <div className="bg-gradient-to-br inset-0 m-0 flex h-full w-full items-center justify-center from-gray-800 to-gray-900">
+              <div className="text-white/80">No Image Available</div>
+            </div>
+          )}
+        </div>
       </section>
-
       {/* Doc info */}
-      <section className="p-6">
+      <section className="h-max overflow-y-auto p-6 md:p-8">
         <div className="flex flex-row flex-wrap items-center justify-between gap-6">
           <DialogTitle className="mb-2 text-2xl font-bold">{title || ''}</DialogTitle>
-
           <div className="flex flex-row flex-wrap items-center justify-between gap-6">
             {(artists?.filter(isArtist) ?? []).map((artist) => (
               <div
@@ -74,7 +79,6 @@ export const DocModalContent = ({ doc, className }: Props) => {
             ))}
           </div>
         </div>
-
         <div className="mb-6 flex flex-col gap-2">
           {/* Styles Section */}
           <div className="flex flex-wrap gap-3">
@@ -105,7 +109,6 @@ export const DocModalContent = ({ doc, className }: Props) => {
             </div>
           )}
         </div>
-
         <DialogDescription asChild className="mb-6">
           {description ? (
             <RichText
@@ -117,7 +120,6 @@ export const DocModalContent = ({ doc, className }: Props) => {
             ''
           )}
         </DialogDescription>
-
         {/* Tags Section */}
         {(tags?.filter(isTag) ?? []).length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
