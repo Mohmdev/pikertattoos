@@ -29,8 +29,7 @@ export const Search = ({
   inputClassName,
   placeholder = 'Search',
   initialValue = '',
-  onResultsChange,
-  iconSize = 24
+  onResultsChange
 }: Props) => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
@@ -73,13 +72,10 @@ export const Search = ({
         glass && 'backdrop--blur__safari bg-clip-padding backdrop-blur-2xl backdrop-filter',
         className,
         'box-content flex w-full max-w-[90%] rounded-3xl border border-themeGray px-5 py-2 pl-4',
-        // 'bg-[hsla(240,15%,11%,0.2)]',
         'h-[20px] bg-[rgba(71,58,68,0.2)] lg:h-[32px]'
-        // 'text-sm lg:text-base'
       )}
     >
       <SearchIcon
-        // size={iconSize}
         className={cn(
           'size-[1.125rem] text-themeTextGray lg:size-[1.25rem]',
           isLoading && 'animate-spin',

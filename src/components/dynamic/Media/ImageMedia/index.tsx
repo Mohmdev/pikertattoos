@@ -6,8 +6,7 @@ import type { StaticImageData } from 'next/image'
 
 import { cssVariables } from 'src/cssVariables'
 import { cn } from '@utils/cn'
-
-// import { getClientSideURL } from '@utils/getURL'
+import { getClientSideURL } from '@utils/getURL'
 
 import type { Props as MediaProps } from '../types'
 
@@ -32,21 +31,18 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let src: StaticImageData | string = srcFromProps || ''
 
   if (!src && resource && typeof resource === 'object') {
-    const {
-      alt: altFromResource,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      filename: fullFilename,
-      height: fullHeight,
-      url,
-      width: fullWidth
-    } = resource
+    const { url, alt: altFromResource, height: fullHeight, width: fullWidth } = resource
 
     width = fullWidth!
     height = fullHeight!
     alt = altFromResource || ''
 
-    src = url as string
-    // src = `${getClientSideURL()}${url}`
+    // Check if the URL is already absolute
+    const isAbsoluteUrl = (url: string) => url.startsWith('http://') || url.startsWith('https://')
+    const validatedUrl = url ? (isAbsoluteUrl(url) ? url : `${getClientSideURL()}${url}`) : ''
+
+    const cacheTag = resource.updatedAt
+    src = `${validatedUrl}?${cacheTag}`
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
