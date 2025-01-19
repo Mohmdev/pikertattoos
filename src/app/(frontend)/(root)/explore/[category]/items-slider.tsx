@@ -1,6 +1,6 @@
 import { SwiperSlide } from 'swiper/react'
-
 import { mockTattooItems } from '@lib/tattoo/mock-tattoos'
+import { Slider } from '@/app/(frontend)/(root)/(homepage)/category-list-slider/slider'
 
 import type { GroupStateProps } from '@lib/data/types'
 
@@ -8,7 +8,6 @@ import type { GroupStateProps } from '@lib/data/types'
 // import { useAppSelector } from "@/redux/store"
 
 import Skeleton from '@components/global/skeleton'
-import { Slider } from '@components/global/slider'
 
 import { ItemCard } from './item-card'
 

@@ -12,8 +12,8 @@ import 'swiper/css/bundle'
 import { SwiperProps, SwiperSlide } from 'swiper/react'
 import { PIKER_DATA } from '@lib/tattoo'
 
-import { Slider } from '../slider'
 import { GroupListItem } from './list-item'
+import { Slider } from './slider'
 
 type Props = {
   overlay?: boolean

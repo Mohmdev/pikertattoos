@@ -7,8 +7,8 @@ import { cn } from '@utils/cn'
 import type { Homepage, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
-import { CategoryListSlider } from '@components/global/category-list-slider'
 
+import { CategoryListSlider } from './category-list-slider'
 import { CardDocData } from './components/Card'
 import { CollectionArchive } from './components/CollectionArchive'
 import { InView } from './components/in-view'
