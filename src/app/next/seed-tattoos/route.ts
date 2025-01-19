@@ -58,7 +58,8 @@ const createTattoos = async ({ payload }): Promise<void> => {
             _status: 'published',
             title: tattoo.title,
             slug: tattoo.slug,
-            images: [mediaDoc.id]
+            images: [mediaDoc.id],
+            description: tattoo.description
           }
         })
         payload.logger.info(`✓ Created tattoo "${tattoo.title}"`)

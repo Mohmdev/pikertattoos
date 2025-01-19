@@ -96,8 +96,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"area_id" integer,
   	"style_id" integer,
   	"artist_id" integer,
-  	"tag_id" integer,
-  	"tattoo_id" integer
+  	"tattoo_id" integer,
+  	"posts_id" integer,
+  	"tag_id" integer
   );
   
   CREATE TABLE IF NOT EXISTS "_tattoo_v" (
@@ -129,8 +130,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"area_id" integer,
   	"style_id" integer,
   	"artist_id" integer,
-  	"tag_id" integer,
-  	"tattoo_id" integer
+  	"tattoo_id" integer,
+  	"posts_id" integer,
+  	"tag_id" integer
   );
   
   CREATE TABLE IF NOT EXISTS "area_breadcrumbs" (
@@ -1150,12 +1152,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar
   );
   
+  CREATE TABLE IF NOT EXISTS "search_areas" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"relation_to" varchar,
+  	"title" varchar
+  );
+  
   CREATE TABLE IF NOT EXISTS "search" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
   	"priority" numeric,
   	"slug" varchar,
-  	"description" varchar,
   	"image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
@@ -1224,8 +1233,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE IF NOT EXISTS "homepage" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"title" varchar,
-  	"subtitle" varchar,
+  	"heading_text" varchar DEFAULT 'Nexweb',
+  	"heading_highlighted_text" varchar DEFAULT 'Studio',
+  	"subheading_text" varchar DEFAULT 'Web Technology Solutions',
   	"meta_title" varchar,
   	"meta_image_id" integer,
   	"meta_description" varchar,
@@ -1247,8 +1257,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE IF NOT EXISTS "_homepage_v" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"version_title" varchar,
-  	"version_subtitle" varchar,
+  	"version_heading_text" varchar DEFAULT 'Nexweb',
+  	"version_heading_highlighted_text" varchar DEFAULT 'Studio',
+  	"version_subheading_text" varchar DEFAULT 'Web Technology Solutions',
   	"version_meta_title" varchar,
   	"version_meta_image_id" integer,
   	"version_meta_description" varchar,
@@ -1503,13 +1514,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "tattoo_rels" ADD CONSTRAINT "tattoo_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -1563,13 +1580,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_tattoo_v_rels" ADD CONSTRAINT "_tattoo_v_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -2421,6 +2444,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "search_areas" ADD CONSTRAINT "search_areas_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."search"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "search" ADD CONSTRAINT "search_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -2829,8 +2858,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "tattoo_rels_area_id_idx" ON "tattoo_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "tattoo_rels_style_id_idx" ON "tattoo_rels" USING btree ("style_id");
   CREATE INDEX IF NOT EXISTS "tattoo_rels_artist_id_idx" ON "tattoo_rels" USING btree ("artist_id");
-  CREATE INDEX IF NOT EXISTS "tattoo_rels_tag_id_idx" ON "tattoo_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "tattoo_rels_tattoo_id_idx" ON "tattoo_rels" USING btree ("tattoo_id");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_posts_id_idx" ON "tattoo_rels" USING btree ("posts_id");
+  CREATE INDEX IF NOT EXISTS "tattoo_rels_tag_id_idx" ON "tattoo_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "_tattoo_v_parent_idx" ON "_tattoo_v" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "_tattoo_v_version_version_video_idx" ON "_tattoo_v" USING btree ("version_video_id");
   CREATE INDEX IF NOT EXISTS "_tattoo_v_version_meta_version_meta_image_idx" ON "_tattoo_v" USING btree ("version_meta_image_id");
@@ -2849,8 +2879,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_area_id_idx" ON "_tattoo_v_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_style_id_idx" ON "_tattoo_v_rels" USING btree ("style_id");
   CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_artist_id_idx" ON "_tattoo_v_rels" USING btree ("artist_id");
-  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_tag_id_idx" ON "_tattoo_v_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_tattoo_id_idx" ON "_tattoo_v_rels" USING btree ("tattoo_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_posts_id_idx" ON "_tattoo_v_rels" USING btree ("posts_id");
+  CREATE INDEX IF NOT EXISTS "_tattoo_v_rels_tag_id_idx" ON "_tattoo_v_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "area_breadcrumbs_order_idx" ON "area_breadcrumbs" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "area_breadcrumbs_parent_id_idx" ON "area_breadcrumbs" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "area_breadcrumbs_doc_idx" ON "area_breadcrumbs" USING btree ("doc_id");
@@ -3184,8 +3215,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "redirects_rels_tattoo_id_idx" ON "redirects_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "search_styles_order_idx" ON "search_styles" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "search_styles_parent_id_idx" ON "search_styles" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "search_areas_order_idx" ON "search_areas" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "search_areas_parent_id_idx" ON "search_areas" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "search_slug_idx" ON "search" USING btree ("slug");
-  CREATE INDEX IF NOT EXISTS "search_description_idx" ON "search" USING btree ("description");
   CREATE INDEX IF NOT EXISTS "search_image_idx" ON "search" USING btree ("image_id");
   CREATE INDEX IF NOT EXISTS "search_updated_at_idx" ON "search" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "search_created_at_idx" ON "search" USING btree ("created_at");
@@ -3381,6 +3413,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "redirects" CASCADE;
   DROP TABLE "redirects_rels" CASCADE;
   DROP TABLE "search_styles" CASCADE;
+  DROP TABLE "search_areas" CASCADE;
   DROP TABLE "search" CASCADE;
   DROP TABLE "search_rels" CASCADE;
   DROP TABLE "payload_locked_documents" CASCADE;

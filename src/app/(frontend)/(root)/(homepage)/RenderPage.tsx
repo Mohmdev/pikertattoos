@@ -8,11 +8,11 @@ import type { Homepage, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
 import { CategoryListSlider } from '@components/global/category-list-slider'
-import GradientText from '@components/global/gradient-text'
 
 import { CardDocData } from './components/Card'
 import { CollectionArchive } from './components/CollectionArchive'
 import { InView } from './components/in-view'
+import { RichStyleHeading } from './components/RichStyleHeading'
 import { TriggerCard } from './components/TriggerCard'
 import { Search } from './Search'
 
@@ -23,8 +23,15 @@ interface RenderPageProps {
 }
 export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageProps) => {
   const [searchResults, setSearchResults] = useState<CardDocData[] | null>(initialDocs)
-  const { title, subtitle, featured } = data
-  const tattoos = featured as Tattoo[]
+
+  const tattoos = data.featured as Tattoo[]
+
+  const { heading, subheading } = data
+
+  // Handle each field independently with optional chaining
+  const headingText = heading?.text ?? null
+  const headingHighlightedText = heading?.highlightedText ?? null
+  const subheadingText = subheading?.text ?? null
 
   useEffect(() => {
     setSearchResults(initialDocs)
@@ -41,15 +48,9 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
     >
       {/* Hero Section */}
       <div className="mb-6 flex flex-col items-center gap-3">
-        <GradientText
-          className="text-center text-[40px] font-semibold leading-none md:text-[55px] lg:text-[90px]"
-          element="H1"
-        >
-          {title ? title : 'Nexweb Studio'}
-        </GradientText>
-        <p className="my-0 leading-none text-themeTextGray">
-          {subtitle ? subtitle : 'Web Technology Solutions'}
-        </p>
+        <RichStyleHeading text={headingText} highlightedText={headingHighlightedText} />
+
+        <p className="my-0 leading-none text-themeTextGray">{subheadingText}</p>
       </div>
 
       {/* Search Section */}

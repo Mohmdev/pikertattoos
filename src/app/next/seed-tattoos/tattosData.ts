@@ -1,6 +1,20 @@
 type MockTatttoo = {
   title: string
   slug: string
+  description?: {
+    root: {
+      type: string
+      children: {
+        type: string
+
+        [k: string]: unknown
+      }[]
+      direction: ('ltr' | 'rtl') | null
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
+      indent: number
+    }
+    [k: string]: unknown
+  }
   images: {
     alt: string
     url: string
@@ -24,10 +38,105 @@ type MockTatttoo = {
   }[]
 }
 
+const mockDescription: MockTatttoo['description'] = {
+  root: {
+    type: 'root',
+    format: '',
+    indent: 0,
+
+    children: [
+      {
+        tag: 'h2',
+        type: 'heading',
+        format: 'left',
+        indent: 0,
+
+        children: [
+          {
+            mode: 'normal',
+            text: 'What is Lorem Ipsum?',
+            type: 'text',
+            style: '',
+            detail: 0,
+            format: 0
+          }
+        ],
+        direction: 'ltr'
+      },
+      {
+        type: 'paragraph',
+        format: 'justify',
+        indent: 0,
+
+        children: [
+          {
+            mode: 'normal',
+            text: 'Lorem Ipsum',
+            type: 'text',
+            style: '',
+            detail: 0,
+            format: 1
+          },
+          {
+            mode: 'normal',
+            text: " is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            type: 'text',
+            style: '',
+            detail: 0,
+            format: 0
+          }
+        ],
+        direction: 'ltr',
+        textStyle: '',
+        textFormat: 0
+      },
+      {
+        tag: 'h2',
+        type: 'heading',
+        format: 'left',
+        indent: 0,
+
+        children: [
+          {
+            mode: 'normal',
+            text: 'Why do we use it?',
+            type: 'text',
+            style: '',
+            detail: 0,
+            format: 0
+          }
+        ],
+        direction: 'ltr'
+      },
+      {
+        type: 'paragraph',
+        format: 'justify',
+        indent: 0,
+
+        children: [
+          {
+            mode: 'normal',
+            text: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+            type: 'text',
+            style: '',
+            detail: 0,
+            format: 0
+          }
+        ],
+        direction: 'ltr',
+        textStyle: '',
+        textFormat: 0
+      }
+    ],
+    direction: 'ltr'
+  }
+}
+
 export const tattoosData: MockTatttoo[] = [
   {
     title: 'Japanese Dragon Sleeve',
     slug: 'japanese-dragon-sleeve',
+    description: mockDescription,
     images: [
       {
         alt: 'Japanese Dragon Sleeve Tattoo',
@@ -65,6 +174,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Traditional Rose',
     slug: 'traditional-rose',
+    description: mockDescription,
     images: [
       {
         alt: 'Traditional Rose Tattoo',
@@ -102,6 +212,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Geometric Wolf',
     slug: 'geometric-wolf',
+    description: mockDescription,
     images: [
       {
         alt: 'Geometric Wolf Tattoo',
@@ -139,6 +250,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Realistic Portrait',
     slug: 'realistic-portrait',
+    description: mockDescription,
     images: [
       {
         alt: 'Realistic Portrait Tattoo',
@@ -172,6 +284,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Mandala Finger Band',
     slug: 'mandala-finger-band',
+    description: mockDescription,
     images: [
       {
         alt: 'Mandala Finger Band Tattoo',
@@ -209,6 +322,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Celtic Cross Cover-up',
     slug: 'celtic-cross-cover-up',
+    description: mockDescription,
     images: [
       {
         alt: 'Celtic Cross Cover-up Tattoo',
@@ -246,6 +360,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Watercolor Abstract',
     slug: 'watercolor-abstract',
+    description: mockDescription,
     images: [
       {
         alt: 'Watercolor Abstract Tattoo',
@@ -279,6 +394,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Neo Traditional Skull',
     slug: 'neo-traditional-skull',
+    description: mockDescription,
     images: [
       {
         alt: 'Neo Traditional Skull Tattoo',
@@ -312,6 +428,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Musical Notes Script',
     slug: 'musical-notes-script',
+    description: mockDescription,
     images: [
       {
         alt: 'Musical Notes Script Tattoo',
@@ -349,6 +466,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Tribal Phoenix',
     slug: 'tribal-phoenix',
+    description: mockDescription,
     images: [
       {
         alt: 'Tribal Phoenix Tattoo',

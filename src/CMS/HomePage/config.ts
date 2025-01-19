@@ -41,34 +41,69 @@ export const HomePage: GlobalConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Content',
+          label: 'Customize',
           fields: [
             {
-              type: 'row',
+              name: 'heading',
+              type: 'group',
               fields: [
                 {
-                  name: 'title',
-                  type: 'text',
-                  required: true
-                },
-                {
-                  name: 'subtitle',
-                  type: 'text'
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'text',
+                      type: 'text',
+                      defaultValue: 'Nexweb'
+                    },
+                    {
+                      name: 'highlightedText',
+                      type: 'text',
+                      defaultValue: 'Studio'
+                    }
+                  ]
                 }
-              ]
+              ],
+              admin: {
+                style: {
+                  marginTop: '2.5rem',
+                  marginBottom: '0',
+                  paddingBottom: '1rem'
+                }
+              }
             },
             {
-              type: 'row',
+              name: 'subheading',
+              type: 'group',
               fields: [
                 {
-                  name: 'featured',
-                  type: 'relationship',
-                  relationTo: 'tattoo',
-                  hasMany: true,
-                  minRows: 6,
-                  maxRows: 18
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'text',
+                      type: 'text',
+                      defaultValue: 'Web Technology Solutions'
+                    }
+                    // {
+                    //   name: 'highlightedText',
+                    //   type: 'text',
+                    //   defaultValue: 'Studio'
+                    // }
+                  ]
                 }
-              ]
+              ],
+              admin: {
+                style: {
+                  marginTop: '0.5rem'
+                }
+              }
+            },
+            {
+              name: 'featured',
+              type: 'relationship',
+              relationTo: 'tattoo',
+              hasMany: true,
+              minRows: 6,
+              maxRows: 18
             }
           ]
         },

@@ -1,5 +1,5 @@
 {
-  "id": "6aa25841-5ffd-4e2b-9763-bb73a1738ebe",
+  "id": "ff09ef9e-5366-47bf-9fcb-2f732e5d3ce6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -264,14 +264,20 @@
           "primaryKey": false,
           "notNull": false
         },
-        "tag_id": {
-          "name": "tag_id",
+        "tattoo_id": {
+          "name": "tattoo_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "tattoo_id": {
-          "name": "tattoo_id",
+        "posts_id": {
+          "name": "posts_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tag_id": {
+          "name": "tag_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -383,11 +389,11 @@
           "method": "btree",
           "with": {}
         },
-        "tattoo_rels_tag_id_idx": {
-          "name": "tattoo_rels_tag_id_idx",
+        "tattoo_rels_tattoo_id_idx": {
+          "name": "tattoo_rels_tattoo_id_idx",
           "columns": [
             {
-              "expression": "tag_id",
+              "expression": "tattoo_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -398,11 +404,26 @@
           "method": "btree",
           "with": {}
         },
-        "tattoo_rels_tattoo_id_idx": {
-          "name": "tattoo_rels_tattoo_id_idx",
+        "tattoo_rels_posts_id_idx": {
+          "name": "tattoo_rels_posts_id_idx",
           "columns": [
             {
-              "expression": "tattoo_id",
+              "expression": "posts_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "tattoo_rels_tag_id_idx": {
+          "name": "tattoo_rels_tag_id_idx",
+          "columns": [
+            {
+              "expression": "tag_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -480,12 +501,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "tattoo_rels_tag_fk": {
-          "name": "tattoo_rels_tag_fk",
+        "tattoo_rels_tattoo_fk": {
+          "name": "tattoo_rels_tattoo_fk",
           "tableFrom": "tattoo_rels",
-          "tableTo": "tag",
+          "tableTo": "tattoo",
           "columnsFrom": [
-            "tag_id"
+            "tattoo_id"
           ],
           "columnsTo": [
             "id"
@@ -493,12 +514,25 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "tattoo_rels_tattoo_fk": {
-          "name": "tattoo_rels_tattoo_fk",
+        "tattoo_rels_posts_fk": {
+          "name": "tattoo_rels_posts_fk",
           "tableFrom": "tattoo_rels",
-          "tableTo": "tattoo",
+          "tableTo": "posts",
           "columnsFrom": [
-            "tattoo_id"
+            "posts_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "tattoo_rels_tag_fk": {
+          "name": "tattoo_rels_tag_fk",
+          "tableFrom": "tattoo_rels",
+          "tableTo": "tag",
+          "columnsFrom": [
+            "tag_id"
           ],
           "columnsTo": [
             "id"
@@ -891,14 +925,20 @@
           "primaryKey": false,
           "notNull": false
         },
-        "tag_id": {
-          "name": "tag_id",
+        "tattoo_id": {
+          "name": "tattoo_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "tattoo_id": {
-          "name": "tattoo_id",
+        "posts_id": {
+          "name": "posts_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tag_id": {
+          "name": "tag_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -1010,11 +1050,11 @@
           "method": "btree",
           "with": {}
         },
-        "_tattoo_v_rels_tag_id_idx": {
-          "name": "_tattoo_v_rels_tag_id_idx",
+        "_tattoo_v_rels_tattoo_id_idx": {
+          "name": "_tattoo_v_rels_tattoo_id_idx",
           "columns": [
             {
-              "expression": "tag_id",
+              "expression": "tattoo_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1025,11 +1065,26 @@
           "method": "btree",
           "with": {}
         },
-        "_tattoo_v_rels_tattoo_id_idx": {
-          "name": "_tattoo_v_rels_tattoo_id_idx",
+        "_tattoo_v_rels_posts_id_idx": {
+          "name": "_tattoo_v_rels_posts_id_idx",
           "columns": [
             {
-              "expression": "tattoo_id",
+              "expression": "posts_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_tattoo_v_rels_tag_id_idx": {
+          "name": "_tattoo_v_rels_tag_id_idx",
+          "columns": [
+            {
+              "expression": "tag_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1107,12 +1162,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "_tattoo_v_rels_tag_fk": {
-          "name": "_tattoo_v_rels_tag_fk",
+        "_tattoo_v_rels_tattoo_fk": {
+          "name": "_tattoo_v_rels_tattoo_fk",
           "tableFrom": "_tattoo_v_rels",
-          "tableTo": "tag",
+          "tableTo": "tattoo",
           "columnsFrom": [
-            "tag_id"
+            "tattoo_id"
           ],
           "columnsTo": [
             "id"
@@ -1120,12 +1175,25 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "_tattoo_v_rels_tattoo_fk": {
-          "name": "_tattoo_v_rels_tattoo_fk",
+        "_tattoo_v_rels_posts_fk": {
+          "name": "_tattoo_v_rels_posts_fk",
           "tableFrom": "_tattoo_v_rels",
-          "tableTo": "tattoo",
+          "tableTo": "posts",
           "columnsFrom": [
-            "tattoo_id"
+            "posts_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_tattoo_v_rels_tag_fk": {
+          "name": "_tattoo_v_rels_tag_fk",
+          "tableFrom": "_tattoo_v_rels",
+          "tableTo": "tag",
+          "columnsFrom": [
+            "tag_id"
           ],
           "columnsTo": [
             "id"
@@ -14001,6 +14069,94 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.search_areas": {
+      "name": "search_areas",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "relation_to": {
+          "name": "relation_to",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "search_areas_order_idx": {
+          "name": "search_areas_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "search_areas_parent_id_idx": {
+          "name": "search_areas_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "search_areas_parent_id_fk": {
+          "name": "search_areas_parent_id_fk",
+          "tableFrom": "search_areas",
+          "tableTo": "search",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.search": {
       "name": "search",
       "schema": "",
@@ -14025,12 +14181,6 @@
         },
         "slug": {
           "name": "slug",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "description": {
-          "name": "description",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -14062,21 +14212,6 @@
           "columns": [
             {
               "expression": "slug",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "search_description_idx": {
-          "name": "search_description_idx",
-          "columns": [
-            {
-              "expression": "description",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -15285,17 +15420,26 @@
           "primaryKey": true,
           "notNull": true
         },
-        "title": {
-          "name": "title",
+        "heading_text": {
+          "name": "heading_text",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'Nexweb'"
         },
-        "subtitle": {
-          "name": "subtitle",
+        "heading_highlighted_text": {
+          "name": "heading_highlighted_text",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'Studio'"
+        },
+        "subheading_text": {
+          "name": "subheading_text",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Web Technology Solutions'"
         },
         "meta_title": {
           "name": "meta_title",
@@ -15576,17 +15720,26 @@
           "primaryKey": true,
           "notNull": true
         },
-        "version_title": {
-          "name": "version_title",
+        "version_heading_text": {
+          "name": "version_heading_text",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'Nexweb'"
         },
-        "version_subtitle": {
-          "name": "version_subtitle",
+        "version_heading_highlighted_text": {
+          "name": "version_heading_highlighted_text",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'Studio'"
+        },
+        "version_subheading_text": {
+          "name": "version_subheading_text",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Web Technology Solutions'"
         },
         "version_meta_title": {
           "name": "version_meta_title",

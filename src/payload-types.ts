@@ -2429,8 +2429,13 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Homepage {
   id: number;
-  title: string;
-  subtitle?: string | null;
+  heading?: {
+    text?: string | null;
+    highlightedText?: string | null;
+  };
+  subheading?: {
+    text?: string | null;
+  };
   featured?: (number | Tattoo)[] | null;
   meta?: Meta;
   /**
@@ -2825,8 +2830,17 @@ export interface GlobalSetting {
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
-  title?: T;
-  subtitle?: T;
+  heading?:
+    | T
+    | {
+        text?: T;
+        highlightedText?: T;
+      };
+  subheading?:
+    | T
+    | {
+        text?: T;
+      };
   featured?: T;
   meta?: T | MetaSelect<T>;
   noindex?: T;

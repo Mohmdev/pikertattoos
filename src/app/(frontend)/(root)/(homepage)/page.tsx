@@ -112,8 +112,8 @@ const getCachedHomepage = unstable_cache(
       draft: false,
       overrideAccess: false,
       select: {
-        title: true,
-        subtitle: true,
+        heading: true,
+        subheading: true,
         featured: true
       }
     })
@@ -132,8 +132,8 @@ const getDraftHomepage = async () => {
     draft,
     overrideAccess: draft,
     select: {
-      title: true,
-      subtitle: true,
+      heading: true,
+      subheading: true,
       featured: true
     }
   })
