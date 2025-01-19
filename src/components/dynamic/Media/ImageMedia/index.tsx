@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import type { StaticImageData } from 'next/image'
 
@@ -22,9 +22,14 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     sizes: sizeFromProps,
     src: srcFromProps,
     loading: loadingFromProps,
+    onLoad: onLoadFromProps,
     objectFit = 'cover'
   } = props
 
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  // Calculate image properties
   let width: number | undefined
   let height: number | undefined
   let alt = altFromProps
@@ -37,23 +42,39 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     height = fullHeight!
     alt = altFromResource || ''
 
-    // Check if the URL is already absolute
     const isAbsoluteUrl = (url: string) => url.startsWith('http://') || url.startsWith('https://')
     const validatedUrl = url ? (isAbsoluteUrl(url) ? url : `${getClientSideURL()}${url}`) : ''
-
     const cacheTag = resource.updatedAt
-    src = `${validatedUrl}?${cacheTag}`
+    src = cacheTag ? `${validatedUrl}?${cacheTag}` : validatedUrl
   }
 
-  const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
-  const [isLoading, setIsLoading] = useState(true)
+  // Calculate sizes
+  const sizes =
+    sizeFromProps ||
+    Object.entries(breakpoints)
+      .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
+      .join(', ')
 
-  // NOTE: this is used by the browser to determine which image to download at different screen sizes
-  const sizes = sizeFromProps
-    ? sizeFromProps
-    : Object.entries(breakpoints)
-        .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
-        .join(', ')
+  const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
+
+  useEffect(() => {
+    if (!src) return
+    const img = new Image()
+    img.src = typeof src === 'string' ? src : src.src
+    if (img.complete) setIsLoading(false)
+  }, [src])
+
+  const handleLoad = () => {
+    setIsLoading(false)
+    onLoadFromProps?.()
+  }
+
+  const handleError = () => {
+    setError(true)
+    setIsLoading(false)
+  }
+
+  if (!src || error) return null
 
   return (
     <picture>
@@ -61,7 +82,6 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         alt={alt || ''}
         fill={fill}
         height={!fill ? height : undefined}
-        // placeholder="blur"
         priority={priority}
         quality={100}
         loading={loading}
@@ -71,12 +91,11 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         className={cn(
           imgClassName,
           'transition-opacity duration-300 ease-in-out',
-          isLoading
-            ? 'opacity-0' // Start fully transparent
-            : 'opacity-100' // Fade to fully visible
+          isLoading ? 'opacity-0' : 'opacity-100'
         )}
-        style={fill ? { objectFit: objectFit } : undefined}
-        onLoad={() => setIsLoading(false)}
+        style={fill ? { objectFit } : undefined}
+        onLoad={handleLoad}
+        onError={handleError}
       />
     </picture>
   )
