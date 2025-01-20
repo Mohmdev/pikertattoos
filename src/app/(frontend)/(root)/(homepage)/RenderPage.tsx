@@ -48,14 +48,13 @@ export const RenderPage = ({
       className={cn(
         'flex flex-1 flex-col',
         'items-center justify-center',
-        'gap-2 px-0 pb-10 pt-12 lg:px-2 lg:pt-28',
+        'gap-2 px-0 pb-10 pt-8 lg:px-2 lg:pt-28',
         'min-h-screen max-w-[100vw]'
       )}
     >
       {/* Hero Section */}
-      <div className="mb-6 flex flex-col items-center gap-3">
+      <div className="mb-6 flex flex-col items-center gap-3 md:gap-6">
         <RichStyleHeading text={headingText} highlightedText={headingHighlightedText} />
-
         <p className="my-0 leading-none text-themeTextGray">{subheadingText}</p>
       </div>
 
@@ -79,7 +78,7 @@ export const RenderPage = ({
           <SearchInput
             initialValue={searchQuery}
             onResultsChange={setSearchResults}
-            placeholder="Search for anything"
+            placeholder="What speaks to your soul?"
             glass
             className="my-auto"
             iconClassName="text-themeTextGray"

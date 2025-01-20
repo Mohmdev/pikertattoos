@@ -11,7 +11,6 @@ type Props = {
 
 export const SearchResults = ({ searchQuery, searchResults }: Props) => {
   return (
-    //
     <div
       className={cn(
         'absolute left-0 top-0 w-full transition-all duration-300',

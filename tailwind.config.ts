@@ -109,32 +109,68 @@ export default {
           }
         },
         'fade-in': {
-          from: { opacity: '0' },
-          to: { opacity: '1' }
+          from: {
+            opacity: '0'
+          },
+          to: {
+            opacity: '1'
+          }
         },
         'fade-out': {
-          from: { opacity: '1' },
-          to: { opacity: '0' }
+          from: {
+            opacity: '1'
+          },
+          to: {
+            opacity: '0'
+          }
         },
         'zoom-in': {
-          from: { transform: 'scale(0.95)' },
-          to: { transform: 'scale(1)' }
+          from: {
+            transform: 'scale(0.95)'
+          },
+          to: {
+            transform: 'scale(1)'
+          }
         },
         'zoom-out': {
-          from: { transform: 'scale(1)' },
-          to: { transform: 'scale(0.95)' }
+          from: {
+            transform: 'scale(1)'
+          },
+          to: {
+            transform: 'scale(0.95)'
+          }
         },
         'slide-in-from-top': {
-          from: { transform: 'translateY(-100%)' },
-          to: { transform: 'translateY(0)' }
+          from: {
+            transform: 'translateY(-100%)'
+          },
+          to: {
+            transform: 'translateY(0)'
+          }
         },
         'slide-out-to-top': {
-          from: { transform: 'translateY(0)' },
-          to: { transform: 'translateY(-100%)' }
+          from: {
+            transform: 'translateY(0)'
+          },
+          to: {
+            transform: 'translateY(-100%)'
+          }
         },
         'line-shadow': {
-          '0%': { 'background-position': '0 0' },
-          '100%': { 'background-position': '25% -25%' }
+          '0%': {
+            'background-position': '0 0'
+          },
+          '100%': {
+            'background-position': '25% -25%'
+          }
+        },
+        'background-position-spin': {
+          '0%': {
+            backgroundPosition: 'top center'
+          },
+          '100%': {
+            backgroundPosition: 'bottom center'
+          }
         }
       },
       animation: {
@@ -147,7 +183,8 @@ export default {
         'zoom-out': 'zoom-out 150ms ease-in',
         'slide-in-from-top': 'slide-in-from-top 150ms ease-out',
         'slide-out-to-top': 'slide-out-to-top 150ms ease-in',
-        'line-shadow': 'line-shadow 20s linear infinite'
+        'line-shadow': 'line-shadow 20s linear infinite',
+        'background-position-spin': 'background-position-spin 4000ms infinite alternate'
       }
     }
   }
