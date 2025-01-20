@@ -131,6 +131,10 @@ export default {
         'slide-out-to-top': {
           from: { transform: 'translateY(0)' },
           to: { transform: 'translateY(-100%)' }
+        },
+        'line-shadow': {
+          '0%': { 'background-position': '0 0' },
+          '100%': { 'background-position': '25% -25%' }
         }
       },
       animation: {
@@ -142,7 +146,8 @@ export default {
         'zoom-in': 'zoom-in 150ms ease-out',
         'zoom-out': 'zoom-out 150ms ease-in',
         'slide-in-from-top': 'slide-in-from-top 150ms ease-out',
-        'slide-out-to-top': 'slide-out-to-top 150ms ease-in'
+        'slide-out-to-top': 'slide-out-to-top 150ms ease-in',
+        'line-shadow': 'line-shadow 20s linear infinite'
       }
     }
   }

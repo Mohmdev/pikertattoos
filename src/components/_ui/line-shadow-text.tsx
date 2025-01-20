@@ -1,3 +1,5 @@
+'use client'
+
 import { motion, MotionProps } from 'motion/react'
 import { cn } from '@utils/cn'
 

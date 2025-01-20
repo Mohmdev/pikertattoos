@@ -1,3 +1,7 @@
+'use client'
+
+import React from 'react'
+
 import { useTheme } from 'next-themes'
 import { cn } from '@utils/cn'
 
@@ -10,8 +14,12 @@ interface RichStyleHeadingProps {
 }
 
 export function RichStyleHeading({ text, highlightedText, className }: RichStyleHeadingProps) {
-  const theme = useTheme()
-  const shadowColor = theme.resolvedTheme === 'dark' ? 'white' : 'black'
+  const { resolvedTheme } = useTheme()
+  const [shadowColor, setShadowColor] = React.useState('black')
+
+  React.useEffect(() => {
+    setShadowColor(resolvedTheme === 'dark' ? 'white' : 'black')
+  }, [resolvedTheme])
 
   return (
     <div

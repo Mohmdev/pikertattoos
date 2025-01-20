@@ -47,11 +47,12 @@ export const CategoryListSlider = ({
   return (
     <Slider
       slidesPerView={'auto'}
-      spaceBetween={10}
       loop
       freeMode
       label={label}
       overlay={overlay}
+      // spaceBetween={8}
+      className="*:gap-2" // Use className because spaceBetween gets applied after DOM is rendered resulting in an ugly initial render
       {...rest}
     >
       {categories.map((style, i) => (

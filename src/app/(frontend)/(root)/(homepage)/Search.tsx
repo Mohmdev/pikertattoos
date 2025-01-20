@@ -13,7 +13,6 @@ type Props = {
   className?: string
   inputClassName?: string
   placeholder?: string
-  // searchType: 'GROUPS' | 'POSTS'
   iconClassName?: string
   glass?: boolean
   initialValue?: string
@@ -22,7 +21,6 @@ type Props = {
 }
 
 export const Search = ({
-  // searchType,
   className,
   glass,
   iconClassName,

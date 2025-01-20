@@ -10,11 +10,11 @@ import BackdropGradient from '@components/global/backdrop-gradient'
 
 import { CategoryListSlider } from './category-list-slider'
 import { CardDocData } from './components/Card'
-import { CollectionArchive } from './components/CollectionArchive'
 import { InView } from './components/in-view'
 import { RichStyleHeading } from './components/RichStyleHeading'
 import { TriggerCard } from './components/TriggerCard'
 import { Search } from './Search'
+import { SearchResults } from './SearchResults'
 
 interface RenderPageProps {
   data: Homepage
@@ -84,7 +84,6 @@ export const RenderPage = ({
             className="my-auto"
             iconClassName="text-themeTextGray"
             iconSize={21}
-            // searchType="GROUPS"
           />
         </BackdropGradient>
       </div>
@@ -94,21 +93,7 @@ export const RenderPage = ({
 
       {/* Dynamic Content Section */}
       <div className="relative w-full">
-        {/* Search Results */}
-        <div
-          className={cn(
-            'absolute left-0 top-0 w-full transition-all duration-300',
-            searchQuery ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
-          )}
-        >
-          {searchResults ? (
-            <CollectionArchive docs={searchResults} />
-          ) : (
-            <div className="container px-4 text-center">
-              No results found for &quot;{searchQuery}&quot;
-            </div>
-          )}
-        </div>
+        <SearchResults searchQuery={searchQuery} searchResults={searchResults} />
 
         {/* Default Grid View */}
         <div
