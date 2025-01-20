@@ -1,6 +1,6 @@
 import { SwiperSlide } from 'swiper/react'
 import { mockTattooItems } from '@lib/tattoo/mock-tattoos'
-import { Slider } from '@/app/(frontend)/(root)/(homepage)/category-list-slider/slider'
+import { Slider } from '@/app/(frontend)/(root)/(homepage)/Search/category-list-slider/slider'
 
 import type { GroupStateProps } from '@lib/data/types'
 

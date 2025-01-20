@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { CategoryListSlider } from '@/app/(frontend)/(root)/(homepage)/category-list-slider'
+import { CategoryListSlider } from '@/app/(frontend)/(root)/(homepage)/Search/category-list-slider'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
 import GradientText from '@components/global/gradient-text'

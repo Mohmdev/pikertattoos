@@ -8,13 +8,13 @@ import type { Homepage, Style, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
 
-import { CategoryListSlider } from './category-list-slider'
 import { CardDocData } from './components/Card'
 import { InView } from './components/in-view'
 import { RichStyleHeading } from './components/RichStyleHeading'
 import { TriggerCard } from './components/TriggerCard'
-import { Search } from './Search'
-import { SearchResults } from './SearchResults'
+import { CategoryListSlider } from './Search/category-list-slider'
+import { SearchInput } from './Search/SearchInput'
+import { SearchResults } from './Search/SearchResults'
 
 interface RenderPageProps {
   data: Homepage
@@ -76,7 +76,7 @@ export const RenderPage = ({
             'top-[30%] bottom-[49%]'
           )}
         >
-          <Search
+          <SearchInput
             initialValue={searchQuery}
             onResultsChange={setSearchResults}
             placeholder="Search for anything"

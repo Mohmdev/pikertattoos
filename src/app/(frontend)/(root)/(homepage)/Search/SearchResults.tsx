@@ -2,7 +2,7 @@ import React from 'react'
 
 import { cn } from '@utils/cn'
 
-import { Card, CardDocData } from './components/Card'
+import { Card, CardDocData } from '../components/Card'
 
 type Props = {
   searchQuery?: string

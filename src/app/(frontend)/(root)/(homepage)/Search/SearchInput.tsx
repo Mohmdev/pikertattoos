@@ -7,7 +7,7 @@ import { SearchIcon } from 'lucide-react'
 import { cn } from '@utils/cn'
 import { useDebounce } from '@utils/useDebounce'
 
-import { CardDocData } from './components/Card'
+import { CardDocData } from '../components/Card'
 
 type Props = {
   className?: string
@@ -20,7 +20,7 @@ type Props = {
   iconSize?: number
 }
 
-export const Search = ({
+export const SearchInput = ({
   className,
   glass,
   iconClassName,

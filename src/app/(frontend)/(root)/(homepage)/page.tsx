@@ -10,11 +10,13 @@ import { getPayload } from 'payload'
 import { getServerSideURL } from '@utils/getURL'
 
 import type { Homepage, Style } from '@payload-types'
+import type { Payload } from 'payload'
 
 import { LivePreviewListener } from '@components/dynamic/LivePreviewListener'
 
 import { CardDocData } from './components/Card'
 import { RenderPage } from './RenderPage'
+import { searchTattoos } from './Search/searchQuery'
 
 type Args = {
   searchParams: Promise<{
@@ -24,62 +26,31 @@ type Args = {
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage({ searchParams }: Args) {
-  const { isEnabled: draft } = await draftMode()
-  const getHomepage = draft ? getDraftHomepage : getCachedHomepage
-  const homepage: Homepage = (await getHomepage()) || null
+  const { isEnabled: isDraft } = await draftMode()
+  const payload = await getPayload({ config: configPromise })
+
+  const homepage: Homepage = await getHomepage(isDraft)
 
   if (!homepage) {
     return {}
   }
 
-  const payload = await getPayload({ config: configPromise })
   const params = await searchParams
-  const query = params.q
+  const queryTattoos = await searchTattoos(payload, params.q)
+
+  const styles = await getStyles(isDraft)
 
   console.log('Server-side searchParams:', params) // Debug log
-
-  const queryTattoos = query
-    ? await payload.find({
-        collection: 'search',
-        depth: 1,
-        limit: 6,
-        select: {
-          title: true,
-          slug: true,
-          styles: true,
-          image: true
-        },
-        pagination: false,
-        where: {
-          or: [
-            {
-              title: {
-                contains: query
-              }
-            },
-            {
-              'styles.title': {
-                contains: query
-              }
-            }
-          ]
-        }
-      })
-    : { docs: [], totalDocs: 0 }
-
-  const getStyles = draft ? getDraftStyles : getCachedStyles
-  const styles = await getStyles()
-
-  console.log('Search Query:', query)
+  console.log('Search Query:', params.q)
   console.log('Search Results:', queryTattoos)
 
   return (
     <>
-      {draft && <LivePreviewListener />}
+      {isDraft && <LivePreviewListener />}
       <RenderPage
         data={homepage}
         docs={queryTattoos.totalDocs > 0 ? (queryTattoos.docs as CardDocData[]) : null}
-        searchQuery={query}
+        searchQuery={params.q}
         categories={styles}
       />
     </>
@@ -107,63 +78,28 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const getCachedHomepage = unstable_cache(
-  async () => {
-    const payload = await getPayload({ config: configPromise })
-    const doc = await payload.findGlobal({
-      slug: 'homepage',
-      depth: 2,
-      draft: false,
-      overrideAccess: false,
-      select: {
-        heading: true,
-        subheading: true,
-        featured: true
-      }
-    })
-    return doc
-  },
-  undefined // no tags
-  // { revalidate: 3600 }
-)
-
-const getDraftHomepage = async () => {
-  const { isEnabled: draft } = await draftMode()
-  const payload = await getPayload({ config: configPromise })
-  const doc = await payload.findGlobal({
+async function getHomepageData(payload: Payload, isDraft: boolean) {
+  return await payload.findGlobal({
     slug: 'homepage',
     depth: 2,
-    draft,
-    overrideAccess: draft,
+    draft: isDraft,
+    overrideAccess: isDraft,
     select: {
       heading: true,
       subheading: true,
       featured: true
     }
   })
-  return doc
 }
-
-const getCachedStyles = unstable_cache(
-  async () => {
+const getHomepage = unstable_cache(
+  async (isDraft: boolean) => {
     const payload = await getPayload({ config: configPromise })
-    const styles = await payload.find({
-      collection: 'style',
-      depth: 0,
-      limit: 20,
-      select: {
-        title: true,
-        slug: true
-      }
-    })
-    return styles.docs as Style[]
+    return getHomepageData(payload, isDraft)
   },
   undefined // no tags
 )
 
-const getDraftStyles = async () => {
-  const { isEnabled: draft } = await draftMode()
-  const payload = await getPayload({ config: configPromise })
+async function getStylesData(payload: Payload, isDraft: boolean) {
   const styles = await payload.find({
     collection: 'style',
     depth: 0,
@@ -172,8 +108,16 @@ const getDraftStyles = async () => {
       title: true,
       slug: true
     },
-    draft,
-    overrideAccess: draft
+    draft: isDraft,
+    overrideAccess: isDraft
   })
   return styles.docs as Style[]
 }
+
+const getStyles = unstable_cache(
+  async (isDraft: boolean) => {
+    const payload = await getPayload({ config: configPromise })
+    return getStylesData(payload, isDraft)
+  },
+  undefined // no tags
+)
