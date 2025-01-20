@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import { cn } from '@utils/cn'
 
-import type { Homepage, Tattoo } from '@payload-types'
+import type { Homepage, Style, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
 
@@ -20,8 +20,14 @@ interface RenderPageProps {
   data: Homepage
   docs: CardDocData[] | null
   searchQuery?: string
+  categories: Style[]
 }
-export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageProps) => {
+export const RenderPage = ({
+  data,
+  docs: initialDocs,
+  searchQuery,
+  categories
+}: RenderPageProps) => {
   const [searchResults, setSearchResults] = useState<CardDocData[] | null>(initialDocs)
 
   const tattoos = data.featured as Tattoo[]
@@ -83,7 +89,7 @@ export const RenderPage = ({ data, docs: initialDocs, searchQuery }: RenderPageP
         </BackdropGradient>
       </div>
       <div className="w-full max-w-[800px] overflow-hidden px-0 md:px-0">
-        <CategoryListSlider overlay route />
+        <CategoryListSlider overlay route categories={categories} />
       </div>
 
       {/* Dynamic Content Section */}

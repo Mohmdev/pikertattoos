@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { UseFormRegister } from 'react-hook-form'
 
@@ -10,7 +10,8 @@ import { Label } from '@ui/label'
 import 'swiper/css/bundle'
 
 import { SwiperProps, SwiperSlide } from 'swiper/react'
-import { PIKER_DATA } from '@lib/tattoo'
+
+import type { Style } from '@payload-types'
 
 import { GroupListItem } from './list-item'
 import { Slider } from './slider'
@@ -22,6 +23,7 @@ type Props = {
   register?: UseFormRegister<any>
   selected?: string
   route?: boolean
+  categories: Style[]
 } & SwiperProps
 
 export const CategoryListSlider = ({
@@ -30,8 +32,18 @@ export const CategoryListSlider = ({
   register,
   selected,
   route,
+  categories,
   ...rest
 }: Props) => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const handleCategoryClick = (title: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('q', title)
+    router.push(`/?${params.toString()}`)
+  }
+
   return (
     <Slider
       slidesPerView={'auto'}
@@ -42,28 +54,28 @@ export const CategoryListSlider = ({
       overlay={overlay}
       {...rest}
     >
-      {PIKER_DATA.groupList.map((item, i) => (
-        <SwiperSlide key={item.id} className="content-width-slide">
+      {categories.map((style, i) => (
+        <SwiperSlide key={style.id} className="content-width-slide">
           {!register ? (
             route ? (
-              <Link href={`/explore/${item.path}`}>
-                <GroupListItem {...item} selected={selected} />
-              </Link>
+              <div onClick={() => handleCategoryClick(style.title)} className="cursor-pointer">
+                <GroupListItem label={style.title} selected={searchParams.get('q') || undefined} />
+              </div>
             ) : (
-              <GroupListItem {...item} />
+              <GroupListItem label={style.title} />
             )
           ) : (
             i > 0 && (
-              <Label htmlFor={`item-${item.id}`}>
+              <Label htmlFor={`item-${style.id}`}>
                 <span>
                   <Input
-                    id={`item-${item.id}`}
+                    id={`item-${style.id}`}
                     type="radio"
                     className="hidden"
-                    value={item.path}
+                    value={style.slug}
                     {...register('category')}
                   />
-                  <GroupListItem {...item} selected={selected} />
+                  <GroupListItem label={style.title} selected={selected} />
                 </span>
               </Label>
             )

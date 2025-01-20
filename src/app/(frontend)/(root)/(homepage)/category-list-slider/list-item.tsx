@@ -5,7 +5,7 @@ import React from 'react'
 import { cn } from '@utils/cn'
 
 type GroupListItemProps = {
-  icon: React.ReactNode
+  icon?: React.ReactNode
   label: string
   selected?: string
 }
@@ -18,7 +18,8 @@ export const GroupListItem = ({ icon, label, selected }: GroupListItemProps) => 
         selected === label ? 'border-themeTextGray' : 'border-transparent'
       )}
     >
-      {React.isValidElement(icon) &&
+      {icon &&
+        React.isValidElement(icon) &&
         React.cloneElement(icon, {
           className: 'text-themeTextGray size-[1.125rem]'
         } as React.SVGProps<SVGSVGElement>)}

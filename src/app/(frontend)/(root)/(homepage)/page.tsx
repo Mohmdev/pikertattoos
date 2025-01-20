@@ -9,7 +9,7 @@ import { mergeOpenGraph } from '@seo/mergeOpenGraph'
 import { getPayload } from 'payload'
 import { getServerSideURL } from '@utils/getURL'
 
-import type { Homepage } from '@payload-types'
+import type { Homepage, Style } from '@payload-types'
 
 import { LivePreviewListener } from '@components/dynamic/LivePreviewListener'
 
@@ -67,6 +67,9 @@ export default async function HomePage({ searchParams }: Args) {
       })
     : { docs: [], totalDocs: 0 }
 
+  const getStyles = draft ? getDraftStyles : getCachedStyles
+  const styles = await getStyles()
+
   console.log('Search Query:', query)
   console.log('Search Results:', queryTattoos)
 
@@ -77,6 +80,7 @@ export default async function HomePage({ searchParams }: Args) {
         data={homepage}
         docs={queryTattoos.totalDocs > 0 ? (queryTattoos.docs as CardDocData[]) : null}
         searchQuery={query}
+        categories={styles}
       />
     </>
   )
@@ -138,4 +142,38 @@ const getDraftHomepage = async () => {
     }
   })
   return doc
+}
+
+const getCachedStyles = unstable_cache(
+  async () => {
+    const payload = await getPayload({ config: configPromise })
+    const styles = await payload.find({
+      collection: 'style',
+      depth: 0,
+      limit: 20,
+      select: {
+        title: true,
+        slug: true
+      }
+    })
+    return styles.docs as Style[]
+  },
+  undefined // no tags
+)
+
+const getDraftStyles = async () => {
+  const { isEnabled: draft } = await draftMode()
+  const payload = await getPayload({ config: configPromise })
+  const styles = await payload.find({
+    collection: 'style',
+    depth: 0,
+    limit: 20,
+    select: {
+      title: true,
+      slug: true
+    },
+    draft,
+    overrideAccess: draft
+  })
+  return styles.docs as Style[]
 }
