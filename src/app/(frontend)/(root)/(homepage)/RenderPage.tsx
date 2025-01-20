@@ -7,6 +7,7 @@ import { cn } from '@utils/cn'
 import type { Homepage, Style, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
+import { TextAnimate } from '@ui/text-animate'
 
 import { CardDocData } from './components/Card'
 import { InView } from './components/in-view'
@@ -55,7 +56,15 @@ export const RenderPage = ({
       {/* Hero Section */}
       <div className="mb-6 flex flex-col items-center gap-3 md:gap-6">
         <RichStyleHeading text={headingText} highlightedText={headingHighlightedText} />
-        <p className="my-0 leading-none text-themeTextGray">{subheadingText}</p>
+        {subheadingText && (
+          <TextAnimate
+            animation="blurInUp"
+            by="character"
+            className="leading-none text-themeTextGray"
+          >
+            {subheadingText}
+          </TextAnimate>
+        )}
       </div>
 
       {/* Search Section */}
