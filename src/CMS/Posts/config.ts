@@ -4,6 +4,7 @@ import { getPreviewUrl } from '@services/preview/getPreviewUrl'
 import { authorsField } from '@fields/shared/authorsField'
 import { categoriesField } from '@fields/shared/categoriesField'
 import { noindexField } from '@fields/shared/noindexField'
+import { populateAuthorsField } from '@fields/shared/populatedAuthorsField'
 import { publishedAtField } from '@fields/shared/publishedAtField'
 import { relatedDocsField } from '@fields/shared/relatedDocsField'
 import { seoTab } from '@fields/shared/seoTab'
@@ -44,7 +45,7 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'authors', 'slug', 'createdAt', 'updatedAt'],
+    defaultColumns: ['title', 'populatedAuthors', 'slug', 'createdAt', 'updatedAt'],
     livePreview: getLivePreviewUrl('posts'),
     preview: getPreviewUrl('posts')
   },
@@ -53,7 +54,8 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
-      unique: true
+      unique: true,
+      index: true
     },
     {
       type: 'tabs',
@@ -70,21 +72,21 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'editor',
               label: 'Editor',
               type: 'richText',
-              editor: blogEditor,
-              required: true
+              editor: blogEditor
             }
           ]
         },
         {
           label: 'Options',
-          fields: [categoriesField, tagsField, relatedDocsField]
+          fields: [categoriesField, relatedDocsField, tagsField]
         },
         seoTab
       ]
     },
     noindexField,
-    publishedAtField,
     authorsField,
+    populateAuthorsField,
+    publishedAtField,
     ...slugField()
   ],
   hooks: {
@@ -97,7 +99,8 @@ export const Posts: CollectionConfig<'posts'> = {
     drafts: {
       autosave: {
         interval: 100
-      }
+      },
+      schedulePublish: true
     },
     maxPerDoc: 50
   }

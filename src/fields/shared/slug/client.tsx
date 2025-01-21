@@ -2,16 +2,9 @@
 
 import React, { useCallback, useEffect } from 'react'
 
-import { TextFieldClientProps } from 'payload'
+import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui'
 
-import {
-  Button,
-  FieldLabel,
-  TextInput,
-  useField,
-  useForm,
-  useFormFields
-} from '@payloadcms/ui'
+import { TextFieldClientProps } from 'payload'
 
 import { formatSlug } from './formatSlug'
 
@@ -51,9 +44,7 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
   })
 
   // Compute formatted slug for placeholder
-  const formattedSlugPreview = targetFieldValue
-    ? formatSlug(targetFieldValue)
-    : ''
+  const formattedSlugPreview = targetFieldValue ? formatSlug(targetFieldValue) : ''
 
   useEffect(() => {
     if (checkboxValue) {
@@ -68,7 +59,7 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
   }, [targetFieldValue, checkboxValue, setValue, value])
 
   const handleLock = useCallback(
-    (e) => {
+    (e: React.MouseEvent<Element>) => {
       e.preventDefault()
 
       dispatchFields({

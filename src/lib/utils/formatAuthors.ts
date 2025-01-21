@@ -1,4 +1,4 @@
-import { Post, User } from '@payload-types'
+import type { Post, Tattoo } from '@payload-types'
 
 /**
  * Formats an array of populatedAuthors from Posts into a prettified string.
@@ -10,19 +10,15 @@ import { Post, User } from '@payload-types'
  * [Author1, Author2, Author3] becomes 'Author1, Author2, and Author3'
  *
  */
-export const formatAuthors = (authors: NonNullable<NonNullable<Post['authors']>[number]>[]) => {
-  // Ensure we don't have any authors without a username
-  const filteredAuthors = authors.filter(
-    (author): author is User => typeof author !== 'number' && Boolean(author.username)
-  )
+export const formatAuthors = (
+  authors: NonNullable<NonNullable<Tattoo['populatedAuthors'] | Post['populatedAuthors']>[number]>[]
+) => {
+  // Ensure we don't have any authors without a name
+  const authorNames = authors.map((author) => author.name).filter(Boolean)
 
-  if (filteredAuthors.length === 0) return ''
-  if (filteredAuthors.length === 1) return filteredAuthors[0].username
-  if (filteredAuthors.length === 2)
-    return `${filteredAuthors[0].username} and ${filteredAuthors[1].username}`
+  if (authorNames.length === 0) return ''
+  if (authorNames.length === 1) return authorNames[0]
+  if (authorNames.length === 2) return `${authorNames[0]} and ${authorNames[1]}`
 
-  return `${filteredAuthors
-    .slice(0, -1)
-    .map((author) => author.username)
-    .join(', ')} and ${filteredAuthors[filteredAuthors.length - 1].username}`
+  return `${authorNames.slice(0, -1).join(', ')} and ${authorNames[authorNames.length - 1]}`
 }

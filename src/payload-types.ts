@@ -26,6 +26,7 @@ export interface Config {
     'form-submissions': FormSubmission;
     redirects: Redirect;
     search: Search;
+    'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -68,6 +69,7 @@ export interface Config {
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -92,7 +94,13 @@ export interface Config {
     collection: 'users';
   };
   jobs: {
-    tasks: unknown;
+    tasks: {
+      schedulePublish: TaskSchedulePublish;
+      inline: {
+        input: unknown;
+        output: unknown;
+      };
+    };
     workflows: unknown;
   };
 }
@@ -140,7 +148,6 @@ export interface Tattoo {
   video?: (number | null) | Media;
   area?: (number | Area)[] | null;
   style?: (number | Style)[] | null;
-  artist?: (number | Artist)[] | null;
   description?: {
     root: {
       type: string;
@@ -156,6 +163,7 @@ export interface Tattoo {
     };
     [k: string]: unknown;
   } | null;
+  artist?: (number | Artist)[] | null;
   /**
    * Content that are related to this one. Could be a post, or a tattoo that's featured in this document.
    */
@@ -173,6 +181,18 @@ export interface Tattoo {
     | null;
   tags?: (number | Tag)[] | null;
   meta?: Meta;
+  /**
+   * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
+   */
+  noindex?: boolean | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  publishedAt?: string | null;
   slug: string;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -509,7 +529,7 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
-  editor: {
+  editor?: {
     root: {
       type: string;
       children: {
@@ -523,7 +543,7 @@ export interface Post {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   categories?:
     | (
         | {
@@ -536,7 +556,6 @@ export interface Post {
           }
       )[]
     | null;
-  tags?: (number | Tag)[] | null;
   /**
    * Content that are related to this one. Could be a post, or a tattoo that's featured in this document.
    */
@@ -552,13 +571,20 @@ export interface Post {
           }
       )[]
     | null;
+  tags?: (number | Tag)[] | null;
   meta?: Meta;
   /**
    * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
    */
   noindex?: boolean | null;
-  publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  publishedAt?: string | null;
   slug: string;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1469,6 +1495,98 @@ export interface Search {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs".
+ */
+export interface PayloadJob {
+  id: number;
+  /**
+   * Input data provided to the job
+   */
+  input?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  completedAt?: string | null;
+  totalTried?: number | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Task execution log
+   */
+  log?:
+    | {
+        executedAt: string;
+        completedAt: string;
+        taskSlug: 'inline' | 'schedulePublish';
+        taskID: string;
+        input?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        output?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        state: 'failed' | 'succeeded';
+        error?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  taskSlug?: ('inline' | 'schedulePublish') | null;
+  queue?: string | null;
+  waitUntil?: string | null;
+  processing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -1533,6 +1651,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'search';
         value: number | Search;
+      } | null)
+    | ({
+        relationTo: 'payload-jobs';
+        value: number | PayloadJob;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1586,11 +1708,20 @@ export interface TattooSelect<T extends boolean = true> {
   video?: T;
   area?: T;
   style?: T;
-  artist?: T;
   description?: T;
+  artist?: T;
   relatedDocs?: T;
   tags?: T;
   meta?: T | MetaSelect<T>;
+  noindex?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  publishedAt?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1976,12 +2107,18 @@ export interface PostsSelect<T extends boolean = true> {
   heroImage?: T;
   editor?: T;
   categories?: T;
-  tags?: T;
   relatedDocs?: T;
+  tags?: T;
   meta?: T | MetaSelect<T>;
   noindex?: T;
-  publishedAt?: T;
   authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  publishedAt?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -2388,6 +2525,37 @@ export interface SearchSelect<T extends boolean = true> {
         title?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs_select".
+ */
+export interface PayloadJobsSelect<T extends boolean = true> {
+  input?: T;
+  taskStatus?: T;
+  completedAt?: T;
+  totalTried?: T;
+  hasError?: T;
+  error?: T;
+  log?:
+    | T
+    | {
+        executedAt?: T;
+        completedAt?: T;
+        taskSlug?: T;
+        taskID?: T;
+        input?: T;
+        output?: T;
+        state?: T;
+        error?: T;
+        id?: T;
+      };
+  taskSlug?: T;
+  queue?: T;
+  waitUntil?: T;
+  processing?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3035,6 +3203,23 @@ export interface GlobalSettingsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSchedulePublish".
+ */
+export interface TaskSchedulePublish {
+  input: {
+    type?: ('publish' | 'unpublish') | null;
+    locale?: string | null;
+    doc?: {
+      relationTo: 'tattoo';
+      value: number | Tattoo;
+    } | null;
+    global?: string | null;
+    user?: (number | null) | User;
+  };
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
