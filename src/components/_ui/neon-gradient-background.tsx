@@ -7,6 +7,7 @@ import { cn } from '@utils/cn'
 interface NeonColorsProps {
   firstColor: string
   secondColor: string
+  opacity?: number
 }
 
 interface NeonGradientBackgroundProps {
@@ -68,7 +69,8 @@ const NeonGradientBackground: React.FC<NeonGradientBackgroundProps> = ({
   borderRadius = 20,
   neonColors = {
     firstColor: '#ff00aa',
-    secondColor: '#00FFF1'
+    secondColor: '#00FFF1',
+    opacity: 1 // default opacity
   },
   ...props
 }) => {
@@ -113,7 +115,8 @@ const NeonGradientBackground: React.FC<NeonGradientBackgroundProps> = ({
           '--pseudo-element-background-image': `linear-gradient(0deg, ${neonColors.firstColor}, ${neonColors.secondColor})`,
           '--pseudo-element-width': `${dimensions.width + borderSize * 2}px`,
           '--pseudo-element-height': `${dimensions.height + borderSize * 2}px`,
-          '--after-blur': `${dimensions.width / 3}px`
+          '--after-blur': `${dimensions.width / 3}px`,
+          '--pseudo-element-opacity': neonColors.opacity
         } as CSSProperties
       }
       className={cn('relative z-10 size-full rounded-[var(--border-radius)]', className)}
@@ -124,7 +127,8 @@ const NeonGradientBackground: React.FC<NeonGradientBackgroundProps> = ({
           'relative size-full min-h-[inherit] rounded-[var(--card-content-radius)]',
           'after:absolute after:-left-[var(--border-size)] after:-top-[var(--border-size)] after:-z-10 after:block',
           "after:h-[var(--pseudo-element-height)] after:w-[var(--pseudo-element-width)] after:rounded-[var(--border-radius)] after:blur-[var(--after-blur)] after:content-['']",
-          'after:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:100%_200%] after:opacity-80',
+          'after:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:100%_200%]',
+          'after:opacity-[var(--pseudo-element-opacity)]',
           'after:animate-background-position-spin'
         )}
       >

@@ -2201,6 +2201,49 @@ export interface Homepage {
   subheading?: {
     text?: string | null;
   };
+  gradientBackground?: {
+    enable?: boolean | null;
+    firstColor?:
+      | (
+          | '#00E6BB'
+          | '#01D7E6'
+          | '#00B1E5'
+          | '#008AE6'
+          | '#015DE5'
+          | '#013AE6'
+          | '#1000E5'
+          | '#4B00E5'
+          | '#8D00E5'
+          | '#C900E5'
+          | '#E600B1'
+          | '#E6008A'
+          | '#E6005D'
+          | '#E6003A'
+        )
+      | null;
+    secondColor?:
+      | (
+          | '#00E6BB'
+          | '#01D7E6'
+          | '#00B1E5'
+          | '#008AE6'
+          | '#015DE5'
+          | '#013AE6'
+          | '#1000E5'
+          | '#4B00E5'
+          | '#8D00E5'
+          | '#C900E5'
+          | '#E600B1'
+          | '#E6008A'
+          | '#E6005D'
+          | '#E6003A'
+        )
+      | null;
+    opacity?: number | null;
+  };
+  search?: {
+    inputText?: string | null;
+  };
   featured?: (number | Tattoo)[] | null;
   meta?: Meta;
   /**
@@ -2208,6 +2251,12 @@ export interface Homepage {
    */
   noindex?: boolean | null;
   authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
   publishedAt?: string | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
@@ -2606,10 +2655,29 @@ export interface HomepageSelect<T extends boolean = true> {
     | {
         text?: T;
       };
+  gradientBackground?:
+    | T
+    | {
+        enable?: T;
+        firstColor?: T;
+        secondColor?: T;
+        opacity?: T;
+      };
+  search?:
+    | T
+    | {
+        inputText?: T;
+      };
   featured?: T;
   meta?: T | MetaSelect<T>;
   noindex?: T;
   authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
   publishedAt?: T;
   _status?: T;
   updatedAt?: T;

@@ -18,16 +18,5 @@ export const Providers: React.FC<{
         {/* <Toaster /> */}
       </HeaderThemeProvider>
     </ThemeProvider>
-
-    // <NextThemeProvider
-    //   attribute="class"
-    //   defaultTheme="dark"
-    //   enableSystem
-    //   // disableTransitionOnChange
-    // >
-    //   {children}
-
-    //
-    // </NextThemeProvider>
   )
 }

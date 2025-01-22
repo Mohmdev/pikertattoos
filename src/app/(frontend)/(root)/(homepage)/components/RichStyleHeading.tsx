@@ -2,9 +2,9 @@
 
 import React from 'react'
 
-import { useTheme } from 'next-themes'
 import { cn } from '@utils/cn'
 
+import { useTheme } from '@providers/Theme'
 import { LineShadowText } from '@ui/line-shadow-text'
 import { NeonGradientBackground } from '@ui/neon-gradient-background'
 
@@ -13,20 +13,29 @@ interface RichStyleHeadingProps {
   highlightedText?: string | null
   className?: string
   withGradientBackground?: boolean
+  neonColors?: {
+    firstColor: string
+    secondColor: string
+    opacity: number
+  }
 }
 
 export function RichStyleHeading({
   text,
   highlightedText,
   className,
-  withGradientBackground = true
+  withGradientBackground = true,
+  neonColors = {
+    firstColor: '#005994',
+    secondColor: '#009C7F',
+    opacity: 1
+  }
 }: RichStyleHeadingProps) {
-  const { resolvedTheme } = useTheme()
-  const [shadowColor, setShadowColor] = React.useState('black')
+  const { theme } = useTheme()
 
-  React.useEffect(() => {
-    setShadowColor(resolvedTheme === 'dark' ? 'white' : 'black')
-  }, [resolvedTheme])
+  const shadowColor = theme === 'dark' ? 'white' : 'black'
+
+  console.log('theme', theme)
 
   const content = (
     <div
@@ -59,7 +68,7 @@ export function RichStyleHeading({
   )
 
   return withGradientBackground ? (
-    <NeonGradientBackground>{content}</NeonGradientBackground>
+    <NeonGradientBackground neonColors={neonColors}>{content}</NeonGradientBackground>
   ) : (
     content
   )

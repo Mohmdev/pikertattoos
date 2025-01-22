@@ -33,12 +33,17 @@ export const RenderPage = ({
 
   const tattoos = data.featured as Tattoo[]
 
-  const { heading, subheading } = data
+  const { heading, subheading, search, gradientBackground } = data
 
   // Handle each field independently with optional chaining
   const headingText = heading?.text ?? null
   const headingHighlightedText = heading?.highlightedText ?? null
   const subheadingText = subheading?.text ?? null
+  const searchInputText = search?.inputText ?? null
+  const gradientEnabled = gradientBackground?.enable ?? false
+  const gradientFirstColor = gradientBackground?.firstColor ?? '#00E6BB'
+  const gradientSecondColor = gradientBackground?.secondColor ?? '#009C7F'
+  const gradientOpacity = gradientBackground?.opacity ?? 1
 
   useEffect(() => {
     setSearchResults(initialDocs)
@@ -55,11 +60,21 @@ export const RenderPage = ({
     >
       {/* Hero Section */}
       <div className="mb-6 flex flex-col items-center gap-3 md:gap-6">
-        <RichStyleHeading text={headingText} highlightedText={headingHighlightedText} />
+        <RichStyleHeading
+          text={headingText}
+          highlightedText={headingHighlightedText}
+          withGradientBackground={gradientEnabled}
+          neonColors={{
+            firstColor: gradientFirstColor,
+            secondColor: gradientSecondColor,
+            opacity: gradientOpacity
+          }}
+        />
         {subheadingText && (
           <TextAnimate
             animation="blurInUp"
             by="character"
+            once={true}
             className="leading-none text-themeTextGray"
           >
             {subheadingText}
@@ -87,7 +102,7 @@ export const RenderPage = ({
           <SearchInput
             initialValue={searchQuery}
             onResultsChange={setSearchResults}
-            placeholder="What speaks to your soul?"
+            placeholder={searchInputText ? searchInputText : 'Search for anything'}
             glass
             className="my-auto"
             iconClassName="text-themeTextGray"
