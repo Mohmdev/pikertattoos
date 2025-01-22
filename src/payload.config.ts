@@ -1,12 +1,13 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { Categories } from '@CMS/Blog/categories.config'
+import { Posts } from '@CMS/Blog/posts.config'
 import { Footer } from '@CMS/Footer/config'
 import { GlobalSettings } from '@CMS/GlobalSettings/config'
 import { HomePage } from '@CMS/HomePage/config'
 import { MainMenu } from '@CMS/MainMenu/config'
 import { Pages } from '@CMS/Pages/config'
-import { Posts } from '@CMS/Posts/config'
 import { Area } from '@CMS/Studio/Area'
 import { Artist } from '@CMS/Studio/Artist'
 import { Style } from '@CMS/Studio/Style'
@@ -17,9 +18,10 @@ import { Media } from '@CMS/Uploads/config.Media'
 import { UserPhotos } from '@CMS/Uploads/config.UserPhotos'
 import { Users } from '@CMS/Users/config'
 import { adminConfig } from '@services/admin/config'
-import { postgres } from '@services/database/config.postgres'
+import { vercelPostgres } from '@services/database/config.vercelPostgres'
 import { basicLexical } from '@services/editor/basicLexical'
 import { emailAdapter } from '@services/email/config'
+import { jobsConfig } from '@services/jobs/config'
 import { pluginsConfig } from '@services/plugins'
 
 import { buildConfig } from 'payload'
@@ -34,18 +36,19 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   collections: [
-    ...collectionGroup('Studio', [Tattoo, Area, Style, Artist, Tag]),
-    ...collectionGroup('Content', [Pages, Posts]),
+    ...collectionGroup('Studio Content', [Tattoo, Area, Style, Artist, Tag]),
+    ...collectionGroup('Site Content', [Pages, Posts, Categories]),
     ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
     ...collectionGroup('Settings', [Users])
   ],
   globals: [...globalGroup('Customize', [HomePage, MainMenu, Footer, GlobalSettings])],
   editor: basicLexical,
   admin: adminConfig,
-  db: postgres,
+  db: vercelPostgres,
   email: emailAdapter,
   sharp,
   plugins: [...pluginsConfig],
+  jobs: jobsConfig,
   secret: process.env.PAYLOAD_SECRET || '',
   cookiePrefix: `${COOKIE_PREFIX}`,
   serverURL: getServerSideURL(),

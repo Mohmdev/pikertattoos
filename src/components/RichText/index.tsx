@@ -1,30 +1,72 @@
+import {
+  DefaultNodeTypes,
+  SerializedBlockNode,
+  SerializedLinkNode
+} from '@payloadcms/richtext-lexical'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { RichText as SerializedRichText } from '@payloadcms/richtext-lexical/react'
+import {
+  JSXConvertersFunction,
+  LinkJSXConverter,
+  RichText as RichTextWithoutBlocks
+} from '@payloadcms/richtext-lexical/react'
+import { BannerBlock } from '@blocks/BannerBlock/Component'
+import { CallToActionBlock } from '@blocks/CallToActionBlock/Component'
+import { CodeBlock, CodeBlockProps } from '@blocks/CodeBlock/Component'
 
 import { cn } from '@utils/cn'
+import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
-import { jsxConverters } from './Converters'
+import type {
+  BannerBlock as BannerBlockProps,
+  CallToActionBlock as CTABlockProps,
+  MediaBlock as MediaBlockProps
+} from '@payload-types'
+
+type NodeTypes =
+  | DefaultNodeTypes
+  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+
+const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
+  const { value, relationTo } = linkNode.fields.doc!
+  if (typeof value !== 'object') {
+    throw new Error('Expected value to be an object')
+  }
+  const slug = value.slug
+  return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
+}
+
+const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
+  ...defaultConverters,
+  ...LinkJSXConverter({ internalDocToHref }),
+  blocks: {
+    banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
+    mediaBlock: ({ node }) => (
+      <MediaBlock
+        className="col-span-3 col-start-1"
+        imgClassName="m-0"
+        {...node.fields}
+        captionClassName="mx-auto max-w-[48rem]"
+        enableGutter={false}
+        disableInnerContainer={true}
+      />
+    ),
+    code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
+    cta: ({ node }) => <CallToActionBlock {...node.fields} />
+  }
+})
 
 type Props = {
   data: SerializedEditorState
   enableGutter?: boolean
   enableProse?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content?: any
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default function RichText(props: Props) {
-  const { className, enableProse = false, enableGutter = true, data } = props
-
-  if (!data) {
-    return null
-  }
-
+  const { className, enableProse = true, enableGutter = true, ...rest } = props
   return (
-    <SerializedRichText // RichTextWithoutBlocks
-      converters={jsxConverters({ toc: false })}
+    <RichTextWithoutBlocks
+      converters={jsxConverters}
       className={cn(
-        // 'payload-richtext',
         {
           container: enableGutter,
           'max-w-none': !enableGutter,
@@ -32,41 +74,7 @@ export default function RichText(props: Props) {
         },
         className
       )}
-      data={data}
+      {...rest}
     />
   )
 }
-
-// export const RichTextWithTOC: React.FC<Props> = ({ className, content }) => {
-//   const [toc, setTOC] = useState<Map<string, Heading>>(new Map())
-
-//   const addHeading: AddHeading = useCallback(
-//     (anchor, heading, type) => {
-//       if (!toc.has(anchor)) {
-//         const newTOC = new Map(toc)
-//         newTOC.set(anchor, { type, anchor, heading })
-//         setTOC(newTOC)
-//       }
-//     },
-//     [toc]
-//   )
-
-//   if (!content) {
-//     return null
-//   }
-
-//   const context: IContext = {
-//     addHeading,
-//     toc: Array.from(toc).reverse()
-//   }
-
-//   return (
-//     <RichTextContext.Provider value={context}>
-//       <SerializedRichText
-//         className={['payload-richtext', className].filter(Boolean).join(' ')}
-//         converters={jsxConverters({ toc: true })}
-//         data={content}
-//       />
-//     </RichTextContext.Provider>
-//   )
-// }

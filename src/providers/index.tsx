@@ -1,31 +1,33 @@
 import React from 'react'
 
+import type { Theme } from './Theme/types'
+
+import { HeaderThemeProvider } from './HeaderTheme'
 // import { Toaster } from 'sonner'
 
-import { NextThemeProvider } from './NextTheme'
-
-// import { ReactQueryProvider } from './ReactQuery'
-
-// import { HeaderThemeProvider } from './HeaderTheme'
-// import { ScrollbarProvider } from './Scrollbar'
-// import { ThemeProvider } from './Theme'
+import { ThemeProvider } from './Theme'
 
 export const Providers: React.FC<{
   children: React.ReactNode
-}> = ({ children }) => {
+  defaultTheme?: Theme
+}> = ({ children, defaultTheme = 'dark' }) => {
   return (
-    <NextThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      // disableTransitionOnChange
-    >
-      {/* <ReactQueryProvider> */}
-      {/* <ScrollbarProvider> */}
-      {children}
-      {/* </ScrollbarProvider> */}
-      {/* <Toaster /> */}
-      {/* </ReactQueryProvider> */}
-    </NextThemeProvider>
+    <ThemeProvider defaultTheme={defaultTheme}>
+      <HeaderThemeProvider>
+        {children}
+        {/* <Toaster /> */}
+      </HeaderThemeProvider>
+    </ThemeProvider>
+
+    // <NextThemeProvider
+    //   attribute="class"
+    //   defaultTheme="dark"
+    //   enableSystem
+    //   // disableTransitionOnChange
+    // >
+    //   {children}
+
+    //
+    // </NextThemeProvider>
   )
 }

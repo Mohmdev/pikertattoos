@@ -41,7 +41,7 @@ type LinkType = (options?: {
   overrides?: Partial<GroupField>
 }) => Field
 
-const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
   const linkResult: GroupField = {
     name: 'link',
     type: 'group',
@@ -159,5 +159,3 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
 
   return deepMerge(linkResult, overrides)
 }
-
-export default link

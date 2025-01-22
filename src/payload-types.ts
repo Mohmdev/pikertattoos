@@ -18,6 +18,7 @@ export interface Config {
     tag: Tag;
     pages: Page;
     posts: Post;
+    categories: Category;
     media: Media;
     assets: Asset;
     'user-photo': UserPhoto;
@@ -61,6 +62,7 @@ export interface Config {
     tag: TagSelect<false> | TagSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     assets: AssetsSelect<false> | AssetsSelect<true>;
     'user-photo': UserPhotoSelect<false> | UserPhotoSelect<true>;
@@ -637,15 +639,6 @@ export interface Asset {
 export interface Page {
   id: number;
   title: string;
-  fullTitle?: string | null;
-  /**
-   * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
-   */
-  noindex?: boolean | null;
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  slug: string;
-  slugLock?: boolean | null;
   hero: {
     type:
       | 'none'
@@ -1014,8 +1007,24 @@ export interface Page {
     } | null;
     logoShowcase?: (number | Media)[] | null;
   };
-  layout: (CallToActionBlock | MediaBlock | BannerBlock | SpacerBlock | UploadBlock)[];
+  blocks?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[] | null;
+  fullTitle?: string | null;
+  tags?: (number | Tag)[] | null;
   meta?: Meta;
+  /**
+   * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
+   */
+  noindex?: boolean | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  publishedAt?: string | null;
+  slug: string;
+  slugLock?: boolean | null;
   parent?: (number | null) | Page;
   breadcrumbs?:
     | {
@@ -1207,198 +1216,209 @@ export interface Form {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
-  ctaFields: {
-    settings?: {
-      bg?: ('solid' | 'trnsprnt' | 'grdntup' | 'gtdntdwn') | null;
-    };
-    style?: ('buttons' | 'banner') | null;
-    richText: {
-      root: {
+  richText?: {
+    root: {
+      type: string;
+      children: {
         type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
         version: number;
-      };
-      [k: string]: unknown;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    commandLine?: string | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: number | Post;
-                } | null)
-              | ({
-                  relationTo: 'tattoo';
-                  value: number | Tattoo;
-                } | null)
-              | ({
-                  relationTo: 'artist';
-                  value: number | Artist;
-                } | null)
-              | ({
-                  relationTo: 'tag';
-                  value: number | Tag;
-                } | null)
-              | ({
-                  relationTo: 'area';
-                  value: number | Area;
-                } | null)
-              | ({
-                  relationTo: 'style';
-                  value: number | Style;
-                } | null);
-            url?: string | null;
-            label: string;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    bannerLink?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null)
-        | ({
-            relationTo: 'tattoo';
-            value: number | Tattoo;
-          } | null)
-        | ({
-            relationTo: 'artist';
-            value: number | Artist;
-          } | null)
-        | ({
-            relationTo: 'tag';
-            value: number | Tag;
-          } | null)
-        | ({
-            relationTo: 'area';
-            value: number | Area;
-          } | null)
-        | ({
-            relationTo: 'style';
-            value: number | Style;
-          } | null);
-      url?: string | null;
-      label: string;
-      /**
-       * Choose how the link should be rendered.
-       */
-      appearance?: ('default' | 'outline' | 'secondary' | 'destructive' | 'ghost' | 'link') | null;
-    };
-    bannerImage?: (number | null) | Media;
-    gradientBackground?: boolean | null;
-  };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'tattoo';
+                value: number | Tattoo;
+              } | null)
+            | ({
+                relationTo: 'artist';
+                value: number | Artist;
+              } | null)
+            | ({
+                relationTo: 'tag';
+                value: number | Tag;
+              } | null)
+            | ({
+                relationTo: 'area';
+                value: number | Area;
+              } | null)
+            | ({
+                relationTo: 'style';
+                value: number | Style;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline' | 'secondary' | 'destructive' | 'ghost' | 'link') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlock".
+ */
+export interface ContentBlock {
+  columns?:
+    | {
+        size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        richText?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        enableLink?: boolean | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'tattoo';
+                value: number | Tattoo;
+              } | null)
+            | ({
+                relationTo: 'artist';
+                value: number | Artist;
+              } | null)
+            | ({
+                relationTo: 'tag';
+                value: number | Tag;
+              } | null)
+            | ({
+                relationTo: 'area';
+                value: number | Area;
+              } | null)
+            | ({
+                relationTo: 'style';
+                value: number | Style;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline' | 'secondary' | 'destructive' | 'ghost' | 'link') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
-  mediaBlockFields: {
-    settings?: {
-      bg?: ('solid' | 'trnsprnt' | 'grdntup' | 'gtdntdwn') | null;
-    };
-    position?: ('default' | 'wide') | null;
-    media: number | Media;
-    caption?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-  };
+  media: number | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock".
+ * via the `definition` "ArchiveBlock".
  */
-export interface BannerBlock {
-  bannerFields: {
-    settings?: {
-      bg?: ('solid' | 'trnsprnt' | 'grdntup' | 'gtdntdwn') | null;
-    };
-    bannerType?: ('default' | 'info' | 'success' | 'warning' | 'alert' | 'error') | null;
-    addCheckmark?: boolean | null;
-    richTextContent: {
-      root: {
+export interface ArchiveBlock {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
         type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
         version: number;
-      };
-      [k: string]: unknown;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-  };
+    [k: string]: unknown;
+  } | null;
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: 'posts' | null;
+  categories?: (number | Category)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | (
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+        | {
+            relationTo: 'tattoo';
+            value: number | Tattoo;
+          }
+      )[]
+    | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'banner';
+  blockType: 'archive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SpacerBlock".
+ * via the `definition` "categories".
  */
-export interface SpacerBlock {
-  SpaceFields?: {
-    settings?: {
-      bg?: ('solid' | 'trnsprnt' | 'grdntup' | 'gtdntdwn') | null;
-    };
-    ignore?: string | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'spacer';
+export interface Category {
+  id: number;
+  title: string;
+  slug: string;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "UploadBlock".
+ * via the `definition` "FormBlock".
  */
-export interface UploadBlock {
-  src: string;
-  alt?: string | null;
-  caption?: {
+export interface FormBlock {
+  form: number | Form;
+  enableIntro?: boolean | null;
+  introContent?: {
     root: {
       type: string;
       children: {
@@ -1415,7 +1435,7 @@ export interface UploadBlock {
   } | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'upload';
+  blockType: 'formBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1621,6 +1641,10 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1823,12 +1847,6 @@ export interface TagSelect<T extends boolean = true> {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
-  fullTitle?: T;
-  noindex?: T;
-  publishedAt?: T;
-  authors?: T;
-  slug?: T;
-  slugLock?: T;
   hero?:
     | T
     | {
@@ -1960,16 +1978,29 @@ export interface PagesSelect<T extends boolean = true> {
         logoShowcaseLabel?: T;
         logoShowcase?: T;
       };
-  layout?:
+  blocks?:
     | T
     | {
         cta?: T | CallToActionBlockSelect<T>;
+        content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
-        banner?: T | BannerBlockSelect<T>;
-        spacer?: T | SpacerBlockSelect<T>;
-        upload?: T | UploadBlockSelect<T>;
+        archive?: T | ArchiveBlockSelect<T>;
+        formBlock?: T | FormBlockSelect<T>;
       };
+  fullTitle?: T;
+  tags?: T;
   meta?: T | MetaSelect<T>;
+  noindex?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
   parent?: T;
   breadcrumbs?:
     | T
@@ -1988,32 +2019,11 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
-  ctaFields?:
+  richText?: T;
+  links?:
     | T
     | {
-        settings?:
-          | T
-          | {
-              bg?: T;
-            };
-        style?: T;
-        richText?: T;
-        commandLine?: T;
-        links?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                  };
-              id?: T;
-            };
-        bannerLink?:
+        link?:
           | T
           | {
               type?: T;
@@ -2023,8 +2033,33 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
-        bannerImage?: T;
-        gradientBackground?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlock_select".
+ */
+export interface ContentBlockSelect<T extends boolean = true> {
+  columns?:
+    | T
+    | {
+        size?: T;
+        richText?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
       };
   id?: T;
   blockName?: T;
@@ -2034,67 +2069,32 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
  * via the `definition` "MediaBlock_select".
  */
 export interface MediaBlockSelect<T extends boolean = true> {
-  mediaBlockFields?:
-    | T
-    | {
-        settings?:
-          | T
-          | {
-              bg?: T;
-            };
-        position?: T;
-        media?: T;
-        caption?: T;
-      };
+  media?: T;
   id?: T;
   blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock_select".
+ * via the `definition` "ArchiveBlock_select".
  */
-export interface BannerBlockSelect<T extends boolean = true> {
-  bannerFields?:
-    | T
-    | {
-        settings?:
-          | T
-          | {
-              bg?: T;
-            };
-        bannerType?: T;
-        addCheckmark?: T;
-        richTextContent?: T;
-      };
+export interface ArchiveBlockSelect<T extends boolean = true> {
+  introContent?: T;
+  populateBy?: T;
+  relationTo?: T;
+  categories?: T;
+  limit?: T;
+  selectedDocs?: T;
   id?: T;
   blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SpacerBlock_select".
+ * via the `definition` "FormBlock_select".
  */
-export interface SpacerBlockSelect<T extends boolean = true> {
-  SpaceFields?:
-    | T
-    | {
-        settings?:
-          | T
-          | {
-              bg?: T;
-            };
-        ignore?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "UploadBlock_select".
- */
-export interface UploadBlockSelect<T extends boolean = true> {
-  src?: T;
-  alt?: T;
-  caption?: T;
+export interface FormBlockSelect<T extends boolean = true> {
+  form?: T;
+  enableIntro?: T;
+  introContent?: T;
   id?: T;
   blockName?: T;
 }
@@ -2124,6 +2124,17 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3212,14 +3223,59 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    doc?: {
-      relationTo: 'tattoo';
-      value: number | Tattoo;
-    } | null;
+    doc?:
+      | ({
+          relationTo: 'tattoo';
+          value: number | Tattoo;
+        } | null)
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
     global?: string | null;
     user?: (number | null) | User;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock".
+ */
+export interface BannerBlock {
+  style: 'info' | 'warning' | 'error' | 'success';
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CodeBlock".
+ */
+export interface CodeBlock {
+  language?: ('typescript' | 'javascript' | 'css') | null;
+  code: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

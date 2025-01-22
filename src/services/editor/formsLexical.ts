@@ -1,12 +1,6 @@
-import { Config } from 'payload'
+import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  HorizontalRuleFeature,
-  InlineToolbarFeature,
-  lexicalEditor
-} from '@payloadcms/richtext-lexical'
+import { Config } from 'payload'
 
 export const formsLexical: Config['editor'] = lexicalEditor({
   features: ({ rootFeatures }) => {
@@ -15,9 +9,7 @@ export const formsLexical: Config['editor'] = lexicalEditor({
       HeadingFeature({
         enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4']
       }),
-      FixedToolbarFeature(),
-      InlineToolbarFeature(),
-      HorizontalRuleFeature()
+      FixedToolbarFeature()
     ]
   }
 })

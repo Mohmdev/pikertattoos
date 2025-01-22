@@ -14,14 +14,14 @@ html {
   min-height: 100dvh;
 }
 
-.payload__modal-container > section {
-  position: absolute;
-  left: auto;
-  right: 4ch;
-  bottom: 4ch;
+// .payload__modal-container > section {
+//   position: absolute;
+//   left: auto;
+//   right: 4ch;
+//   bottom: 4ch;
 
-  @media (max-width: 1024px) {
-    right: 2ch;
-    bottom: 2ch;
-  }
-}
+//   @media (max-width: 1024px) {
+//     right: 2ch;
+//     bottom: 2ch;
+//   }
+// }

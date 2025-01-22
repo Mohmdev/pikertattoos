@@ -1,11 +1,10 @@
-import link from '@fields/link'
+import { link } from '@fields/link'
+import { isAdminOrEditor } from '@access/isAdminOrEditor'
+import { publishedOnly } from '@access/publishedOnly'
 
 // import { isAdmin } from '@access/isAdmin'
 
 import type { GlobalConfig } from 'payload'
-
-import { isAdminOrEditor } from '@access/isAdminOrEditor'
-import { publishedOnly } from '@access/publishedOnly'
 
 import { revalidateMainMenu } from './revalidateMainMenu'
 

@@ -1,7 +1,10 @@
-import { blockFields } from '@fields/blockFields'
-import link from '@fields/link'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor
+} from '@payloadcms/richtext-lexical'
 import linkGroup from '@fields/linkGroup'
-import { richTextField } from '@fields/richTextField'
 
 import type { Block } from 'payload'
 
@@ -9,67 +12,26 @@ export const CallToActionBlock: Block = {
   slug: 'cta',
   interfaceName: 'CallToActionBlock',
   fields: [
-    blockFields({
-      name: 'ctaFields',
-      fields: [
-        {
-          name: 'style',
-          type: 'select',
-          defaultValue: 'buttons',
-          options: [
-            {
-              label: 'Buttons',
-              value: 'buttons'
-            },
-            {
-              label: 'Banner',
-              value: 'banner'
-            }
+    {
+      name: 'richText',
+      type: 'richText',
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => {
+          return [
+            ...rootFeatures,
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            FixedToolbarFeature(),
+            InlineToolbarFeature()
           ]
-        },
-        richTextField(),
-        {
-          name: 'commandLine',
-          type: 'text',
-          admin: {
-            condition: (_, { style }) => style === 'buttons'
-          }
-        },
-        linkGroup({
-          appearances: false,
-          overrides: {
-            admin: {
-              condition: (_, { style }) => style === 'buttons'
-            }
-          }
-        }),
-        link({
-          // appearances: false,
-          overrides: {
-            name: 'bannerLink',
-            admin: {
-              condition: (_, { style }) => style === 'banner'
-            }
-          }
-        }),
-        {
-          name: 'bannerImage',
-          type: 'upload',
-          admin: {
-            condition: (_, { style }) => style === 'banner'
-          },
-          relationTo: 'media',
-          required: true
-        },
-        {
-          name: 'gradientBackground',
-          type: 'checkbox',
-          admin: {
-            condition: (_, { style }) => style === 'banner'
-          },
-          label: 'Enable Gradient Background'
         }
-      ]
+      }),
+      label: false
+    },
+    linkGroup({
+      appearances: ['default', 'outline', 'secondary', 'destructive', 'ghost', 'link'],
+      overrides: {
+        maxRows: 2
+      }
     })
   ],
   labels: {

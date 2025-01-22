@@ -1,5 +1,5 @@
 // import { themeField } from '@fields/blockFields'
-import link from '@fields/link'
+import { link } from '@fields/link'
 import linkGroup from '@fields/linkGroup'
 
 import type { Field } from 'payload'

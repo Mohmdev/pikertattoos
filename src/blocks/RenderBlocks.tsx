@@ -1,22 +1,23 @@
 import React, { Fragment } from 'react'
 
-import type { BlockTypes } from './types'
+import { ArchiveBlock } from '@blocks/ArchiveBlock/Component'
+import { CallToActionBlock } from '@blocks/CallToActionBlock/Component'
+import { ContentBlock } from '@blocks/ContentBlock/Component'
+import { FormBlock } from '@blocks/FormBlock/Component'
+import { MediaBlock } from '@blocks/MediaBlock/Component'
 
-import { BannerBlock } from './BannerBlock'
-import { CallToActionBlock } from './CallToActionBlock'
-import { MediaBlock } from './MediaBlock'
+import type { Page } from '@payload-types'
 
 const blockComponents = {
-  bannerBlock: BannerBlock,
+  archive: ArchiveBlock,
+  content: ContentBlock,
   cta: CallToActionBlock,
+  formBlock: FormBlock,
   mediaBlock: MediaBlock
-  // archive: ArchiveBlock,
-  // content: ContentBlock,
-  // formBlock: FormBlock,
 }
 
 export const RenderBlocks: React.FC<{
-  blocks: BlockTypes
+  blocks: Page['blocks']
 }> = (props) => {
   const { blocks } = props
 
@@ -34,7 +35,8 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               return (
                 <div className="my-16" key={index}>
-                  <Block {...block} disableInnerContainer />
+                  {/* @ts-expect-error we've already checked blockType exists and matches a component in the blockComponents object. So it's safe to pass the block to the component. */}
+                  <Block {...block} />
                 </div>
               )
             }

@@ -1,11 +1,14 @@
 import {
-  // BlocksFeature,
+  BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   HorizontalRuleFeature,
   InlineToolbarFeature,
   lexicalEditor
 } from '@payloadcms/richtext-lexical'
+import { BannerBlock } from '@blocks/BannerBlock/config'
+import { CodeBlock } from '@blocks/CodeBlock/config'
+import { MediaBlock } from '@blocks/MediaBlock/config'
 
 import { Config } from 'payload'
 
@@ -14,8 +17,7 @@ export const blogEditor: Config['editor'] = lexicalEditor({
     return [
       ...rootFeatures,
       HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-      // TODO: add back in when we add blocks
-      // BlocksFeature({ blocks: [Banner, MediaBlock] }),
+      BlocksFeature({ blocks: [BannerBlock, CodeBlock, MediaBlock] }),
       FixedToolbarFeature(),
       InlineToolbarFeature(),
       HorizontalRuleFeature()

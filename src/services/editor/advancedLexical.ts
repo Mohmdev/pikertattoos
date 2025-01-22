@@ -9,7 +9,7 @@ import {
   UnderlineFeature,
   UploadFeature
 } from '@payloadcms/richtext-lexical'
-import link from '@fields/link'
+import { link } from '@fields/link'
 import { LabelFeature } from '@fields/richTextField/features/label/server'
 import { LargeBodyFeature } from '@fields/richTextField/features/largeBody/server'
 

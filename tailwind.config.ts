@@ -4,11 +4,7 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 import type { Config } from 'tailwindcss'
 
 export default {
-  darkMode: [
-    'class'
-    // 'selector',
-    // '[data-theme="dark"]'
-  ],
+  darkMode: ['selector', '[data-theme="dark"]'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -19,9 +15,20 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: '2rem',
+      padding: {
+        DEFAULT: '1rem',
+        sm: '1rem',
+        md: '1.125rem',
+        lg: '1.25rem',
+        xl: '1.5rem',
+        '2xl': '1.5rem'
+      },
       screens: {
-        '2xl': '1400px'
+        '2xl': '86rem',
+        lg: '64rem',
+        md: '48rem',
+        sm: '40rem',
+        xl: '80rem'
       }
     },
     backgroundImage: {
@@ -187,7 +194,22 @@ export default {
         'background-position-spin': 'background-position-spin 4000ms infinite alternate'
       }
     }
-  }
+  },
+  prefix: '',
+  safelist: [
+    'lg:col-span-4',
+    'lg:col-span-6',
+    'lg:col-span-8',
+    'lg:col-span-12',
+    'border-border',
+    'bg-card',
+    'border-error',
+    'bg-error/30',
+    'border-success',
+    'bg-success/30',
+    'border-warning',
+    'bg-warning/30'
+  ]
   // variants: {
   //   extend: {
   //     display: ['sticky-active']

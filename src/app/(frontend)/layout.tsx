@@ -22,7 +22,7 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
     <html lang="en" suppressHydrationWarning>
       <head>{/* <Favicon /> */}</head>
       <body className={cn(jakarta.className, 'relative w-full antialiased')}>
-        <Providers>{children}</Providers>
+        <Providers defaultTheme="dark">{children}</Providers>
       </body>
     </html>
   )

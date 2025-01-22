@@ -8,7 +8,6 @@ import type { Theme, ThemeContextType } from './types'
 
 import { getImplicitPreference } from './shared'
 import { themeIsValid } from './types'
-
 import { defaultTheme, themeLocalStorageKey } from '@constants/theme'
 
 const initialContext: ThemeContextType = {
@@ -18,7 +17,13 @@ const initialContext: ThemeContextType = {
 
 const ThemeContext = createContext(initialContext)
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const ThemeProvider = ({
+  children,
+  defaultTheme: defaultThemeProp = defaultTheme
+}: {
+  children: React.ReactNode
+  defaultTheme?: Theme
+}) => {
   const [theme, setThemeState] = useState<Theme | undefined>(
     canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined
   )
@@ -37,7 +42,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    let themeToSet: Theme = defaultTheme
+    let themeToSet: Theme = defaultThemeProp
     const preference = window.localStorage.getItem(themeLocalStorageKey)
 
     if (themeIsValid(preference)) {
@@ -52,7 +57,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     document.documentElement.setAttribute('data-theme', themeToSet)
     setThemeState(themeToSet)
-  }, [])
+  }, [defaultThemeProp])
 
   return <ThemeContext.Provider value={{ setTheme, theme }}>{children}</ThemeContext.Provider>
 }

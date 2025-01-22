@@ -7,7 +7,7 @@ import { cn } from '@utils/cn'
 import type { Area, Artist, Media as MediaType, Style, Tag, Tattoo, User } from '@payload-types'
 
 import { Media } from '@components/dynamic/Media'
-import RichText from '@components/RichTextBasic'
+import RichText from '@components/RichText'
 
 import { RelatedDocs } from './RelatedDocs'
 
@@ -27,7 +27,6 @@ export const RenderDoc = ({ doc, className }: Props) => {
   const tags = Array.isArray(doc.tags) ? (doc.tags as Tag[]) : undefined
   const areas = Array.isArray(doc.area) ? (doc.area as Area[]) : undefined
   const artists = Array.isArray(doc.artist) ? (doc.artist as Artist[]) : undefined
-  const artistsUsernames = artists?.map((artist) => (artist?.user as User)?.username)
 
   return (
     <article className={cn('relative min-h-screen', className)}>
