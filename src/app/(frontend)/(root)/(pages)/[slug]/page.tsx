@@ -8,12 +8,15 @@ import { RenderHero } from '@heros/RenderHero'
 import { RenderBlocks } from '@blocks/RenderBlocks'
 
 import { generateMeta } from '@seo/generateMeta'
+import { getDynamicMeta } from '@seo/getDynamicMeta'
 import { getPayload } from 'payload'
 
 import type { Page as PageType } from '@payload-types'
 
 import { LivePreviewListener } from '@components/dynamic/LivePreviewListener'
 import { PayloadRedirects } from '@components/dynamic/PayloadRedirects'
+
+import PageClient from './page.client'
 
 type Args = {
   params: Promise<{
@@ -44,7 +47,13 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
+  const { slug } = await paramsPromise
+
+  // Failsafe: prevent handling of root path
+  if (!slug) {
+    throw new Error('Root path "/" should be handled by homepage route')
+  }
+
   const url = '/' + slug
 
   let page: PageType | null
@@ -54,20 +63,22 @@ export default async function Page({ params: paramsPromise }: Args) {
     slug
   })
 
+  const { hero, blocks } = page ? page : { hero: null, blocks: null }
+
   if (!page) {
     return <PayloadRedirects url={url} />
   }
 
   return (
     <article className="pb-24 pt-16">
-      {/* <PageClient /> */}
+      <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
 
-      <RenderHero firstContentBlock={page.layout[0]} page={page} />
-      <RenderBlocks blocks={page.layout} />
+      {hero && <RenderHero {...hero} />}
+      {blocks && <RenderBlocks blocks={blocks} />}
     </article>
   )
 }
@@ -87,7 +98,8 @@ export async function generateStaticParams() {
 
   const params = pages.docs
     ?.filter((doc) => {
-      return doc.slug !== 'home'
+      // Exclude home and empty slugs
+      return doc.slug && doc.slug !== 'home'
     })
     .map(({ slug }) => {
       return { slug }
@@ -96,11 +108,22 @@ export async function generateStaticParams() {
   return params
 }
 
-export async function generateMetadata({ params: paramsPromise }): Promise<Metadata> {
-  const { slug = 'home' } = await paramsPromise
-  const page = await fetchCachedPageBySlug({
-    slug
-  })
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug } = await paramsPromise
+
+  if (!slug) {
+    throw new Error('Root path "/" should be handled by homepage route')
+  }
+
+  const page = await fetchCachedPageBySlug({ slug })
+
+  if (!page) {
+    const { siteName, siteDescription } = await getDynamicMeta()
+    return {
+      title: `Not Found | ${siteName}`,
+      description: siteDescription
+    }
+  }
 
   return generateMeta({ doc: page })
 }

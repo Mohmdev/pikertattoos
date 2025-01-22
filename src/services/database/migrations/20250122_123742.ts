@@ -12,13 +12,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__artist_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_tag_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__tag_v_version_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum_pages_hero_breadcrumbs_bar_links_link_type" AS ENUM('reference', 'custom');
-  CREATE TYPE "public"."enum_pages_hero_primary_buttons_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_links_link_appearance" AS ENUM('default', 'outline', 'secondary', 'destructive', 'ghost', 'link');
-  CREATE TYPE "public"."enum_pages_blocks_link_link_type" AS ENUM('reference', 'custom');
-  CREATE TYPE "public"."enum_pages_blocks_link_link_appearance" AS ENUM('default', 'outline', 'secondary', 'destructive', 'ghost', 'link');
-  CREATE TYPE "public"."enum_pages_hero_secondary_buttons_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_blocks_cta_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_blocks_cta_links_link_appearance" AS ENUM('default', 'outline', 'secondary', 'destructive', 'ghost', 'link');
   CREATE TYPE "public"."enum_pages_blocks_content_columns_size" AS ENUM('oneThird', 'half', 'twoThirds', 'full');
@@ -26,17 +21,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_pages_blocks_content_columns_link_appearance" AS ENUM('default', 'outline', 'secondary', 'destructive', 'ghost', 'link');
   CREATE TYPE "public"."enum_pages_blocks_archive_populate_by" AS ENUM('collection', 'selection');
   CREATE TYPE "public"."enum_pages_blocks_archive_relation_to" AS ENUM('posts');
-  CREATE TYPE "public"."enum_pages_hero_type" AS ENUM('none', 'default', 'homeOne', 'homeTwo', 'homeThree', 'contentMedia', 'centeredContent', 'gradient', 'highImpact', 'mediumImpact', 'lowImpact');
-  CREATE TYPE "public"."enum_pages_hero_announcement_link_type" AS ENUM('reference', 'custom');
-  CREATE TYPE "public"."enum_pages_hero_three_c_t_a" AS ENUM('newsletter', 'buttons');
+  CREATE TYPE "public"."enum_pages_hero_type" AS ENUM('none', 'highImpact', 'mediumImpact', 'lowImpact');
   CREATE TYPE "public"."enum_pages_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__pages_v_version_hero_breadcrumbs_bar_links_link_type" AS ENUM('reference', 'custom');
-  CREATE TYPE "public"."enum__pages_v_version_hero_primary_buttons_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum__pages_v_version_hero_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum__pages_v_version_hero_links_link_appearance" AS ENUM('default', 'outline', 'secondary', 'destructive', 'ghost', 'link');
-  CREATE TYPE "public"."enum__pages_v_blocks_link_link_type" AS ENUM('reference', 'custom');
-  CREATE TYPE "public"."enum__pages_v_blocks_link_link_appearance" AS ENUM('default', 'outline', 'secondary', 'destructive', 'ghost', 'link');
-  CREATE TYPE "public"."enum__pages_v_version_hero_secondary_buttons_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum__pages_v_blocks_cta_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum__pages_v_blocks_cta_links_link_appearance" AS ENUM('default', 'outline', 'secondary', 'destructive', 'ghost', 'link');
   CREATE TYPE "public"."enum__pages_v_blocks_content_columns_size" AS ENUM('oneThird', 'half', 'twoThirds', 'full');
@@ -44,9 +32,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__pages_v_blocks_content_columns_link_appearance" AS ENUM('default', 'outline', 'secondary', 'destructive', 'ghost', 'link');
   CREATE TYPE "public"."enum__pages_v_blocks_archive_populate_by" AS ENUM('collection', 'selection');
   CREATE TYPE "public"."enum__pages_v_blocks_archive_relation_to" AS ENUM('posts');
-  CREATE TYPE "public"."enum__pages_v_version_hero_type" AS ENUM('none', 'default', 'homeOne', 'homeTwo', 'homeThree', 'contentMedia', 'centeredContent', 'gradient', 'highImpact', 'mediumImpact', 'lowImpact');
-  CREATE TYPE "public"."enum__pages_v_version_hero_announcement_link_type" AS ENUM('reference', 'custom');
-  CREATE TYPE "public"."enum__pages_v_version_hero_three_c_t_a" AS ENUM('newsletter', 'buttons');
+  CREATE TYPE "public"."enum__pages_v_version_hero_type" AS ENUM('none', 'highImpact', 'mediumImpact', 'lowImpact');
   CREATE TYPE "public"."enum__pages_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_posts_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__posts_v_version_status" AS ENUM('draft', 'published');
@@ -321,26 +307,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"latest" boolean
   );
   
-  CREATE TABLE IF NOT EXISTS "pages_hero_breadcrumbs_bar_links" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"link_type" "enum_pages_hero_breadcrumbs_bar_links_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_label" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "pages_hero_primary_buttons" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"link_type" "enum_pages_hero_primary_buttons_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_label" varchar
-  );
-  
   CREATE TABLE IF NOT EXISTS "pages_hero_links" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -350,52 +316,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_url" varchar,
   	"link_label" varchar,
   	"link_appearance" "enum_pages_hero_links_link_appearance" DEFAULT 'default'
-  );
-  
-  CREATE TABLE IF NOT EXISTS "pages_blocks_link" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"link_type" "enum_pages_blocks_link_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_label" varchar,
-  	"link_appearance" "enum_pages_blocks_link_link_appearance" DEFAULT 'default',
-  	"block_name" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "pages_blocks_command" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"command" varchar,
-  	"block_name" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "pages_hero_secondary_buttons" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"link_type" "enum_pages_hero_secondary_buttons_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_label" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "pages_hero_images" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"image_id" integer
-  );
-  
-  CREATE TABLE IF NOT EXISTS "pages_hero_logos" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"logo_media_id" integer
   );
   
   CREATE TABLE IF NOT EXISTS "pages_blocks_cta_links" (
@@ -491,27 +411,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE IF NOT EXISTS "pages" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
-  	"hero_type" "enum_pages_hero_type" DEFAULT 'default',
-  	"hero_full_background" boolean,
-  	"hero_enable_breadcrumbs_bar" boolean,
-  	"hero_enable_announcement" boolean,
-  	"hero_announcement_link_type" "enum_pages_hero_announcement_link_type" DEFAULT 'reference',
-  	"hero_announcement_link_new_tab" boolean,
-  	"hero_announcement_link_url" varchar,
-  	"hero_announcement_link_label" varchar,
+  	"hero_type" "enum_pages_hero_type" DEFAULT 'lowImpact',
   	"hero_rich_text" jsonb,
-  	"hero_description" jsonb,
-  	"hero_secondary_heading" jsonb,
-  	"hero_secondary_description" jsonb,
-  	"hero_three_c_t_a" "enum_pages_hero_three_c_t_a",
-  	"hero_newsletter_placeholder" varchar,
-  	"hero_newsletter_description" varchar,
-  	"hero_enable_media" boolean DEFAULT false,
   	"hero_media_id" integer,
-  	"hero_secondary_media_id" integer,
-  	"hero_feature_video_id" integer,
-  	"hero_form_id" integer,
-  	"hero_logo_showcase_label" jsonb,
   	"full_title" varchar,
   	"meta_title" varchar,
   	"meta_image_id" integer,
@@ -538,31 +440,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"tag_id" integer,
   	"area_id" integer,
   	"style_id" integer,
-  	"media_id" integer,
   	"categories_id" integer,
   	"users_id" integer
-  );
-  
-  CREATE TABLE IF NOT EXISTS "_pages_v_version_hero_breadcrumbs_bar_links" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"link_type" "enum__pages_v_version_hero_breadcrumbs_bar_links_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_label" varchar,
-  	"_uuid" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "_pages_v_version_hero_primary_buttons" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"link_type" "enum__pages_v_version_hero_primary_buttons_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_label" varchar,
-  	"_uuid" varchar
   );
   
   CREATE TABLE IF NOT EXISTS "_pages_v_version_hero_links" (
@@ -574,57 +453,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_url" varchar,
   	"link_label" varchar,
   	"link_appearance" "enum__pages_v_version_hero_links_link_appearance" DEFAULT 'default',
-  	"_uuid" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_link" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"link_type" "enum__pages_v_blocks_link_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_label" varchar,
-  	"link_appearance" "enum__pages_v_blocks_link_link_appearance" DEFAULT 'default',
-  	"_uuid" varchar,
-  	"block_name" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_command" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"command" varchar,
-  	"_uuid" varchar,
-  	"block_name" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "_pages_v_version_hero_secondary_buttons" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"link_type" "enum__pages_v_version_hero_secondary_buttons_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_label" varchar,
-  	"_uuid" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "_pages_v_version_hero_images" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"image_id" integer,
-  	"_uuid" varchar
-  );
-  
-  CREATE TABLE IF NOT EXISTS "_pages_v_version_hero_logos" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"logo_media_id" integer,
   	"_uuid" varchar
   );
   
@@ -731,27 +559,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_title" varchar,
-  	"version_hero_type" "enum__pages_v_version_hero_type" DEFAULT 'default',
-  	"version_hero_full_background" boolean,
-  	"version_hero_enable_breadcrumbs_bar" boolean,
-  	"version_hero_enable_announcement" boolean,
-  	"version_hero_announcement_link_type" "enum__pages_v_version_hero_announcement_link_type" DEFAULT 'reference',
-  	"version_hero_announcement_link_new_tab" boolean,
-  	"version_hero_announcement_link_url" varchar,
-  	"version_hero_announcement_link_label" varchar,
+  	"version_hero_type" "enum__pages_v_version_hero_type" DEFAULT 'lowImpact',
   	"version_hero_rich_text" jsonb,
-  	"version_hero_description" jsonb,
-  	"version_hero_secondary_heading" jsonb,
-  	"version_hero_secondary_description" jsonb,
-  	"version_hero_three_c_t_a" "enum__pages_v_version_hero_three_c_t_a",
-  	"version_hero_newsletter_placeholder" varchar,
-  	"version_hero_newsletter_description" varchar,
-  	"version_hero_enable_media" boolean DEFAULT false,
   	"version_hero_media_id" integer,
-  	"version_hero_secondary_media_id" integer,
-  	"version_hero_feature_video_id" integer,
-  	"version_hero_form_id" integer,
-  	"version_hero_logo_showcase_label" jsonb,
   	"version_full_title" varchar,
   	"version_meta_title" varchar,
   	"version_meta_image_id" integer,
@@ -782,7 +592,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"tag_id" integer,
   	"area_id" integer,
   	"style_id" integer,
-  	"media_id" integer,
   	"categories_id" integer,
   	"users_id" integer
   );
@@ -1881,61 +1690,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "pages_hero_breadcrumbs_bar_links" ADD CONSTRAINT "pages_hero_breadcrumbs_bar_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_hero_primary_buttons" ADD CONSTRAINT "pages_hero_primary_buttons_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
    ALTER TABLE "pages_hero_links" ADD CONSTRAINT "pages_hero_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_blocks_link" ADD CONSTRAINT "pages_blocks_link_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_blocks_command" ADD CONSTRAINT "pages_blocks_command_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_hero_secondary_buttons" ADD CONSTRAINT "pages_hero_secondary_buttons_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_hero_images" ADD CONSTRAINT "pages_hero_images_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_hero_images" ADD CONSTRAINT "pages_hero_images_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_hero_logos" ADD CONSTRAINT "pages_hero_logos_logo_media_id_media_id_fk" FOREIGN KEY ("logo_media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages_hero_logos" ADD CONSTRAINT "pages_hero_logos_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -2019,24 +1774,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "pages" ADD CONSTRAINT "pages_hero_secondary_media_id_media_id_fk" FOREIGN KEY ("hero_secondary_media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages" ADD CONSTRAINT "pages_hero_feature_video_id_media_id_fk" FOREIGN KEY ("hero_feature_video_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "pages" ADD CONSTRAINT "pages_hero_form_id_forms_id_fk" FOREIGN KEY ("hero_form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
    ALTER TABLE "pages" ADD CONSTRAINT "pages_meta_image_id_assets_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -2097,12 +1834,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_categories_fk" FOREIGN KEY ("categories_id") REFERENCES "public"."categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -2115,61 +1846,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_pages_v_version_hero_breadcrumbs_bar_links" ADD CONSTRAINT "_pages_v_version_hero_breadcrumbs_bar_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_version_hero_primary_buttons" ADD CONSTRAINT "_pages_v_version_hero_primary_buttons_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
    ALTER TABLE "_pages_v_version_hero_links" ADD CONSTRAINT "_pages_v_version_hero_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_blocks_link" ADD CONSTRAINT "_pages_v_blocks_link_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_blocks_command" ADD CONSTRAINT "_pages_v_blocks_command_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_version_hero_secondary_buttons" ADD CONSTRAINT "_pages_v_version_hero_secondary_buttons_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_version_hero_images" ADD CONSTRAINT "_pages_v_version_hero_images_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_version_hero_images" ADD CONSTRAINT "_pages_v_version_hero_images_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_version_hero_logos" ADD CONSTRAINT "_pages_v_version_hero_logos_logo_media_id_media_id_fk" FOREIGN KEY ("logo_media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_version_hero_logos" ADD CONSTRAINT "_pages_v_version_hero_logos_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -2259,24 +1936,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_version_hero_secondary_media_id_media_id_fk" FOREIGN KEY ("version_hero_secondary_media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_version_hero_feature_video_id_media_id_fk" FOREIGN KEY ("version_hero_feature_video_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_version_hero_form_id_forms_id_fk" FOREIGN KEY ("version_hero_form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
    ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_version_meta_image_id_assets_id_fk" FOREIGN KEY ("version_meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -2332,12 +1991,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -3153,26 +2806,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_tag_v_created_at_idx" ON "_tag_v" USING btree ("created_at");
   CREATE INDEX IF NOT EXISTS "_tag_v_updated_at_idx" ON "_tag_v" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "_tag_v_latest_idx" ON "_tag_v" USING btree ("latest");
-  CREATE INDEX IF NOT EXISTS "pages_hero_breadcrumbs_bar_links_order_idx" ON "pages_hero_breadcrumbs_bar_links" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "pages_hero_breadcrumbs_bar_links_parent_id_idx" ON "pages_hero_breadcrumbs_bar_links" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "pages_hero_primary_buttons_order_idx" ON "pages_hero_primary_buttons" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "pages_hero_primary_buttons_parent_id_idx" ON "pages_hero_primary_buttons" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "pages_hero_links_order_idx" ON "pages_hero_links" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "pages_hero_links_parent_id_idx" ON "pages_hero_links" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_link_order_idx" ON "pages_blocks_link" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_link_parent_id_idx" ON "pages_blocks_link" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_link_path_idx" ON "pages_blocks_link" USING btree ("_path");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_command_order_idx" ON "pages_blocks_command" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_command_parent_id_idx" ON "pages_blocks_command" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_command_path_idx" ON "pages_blocks_command" USING btree ("_path");
-  CREATE INDEX IF NOT EXISTS "pages_hero_secondary_buttons_order_idx" ON "pages_hero_secondary_buttons" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "pages_hero_secondary_buttons_parent_id_idx" ON "pages_hero_secondary_buttons" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "pages_hero_images_order_idx" ON "pages_hero_images" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "pages_hero_images_parent_id_idx" ON "pages_hero_images" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "pages_hero_images_image_idx" ON "pages_hero_images" USING btree ("image_id");
-  CREATE INDEX IF NOT EXISTS "pages_hero_logos_order_idx" ON "pages_hero_logos" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "pages_hero_logos_parent_id_idx" ON "pages_hero_logos" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "pages_hero_logos_logo_media_idx" ON "pages_hero_logos" USING btree ("logo_media_id");
   CREATE INDEX IF NOT EXISTS "pages_blocks_cta_links_order_idx" ON "pages_blocks_cta_links" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "pages_blocks_cta_links_parent_id_idx" ON "pages_blocks_cta_links" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "pages_blocks_cta_order_idx" ON "pages_blocks_cta" USING btree ("_order");
@@ -3201,9 +2836,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "pages_breadcrumbs_doc_idx" ON "pages_breadcrumbs" USING btree ("doc_id");
   CREATE UNIQUE INDEX IF NOT EXISTS "pages_title_idx" ON "pages" USING btree ("title");
   CREATE INDEX IF NOT EXISTS "pages_hero_hero_media_idx" ON "pages" USING btree ("hero_media_id");
-  CREATE INDEX IF NOT EXISTS "pages_hero_hero_secondary_media_idx" ON "pages" USING btree ("hero_secondary_media_id");
-  CREATE INDEX IF NOT EXISTS "pages_hero_hero_feature_video_idx" ON "pages" USING btree ("hero_feature_video_id");
-  CREATE INDEX IF NOT EXISTS "pages_hero_hero_form_idx" ON "pages" USING btree ("hero_form_id");
   CREATE INDEX IF NOT EXISTS "pages_meta_meta_image_idx" ON "pages" USING btree ("meta_image_id");
   CREATE UNIQUE INDEX IF NOT EXISTS "pages_slug_idx" ON "pages" USING btree ("slug");
   CREATE INDEX IF NOT EXISTS "pages_parent_idx" ON "pages" USING btree ("parent_id");
@@ -3220,29 +2852,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "pages_rels_tag_id_idx" ON "pages_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_area_id_idx" ON "pages_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_style_id_idx" ON "pages_rels" USING btree ("style_id");
-  CREATE INDEX IF NOT EXISTS "pages_rels_media_id_idx" ON "pages_rels" USING btree ("media_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_categories_id_idx" ON "pages_rels" USING btree ("categories_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_users_id_idx" ON "pages_rels" USING btree ("users_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_breadcrumbs_bar_links_order_idx" ON "_pages_v_version_hero_breadcrumbs_bar_links" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_breadcrumbs_bar_links_parent_id_idx" ON "_pages_v_version_hero_breadcrumbs_bar_links" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_primary_buttons_order_idx" ON "_pages_v_version_hero_primary_buttons" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_primary_buttons_parent_id_idx" ON "_pages_v_version_hero_primary_buttons" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_links_order_idx" ON "_pages_v_version_hero_links" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_links_parent_id_idx" ON "_pages_v_version_hero_links" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_link_order_idx" ON "_pages_v_blocks_link" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_link_parent_id_idx" ON "_pages_v_blocks_link" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_link_path_idx" ON "_pages_v_blocks_link" USING btree ("_path");
-  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_command_order_idx" ON "_pages_v_blocks_command" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_command_parent_id_idx" ON "_pages_v_blocks_command" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_command_path_idx" ON "_pages_v_blocks_command" USING btree ("_path");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_secondary_buttons_order_idx" ON "_pages_v_version_hero_secondary_buttons" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_secondary_buttons_parent_id_idx" ON "_pages_v_version_hero_secondary_buttons" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_images_order_idx" ON "_pages_v_version_hero_images" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_images_parent_id_idx" ON "_pages_v_version_hero_images" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_images_image_idx" ON "_pages_v_version_hero_images" USING btree ("image_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_logos_order_idx" ON "_pages_v_version_hero_logos" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_logos_parent_id_idx" ON "_pages_v_version_hero_logos" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_logos_logo_media_idx" ON "_pages_v_version_hero_logos" USING btree ("logo_media_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_blocks_cta_links_order_idx" ON "_pages_v_blocks_cta_links" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "_pages_v_blocks_cta_links_parent_id_idx" ON "_pages_v_blocks_cta_links" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_blocks_cta_order_idx" ON "_pages_v_blocks_cta" USING btree ("_order");
@@ -3272,9 +2885,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_pages_v_parent_idx" ON "_pages_v" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_version_title_idx" ON "_pages_v" USING btree ("version_title");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_media_idx" ON "_pages_v" USING btree ("version_hero_media_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_secondary_media_idx" ON "_pages_v" USING btree ("version_hero_secondary_media_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_feature_video_idx" ON "_pages_v" USING btree ("version_hero_feature_video_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_version_hero_version_hero_form_idx" ON "_pages_v" USING btree ("version_hero_form_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_meta_version_meta_image_idx" ON "_pages_v" USING btree ("version_meta_image_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_version_slug_idx" ON "_pages_v" USING btree ("version_slug");
   CREATE INDEX IF NOT EXISTS "_pages_v_version_version_parent_idx" ON "_pages_v" USING btree ("version_parent_id");
@@ -3295,7 +2905,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_tag_id_idx" ON "_pages_v_rels" USING btree ("tag_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_area_id_idx" ON "_pages_v_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_style_id_idx" ON "_pages_v_rels" USING btree ("style_id");
-  CREATE INDEX IF NOT EXISTS "_pages_v_rels_media_id_idx" ON "_pages_v_rels" USING btree ("media_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_categories_id_idx" ON "_pages_v_rels" USING btree ("categories_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_rels_users_id_idx" ON "_pages_v_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "posts_populated_authors_order_idx" ON "posts_populated_authors" USING btree ("_order");
@@ -3574,14 +3183,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "_artist_v_rels" CASCADE;
   DROP TABLE "tag" CASCADE;
   DROP TABLE "_tag_v" CASCADE;
-  DROP TABLE "pages_hero_breadcrumbs_bar_links" CASCADE;
-  DROP TABLE "pages_hero_primary_buttons" CASCADE;
   DROP TABLE "pages_hero_links" CASCADE;
-  DROP TABLE "pages_blocks_link" CASCADE;
-  DROP TABLE "pages_blocks_command" CASCADE;
-  DROP TABLE "pages_hero_secondary_buttons" CASCADE;
-  DROP TABLE "pages_hero_images" CASCADE;
-  DROP TABLE "pages_hero_logos" CASCADE;
   DROP TABLE "pages_blocks_cta_links" CASCADE;
   DROP TABLE "pages_blocks_cta" CASCADE;
   DROP TABLE "pages_blocks_content_columns" CASCADE;
@@ -3593,14 +3195,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "pages_breadcrumbs" CASCADE;
   DROP TABLE "pages" CASCADE;
   DROP TABLE "pages_rels" CASCADE;
-  DROP TABLE "_pages_v_version_hero_breadcrumbs_bar_links" CASCADE;
-  DROP TABLE "_pages_v_version_hero_primary_buttons" CASCADE;
   DROP TABLE "_pages_v_version_hero_links" CASCADE;
-  DROP TABLE "_pages_v_blocks_link" CASCADE;
-  DROP TABLE "_pages_v_blocks_command" CASCADE;
-  DROP TABLE "_pages_v_version_hero_secondary_buttons" CASCADE;
-  DROP TABLE "_pages_v_version_hero_images" CASCADE;
-  DROP TABLE "_pages_v_version_hero_logos" CASCADE;
   DROP TABLE "_pages_v_blocks_cta_links" CASCADE;
   DROP TABLE "_pages_v_blocks_cta" CASCADE;
   DROP TABLE "_pages_v_blocks_content_columns" CASCADE;
@@ -3681,13 +3276,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__artist_v_version_status";
   DROP TYPE "public"."enum_tag_status";
   DROP TYPE "public"."enum__tag_v_version_status";
-  DROP TYPE "public"."enum_pages_hero_breadcrumbs_bar_links_link_type";
-  DROP TYPE "public"."enum_pages_hero_primary_buttons_link_type";
   DROP TYPE "public"."enum_pages_hero_links_link_type";
   DROP TYPE "public"."enum_pages_hero_links_link_appearance";
-  DROP TYPE "public"."enum_pages_blocks_link_link_type";
-  DROP TYPE "public"."enum_pages_blocks_link_link_appearance";
-  DROP TYPE "public"."enum_pages_hero_secondary_buttons_link_type";
   DROP TYPE "public"."enum_pages_blocks_cta_links_link_type";
   DROP TYPE "public"."enum_pages_blocks_cta_links_link_appearance";
   DROP TYPE "public"."enum_pages_blocks_content_columns_size";
@@ -3696,16 +3286,9 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_pages_blocks_archive_populate_by";
   DROP TYPE "public"."enum_pages_blocks_archive_relation_to";
   DROP TYPE "public"."enum_pages_hero_type";
-  DROP TYPE "public"."enum_pages_hero_announcement_link_type";
-  DROP TYPE "public"."enum_pages_hero_three_c_t_a";
   DROP TYPE "public"."enum_pages_status";
-  DROP TYPE "public"."enum__pages_v_version_hero_breadcrumbs_bar_links_link_type";
-  DROP TYPE "public"."enum__pages_v_version_hero_primary_buttons_link_type";
   DROP TYPE "public"."enum__pages_v_version_hero_links_link_type";
   DROP TYPE "public"."enum__pages_v_version_hero_links_link_appearance";
-  DROP TYPE "public"."enum__pages_v_blocks_link_link_type";
-  DROP TYPE "public"."enum__pages_v_blocks_link_link_appearance";
-  DROP TYPE "public"."enum__pages_v_version_hero_secondary_buttons_link_type";
   DROP TYPE "public"."enum__pages_v_blocks_cta_links_link_type";
   DROP TYPE "public"."enum__pages_v_blocks_cta_links_link_appearance";
   DROP TYPE "public"."enum__pages_v_blocks_content_columns_size";
@@ -3714,8 +3297,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__pages_v_blocks_archive_populate_by";
   DROP TYPE "public"."enum__pages_v_blocks_archive_relation_to";
   DROP TYPE "public"."enum__pages_v_version_hero_type";
-  DROP TYPE "public"."enum__pages_v_version_hero_announcement_link_type";
-  DROP TYPE "public"."enum__pages_v_version_hero_three_c_t_a";
   DROP TYPE "public"."enum__pages_v_version_status";
   DROP TYPE "public"."enum_posts_status";
   DROP TYPE "public"."enum__posts_v_version_status";

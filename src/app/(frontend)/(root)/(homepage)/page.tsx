@@ -15,6 +15,7 @@ import type { Payload } from 'payload'
 import { LivePreviewListener } from '@components/dynamic/LivePreviewListener'
 
 import { CardDocData } from './components/Card'
+import PageClient from './page.client'
 import { RenderPage } from './RenderPage'
 import { searchTattoos } from './Search/searchQuery'
 
@@ -46,6 +47,7 @@ export default async function HomePage({ searchParams }: Args) {
 
   return (
     <>
+      <PageClient />
       {isDraft && <LivePreviewListener />}
       <RenderPage
         data={homepage}

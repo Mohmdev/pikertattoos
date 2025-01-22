@@ -1,13 +1,10 @@
 import React from 'react'
 
-import BreadcrumbsBar from '@/heros/BreadcrumbsBar'
+import { HighImpactHero } from '@heros/HighImpact'
+import { LowImpactHero } from '@heros/LowImpact'
+import { MediumImpactHero } from '@heros/MediumImpact'
 
-import type { BlockProps } from '@blocks/types'
 import type { Page } from '@payload-types'
-
-import { HighImpactHero } from './HighImpact'
-import { LowImpactHero } from './LowImpact'
-import { MediumImpactHero } from './MediumImpact'
 
 const heroes = {
   highImpact: HighImpactHero,
@@ -15,18 +12,8 @@ const heroes = {
   mediumImpact: MediumImpactHero
 }
 
-export const RenderHero: React.FC<{
-  firstContentBlock?: BlockProps
-  page: Page
-}> = (props) => {
-  const {
-    firstContentBlock,
-    page: {
-      breadcrumbs,
-      hero,
-      hero: { type }
-    }
-  } = props
+export const RenderHero: React.FC<Page['hero']> = (props) => {
+  const { type } = props || {}
 
   if (!type || type === 'none') return null
 
@@ -34,10 +21,5 @@ export const RenderHero: React.FC<{
 
   if (!HeroToRender) return null
 
-  return (
-    <>
-      <BreadcrumbsBar breadcrumbs={breadcrumbs} hero={hero} />
-      <HeroToRender {...hero} breadcrumbs={breadcrumbs} firstContentBlock={firstContentBlock} />
-    </>
-  )
+  return <HeroToRender {...props} />
 }

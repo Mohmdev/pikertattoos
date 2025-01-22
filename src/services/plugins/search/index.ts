@@ -68,7 +68,7 @@ export const searchPluginConfig: Plugin = searchPlugin({
     admin: {
       useAsTitle: 'title',
       defaultColumns: ['title', 'image', 'styles', 'areas', 'description'],
-      group: 'Content'
+      group: 'Site Content'
     }
   }
 })

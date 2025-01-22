@@ -10,9 +10,10 @@ import { Media } from '@components/dynamic/Media'
 export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { categories, heroImage, authors, publishedAt, title } = post
+  const { categories, heroImage, populatedAuthors, publishedAt, title } = post
 
-  const hasAuthors = authors && authors.length > 0 && formatAuthors(authors) !== ''
+  const hasAuthors =
+    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
     <div className="relative -mt-[10.4rem] flex items-end">
@@ -21,15 +22,16 @@ export const PostHero: React.FC<{
           <div className="mb-6 text-sm uppercase">
             {categories?.map((category, index) => {
               if (typeof category === 'object' && category !== null) {
-                const { value } = category
-                const categoryTitle =
-                  typeof value === 'object' && value !== null ? value.title : 'Untitled category'
+                const titleToUse =
+                  typeof category.value === 'object' && category.value !== null
+                    ? category.value.title
+                    : 'Untitled category'
 
                 const isLast = index === categories.length - 1
 
                 return (
                   <React.Fragment key={index}>
-                    {categoryTitle}
+                    {titleToUse}
                     {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
                   </React.Fragment>
                 )
@@ -48,7 +50,7 @@ export const PostHero: React.FC<{
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Author</p>
 
-                  <p>{formatAuthors(authors)}</p>
+                  <p>{formatAuthors(populatedAuthors)}</p>
                 </div>
               </div>
             )}

@@ -6,6 +6,7 @@ import { getCachedDocBySlug, getDraftDocBySlug } from '@data/getTattoo'
 import configPromise from '@payload-config'
 
 import { generateMeta } from '@seo/generateMeta'
+import { getDynamicMeta } from '@seo/getDynamicMeta'
 import { getPayload } from 'payload'
 
 import type { Tattoo } from '@payload-types'
@@ -27,7 +28,7 @@ export default async function TattooPage({ params: paramsPromise }: Args) {
   const url = '/tattoo/' + slug
 
   const getDoc = draft ? getDraftDocBySlug : getCachedDocBySlug
-  const doc: Partial<Tattoo> = (await getDoc({ slug })) || null
+  const doc = await getDoc({ slug })
 
   if (!doc) return <PayloadRedirects url={url} />
 
@@ -36,7 +37,7 @@ export default async function TattooPage({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
-      <RenderDoc doc={doc} />
+      <RenderDoc doc={doc as Partial<Tattoo>} />
     </>
   )
 }
@@ -62,6 +63,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const tattoo = await getCachedDocBySlug({ slug })
+
+  if (!tattoo) {
+    const { siteName, siteDescription } = await getDynamicMeta()
+    return {
+      title: `Not Found | ${siteName}`,
+      description: siteDescription
+    }
+  }
 
   return generateMeta({ doc: tattoo })
 }

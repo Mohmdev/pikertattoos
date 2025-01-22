@@ -640,182 +640,8 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type:
-      | 'none'
-      | 'default'
-      | 'homeOne'
-      | 'homeTwo'
-      | 'homeThree'
-      | 'contentMedia'
-      | 'centeredContent'
-      | 'gradient'
-      | 'highImpact'
-      | 'mediumImpact'
-      | 'lowImpact';
-    fullBackground?: boolean | null;
-    enableBreadcrumbsBar?: boolean | null;
-    breadcrumbsBarLinks?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: number | Post;
-                } | null)
-              | ({
-                  relationTo: 'tattoo';
-                  value: number | Tattoo;
-                } | null)
-              | ({
-                  relationTo: 'artist';
-                  value: number | Artist;
-                } | null)
-              | ({
-                  relationTo: 'tag';
-                  value: number | Tag;
-                } | null)
-              | ({
-                  relationTo: 'area';
-                  value: number | Area;
-                } | null)
-              | ({
-                  relationTo: 'style';
-                  value: number | Style;
-                } | null);
-            url?: string | null;
-            label: string;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    enableAnnouncement?: boolean | null;
-    announcementLink?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null)
-        | ({
-            relationTo: 'tattoo';
-            value: number | Tattoo;
-          } | null)
-        | ({
-            relationTo: 'artist';
-            value: number | Artist;
-          } | null)
-        | ({
-            relationTo: 'tag';
-            value: number | Tag;
-          } | null)
-        | ({
-            relationTo: 'area';
-            value: number | Area;
-          } | null)
-        | ({
-            relationTo: 'style';
-            value: number | Style;
-          } | null);
-      url?: string | null;
-      label: string;
-    };
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    primaryButtons?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: number | Post;
-                } | null)
-              | ({
-                  relationTo: 'tattoo';
-                  value: number | Tattoo;
-                } | null)
-              | ({
-                  relationTo: 'artist';
-                  value: number | Artist;
-                } | null)
-              | ({
-                  relationTo: 'tag';
-                  value: number | Tag;
-                } | null)
-              | ({
-                  relationTo: 'area';
-                  value: number | Area;
-                } | null)
-              | ({
-                  relationTo: 'style';
-                  value: number | Style;
-                } | null);
-            url?: string | null;
-            label: string;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    secondaryHeading?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    secondaryDescription?: {
       root: {
         type: string;
         children: {
@@ -874,138 +700,7 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    threeCTA?: ('newsletter' | 'buttons') | null;
-    newsletter?: {
-      placeholder?: string | null;
-      description?: string | null;
-    };
-    buttons?:
-      | (
-          | {
-              link: {
-                type?: ('reference' | 'custom') | null;
-                newTab?: boolean | null;
-                reference?:
-                  | ({
-                      relationTo: 'pages';
-                      value: number | Page;
-                    } | null)
-                  | ({
-                      relationTo: 'posts';
-                      value: number | Post;
-                    } | null)
-                  | ({
-                      relationTo: 'tattoo';
-                      value: number | Tattoo;
-                    } | null)
-                  | ({
-                      relationTo: 'artist';
-                      value: number | Artist;
-                    } | null)
-                  | ({
-                      relationTo: 'tag';
-                      value: number | Tag;
-                    } | null)
-                  | ({
-                      relationTo: 'area';
-                      value: number | Area;
-                    } | null)
-                  | ({
-                      relationTo: 'style';
-                      value: number | Style;
-                    } | null);
-                url?: string | null;
-                label: string;
-                /**
-                 * Choose how the link should be rendered.
-                 */
-                appearance?: ('default' | 'outline' | 'secondary' | 'destructive' | 'ghost' | 'link') | null;
-              };
-              id?: string | null;
-              blockName?: string | null;
-              blockType: 'link';
-            }
-          | {
-              command: string;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: 'command';
-            }
-        )[]
-      | null;
-    secondaryButtons?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: number | Post;
-                } | null)
-              | ({
-                  relationTo: 'tattoo';
-                  value: number | Tattoo;
-                } | null)
-              | ({
-                  relationTo: 'artist';
-                  value: number | Artist;
-                } | null)
-              | ({
-                  relationTo: 'tag';
-                  value: number | Tag;
-                } | null)
-              | ({
-                  relationTo: 'area';
-                  value: number | Area;
-                } | null)
-              | ({
-                  relationTo: 'style';
-                  value: number | Style;
-                } | null);
-            url?: string | null;
-            label: string;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    images?:
-      | {
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-    enableMedia?: boolean | null;
     media?: (number | null) | Media;
-    secondaryMedia?: (number | null) | Media;
-    featureVideo?: (number | null) | Media;
-    form?: (number | null) | Form;
-    logos?:
-      | {
-          logoMedia: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-    logoShowcaseLabel?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    logoShowcase?: (number | Media)[] | null;
   };
   blocks?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[] | null;
   fullTitle?: string | null;
@@ -1037,179 +732,6 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: number;
-  title: string;
-  fields?:
-    | (
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            defaultValue?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'checkbox';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'country';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
-          }
-        | {
-            message?: {
-              root: {
-                type: string;
-                children: {
-                  type: string;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            } | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'message';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'number';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            options?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'select';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'state';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'text';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'textarea';
-          }
-      )[]
-    | null;
-  submitButtonLabel?: string | null;
-  /**
-   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
-   */
-  confirmationType?: ('message' | 'redirect') | null;
-  confirmationMessage?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  redirect?: {
-    url: string;
-  };
-  /**
-   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
-   */
-  emails?:
-    | {
-        emailTo?: string | null;
-        cc?: string | null;
-        bcc?: string | null;
-        replyTo?: string | null;
-        emailFrom?: string | null;
-        subject: string;
-        /**
-         * Enter the message that should be sent in this email.
-         */
-        message?: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1436,6 +958,179 @@ export interface FormBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: number;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'country';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: string;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'state';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  /**
+   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
+   */
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    url: string;
+  };
+  /**
+   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
+   */
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        /**
+         * Enter the message that should be sent in this email.
+         */
+        message?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1851,50 +1546,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
-        fullBackground?: T;
-        enableBreadcrumbsBar?: T;
-        breadcrumbsBarLinks?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                  };
-              id?: T;
-            };
-        enableAnnouncement?: T;
-        announcementLink?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
         richText?: T;
-        description?: T;
-        primaryButtons?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                  };
-              id?: T;
-            };
-        secondaryHeading?: T;
-        secondaryDescription?: T;
         links?:
           | T
           | {
@@ -1910,73 +1562,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
-        threeCTA?: T;
-        newsletter?:
-          | T
-          | {
-              placeholder?: T;
-              description?: T;
-            };
-        buttons?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    link?:
-                      | T
-                      | {
-                          type?: T;
-                          newTab?: T;
-                          reference?: T;
-                          url?: T;
-                          label?: T;
-                          appearance?: T;
-                        };
-                    id?: T;
-                    blockName?: T;
-                  };
-              command?:
-                | T
-                | {
-                    command?: T;
-                    id?: T;
-                    blockName?: T;
-                  };
-            };
-        secondaryButtons?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                  };
-              id?: T;
-            };
-        images?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-            };
-        enableMedia?: T;
         media?: T;
-        secondaryMedia?: T;
-        featureVideo?: T;
-        form?: T;
-        logos?:
-          | T
-          | {
-              logoMedia?: T;
-              id?: T;
-            };
-        logoShowcaseLabel?: T;
-        logoShowcase?: T;
       };
   blocks?:
     | T
