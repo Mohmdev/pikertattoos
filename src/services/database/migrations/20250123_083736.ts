@@ -42,7 +42,15 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_payload_jobs_log_task_slug" AS ENUM('inline', 'schedulePublish');
   CREATE TYPE "public"."enum_payload_jobs_log_state" AS ENUM('failed', 'succeeded');
   CREATE TYPE "public"."enum_payload_jobs_task_slug" AS ENUM('inline', 'schedulePublish');
+  CREATE TYPE "public"."enum_homepage_subheading_animation" AS ENUM('blurInUp', 'fadeIn', 'blurIn', 'blurInDown', 'slideUp', 'slideDown', 'slideLeft', 'slideRight', 'scaleUp', 'scaleDown');
+  CREATE TYPE "public"."enum_homepage_subheading_animate_by" AS ENUM('text', 'line', 'character', 'word');
+  CREATE TYPE "public"."enum_homepage_gradient_background_first_color" AS ENUM('#00E6BB', '#01D7E6', '#00B1E5', '#008AE6', '#015DE5', '#013AE6', '#1000E5', '#8D00E5', '#C900E5', '#E600B1', '#E6008A', '#E6005D', '#E6003A');
+  CREATE TYPE "public"."enum_homepage_gradient_background_second_color" AS ENUM('#00E6BB', '#01D7E6', '#00B1E5', '#008AE6', '#015DE5', '#013AE6', '#1000E5', '#8D00E5', '#C900E5', '#E600B1', '#E6008A', '#E6005D', '#E6003A');
   CREATE TYPE "public"."enum_homepage_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__homepage_v_version_subheading_animation" AS ENUM('blurInUp', 'fadeIn', 'blurIn', 'blurInDown', 'slideUp', 'slideDown', 'slideLeft', 'slideRight', 'scaleUp', 'scaleDown');
+  CREATE TYPE "public"."enum__homepage_v_version_subheading_animate_by" AS ENUM('text', 'line', 'character', 'word');
+  CREATE TYPE "public"."enum__homepage_v_version_gradient_background_first_color" AS ENUM('#00E6BB', '#01D7E6', '#00B1E5', '#008AE6', '#015DE5', '#013AE6', '#1000E5', '#8D00E5', '#C900E5', '#E600B1', '#E6008A', '#E6005D', '#E6003A');
+  CREATE TYPE "public"."enum__homepage_v_version_gradient_background_second_color" AS ENUM('#00E6BB', '#01D7E6', '#00B1E5', '#008AE6', '#015DE5', '#013AE6', '#1000E5', '#8D00E5', '#C900E5', '#E600B1', '#E6008A', '#E6005D', '#E6003A');
   CREATE TYPE "public"."enum__homepage_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_main_menu_tabs_description_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_main_menu_tabs_nav_items_featured_link_links_link_type" AS ENUM('reference', 'custom');
@@ -1131,11 +1139,28 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
+  CREATE TABLE IF NOT EXISTS "homepage_populated_authors" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar
+  );
+  
   CREATE TABLE IF NOT EXISTS "homepage" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"heading_text" varchar DEFAULT 'Nexweb',
   	"heading_highlighted_text" varchar DEFAULT 'Studio',
   	"subheading_text" varchar DEFAULT 'Web Technology Solutions',
+  	"subheading_animation" "enum_homepage_subheading_animation" DEFAULT 'blurInUp',
+  	"subheading_animate_by" "enum_homepage_subheading_animate_by" DEFAULT 'character',
+  	"subheading_duration" numeric DEFAULT 0.3,
+  	"subheading_delay" numeric DEFAULT 0,
+  	"subheading_once" boolean DEFAULT true,
+  	"gradient_background_enable" boolean DEFAULT true,
+  	"gradient_background_first_color" "enum_homepage_gradient_background_first_color" DEFAULT '#00E6BB',
+  	"gradient_background_second_color" "enum_homepage_gradient_background_second_color" DEFAULT '#008AE6',
+  	"gradient_background_opacity" numeric DEFAULT 100,
+  	"search_input_text" varchar DEFAULT 'Search for anything',
   	"meta_title" varchar,
   	"meta_image_id" integer,
   	"meta_description" varchar,
@@ -1155,11 +1180,29 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"users_id" integer
   );
   
+  CREATE TABLE IF NOT EXISTS "_homepage_v_version_populated_authors" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_uuid" varchar,
+  	"name" varchar
+  );
+  
   CREATE TABLE IF NOT EXISTS "_homepage_v" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"version_heading_text" varchar DEFAULT 'Nexweb',
   	"version_heading_highlighted_text" varchar DEFAULT 'Studio',
   	"version_subheading_text" varchar DEFAULT 'Web Technology Solutions',
+  	"version_subheading_animation" "enum__homepage_v_version_subheading_animation" DEFAULT 'blurInUp',
+  	"version_subheading_animate_by" "enum__homepage_v_version_subheading_animate_by" DEFAULT 'character',
+  	"version_subheading_duration" numeric DEFAULT 0.3,
+  	"version_subheading_delay" numeric DEFAULT 0,
+  	"version_subheading_once" boolean DEFAULT true,
+  	"version_gradient_background_enable" boolean DEFAULT true,
+  	"version_gradient_background_first_color" "enum__homepage_v_version_gradient_background_first_color" DEFAULT '#00E6BB',
+  	"version_gradient_background_second_color" "enum__homepage_v_version_gradient_background_second_color" DEFAULT '#008AE6',
+  	"version_gradient_background_opacity" numeric DEFAULT 100,
+  	"version_search_input_text" varchar DEFAULT 'Search for anything',
   	"version_meta_title" varchar,
   	"version_meta_image_id" integer,
   	"version_meta_description" varchar,
@@ -2410,6 +2453,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "homepage_populated_authors" ADD CONSTRAINT "homepage_populated_authors_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."homepage"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "homepage" ADD CONSTRAINT "homepage_meta_image_id_assets_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."assets"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -2429,6 +2478,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "homepage_rels" ADD CONSTRAINT "homepage_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_homepage_v_version_populated_authors" ADD CONSTRAINT "_homepage_v_version_populated_authors_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_homepage_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -3083,6 +3138,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "payload_preferences_rels_users_id_idx" ON "payload_preferences_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "homepage_populated_authors_order_idx" ON "homepage_populated_authors" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "homepage_populated_authors_parent_id_idx" ON "homepage_populated_authors" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "homepage_meta_meta_image_idx" ON "homepage" USING btree ("meta_image_id");
   CREATE INDEX IF NOT EXISTS "homepage__status_idx" ON "homepage" USING btree ("_status");
   CREATE INDEX IF NOT EXISTS "homepage_rels_order_idx" ON "homepage_rels" USING btree ("order");
@@ -3090,6 +3147,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "homepage_rels_path_idx" ON "homepage_rels" USING btree ("path");
   CREATE INDEX IF NOT EXISTS "homepage_rels_tattoo_id_idx" ON "homepage_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "homepage_rels_users_id_idx" ON "homepage_rels" USING btree ("users_id");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_version_populated_authors_order_idx" ON "_homepage_v_version_populated_authors" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_version_populated_authors_parent_id_idx" ON "_homepage_v_version_populated_authors" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "_homepage_v_version_meta_version_meta_image_idx" ON "_homepage_v" USING btree ("version_meta_image_id");
   CREATE INDEX IF NOT EXISTS "_homepage_v_version_version__status_idx" ON "_homepage_v" USING btree ("version__status");
   CREATE INDEX IF NOT EXISTS "_homepage_v_created_at_idx" ON "_homepage_v" USING btree ("created_at");
@@ -3246,8 +3305,10 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "payload_preferences" CASCADE;
   DROP TABLE "payload_preferences_rels" CASCADE;
   DROP TABLE "payload_migrations" CASCADE;
+  DROP TABLE "homepage_populated_authors" CASCADE;
   DROP TABLE "homepage" CASCADE;
   DROP TABLE "homepage_rels" CASCADE;
+  DROP TABLE "_homepage_v_version_populated_authors" CASCADE;
   DROP TABLE "_homepage_v" CASCADE;
   DROP TABLE "_homepage_v_rels" CASCADE;
   DROP TABLE "main_menu_tabs_description_links" CASCADE;
@@ -3306,7 +3367,15 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_payload_jobs_log_task_slug";
   DROP TYPE "public"."enum_payload_jobs_log_state";
   DROP TYPE "public"."enum_payload_jobs_task_slug";
+  DROP TYPE "public"."enum_homepage_subheading_animation";
+  DROP TYPE "public"."enum_homepage_subheading_animate_by";
+  DROP TYPE "public"."enum_homepage_gradient_background_first_color";
+  DROP TYPE "public"."enum_homepage_gradient_background_second_color";
   DROP TYPE "public"."enum_homepage_status";
+  DROP TYPE "public"."enum__homepage_v_version_subheading_animation";
+  DROP TYPE "public"."enum__homepage_v_version_subheading_animate_by";
+  DROP TYPE "public"."enum__homepage_v_version_gradient_background_first_color";
+  DROP TYPE "public"."enum__homepage_v_version_gradient_background_second_color";
   DROP TYPE "public"."enum__homepage_v_version_status";
   DROP TYPE "public"."enum_main_menu_tabs_description_links_link_type";
   DROP TYPE "public"."enum_main_menu_tabs_nav_items_featured_link_links_link_type";

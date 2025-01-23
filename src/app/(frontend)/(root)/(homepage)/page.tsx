@@ -89,7 +89,9 @@ async function getHomepageData(payload: Payload, isDraft: boolean) {
     select: {
       heading: true,
       subheading: true,
-      featured: true
+      featured: true,
+      gradientBackground: true,
+      search: true
     }
   })
 }

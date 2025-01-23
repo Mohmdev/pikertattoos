@@ -27,6 +27,7 @@ import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { SlugComponent as SlugComponent_996bc5489a45e480c1fb47a839cd61fe } from '@fields/shared/slug/client'
 import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { SeedAreasButton as SeedAreasButton_7deff4c56957a5715c75df6031bfed9d } from '@admin-components/SeedAreasButton'
 import { SeedStylesButton as SeedStylesButton_dabbe5c3811ecbf94c093638780bba16 } from '@admin-components/SeedStylesButton'
 import { SeedTagsButton as SeedTagsButton_e9ca057e13a03c1abd09ea1954d9c295 } from '@admin-components/SeedTagsButton'
@@ -70,6 +71,7 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@fields/shared/slug/client#SlugComponent": SlugComponent_996bc5489a45e480c1fb47a839cd61fe,
   "@payloadcms/richtext-lexical/client#FixedToolbarFeatureClient": FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@admin-components/SeedAreasButton#SeedAreasButton": SeedAreasButton_7deff4c56957a5715c75df6031bfed9d,
   "@admin-components/SeedStylesButton#SeedStylesButton": SeedStylesButton_dabbe5c3811ecbf94c093638780bba16,
   "@admin-components/SeedTagsButton#SeedTagsButton": SeedTagsButton_e9ca057e13a03c1abd09ea1954d9c295,

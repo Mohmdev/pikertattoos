@@ -2200,6 +2200,33 @@ export interface Homepage {
   };
   subheading?: {
     text?: string | null;
+    animation?:
+      | (
+          | 'blurInUp'
+          | 'fadeIn'
+          | 'blurIn'
+          | 'blurInDown'
+          | 'slideUp'
+          | 'slideDown'
+          | 'slideLeft'
+          | 'slideRight'
+          | 'scaleUp'
+          | 'scaleDown'
+        )
+      | null;
+    animateBy?: ('text' | 'line' | 'character' | 'word') | null;
+    /**
+     * 0 - 10 seconds
+     */
+    duration?: number | null;
+    /**
+     * 0 - 10 seconds
+     */
+    delay?: number | null;
+    /**
+     * If enabled, the animation will only play the first time and then stay in place.
+     */
+    once?: boolean | null;
   };
   gradientBackground?: {
     enable?: boolean | null;
@@ -2212,7 +2239,6 @@ export interface Homepage {
           | '#015DE5'
           | '#013AE6'
           | '#1000E5'
-          | '#4B00E5'
           | '#8D00E5'
           | '#C900E5'
           | '#E600B1'
@@ -2230,7 +2256,6 @@ export interface Homepage {
           | '#015DE5'
           | '#013AE6'
           | '#1000E5'
-          | '#4B00E5'
           | '#8D00E5'
           | '#C900E5'
           | '#E600B1'
@@ -2239,6 +2264,9 @@ export interface Homepage {
           | '#E6003A'
         )
       | null;
+    /**
+     * 0 - 100%
+     */
     opacity?: number | null;
   };
   search?: {
@@ -2654,6 +2682,11 @@ export interface HomepageSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
+        animation?: T;
+        animateBy?: T;
+        duration?: T;
+        delay?: T;
+        once?: T;
       };
   gradientBackground?:
     | T

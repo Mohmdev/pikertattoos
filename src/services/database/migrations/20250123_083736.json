@@ -1,5 +1,5 @@
 {
-  "id": "1996fb53-41d5-4f0f-98ab-357ed8d4dc0c",
+  "id": "40a1722f-6ef4-4e7b-8b20-88c3f27bc6bc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -14668,6 +14668,88 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.homepage_populated_authors": {
+      "name": "homepage_populated_authors",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "homepage_populated_authors_order_idx": {
+          "name": "homepage_populated_authors_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "homepage_populated_authors_parent_id_idx": {
+          "name": "homepage_populated_authors_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "homepage_populated_authors_parent_id_fk": {
+          "name": "homepage_populated_authors_parent_id_fk",
+          "tableFrom": "homepage_populated_authors",
+          "tableTo": "homepage",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.homepage": {
       "name": "homepage",
       "schema": "",
@@ -14698,6 +14780,80 @@
           "primaryKey": false,
           "notNull": false,
           "default": "'Web Technology Solutions'"
+        },
+        "subheading_animation": {
+          "name": "subheading_animation",
+          "type": "enum_homepage_subheading_animation",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'blurInUp'"
+        },
+        "subheading_animate_by": {
+          "name": "subheading_animate_by",
+          "type": "enum_homepage_subheading_animate_by",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'character'"
+        },
+        "subheading_duration": {
+          "name": "subheading_duration",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0.3
+        },
+        "subheading_delay": {
+          "name": "subheading_delay",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "subheading_once": {
+          "name": "subheading_once",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "gradient_background_enable": {
+          "name": "gradient_background_enable",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "gradient_background_first_color": {
+          "name": "gradient_background_first_color",
+          "type": "enum_homepage_gradient_background_first_color",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#00E6BB'"
+        },
+        "gradient_background_second_color": {
+          "name": "gradient_background_second_color",
+          "type": "enum_homepage_gradient_background_second_color",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#008AE6'"
+        },
+        "gradient_background_opacity": {
+          "name": "gradient_background_opacity",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 100
+        },
+        "search_input_text": {
+          "name": "search_input_text",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Search for anything'"
         },
         "meta_title": {
           "name": "meta_title",
@@ -14968,6 +15124,94 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public._homepage_v_version_populated_authors": {
+      "name": "_homepage_v_version_populated_authors",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_homepage_v_version_populated_authors_order_idx": {
+          "name": "_homepage_v_version_populated_authors_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_version_populated_authors_parent_id_idx": {
+          "name": "_homepage_v_version_populated_authors_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_homepage_v_version_populated_authors_parent_id_fk": {
+          "name": "_homepage_v_version_populated_authors_parent_id_fk",
+          "tableFrom": "_homepage_v_version_populated_authors",
+          "tableTo": "_homepage_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public._homepage_v": {
       "name": "_homepage_v",
       "schema": "",
@@ -14998,6 +15242,80 @@
           "primaryKey": false,
           "notNull": false,
           "default": "'Web Technology Solutions'"
+        },
+        "version_subheading_animation": {
+          "name": "version_subheading_animation",
+          "type": "enum__homepage_v_version_subheading_animation",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'blurInUp'"
+        },
+        "version_subheading_animate_by": {
+          "name": "version_subheading_animate_by",
+          "type": "enum__homepage_v_version_subheading_animate_by",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'character'"
+        },
+        "version_subheading_duration": {
+          "name": "version_subheading_duration",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0.3
+        },
+        "version_subheading_delay": {
+          "name": "version_subheading_delay",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "version_subheading_once": {
+          "name": "version_subheading_once",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "version_gradient_background_enable": {
+          "name": "version_gradient_background_enable",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "version_gradient_background_first_color": {
+          "name": "version_gradient_background_first_color",
+          "type": "enum__homepage_v_version_gradient_background_first_color",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#00E6BB'"
+        },
+        "version_gradient_background_second_color": {
+          "name": "version_gradient_background_second_color",
+          "type": "enum__homepage_v_version_gradient_background_second_color",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#008AE6'"
+        },
+        "version_gradient_background_opacity": {
+          "name": "version_gradient_background_opacity",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 100
+        },
+        "version_search_input_text": {
+          "name": "version_search_input_text",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Search for anything'"
         },
         "version_meta_title": {
           "name": "version_meta_title",
@@ -18158,12 +18476,140 @@
         "schedulePublish"
       ]
     },
+    "public.enum_homepage_subheading_animation": {
+      "name": "enum_homepage_subheading_animation",
+      "schema": "public",
+      "values": [
+        "blurInUp",
+        "fadeIn",
+        "blurIn",
+        "blurInDown",
+        "slideUp",
+        "slideDown",
+        "slideLeft",
+        "slideRight",
+        "scaleUp",
+        "scaleDown"
+      ]
+    },
+    "public.enum_homepage_subheading_animate_by": {
+      "name": "enum_homepage_subheading_animate_by",
+      "schema": "public",
+      "values": [
+        "text",
+        "line",
+        "character",
+        "word"
+      ]
+    },
+    "public.enum_homepage_gradient_background_first_color": {
+      "name": "enum_homepage_gradient_background_first_color",
+      "schema": "public",
+      "values": [
+        "#00E6BB",
+        "#01D7E6",
+        "#00B1E5",
+        "#008AE6",
+        "#015DE5",
+        "#013AE6",
+        "#1000E5",
+        "#8D00E5",
+        "#C900E5",
+        "#E600B1",
+        "#E6008A",
+        "#E6005D",
+        "#E6003A"
+      ]
+    },
+    "public.enum_homepage_gradient_background_second_color": {
+      "name": "enum_homepage_gradient_background_second_color",
+      "schema": "public",
+      "values": [
+        "#00E6BB",
+        "#01D7E6",
+        "#00B1E5",
+        "#008AE6",
+        "#015DE5",
+        "#013AE6",
+        "#1000E5",
+        "#8D00E5",
+        "#C900E5",
+        "#E600B1",
+        "#E6008A",
+        "#E6005D",
+        "#E6003A"
+      ]
+    },
     "public.enum_homepage_status": {
       "name": "enum_homepage_status",
       "schema": "public",
       "values": [
         "draft",
         "published"
+      ]
+    },
+    "public.enum__homepage_v_version_subheading_animation": {
+      "name": "enum__homepage_v_version_subheading_animation",
+      "schema": "public",
+      "values": [
+        "blurInUp",
+        "fadeIn",
+        "blurIn",
+        "blurInDown",
+        "slideUp",
+        "slideDown",
+        "slideLeft",
+        "slideRight",
+        "scaleUp",
+        "scaleDown"
+      ]
+    },
+    "public.enum__homepage_v_version_subheading_animate_by": {
+      "name": "enum__homepage_v_version_subheading_animate_by",
+      "schema": "public",
+      "values": [
+        "text",
+        "line",
+        "character",
+        "word"
+      ]
+    },
+    "public.enum__homepage_v_version_gradient_background_first_color": {
+      "name": "enum__homepage_v_version_gradient_background_first_color",
+      "schema": "public",
+      "values": [
+        "#00E6BB",
+        "#01D7E6",
+        "#00B1E5",
+        "#008AE6",
+        "#015DE5",
+        "#013AE6",
+        "#1000E5",
+        "#8D00E5",
+        "#C900E5",
+        "#E600B1",
+        "#E6008A",
+        "#E6005D",
+        "#E6003A"
+      ]
+    },
+    "public.enum__homepage_v_version_gradient_background_second_color": {
+      "name": "enum__homepage_v_version_gradient_background_second_color",
+      "schema": "public",
+      "values": [
+        "#00E6BB",
+        "#01D7E6",
+        "#00B1E5",
+        "#008AE6",
+        "#015DE5",
+        "#013AE6",
+        "#1000E5",
+        "#8D00E5",
+        "#C900E5",
+        "#E600B1",
+        "#E6008A",
+        "#E6005D",
+        "#E6003A"
       ]
     },
     "public.enum__homepage_v_version_status": {

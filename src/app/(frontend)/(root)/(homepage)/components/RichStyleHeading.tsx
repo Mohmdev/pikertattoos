@@ -36,6 +36,10 @@ export function RichStyleHeading({
   const shadowColor = theme === 'dark' ? 'white' : 'black'
 
   console.log('theme', theme)
+  console.log('RichStyleHeading props:', {
+    withGradientBackground,
+    neonColors
+  })
 
   const content = (
     <div

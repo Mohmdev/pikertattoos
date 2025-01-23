@@ -79,12 +79,87 @@ export const HomePage: GlobalConfig = {
               type: 'group',
               fields: [
                 {
+                  name: 'text',
+                  type: 'text',
+                  defaultValue: 'Web Technology Solutions'
+                },
+                {
                   type: 'row',
                   fields: [
                     {
-                      name: 'text',
-                      type: 'text',
-                      defaultValue: 'Web Technology Solutions'
+                      name: 'animation',
+                      type: 'radio',
+                      options: [
+                        { label: 'Blur In Up', value: 'blurInUp' },
+                        { label: 'Fade In', value: 'fadeIn' },
+                        { label: 'Blur In', value: 'blurIn' },
+                        { label: 'Blur In Down', value: 'blurInDown' },
+                        { label: 'Slide Up', value: 'slideUp' },
+                        { label: 'Slide Down', value: 'slideDown' },
+                        { label: 'Slide Left', value: 'slideLeft' },
+                        { label: 'Slide Right', value: 'slideRight' },
+                        { label: 'Scale Up', value: 'scaleUp' },
+                        { label: 'Scale Down', value: 'scaleDown' }
+                      ],
+                      defaultValue: 'blurInUp',
+                      admin: {
+                        layout: 'horizontal'
+                      }
+                    },
+                    {
+                      name: 'animateBy',
+                      type: 'select',
+                      hasMany: false,
+                      options: [
+                        { label: 'Text', value: 'text' },
+                        { label: 'Line', value: 'line' },
+                        { label: 'Character', value: 'character' },
+                        { label: 'Word', value: 'word' }
+                      ],
+                      defaultValue: 'character'
+                    }
+                  ]
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      label: 'Animation Speed',
+                      name: 'duration',
+                      type: 'number',
+                      defaultValue: 0.3,
+                      min: 0,
+                      max: 10,
+                      admin: {
+                        step: 0.1,
+                        placeholder: 'seconds',
+                        description: '0 - 10 seconds'
+                      }
+                    },
+                    {
+                      name: 'delay',
+                      type: 'number',
+                      defaultValue: 0,
+                      min: 0,
+                      max: 10,
+                      admin: {
+                        step: 0.1,
+                        placeholder: 'seconds',
+                        description: '0 - 10 seconds'
+                      }
+                    },
+                    {
+                      label: 'Animate Once',
+                      name: 'once',
+                      type: 'checkbox',
+                      defaultValue: true,
+                      admin: {
+                        description:
+                          'If enabled, the animation will only play the first time and then stay in place.',
+                        style: {
+                          justifyContent: 'center'
+                        }
+                      }
                     }
                   ]
                 }
@@ -110,43 +185,43 @@ export const HomePage: GlobalConfig = {
                   fields: [
                     {
                       name: 'firstColor',
-                      type: 'radio',
+                      type: 'select',
+                      hasMany: false,
                       options: [
-                        '#00E6BB',
-                        '#01D7E6',
-                        '#00B1E5',
-                        '#008AE6',
-                        '#015DE5',
-                        '#013AE6',
-                        '#1000E5',
-                        '#4B00E5',
-                        '#8D00E5',
-                        '#C900E5',
-                        '#E600B1',
-                        '#E6008A',
-                        '#E6005D',
-                        '#E6003A'
+                        { label: 'Aquamarine', value: '#00E6BB' },
+                        { label: 'Robin egg blue', value: '#01D7E6' },
+                        { label: 'Process Cyan', value: '#00B1E5' },
+                        { label: 'Bleu de France', value: '#008AE6' },
+                        { label: 'Tang Blue', value: '#015DE5' },
+                        { label: 'Palatinate blue', value: '#013AE6' },
+                        { label: 'Chrysler blue', value: '#1000E5' },
+                        { label: 'Dark violet', value: '#8D00E5' },
+                        { label: 'Electric purple', value: '#C900E5' },
+                        { label: 'Hollywood cerise', value: '#E600B1' },
+                        { label: 'Mexican pink', value: '#E6008A' },
+                        { label: 'Raspberry', value: '#E6005D' },
+                        { label: 'Crimson', value: '#E6003A' }
                       ],
                       defaultValue: '#00E6BB'
                     },
                     {
                       name: 'secondColor',
-                      type: 'radio',
+                      type: 'select',
+                      hasMany: false,
                       options: [
-                        '#00E6BB',
-                        '#01D7E6',
-                        '#00B1E5',
-                        '#008AE6',
-                        '#015DE5',
-                        '#013AE6',
-                        '#1000E5',
-                        '#4B00E5',
-                        '#8D00E5',
-                        '#C900E5',
-                        '#E600B1',
-                        '#E6008A',
-                        '#E6005D',
-                        '#E6003A'
+                        { label: 'Aquamarine', value: '#00E6BB' },
+                        { label: 'Robin egg blue', value: '#01D7E6' },
+                        { label: 'Process Cyan', value: '#00B1E5' },
+                        { label: 'Bleu de France', value: '#008AE6' },
+                        { label: 'Tang Blue', value: '#015DE5' },
+                        { label: 'Palatinate blue', value: '#013AE6' },
+                        { label: 'Chrysler blue', value: '#1000E5' },
+                        { label: 'Dark violet', value: '#8D00E5' },
+                        { label: 'Electric purple', value: '#C900E5' },
+                        { label: 'Hollywood cerise', value: '#E600B1' },
+                        { label: 'Mexican pink', value: '#E6008A' },
+                        { label: 'Raspberry', value: '#E6005D' },
+                        { label: 'Crimson', value: '#E6003A' }
                       ],
                       defaultValue: '#008AE6'
                     },
@@ -154,9 +229,14 @@ export const HomePage: GlobalConfig = {
                       name: 'opacity',
                       label: 'Intensity',
                       type: 'number',
-                      defaultValue: 1,
+                      defaultValue: 100,
                       min: 0,
-                      max: 1
+                      max: 100,
+                      admin: {
+                        step: 1,
+                        placeholder: '%',
+                        description: '0 - 100%'
+                      }
                     }
                   ]
                 }

@@ -31,19 +31,9 @@ export const RenderPage = ({
 }: RenderPageProps) => {
   const [searchResults, setSearchResults] = useState<CardDocData[] | null>(initialDocs)
 
-  const tattoos = data.featured as Tattoo[]
+  const tattoos = (data.featured || []) as Tattoo[]
 
-  const { heading, subheading, search, gradientBackground } = data
-
-  // Handle each field independently with optional chaining
-  const headingText = heading?.text ?? null
-  const headingHighlightedText = heading?.highlightedText ?? null
-  const subheadingText = subheading?.text ?? null
-  const searchInputText = search?.inputText ?? null
-  const gradientEnabled = gradientBackground?.enable ?? false
-  const gradientFirstColor = gradientBackground?.firstColor ?? '#00E6BB'
-  const gradientSecondColor = gradientBackground?.secondColor ?? '#009C7F'
-  const gradientOpacity = gradientBackground?.opacity ?? 1
+  const { heading, subheading, gradientBackground, search } = data
 
   useEffect(() => {
     setSearchResults(initialDocs)
@@ -61,23 +51,25 @@ export const RenderPage = ({
       {/* Hero Section */}
       <div className="mb-6 flex flex-col items-center gap-3 md:gap-6">
         <RichStyleHeading
-          text={headingText}
-          highlightedText={headingHighlightedText}
-          withGradientBackground={gradientEnabled}
+          text={heading?.text}
+          highlightedText={heading?.highlightedText}
+          withGradientBackground={gradientBackground?.enable ?? false}
           neonColors={{
-            firstColor: gradientFirstColor,
-            secondColor: gradientSecondColor,
-            opacity: gradientOpacity
+            firstColor: gradientBackground?.firstColor ?? '#00E6BB',
+            secondColor: gradientBackground?.secondColor ?? '#008AE6',
+            opacity: (gradientBackground?.opacity ?? 100) / 100
           }}
         />
-        {subheadingText && (
+        {subheading?.text && (
           <TextAnimate
-            animation="blurInUp"
-            by="character"
-            once={true}
+            animation={subheading?.animation ?? undefined}
+            by={subheading?.animateBy ?? 'character'}
+            once={subheading?.once ?? true}
+            duration={subheading?.duration ?? 0.3}
+            delay={subheading?.delay ?? 0}
             className="leading-none text-themeTextGray"
           >
-            {subheadingText}
+            {subheading?.text ?? ''}
           </TextAnimate>
         )}
       </div>
@@ -102,7 +94,7 @@ export const RenderPage = ({
           <SearchInput
             initialValue={searchQuery}
             onResultsChange={setSearchResults}
-            placeholder={searchInputText ? searchInputText : 'Search for anything'}
+            placeholder={search?.inputText ? search?.inputText : 'Search for anything'}
             glass
             className="my-auto"
             iconClassName="text-themeTextGray"
