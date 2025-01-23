@@ -311,7 +311,7 @@ export function TextAnimate({
   segmentClassName,
   as: Component = 'p',
   startOnView = true,
-  once = false,
+  once = true,
   by = 'word',
   animation = 'fadeIn',
   ...props
@@ -366,6 +366,7 @@ export function TextAnimate({
         whileInView={startOnView ? 'show' : undefined}
         animate={startOnView ? undefined : 'show'}
         exit="exit"
+        viewport={{ once }}
         className={cn('whitespace-pre-wrap', className)}
         {...props}
       >

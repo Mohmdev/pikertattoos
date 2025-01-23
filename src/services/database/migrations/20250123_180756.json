@@ -1,5 +1,5 @@
 {
-  "id": "40a1722f-6ef4-4e7b-8b20-88c3f27bc6bc",
+  "id": "f9bc7b8e-cdd1-46d6-b96b-6c625731016b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -14787,7 +14787,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'blurInUp'"
+          "default": "'fadeInBlur'"
         },
         "subheading_animate_by": {
           "name": "subheading_animate_by",
@@ -14797,15 +14797,22 @@
           "notNull": false,
           "default": "'character'"
         },
-        "subheading_duration": {
-          "name": "subheading_duration",
+        "subheading_animation_speed": {
+          "name": "subheading_animation_speed",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false,
-          "default": 0.3
+          "default": 100
         },
-        "subheading_delay": {
-          "name": "subheading_delay",
+        "subheading_flow_speed": {
+          "name": "subheading_flow_speed",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 100
+        },
+        "subheading_start_delay": {
+          "name": "subheading_start_delay",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false,
@@ -14846,14 +14853,21 @@
           "type": "numeric",
           "primaryKey": false,
           "notNull": false,
-          "default": 100
+          "default": 80
         },
-        "search_input_text": {
-          "name": "search_input_text",
+        "search_placeholder_text": {
+          "name": "search_placeholder_text",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false,
           "default": "'Search for anything'"
+        },
+        "search_enable_filters": {
+          "name": "search_enable_filters",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         },
         "meta_title": {
           "name": "meta_title",
@@ -14987,6 +15001,24 @@
           "primaryKey": false,
           "notNull": true
         },
+        "style_id": {
+          "name": "style_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "area_id": {
+          "name": "area_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "tattoo_id": {
           "name": "tattoo_id",
           "type": "integer",
@@ -15046,6 +15078,51 @@
           "method": "btree",
           "with": {}
         },
+        "homepage_rels_style_id_idx": {
+          "name": "homepage_rels_style_id_idx",
+          "columns": [
+            {
+              "expression": "style_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "homepage_rels_tag_id_idx": {
+          "name": "homepage_rels_tag_id_idx",
+          "columns": [
+            {
+              "expression": "tag_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "homepage_rels_area_id_idx": {
+          "name": "homepage_rels_area_id_idx",
+          "columns": [
+            {
+              "expression": "area_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "homepage_rels_tattoo_id_idx": {
           "name": "homepage_rels_tattoo_id_idx",
           "columns": [
@@ -15084,6 +15161,45 @@
           "tableTo": "homepage",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "homepage_rels_style_fk": {
+          "name": "homepage_rels_style_fk",
+          "tableFrom": "homepage_rels",
+          "tableTo": "style",
+          "columnsFrom": [
+            "style_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "homepage_rels_tag_fk": {
+          "name": "homepage_rels_tag_fk",
+          "tableFrom": "homepage_rels",
+          "tableTo": "tag",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "homepage_rels_area_fk": {
+          "name": "homepage_rels_area_fk",
+          "tableFrom": "homepage_rels",
+          "tableTo": "area",
+          "columnsFrom": [
+            "area_id"
           ],
           "columnsTo": [
             "id"
@@ -15249,7 +15365,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'blurInUp'"
+          "default": "'fadeInBlur'"
         },
         "version_subheading_animate_by": {
           "name": "version_subheading_animate_by",
@@ -15259,15 +15375,22 @@
           "notNull": false,
           "default": "'character'"
         },
-        "version_subheading_duration": {
-          "name": "version_subheading_duration",
+        "version_subheading_animation_speed": {
+          "name": "version_subheading_animation_speed",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false,
-          "default": 0.3
+          "default": 100
         },
-        "version_subheading_delay": {
-          "name": "version_subheading_delay",
+        "version_subheading_flow_speed": {
+          "name": "version_subheading_flow_speed",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 100
+        },
+        "version_subheading_start_delay": {
+          "name": "version_subheading_start_delay",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false,
@@ -15308,14 +15431,21 @@
           "type": "numeric",
           "primaryKey": false,
           "notNull": false,
-          "default": 100
+          "default": 80
         },
-        "version_search_input_text": {
-          "name": "version_search_input_text",
+        "version_search_placeholder_text": {
+          "name": "version_search_placeholder_text",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false,
           "default": "'Search for anything'"
+        },
+        "version_search_enable_filters": {
+          "name": "version_search_enable_filters",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         },
         "version_meta_title": {
           "name": "version_meta_title",
@@ -15535,6 +15665,24 @@
           "primaryKey": false,
           "notNull": true
         },
+        "style_id": {
+          "name": "style_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "area_id": {
+          "name": "area_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "tattoo_id": {
           "name": "tattoo_id",
           "type": "integer",
@@ -15594,6 +15742,51 @@
           "method": "btree",
           "with": {}
         },
+        "_homepage_v_rels_style_id_idx": {
+          "name": "_homepage_v_rels_style_id_idx",
+          "columns": [
+            {
+              "expression": "style_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_rels_tag_id_idx": {
+          "name": "_homepage_v_rels_tag_id_idx",
+          "columns": [
+            {
+              "expression": "tag_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_homepage_v_rels_area_id_idx": {
+          "name": "_homepage_v_rels_area_id_idx",
+          "columns": [
+            {
+              "expression": "area_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_homepage_v_rels_tattoo_id_idx": {
           "name": "_homepage_v_rels_tattoo_id_idx",
           "columns": [
@@ -15632,6 +15825,45 @@
           "tableTo": "_homepage_v",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_homepage_v_rels_style_fk": {
+          "name": "_homepage_v_rels_style_fk",
+          "tableFrom": "_homepage_v_rels",
+          "tableTo": "style",
+          "columnsFrom": [
+            "style_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_homepage_v_rels_tag_fk": {
+          "name": "_homepage_v_rels_tag_fk",
+          "tableFrom": "_homepage_v_rels",
+          "tableTo": "tag",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "_homepage_v_rels_area_fk": {
+          "name": "_homepage_v_rels_area_fk",
+          "tableFrom": "_homepage_v_rels",
+          "tableTo": "area",
+          "columnsFrom": [
+            "area_id"
           ],
           "columnsTo": [
             "id"
@@ -18480,26 +18712,20 @@
       "name": "enum_homepage_subheading_animation",
       "schema": "public",
       "values": [
-        "blurInUp",
-        "fadeIn",
-        "blurIn",
-        "blurInDown",
-        "slideUp",
-        "slideDown",
-        "slideLeft",
-        "slideRight",
-        "scaleUp",
-        "scaleDown"
+        "blur",
+        "fadeInBlur",
+        "scale",
+        "fade",
+        "slide"
       ]
     },
     "public.enum_homepage_subheading_animate_by": {
       "name": "enum_homepage_subheading_animate_by",
       "schema": "public",
       "values": [
-        "text",
         "line",
-        "character",
-        "word"
+        "word",
+        "character"
       ]
     },
     "public.enum_homepage_gradient_background_first_color": {
@@ -18552,26 +18778,20 @@
       "name": "enum__homepage_v_version_subheading_animation",
       "schema": "public",
       "values": [
-        "blurInUp",
-        "fadeIn",
-        "blurIn",
-        "blurInDown",
-        "slideUp",
-        "slideDown",
-        "slideLeft",
-        "slideRight",
-        "scaleUp",
-        "scaleDown"
+        "blur",
+        "fadeInBlur",
+        "scale",
+        "fade",
+        "slide"
       ]
     },
     "public.enum__homepage_v_version_subheading_animate_by": {
       "name": "enum__homepage_v_version_subheading_animate_by",
       "schema": "public",
       "values": [
-        "text",
         "line",
-        "character",
-        "word"
+        "word",
+        "character"
       ]
     },
     "public.enum__homepage_v_version_gradient_background_first_color": {

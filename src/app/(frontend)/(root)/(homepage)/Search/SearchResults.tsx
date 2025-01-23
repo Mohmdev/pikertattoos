@@ -2,11 +2,24 @@ import React from 'react'
 
 import { cn } from '@utils/cn'
 
-import { Card, CardDocData } from '../components/Card'
+import type { Media } from '@payload-types'
+
+import { Card } from '../components/Card'
+
+export type ResultDocData = {
+  id: string
+  title: string
+  slug: string
+  image?: Media | null
+  description?: string
+  style?: {
+    title: string
+  }[]
+}
 
 type Props = {
   searchQuery?: string
-  searchResults: CardDocData[] | null
+  searchResults: ResultDocData[] | null
 }
 
 export const SearchResults = ({ searchQuery, searchResults }: Props) => {

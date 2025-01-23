@@ -42,13 +42,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_payload_jobs_log_task_slug" AS ENUM('inline', 'schedulePublish');
   CREATE TYPE "public"."enum_payload_jobs_log_state" AS ENUM('failed', 'succeeded');
   CREATE TYPE "public"."enum_payload_jobs_task_slug" AS ENUM('inline', 'schedulePublish');
-  CREATE TYPE "public"."enum_homepage_subheading_animation" AS ENUM('blurInUp', 'fadeIn', 'blurIn', 'blurInDown', 'slideUp', 'slideDown', 'slideLeft', 'slideRight', 'scaleUp', 'scaleDown');
-  CREATE TYPE "public"."enum_homepage_subheading_animate_by" AS ENUM('text', 'line', 'character', 'word');
+  CREATE TYPE "public"."enum_homepage_subheading_animation" AS ENUM('blur', 'fadeInBlur', 'scale', 'fade', 'slide');
+  CREATE TYPE "public"."enum_homepage_subheading_animate_by" AS ENUM('line', 'word', 'character');
   CREATE TYPE "public"."enum_homepage_gradient_background_first_color" AS ENUM('#00E6BB', '#01D7E6', '#00B1E5', '#008AE6', '#015DE5', '#013AE6', '#1000E5', '#8D00E5', '#C900E5', '#E600B1', '#E6008A', '#E6005D', '#E6003A');
   CREATE TYPE "public"."enum_homepage_gradient_background_second_color" AS ENUM('#00E6BB', '#01D7E6', '#00B1E5', '#008AE6', '#015DE5', '#013AE6', '#1000E5', '#8D00E5', '#C900E5', '#E600B1', '#E6008A', '#E6005D', '#E6003A');
   CREATE TYPE "public"."enum_homepage_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__homepage_v_version_subheading_animation" AS ENUM('blurInUp', 'fadeIn', 'blurIn', 'blurInDown', 'slideUp', 'slideDown', 'slideLeft', 'slideRight', 'scaleUp', 'scaleDown');
-  CREATE TYPE "public"."enum__homepage_v_version_subheading_animate_by" AS ENUM('text', 'line', 'character', 'word');
+  CREATE TYPE "public"."enum__homepage_v_version_subheading_animation" AS ENUM('blur', 'fadeInBlur', 'scale', 'fade', 'slide');
+  CREATE TYPE "public"."enum__homepage_v_version_subheading_animate_by" AS ENUM('line', 'word', 'character');
   CREATE TYPE "public"."enum__homepage_v_version_gradient_background_first_color" AS ENUM('#00E6BB', '#01D7E6', '#00B1E5', '#008AE6', '#015DE5', '#013AE6', '#1000E5', '#8D00E5', '#C900E5', '#E600B1', '#E6008A', '#E6005D', '#E6003A');
   CREATE TYPE "public"."enum__homepage_v_version_gradient_background_second_color" AS ENUM('#00E6BB', '#01D7E6', '#00B1E5', '#008AE6', '#015DE5', '#013AE6', '#1000E5', '#8D00E5', '#C900E5', '#E600B1', '#E6008A', '#E6005D', '#E6003A');
   CREATE TYPE "public"."enum__homepage_v_version_status" AS ENUM('draft', 'published');
@@ -1151,16 +1151,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"heading_text" varchar DEFAULT 'Nexweb',
   	"heading_highlighted_text" varchar DEFAULT 'Studio',
   	"subheading_text" varchar DEFAULT 'Web Technology Solutions',
-  	"subheading_animation" "enum_homepage_subheading_animation" DEFAULT 'blurInUp',
+  	"subheading_animation" "enum_homepage_subheading_animation" DEFAULT 'fadeInBlur',
   	"subheading_animate_by" "enum_homepage_subheading_animate_by" DEFAULT 'character',
-  	"subheading_duration" numeric DEFAULT 0.3,
-  	"subheading_delay" numeric DEFAULT 0,
+  	"subheading_animation_speed" numeric DEFAULT 100,
+  	"subheading_flow_speed" numeric DEFAULT 100,
+  	"subheading_start_delay" numeric DEFAULT 0,
   	"subheading_once" boolean DEFAULT true,
   	"gradient_background_enable" boolean DEFAULT true,
   	"gradient_background_first_color" "enum_homepage_gradient_background_first_color" DEFAULT '#00E6BB',
   	"gradient_background_second_color" "enum_homepage_gradient_background_second_color" DEFAULT '#008AE6',
-  	"gradient_background_opacity" numeric DEFAULT 100,
-  	"search_input_text" varchar DEFAULT 'Search for anything',
+  	"gradient_background_opacity" numeric DEFAULT 80,
+  	"search_placeholder_text" varchar DEFAULT 'Search for anything',
+  	"search_enable_filters" boolean DEFAULT true,
   	"meta_title" varchar,
   	"meta_image_id" integer,
   	"meta_description" varchar,
@@ -1176,6 +1178,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"order" integer,
   	"parent_id" integer NOT NULL,
   	"path" varchar NOT NULL,
+  	"style_id" integer,
+  	"tag_id" integer,
+  	"area_id" integer,
   	"tattoo_id" integer,
   	"users_id" integer
   );
@@ -1193,16 +1198,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_heading_text" varchar DEFAULT 'Nexweb',
   	"version_heading_highlighted_text" varchar DEFAULT 'Studio',
   	"version_subheading_text" varchar DEFAULT 'Web Technology Solutions',
-  	"version_subheading_animation" "enum__homepage_v_version_subheading_animation" DEFAULT 'blurInUp',
+  	"version_subheading_animation" "enum__homepage_v_version_subheading_animation" DEFAULT 'fadeInBlur',
   	"version_subheading_animate_by" "enum__homepage_v_version_subheading_animate_by" DEFAULT 'character',
-  	"version_subheading_duration" numeric DEFAULT 0.3,
-  	"version_subheading_delay" numeric DEFAULT 0,
+  	"version_subheading_animation_speed" numeric DEFAULT 100,
+  	"version_subheading_flow_speed" numeric DEFAULT 100,
+  	"version_subheading_start_delay" numeric DEFAULT 0,
   	"version_subheading_once" boolean DEFAULT true,
   	"version_gradient_background_enable" boolean DEFAULT true,
   	"version_gradient_background_first_color" "enum__homepage_v_version_gradient_background_first_color" DEFAULT '#00E6BB',
   	"version_gradient_background_second_color" "enum__homepage_v_version_gradient_background_second_color" DEFAULT '#008AE6',
-  	"version_gradient_background_opacity" numeric DEFAULT 100,
-  	"version_search_input_text" varchar DEFAULT 'Search for anything',
+  	"version_gradient_background_opacity" numeric DEFAULT 80,
+  	"version_search_placeholder_text" varchar DEFAULT 'Search for anything',
+  	"version_search_enable_filters" boolean DEFAULT true,
   	"version_meta_title" varchar,
   	"version_meta_image_id" integer,
   	"version_meta_description" varchar,
@@ -1222,6 +1229,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"order" integer,
   	"parent_id" integer NOT NULL,
   	"path" varchar NOT NULL,
+  	"style_id" integer,
+  	"tag_id" integer,
+  	"area_id" integer,
   	"tattoo_id" integer,
   	"users_id" integer
   );
@@ -2471,6 +2481,24 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "homepage_rels" ADD CONSTRAINT "homepage_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "homepage_rels" ADD CONSTRAINT "homepage_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "homepage_rels" ADD CONSTRAINT "homepage_rels_area_fk" FOREIGN KEY ("area_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "homepage_rels" ADD CONSTRAINT "homepage_rels_tattoo_fk" FOREIGN KEY ("tattoo_id") REFERENCES "public"."tattoo"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
@@ -2496,6 +2524,24 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "_homepage_v_rels" ADD CONSTRAINT "_homepage_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_homepage_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_homepage_v_rels" ADD CONSTRAINT "_homepage_v_rels_style_fk" FOREIGN KEY ("style_id") REFERENCES "public"."style"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_homepage_v_rels" ADD CONSTRAINT "_homepage_v_rels_tag_fk" FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_homepage_v_rels" ADD CONSTRAINT "_homepage_v_rels_area_fk" FOREIGN KEY ("area_id") REFERENCES "public"."area"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -3145,6 +3191,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "homepage_rels_order_idx" ON "homepage_rels" USING btree ("order");
   CREATE INDEX IF NOT EXISTS "homepage_rels_parent_idx" ON "homepage_rels" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "homepage_rels_path_idx" ON "homepage_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "homepage_rels_style_id_idx" ON "homepage_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "homepage_rels_tag_id_idx" ON "homepage_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "homepage_rels_area_id_idx" ON "homepage_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "homepage_rels_tattoo_id_idx" ON "homepage_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "homepage_rels_users_id_idx" ON "homepage_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "_homepage_v_version_populated_authors_order_idx" ON "_homepage_v_version_populated_authors" USING btree ("_order");
@@ -3158,6 +3207,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "_homepage_v_rels_order_idx" ON "_homepage_v_rels" USING btree ("order");
   CREATE INDEX IF NOT EXISTS "_homepage_v_rels_parent_idx" ON "_homepage_v_rels" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "_homepage_v_rels_path_idx" ON "_homepage_v_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_rels_style_id_idx" ON "_homepage_v_rels" USING btree ("style_id");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_rels_tag_id_idx" ON "_homepage_v_rels" USING btree ("tag_id");
+  CREATE INDEX IF NOT EXISTS "_homepage_v_rels_area_id_idx" ON "_homepage_v_rels" USING btree ("area_id");
   CREATE INDEX IF NOT EXISTS "_homepage_v_rels_tattoo_id_idx" ON "_homepage_v_rels" USING btree ("tattoo_id");
   CREATE INDEX IF NOT EXISTS "_homepage_v_rels_users_id_idx" ON "_homepage_v_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "main_menu_tabs_description_links_order_idx" ON "main_menu_tabs_description_links" USING btree ("_order");

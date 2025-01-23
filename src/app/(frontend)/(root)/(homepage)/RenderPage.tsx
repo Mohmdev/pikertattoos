@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react'
 
 import { cn } from '@utils/cn'
 
-import type { Homepage, Style, Tattoo } from '@payload-types'
+import type { ResultDocData } from './Search/SearchResults'
+import type { Homepage, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
-import { TextAnimate } from '@ui/text-animate'
+import { TextEffect } from '@ui/text-effect'
 
-import { CardDocData } from './components/Card'
 import { InView } from './components/in-view'
 import { RichStyleHeading } from './components/RichStyleHeading'
 import { TriggerCard } from './components/TriggerCard'
@@ -19,25 +19,33 @@ import { SearchResults } from './Search/SearchResults'
 
 interface RenderPageProps {
   data: Homepage
-  docs: CardDocData[] | null
+  searchResults: ResultDocData[] | null
   searchQuery?: string
-  categories: Style[]
 }
+
 export const RenderPage = ({
   data,
-  docs: initialDocs,
   searchQuery,
-  categories
+  searchResults: initialSearchResults
 }: RenderPageProps) => {
-  const [searchResults, setSearchResults] = useState<CardDocData[] | null>(initialDocs)
+  const [currentSearchResults, setCurrentSearchResults] = useState<ResultDocData[] | null>(
+    initialSearchResults
+  )
 
-  const tattoos = (data.featured || []) as Tattoo[]
+  const { heading, subheading, gradientBackground, search, gridView } = data
 
-  const { heading, subheading, gradientBackground, search } = data
+  const featuredPosts =
+    gridView?.featuredPosts && gridView?.featuredPosts.length > 0
+      ? gridView.featuredPosts.filter(
+          (post): post is Tattoo => typeof post === 'object' && post !== null
+        )
+      : []
+
+  const filterOptions = search?.filterOptions ?? []
 
   useEffect(() => {
-    setSearchResults(initialDocs)
-  }, [initialDocs])
+    setCurrentSearchResults(initialSearchResults)
+  }, [initialSearchResults])
 
   return (
     <div
@@ -61,16 +69,17 @@ export const RenderPage = ({
           }}
         />
         {subheading?.text && (
-          <TextAnimate
-            animation={subheading?.animation ?? undefined}
-            by={subheading?.animateBy ?? 'character'}
-            once={subheading?.once ?? true}
-            duration={subheading?.duration ?? 0.3}
-            delay={subheading?.delay ?? 0}
+          <TextEffect
+            per={subheading?.animateBy ?? 'word'}
+            preset={subheading?.animation ?? 'blur'}
             className="leading-none text-themeTextGray"
+            delay={subheading?.startDelay ?? 0}
+            speedSegment={subheading?.animationSpeed ? subheading.animationSpeed / 100 : 1}
+            speedReveal={subheading?.flowSpeed ? subheading.flowSpeed / 100 : 1}
+            once={false}
           >
             {subheading?.text ?? ''}
-          </TextAnimate>
+          </TextEffect>
         )}
       </div>
 
@@ -93,8 +102,8 @@ export const RenderPage = ({
         >
           <SearchInput
             initialValue={searchQuery}
-            onResultsChange={setSearchResults}
-            placeholder={search?.inputText ? search?.inputText : 'Search for anything'}
+            onResultsChange={setCurrentSearchResults}
+            placeholder={search?.placeholderText ?? 'Search for anything'}
             glass
             className="my-auto"
             iconClassName="text-themeTextGray"
@@ -102,13 +111,17 @@ export const RenderPage = ({
           />
         </BackdropGradient>
       </div>
-      <div className="w-full max-w-[800px] overflow-hidden px-0 md:px-0">
-        <CategoryListSlider overlay route categories={categories} />
-      </div>
+
+      {/* Search Categories */}
+      {search?.enableFilters && (
+        <div className="w-full max-w-[800px] overflow-hidden px-0 md:px-0">
+          <CategoryListSlider overlay route categories={filterOptions} />
+        </div>
+      )}
 
       {/* Dynamic Content Section */}
       <div className="relative w-full">
-        <SearchResults searchQuery={searchQuery} searchResults={searchResults} />
+        <SearchResults searchQuery={searchQuery} searchResults={currentSearchResults} />
 
         {/* Default Grid View */}
         <div
@@ -145,8 +158,8 @@ export const RenderPage = ({
                 }}
               >
                 <div className="w-full columns-2 gap-2 sm:columns-3 md:gap-3">
-                  {tattoos.map((tattoo) => (
-                    <TriggerCard enableLink key={tattoo.id} doc={tattoo} className="mb-2 md:mb-3" />
+                  {featuredPosts.map((post) => (
+                    <TriggerCard enableLink key={post.id} doc={post} className="mb-2 md:mb-3" />
                   ))}
                 </div>
               </InView>

@@ -2200,35 +2200,32 @@ export interface Homepage {
   };
   subheading?: {
     text?: string | null;
-    animation?:
-      | (
-          | 'blurInUp'
-          | 'fadeIn'
-          | 'blurIn'
-          | 'blurInDown'
-          | 'slideUp'
-          | 'slideDown'
-          | 'slideLeft'
-          | 'slideRight'
-          | 'scaleUp'
-          | 'scaleDown'
-        )
-      | null;
-    animateBy?: ('text' | 'line' | 'character' | 'word') | null;
     /**
-     * 0 - 10 seconds
+     * How the text should animate.
      */
-    duration?: number | null;
+    animation?: ('blur' | 'fadeInBlur' | 'scale' | 'fade' | 'slide') | null;
+    animateBy?: ('line' | 'word' | 'character') | null;
     /**
-     * 0 - 10 seconds
+     * Controls how fast each element appears. Lower = slower animation.
      */
-    delay?: number | null;
+    animationSpeed?: number | null;
     /**
-     * If enabled, the animation will only play the first time and then stay in place.
+     * Controls the spacing between animations. Lower = more spacing.
+     */
+    flowSpeed?: number | null;
+    /**
+     * Delay before animation starts (in seconds)
+     */
+    startDelay?: number | null;
+    /**
+     * When enabled, the animation will only play the first time it appears on screen.
      */
     once?: boolean | null;
   };
   gradientBackground?: {
+    /**
+     * The animating gradient background.
+     */
     enable?: boolean | null;
     firstColor?:
       | (
@@ -2270,9 +2267,40 @@ export interface Homepage {
     opacity?: number | null;
   };
   search?: {
-    inputText?: string | null;
+    /**
+     * The static text that appears in the search bar.
+     */
+    placeholderText?: string | null;
+    /**
+     * Toggle the search filters component.
+     */
+    enableFilters?: boolean | null;
+    /**
+     * Options that will be displayed as filter buttons.
+     */
+    filterOptions?:
+      | (
+          | {
+              relationTo: 'style';
+              value: number | Style;
+            }
+          | {
+              relationTo: 'tag';
+              value: number | Tag;
+            }
+          | {
+              relationTo: 'area';
+              value: number | Area;
+            }
+        )[]
+      | null;
   };
-  featured?: (number | Tattoo)[] | null;
+  gridView?: {
+    /**
+     * The posts that you would like to feature on the homepage. Pick a minimum of 6 and a maximum of 36 posts.
+     */
+    featuredPosts?: (number | Tattoo)[] | null;
+  };
   meta?: Meta;
   /**
    * When checked, this page will not appear in search engines like Google. Use this for private pages or temporary content that should not be publicly searchable.
@@ -2684,8 +2712,9 @@ export interface HomepageSelect<T extends boolean = true> {
         text?: T;
         animation?: T;
         animateBy?: T;
-        duration?: T;
-        delay?: T;
+        animationSpeed?: T;
+        flowSpeed?: T;
+        startDelay?: T;
         once?: T;
       };
   gradientBackground?:
@@ -2699,9 +2728,15 @@ export interface HomepageSelect<T extends boolean = true> {
   search?:
     | T
     | {
-        inputText?: T;
+        placeholderText?: T;
+        enableFilters?: T;
+        filterOptions?: T;
       };
-  featured?: T;
+  gridView?:
+    | T
+    | {
+        featuredPosts?: T;
+      };
   meta?: T | MetaSelect<T>;
   noindex?: T;
   authors?: T;

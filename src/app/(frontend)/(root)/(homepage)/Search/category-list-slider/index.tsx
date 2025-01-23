@@ -11,7 +11,7 @@ import 'swiper/css/bundle'
 
 import { SwiperProps, SwiperSlide } from 'swiper/react'
 
-import type { Style } from '@payload-types'
+import type { Area, Style, Tag } from '@payload-types'
 
 import { GroupListItem } from './list-item'
 import { Slider } from './slider'
@@ -23,7 +23,11 @@ type Props = {
   register?: UseFormRegister<any>
   selected?: string
   route?: boolean
-  categories: Style[]
+  categories: (
+    | { relationTo: 'style'; value: number | Style }
+    | { relationTo: 'tag'; value: number | Tag }
+    | { relationTo: 'area'; value: number | Area }
+  )[]
 } & SwiperProps
 
 export const CategoryListSlider = ({
@@ -55,34 +59,37 @@ export const CategoryListSlider = ({
       className="*:gap-2" // Use className because spaceBetween gets applied after DOM is rendered resulting in an ugly initial render
       {...rest}
     >
-      {categories.map((style, i) => (
-        <SwiperSlide key={style.id} className="content-width-slide">
-          {!register ? (
-            route ? (
-              <div onClick={() => handleCategoryClick(style.title)} className="cursor-pointer">
-                <GroupListItem label={style.title} selected={searchParams.get('q') || undefined} />
-              </div>
+      {categories.map((item, i) => {
+        const data = item.value as Style | Tag | Area
+        return (
+          <SwiperSlide key={data.id} className="content-width-slide">
+            {!register ? (
+              route ? (
+                <div onClick={() => handleCategoryClick(data.title)} className="cursor-pointer">
+                  <GroupListItem label={data.title} selected={searchParams.get('q') || undefined} />
+                </div>
+              ) : (
+                <GroupListItem label={data.title} />
+              )
             ) : (
-              <GroupListItem label={style.title} />
-            )
-          ) : (
-            i > 0 && (
-              <Label htmlFor={`item-${style.id}`}>
-                <span>
-                  <Input
-                    id={`item-${style.id}`}
-                    type="radio"
-                    className="hidden"
-                    value={style.slug}
-                    {...register('category')}
-                  />
-                  <GroupListItem label={style.title} selected={selected} />
-                </span>
-              </Label>
-            )
-          )}
-        </SwiperSlide>
-      ))}
+              i > 0 && (
+                <Label htmlFor={`item-${data.id}`}>
+                  <span>
+                    <Input
+                      id={`item-${data.id}`}
+                      type="radio"
+                      className="hidden"
+                      value={data.slug}
+                      {...register('category')}
+                    />
+                    <GroupListItem label={data.title} selected={selected} />
+                  </span>
+                </Label>
+              )
+            )}
+          </SwiperSlide>
+        )
+      })}
     </Slider>
   )
 }

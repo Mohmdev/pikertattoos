@@ -69,14 +69,19 @@ export const HomePage: GlobalConfig = {
               admin: {
                 style: {
                   marginTop: '2.5rem',
-                  marginBottom: '0',
-                  paddingBottom: '1rem'
+                  marginBottom: '0'
                 }
               }
             },
             {
               name: 'subheading',
               type: 'group',
+              admin: {
+                style: {
+                  marginTop: '2rem',
+                  marginBottom: '0'
+                }
+              },
               fields: [
                 {
                   name: 'text',
@@ -88,22 +93,18 @@ export const HomePage: GlobalConfig = {
                   fields: [
                     {
                       name: 'animation',
-                      type: 'radio',
+                      type: 'select',
+                      hasMany: false,
                       options: [
-                        { label: 'Blur In Up', value: 'blurInUp' },
-                        { label: 'Fade In', value: 'fadeIn' },
-                        { label: 'Blur In', value: 'blurIn' },
-                        { label: 'Blur In Down', value: 'blurInDown' },
-                        { label: 'Slide Up', value: 'slideUp' },
-                        { label: 'Slide Down', value: 'slideDown' },
-                        { label: 'Slide Left', value: 'slideLeft' },
-                        { label: 'Slide Right', value: 'slideRight' },
-                        { label: 'Scale Up', value: 'scaleUp' },
-                        { label: 'Scale Down', value: 'scaleDown' }
+                        { label: 'Blur', value: 'blur' },
+                        { label: 'Fade In Blur', value: 'fadeInBlur' },
+                        { label: 'Scale', value: 'scale' },
+                        { label: 'Fade', value: 'fade' },
+                        { label: 'Slide', value: 'slide' }
                       ],
-                      defaultValue: 'blurInUp',
+                      defaultValue: 'fadeInBlur',
                       admin: {
-                        layout: 'horizontal'
+                        description: 'How the text should animate.'
                       }
                     },
                     {
@@ -111,10 +112,9 @@ export const HomePage: GlobalConfig = {
                       type: 'select',
                       hasMany: false,
                       options: [
-                        { label: 'Text', value: 'text' },
-                        { label: 'Line', value: 'line' },
-                        { label: 'Character', value: 'character' },
-                        { label: 'Word', value: 'word' }
+                        { label: 'whole Line', value: 'line' },
+                        { label: 'each Word', value: 'word' },
+                        { label: 'each Character', value: 'character' }
                       ],
                       defaultValue: 'character'
                     }
@@ -124,38 +124,51 @@ export const HomePage: GlobalConfig = {
                   type: 'row',
                   fields: [
                     {
+                      name: 'animationSpeed',
                       label: 'Animation Speed',
-                      name: 'duration',
                       type: 'number',
-                      defaultValue: 0.3,
-                      min: 0,
-                      max: 10,
+                      min: 5,
+                      max: 100,
                       admin: {
-                        step: 0.1,
-                        placeholder: 'seconds',
-                        description: '0 - 10 seconds'
+                        step: 5,
+                        description:
+                          'Controls how fast each element appears. Lower = slower animation.',
+                        placeholder: '100%'
                       }
                     },
                     {
-                      name: 'delay',
+                      name: 'flowSpeed',
+                      label: 'Flow Speed',
                       type: 'number',
-                      defaultValue: 0,
-                      min: 0,
-                      max: 10,
+                      min: 5,
+                      max: 100,
                       admin: {
-                        step: 0.1,
-                        placeholder: 'seconds',
-                        description: '0 - 10 seconds'
+                        step: 5,
+                        description:
+                          'Controls the spacing between animations. Lower = more spacing.',
+                        placeholder: '100%'
                       }
                     },
                     {
-                      label: 'Animate Once',
+                      name: 'startDelay',
+                      label: 'Start Delay',
+                      type: 'number',
+                      min: 0,
+                      max: 5,
+                      admin: {
+                        step: 0.2,
+                        description: 'Delay before animation starts (in seconds)',
+                        placeholder: '0s'
+                      }
+                    },
+                    {
                       name: 'once',
                       type: 'checkbox',
+                      label: 'Play Once',
                       defaultValue: true,
                       admin: {
                         description:
-                          'If enabled, the animation will only play the first time and then stay in place.',
+                          'When enabled, the animation will only play the first time it appears on screen.',
                         style: {
                           justifyContent: 'center'
                         }
@@ -163,22 +176,25 @@ export const HomePage: GlobalConfig = {
                     }
                   ]
                 }
-              ],
-              admin: {
-                style: {
-                  marginTop: '0.5rem',
-                  marginBottom: '0'
-                }
-              }
+              ]
             },
             {
               name: 'gradientBackground',
               type: 'group',
+              admin: {
+                style: {
+                  marginTop: '2rem',
+                  marginBottom: '0'
+                }
+              },
               fields: [
                 {
                   name: 'enable',
                   type: 'checkbox',
-                  defaultValue: true
+                  defaultValue: true,
+                  admin: {
+                    description: 'The animating gradient background.'
+                  }
                 },
                 {
                   type: 'row',
@@ -229,7 +245,7 @@ export const HomePage: GlobalConfig = {
                       name: 'opacity',
                       label: 'Intensity',
                       type: 'number',
-                      defaultValue: 100,
+                      defaultValue: 80,
                       min: 0,
                       max: 100,
                       admin: {
@@ -240,43 +256,78 @@ export const HomePage: GlobalConfig = {
                     }
                   ]
                 }
-              ],
-              admin: {
-                style: {
-                  marginTop: '0.5rem',
-                  marginBottom: '0'
-                }
-              }
-            },
+              ]
+            }
+          ]
+        },
+        {
+          label: 'Content',
+          fields: [
             {
               name: 'search',
               type: 'group',
               fields: [
                 {
-                  type: 'row',
-                  fields: [
-                    {
-                      name: 'inputText',
-                      type: 'text',
-                      defaultValue: 'Search for anything'
-                    }
-                  ]
+                  name: 'placeholderText',
+                  type: 'text',
+                  defaultValue: 'Search for anything',
+                  admin: {
+                    description: 'The static text that appears in the search bar.'
+                  }
+                },
+                {
+                  name: 'enableFilters',
+                  label: 'Search Filters',
+                  type: 'checkbox',
+                  defaultValue: true,
+                  admin: {
+                    description: 'Toggle the search filters component.'
+                  }
+                },
+                {
+                  name: 'filterOptions',
+                  type: 'relationship',
+                  relationTo: ['style', 'tag', 'area'],
+                  hasMany: true,
+                  label: {
+                    singular: 'Filter',
+                    plural: 'Filters'
+                  },
+                  admin: {
+                    description: 'Options that will be displayed as filter buttons.'
+                  }
                 }
               ],
               admin: {
                 style: {
-                  marginTop: '0.5rem',
+                  marginTop: '2.5rem',
                   marginBottom: '0'
                 }
               }
             },
             {
-              name: 'featured',
-              type: 'relationship',
-              relationTo: 'tattoo',
-              hasMany: true,
-              minRows: 6,
-              maxRows: 18
+              name: 'gridView',
+              type: 'group',
+              fields: [
+                {
+                  name: 'featuredPosts',
+                  type: 'relationship',
+                  relationTo: 'tattoo',
+                  hasMany: true,
+                  minRows: 6,
+                  maxRows: 36,
+                  admin: {
+                    description:
+                      'The posts that you would like to feature on the homepage. Pick a minimum of 6 and a maximum of 36 posts.'
+                  }
+                }
+              ],
+              admin: {
+                style: {
+                  marginTop: '2rem',
+                  marginBottom: '0'
+                }
+              }
             }
           ]
         },
@@ -298,7 +349,6 @@ export const HomePage: GlobalConfig = {
       autosave: {
         interval: 100
       }
-      // validate: true
     },
     max: 50
   }

@@ -9,12 +9,12 @@ import { mergeOpenGraph } from '@seo/mergeOpenGraph'
 import { getPayload } from 'payload'
 import { getServerSideURL } from '@utils/getURL'
 
-import type { Homepage, Style } from '@payload-types'
+import type { ResultDocData } from './Search/SearchResults'
+import type { Homepage } from '@payload-types'
 import type { Payload } from 'payload'
 
 import { LivePreviewListener } from '@components/dynamic/LivePreviewListener'
 
-import { CardDocData } from './components/Card'
 import PageClient from './page.client'
 import { RenderPage } from './RenderPage'
 import { searchTattoos } from './Search/searchQuery'
@@ -39,8 +39,6 @@ export default async function HomePage({ searchParams }: Args) {
   const params = await searchParams
   const queryTattoos = await searchTattoos(payload, params.q)
 
-  const styles = await getStyles(isDraft)
-
   console.log('Server-side searchParams:', params) // Debug log
   console.log('Search Query:', params.q)
   console.log('Search Results:', queryTattoos)
@@ -51,9 +49,8 @@ export default async function HomePage({ searchParams }: Args) {
       {isDraft && <LivePreviewListener />}
       <RenderPage
         data={homepage}
-        docs={queryTattoos.totalDocs > 0 ? (queryTattoos.docs as CardDocData[]) : null}
         searchQuery={params.q}
-        categories={styles}
+        searchResults={queryTattoos.totalDocs > 0 ? (queryTattoos.docs as ResultDocData[]) : null}
       />
     </>
   )
@@ -89,9 +86,9 @@ async function getHomepageData(payload: Payload, isDraft: boolean) {
     select: {
       heading: true,
       subheading: true,
-      featured: true,
       gradientBackground: true,
-      search: true
+      search: true,
+      gridView: true
     }
   })
 }
@@ -99,29 +96,6 @@ const getHomepage = unstable_cache(
   async (isDraft: boolean) => {
     const payload = await getPayload({ config: configPromise })
     return getHomepageData(payload, isDraft)
-  },
-  undefined // no tags
-)
-
-async function getStylesData(payload: Payload, isDraft: boolean) {
-  const styles = await payload.find({
-    collection: 'style',
-    depth: 0,
-    limit: 20,
-    select: {
-      title: true,
-      slug: true
-    },
-    draft: isDraft,
-    overrideAccess: isDraft
-  })
-  return styles.docs as Style[]
-}
-
-const getStyles = unstable_cache(
-  async (isDraft: boolean) => {
-    const payload = await getPayload({ config: configPromise })
-    return getStylesData(payload, isDraft)
   },
   undefined // no tags
 )
