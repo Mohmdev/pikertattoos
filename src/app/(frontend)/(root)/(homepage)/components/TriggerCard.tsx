@@ -1,11 +1,13 @@
 import Link from 'next/link'
 
 import { cn } from '@utils/cn'
-import { Spotlight } from '@/app/(frontend)/(root)/(homepage)/components/spotlight'
+import useClickableCard from '@hooks/useClickableCard'
 
 import type { Media as MediaType, Style, Tattoo } from '@payload-types'
 
 import { Media } from '@components/dynamic/Media'
+
+import { Spotlight } from './spotlight'
 
 type TriggerCardProps = {
   doc: Tattoo
@@ -22,6 +24,7 @@ export const TriggerCard = ({
   enableLink = true,
   className
 }: TriggerCardProps) => {
+  const { card, link } = useClickableCard<HTMLDivElement>({})
   const tattoo = doc as Tattoo
 
   const style =
@@ -32,8 +35,8 @@ export const TriggerCard = ({
 
   if (!image) return null
 
-  const content = (
-    <div className={cn('group relative overflow-hidden rounded-lg', className)}>
+  return (
+    <div ref={card.ref} className={cn('group relative overflow-hidden rounded-lg', className)}>
       {enableSpotlight && (
         <Spotlight
           className="z-10 from-white/50 via-white/20 to-white/10 blur-2xl"
@@ -62,14 +65,14 @@ export const TriggerCard = ({
           <p className="m-0 text-sm text-black dark:text-white">{style && style.title}</p>
         </div>
       )}
+      {enableLink && (
+        <Link
+          ref={link.ref}
+          href={`/tattoo/${tattoo.slug}`}
+          aria-label={tattoo.title}
+          className="hidden"
+        />
+      )}
     </div>
-  )
-
-  return enableLink ? (
-    <Link href={`/tattoo/${tattoo.slug}`} aria-label={tattoo.title}>
-      {content}
-    </Link>
-  ) : (
-    content
   )
 }

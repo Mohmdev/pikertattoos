@@ -61,7 +61,7 @@ export const ResultDoc: React.FC<{
           </div>
         )}
         {displayCategories && hasCategories && (
-          <div className="mb-4 text-sm uppercase">
+          <div className="mb-4 text-sm capitalize">
             {categoryToUse?.map((style, index) => {
               return <div key={index}>{style.title}</div>
             })}
