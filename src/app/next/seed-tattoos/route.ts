@@ -4,13 +4,15 @@ import config from '@payload-config'
 
 import { getPayload } from 'payload'
 
+import type { Payload } from 'payload'
+
 import { fetchImageByURL } from './fetchFile'
 import { tattoosData } from './tattosData'
 
 export const maxDuration = 60
 
 export async function POST(): Promise<Response> {
-  const payload = await getPayload({ config })
+  const payload: Payload = await getPayload({ config })
   const requestHeaders = await headers()
   // Authenticate by passing request headers
   const { user } = await payload.auth({ headers: requestHeaders })
@@ -28,10 +30,9 @@ export async function POST(): Promise<Response> {
   }
 }
 
-const createTattoos = async ({ payload }): Promise<void> => {
+const createTattoos = async ({ payload }: { payload: Payload }): Promise<void> => {
   for (const tattoo of tattoosData) {
     try {
-      // Check if tattoo already exists
       const existingTattoo = await payload.find({
         collection: 'tattoo',
         where: {
@@ -40,17 +41,37 @@ const createTattoos = async ({ payload }): Promise<void> => {
       })
 
       if (existingTattoo.docs.length === 0) {
-        const imageBuffer = await fetchImageByURL(tattoo.images[0].url)
+        // Add null check even though we know data exists
+        const firstImage = tattoo.images[0]
+        if (!firstImage) {
+          throw new Error(`No image found for tattoo "${tattoo.title}"`)
+        }
+
+        const imageBuffer = await fetchImageByURL(firstImage.url)
         const mediaDoc = await payload.create({
           collection: 'media',
           data: {
-            alt: tattoo.images[0].alt || tattoo.title,
-            // category: tattoo.images[0].category,
-            width: tattoo.images[0].width,
-            height: tattoo.images[0].height
+            alt: firstImage.alt || tattoo.title,
+            width: firstImage.width,
+            height: firstImage.height
           },
           file: imageBuffer
         })
+
+        // Add version property to description
+        const enhancedDescription = tattoo.description
+          ? {
+              ...tattoo.description,
+              root: {
+                ...tattoo.description.root,
+                version: 1,
+                children: tattoo.description.root.children.map((child) => ({
+                  ...child,
+                  version: 1
+                }))
+              }
+            }
+          : null
 
         await payload.create({
           collection: 'tattoo',
@@ -59,7 +80,7 @@ const createTattoos = async ({ payload }): Promise<void> => {
             title: tattoo.title,
             slug: tattoo.slug,
             images: [mediaDoc.id],
-            description: tattoo.description
+            description: enhancedDescription
           }
         })
         payload.logger.info(`✓ Created tattoo "${tattoo.title}"`)
@@ -68,12 +89,11 @@ const createTattoos = async ({ payload }): Promise<void> => {
       }
     } catch (error) {
       payload.logger.error(`Error creating tattoo "${tattoo.title}":`, error)
-      throw error
     }
   }
 }
 
-const updateTattoos = async ({ payload }): Promise<void> => {
+const updateTattoos = async ({ payload }: { payload: Payload }): Promise<void> => {
   for (const tattoo of tattoosData) {
     try {
       // Check if tattoo exists before updating
@@ -97,7 +117,7 @@ const updateTattoos = async ({ payload }): Promise<void> => {
           if (!existingStyle.docs.length) {
             throw new Error(`Style not found: ${style.slug}`)
           }
-          return existingStyle.docs[0].id
+          return existingStyle.docs[0]?.id
         })
       )
 
@@ -110,7 +130,7 @@ const updateTattoos = async ({ payload }): Promise<void> => {
           if (!existingArea.docs.length) {
             throw new Error(`Area not found: ${area.slug}`)
           }
-          return existingArea.docs[0].id
+          return existingArea.docs[0]?.id
         })
       )
 
@@ -123,7 +143,7 @@ const updateTattoos = async ({ payload }): Promise<void> => {
           if (!existingTag.docs.length) {
             throw new Error(`Tag not found: ${tag.slug}`)
           }
-          return existingTag.docs[0].id
+          return existingTag.docs[0]?.id
         })
       )
 
@@ -139,7 +159,7 @@ const updateTattoos = async ({ payload }): Promise<void> => {
       })
       payload.logger.info(`✓ Updated relationships for "${tattoo.title}"`)
     } catch (error) {
-      payload.logger.error(`Error updating tattoo "${tattoo.title}":`, error.message)
+      payload.logger.error(`Error updating tattoo "${tattoo.title}":`, error)
     }
   }
 }

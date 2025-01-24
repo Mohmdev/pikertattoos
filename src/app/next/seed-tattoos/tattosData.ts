@@ -20,7 +20,6 @@ type MockTatttoo = {
     url: string
     filename: string
     mimeType: string
-    category: string
     width?: number
     height?: number
   }[]
@@ -143,7 +142,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/ykpvl9ajtzadjwusn4dy.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 731,
         height: 977
       }
@@ -181,7 +179,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920721/pikertattoos/mock/bv4bu9vttjtqhth8mg0n.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 736,
         height: 1104
       }
@@ -219,7 +216,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/wmrcsg3ubakmjys2tv5d.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 720,
         height: 907
       }
@@ -257,7 +253,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/udufsuhd2kfmilo0lp8r.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 735,
         height: 1092
       }
@@ -291,7 +286,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/gt9omn3w8cdzteqkyrvm.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 736,
         height: 736
       }
@@ -329,7 +323,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/augjyyr6hziqpwcfimte.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 736,
         height: 736
       }
@@ -367,7 +360,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920721/pikertattoos/mock/kmpqe5npmq4ihnxpxb6t.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 736,
         height: 736
       }
@@ -401,7 +393,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/sj33gbeypqcdk3tb7mj5.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 736,
         height: 868
       }
@@ -435,7 +426,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/kaepqqxuhpomj4vjy5s2.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 736,
         height: 1177
       }
@@ -473,7 +463,6 @@ export const tattoosData: MockTatttoo[] = [
         url: 'https://res.cloudinary.com/mohmdevcloud/image/upload/v1735920720/pikertattoos/mock/w9jeag64fhigleddffrq.jpg',
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
-        category: 'tattoo',
         width: 600,
         height: 600
       }

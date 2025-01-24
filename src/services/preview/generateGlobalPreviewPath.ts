@@ -7,8 +7,9 @@ type Props = {
 }
 
 export const generateGlobalPreviewPath = ({ global, slug, req }: Props) => {
-  // For homepage, path is root. For other globals, you can customize
-  const path = global === 'homepage' ? '/' : `/${global}`
+  // All globals preview at root path
+  const path = '/'
+  // const path = global === 'homepage' ? '/' : `/${global}`
 
   const params = {
     slug,

@@ -1,21 +1,3 @@
-import { RoundedDrawerNav } from './RoundedDrawerNav'
-
-export const RoundedDrawerNavExample = () => {
-  return (
-    <div className="bg-neutral-950">
-      <RoundedDrawerNav
-        links={mockNavLinks}
-        navBackground="bg-neutral-950"
-        bodyBackground="bg-white"
-      >
-        <div className="flex flex-col items-center justify-center px-12 py-32">
-          <p className="text-center">Your hero section content goes here {':)'}</p>
-        </div>
-      </RoundedDrawerNav>
-    </div>
-  )
-}
-
 export const mockNavLinks = [
   {
     title: 'Product',

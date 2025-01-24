@@ -1,12 +1,11 @@
 'use client'
 
 import { RowLabelProps, useRowLabel } from '@payloadcms/ui'
+import { Footer } from '@payload-types'
 
-import type { Footer } from '@payload-types'
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const RowLabel: React.FC<RowLabelProps> = (props) => {
-  const data = useRowLabel<NonNullable<Footer['navItems']>[number]>()
+export const FooterRowLabel: React.FC<RowLabelProps> = () => {
+  const data =
+    useRowLabel<NonNullable<NonNullable<Footer['columns']>[number]['navItems']>[number]>()
 
   const label = data?.data?.link?.label
     ? `Nav item ${data.rowNumber !== undefined ? data.rowNumber + 1 : ''}: ${data?.data?.link?.label}`

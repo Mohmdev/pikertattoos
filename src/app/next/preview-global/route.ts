@@ -40,10 +40,6 @@ export async function GET(
       return new Response('No slugs provided.', { status: 404 })
     }
 
-    // if (!path.startsWith('/')) {
-    //   return new Response('This endpoint can only be used for internal previews', { status: 500 })
-    // }
-
     let user
 
     try {

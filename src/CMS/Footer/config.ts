@@ -1,8 +1,9 @@
+import { generateGlobalPreviewPath } from '@services/preview/generateGlobalPreviewPath'
 import { link } from '@fields/link'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { publishedOnly } from '@access/publishedOnly'
 
-// import { isAdmin } from '@access/isAdmin'
+import { getServerSideURL } from '@utils/getURL'
 
 import type { GlobalConfig } from 'payload'
 
@@ -15,6 +16,20 @@ export const Footer: GlobalConfig = {
     update: isAdminOrEditor,
     readVersions: isAdminOrEditor,
     readDrafts: isAdminOrEditor
+  },
+  admin: {
+    livePreview: {
+      url: ({ req }) => {
+        return generateGlobalPreviewPath({
+          global: 'footer',
+          slug: 'footer',
+          req
+        })
+      }
+    },
+    preview: () => {
+      return `${getServerSideURL()}`
+    }
   },
   fields: [
     {
@@ -35,13 +50,13 @@ export const Footer: GlobalConfig = {
             link({
               appearances: false
             })
-          ]
-          // admin: {
-          //   initCollapsed: true,
-          //   components: {
-          //   RowLabel: '@admin-components/RowLabel#RowLabel'
-          //   }
-          // }
+          ],
+          admin: {
+            initCollapsed: true,
+            components: {
+              RowLabel: '@CMS/Footer/FooterRowLabel#FooterRowLabel'
+            }
+          }
         }
       ]
     }
@@ -54,6 +69,7 @@ export const Footer: GlobalConfig = {
       autosave: {
         interval: 100
       }
-    }
+    },
+    max: 50
   }
 }

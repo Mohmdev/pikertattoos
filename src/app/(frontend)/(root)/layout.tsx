@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { RoundedDrawerNav } from './RoundedDrawerNav'
-import { mockNavLinks } from './RoundedDrawerNavExample'
+import { mockNavLinks } from './_nav/mockNavLinks'
+import { RoundedDrawerNav } from './_nav/RoundedDrawerNav'
 
 type GlobalLayoutProps = {
   children: React.ReactNode
