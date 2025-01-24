@@ -9,7 +9,6 @@ import { mergeOpenGraph } from '@seo/mergeOpenGraph'
 import { getPayload } from 'payload'
 import { getServerSideURL } from '@utils/getURL'
 
-import type { ResultDocData } from './Search/SearchResults'
 import type { Homepage } from '@payload-types'
 import type { Payload } from 'payload'
 
@@ -37,11 +36,13 @@ export default async function HomePage({ searchParams }: Args) {
   }
 
   const params = await searchParams
-  const queryTattoos = await searchTattoos(payload, params.q)
 
-  console.log('Server-side searchParams:', params) // Debug log
+  const runQuery = await searchTattoos(payload, params.q)
+  const { docs: returnedResults, totalDocs: totalResults } = runQuery
+
+  console.log('Server-side searchParams:', params)
   console.log('Search Query:', params.q)
-  console.log('Search Results:', queryTattoos)
+  console.log('Search Results:', returnedResults)
 
   return (
     <>
@@ -50,7 +51,7 @@ export default async function HomePage({ searchParams }: Args) {
       <RenderPage
         data={homepage}
         searchQuery={params.q}
-        searchResults={queryTattoos.totalDocs > 0 ? (queryTattoos.docs as ResultDocData[]) : null}
+        searchResults={totalResults > 0 ? returnedResults : null}
       />
     </>
   )

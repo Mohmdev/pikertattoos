@@ -8,14 +8,16 @@ export async function searchTattoos(payload: Payload, query: string | undefined)
   const results = await payload.find({
     collection: 'search',
     depth: 1,
-    limit: 6,
+    limit: 12,
     select: {
       title: true,
       slug: true,
       styles: true,
-      image: true
+      image: true,
+      doc: true
     },
     pagination: false,
+    draft: false,
     where: {
       or: [
         {

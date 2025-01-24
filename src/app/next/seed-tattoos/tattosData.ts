@@ -1,7 +1,7 @@
 type MockTatttoo = {
   title: string
   slug: string
-  description?: {
+  richTextContent?: {
     root: {
       type: string
       children: {
@@ -37,7 +37,7 @@ type MockTatttoo = {
   }[]
 }
 
-const mockDescription: MockTatttoo['description'] = {
+const mockDescription: MockTatttoo['richTextContent'] = {
   root: {
     type: 'root',
     format: '',
@@ -135,7 +135,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Japanese Dragon Sleeve',
     slug: 'japanese-dragon-sleeve',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Japanese Dragon Sleeve Tattoo',
@@ -172,7 +172,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Traditional Rose',
     slug: 'traditional-rose',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Traditional Rose Tattoo',
@@ -209,7 +209,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Geometric Wolf',
     slug: 'geometric-wolf',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Geometric Wolf Tattoo',
@@ -246,7 +246,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Realistic Portrait',
     slug: 'realistic-portrait',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Realistic Portrait Tattoo',
@@ -279,7 +279,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Mandala Finger Band',
     slug: 'mandala-finger-band',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Mandala Finger Band Tattoo',
@@ -316,7 +316,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Celtic Cross Cover-up',
     slug: 'celtic-cross-cover-up',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Celtic Cross Cover-up Tattoo',
@@ -353,7 +353,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Watercolor Abstract',
     slug: 'watercolor-abstract',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Watercolor Abstract Tattoo',
@@ -386,7 +386,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Neo Traditional Skull',
     slug: 'neo-traditional-skull',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Neo Traditional Skull Tattoo',
@@ -419,7 +419,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Musical Notes Script',
     slug: 'musical-notes-script',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Musical Notes Script Tattoo',
@@ -456,7 +456,7 @@ export const tattoosData: MockTatttoo[] = [
   {
     title: 'Tribal Phoenix',
     slug: 'tribal-phoenix',
-    description: mockDescription,
+    richTextContent: mockDescription,
     images: [
       {
         alt: 'Tribal Phoenix Tattoo',

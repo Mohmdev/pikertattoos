@@ -17,7 +17,7 @@ export type CardDocData = {
   title: string
   slug: string
   image?: MediaType | null
-  description?: string
+  richTextContent?: string
   style?: {
     title: string
   }[]

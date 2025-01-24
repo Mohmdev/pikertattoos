@@ -2,9 +2,9 @@
 
 import { useRowLabel } from '@payloadcms/ui'
 
-import { PayloadClientReactComponent, RowLabelComponent } from 'payload'
+import type { PayloadClientReactComponent, RowLabelComponent } from 'payload'
 
-const CustomRowLabelNavItems: PayloadClientReactComponent<RowLabelComponent> = () => {
+export const ItemsRowLabel: PayloadClientReactComponent<RowLabelComponent> = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data } = useRowLabel<any>()
 
@@ -18,5 +18,3 @@ const CustomRowLabelNavItems: PayloadClientReactComponent<RowLabelComponent> = (
     return data.listLinks?.tag
   }
 }
-
-export default CustomRowLabelNavItems

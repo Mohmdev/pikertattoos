@@ -17,7 +17,7 @@ type Props = {
 }
 
 export const RenderDoc = ({ doc, className }: Props) => {
-  const { title, description, relatedDocs } = doc
+  const { title, richTextContent: description, relatedDocs } = doc
 
   const images = Array.isArray(doc.images) ? (doc.images as MediaType[]) : undefined
   const mainImage = images?.[0]

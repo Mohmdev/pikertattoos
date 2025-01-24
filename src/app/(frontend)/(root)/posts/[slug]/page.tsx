@@ -51,8 +51,8 @@ export default async function Post({ params: paramsPromise }: Args) {
   const url = '/posts/' + slug
   const post = await queryPostBySlug({ slug })
 
-  const richTextContent = post?.editor?.root
-    ? ({ root: post.editor.root } as SerializedEditorState)
+  const richTextContent = post?.richTextContent?.root
+    ? ({ root: post.richTextContent.root } as SerializedEditorState)
     : null
 
   if (!post) return <PayloadRedirects url={url} />

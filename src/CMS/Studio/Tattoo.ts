@@ -108,9 +108,9 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
                 }
               ]
             },
-
             {
-              name: 'description',
+              name: 'richTextContent',
+              label: 'Description',
               type: 'richText',
               editor: basicLexical,
               admin: {

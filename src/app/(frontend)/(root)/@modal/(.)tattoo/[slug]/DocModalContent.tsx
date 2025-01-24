@@ -18,7 +18,7 @@ type Props = {
 }
 
 export const DocModalContent = ({ doc, className }: Props) => {
-  const { title, description } = doc
+  const { title, richTextContent: description } = doc
 
   const images = Array.isArray(doc.images) ? (doc.images as MediaType[]) : undefined
   const mainImage = images?.[0]

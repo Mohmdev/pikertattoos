@@ -58,14 +58,13 @@ const createTattoos = async ({ payload }: { payload: Payload }): Promise<void> =
           file: imageBuffer
         })
 
-        // Add version property to description
-        const enhancedDescription = tattoo.description
+        const sanitizedDescription = tattoo.richTextContent
           ? {
-              ...tattoo.description,
+              ...tattoo.richTextContent,
               root: {
-                ...tattoo.description.root,
+                ...tattoo.richTextContent.root,
                 version: 1,
-                children: tattoo.description.root.children.map((child) => ({
+                children: tattoo.richTextContent.root.children.map((child) => ({
                   ...child,
                   version: 1
                 }))
@@ -80,7 +79,7 @@ const createTattoos = async ({ payload }: { payload: Payload }): Promise<void> =
             title: tattoo.title,
             slug: tattoo.slug,
             images: [mediaDoc.id],
-            description: enhancedDescription
+            richTextContent: sanitizedDescription
           }
         })
         payload.logger.info(`✓ Created tattoo "${tattoo.title}"`)

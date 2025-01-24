@@ -7,7 +7,7 @@ import { SearchIcon } from 'lucide-react'
 import { cn } from '@utils/cn'
 import { useDebounce } from '@utils/useDebounce'
 
-import { CardDocData } from '../components/Card'
+import type { Search } from '@payload-types'
 
 type Props = {
   className?: string
@@ -16,7 +16,7 @@ type Props = {
   iconClassName?: string
   glass?: boolean
   initialValue?: string
-  onResultsChange?: (results: CardDocData[] | null) => void
+  onResultsChange?: (results: Search[] | null) => void
   iconSize?: number
 }
 

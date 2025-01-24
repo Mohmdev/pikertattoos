@@ -17,7 +17,7 @@ export const getCachedDocBySlug = unstable_cache(async ({ slug }: { slug: string
     select: {
       title: true,
       slug: true,
-      description: true,
+      richTextContent: true,
       relatedDocs: true,
       images: true,
       style: true,
@@ -47,7 +47,7 @@ export const getDraftDocBySlug = async ({ slug }: { slug: string }) => {
     select: {
       title: true,
       slug: true,
-      description: true,
+      richTextContent: true,
       relatedDocs: true,
       images: true,
       style: true,

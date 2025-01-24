@@ -1,8 +1,9 @@
+import { generateGlobalPreviewPath } from '@services/preview/generateGlobalPreviewPath'
 import { link } from '@fields/link'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { publishedOnly } from '@access/publishedOnly'
 
-// import { isAdmin } from '@access/isAdmin'
+import { getServerSideURL } from '@utils/getURL'
 
 import type { GlobalConfig } from 'payload'
 
@@ -16,13 +17,27 @@ export const MainMenu: GlobalConfig = {
     readVersions: isAdminOrEditor,
     readDrafts: isAdminOrEditor
   },
+  admin: {
+    livePreview: {
+      url: ({ req }) => {
+        return generateGlobalPreviewPath({
+          global: 'main-menu',
+          slug: 'main-menu',
+          req
+        })
+      }
+    },
+    preview: () => {
+      return `${getServerSideURL()}`
+    }
+  },
   fields: [
     {
       name: 'tabs',
       type: 'array',
       admin: {
         components: {
-          RowLabel: '@admin-components/RowLabelCustom/Tabs'
+          RowLabel: '@CMS/MainMenu/TabsRowLabel#TabsRowLabel'
         }
       },
       fields: [
@@ -84,7 +99,7 @@ export const MainMenu: GlobalConfig = {
               type: 'array',
               admin: {
                 components: {
-                  RowLabel: '@admin-components/RowLabelCustom/Items'
+                  RowLabel: '@CMS/MainMenu/ItemsRowLabel#ItemsRowLabel'
                 }
               },
               fields: [

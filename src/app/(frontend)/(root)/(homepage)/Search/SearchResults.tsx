@@ -2,24 +2,13 @@ import React from 'react'
 
 import { cn } from '@utils/cn'
 
-import type { Media } from '@payload-types'
+import type { Search } from '@payload-types'
 
-import { Card } from '../components/Card'
-
-export type ResultDocData = {
-  id: string
-  title: string
-  slug: string
-  image?: Media | null
-  description?: string
-  style?: {
-    title: string
-  }[]
-}
+import { ResultDoc } from './ResultDoc'
 
 type Props = {
   searchQuery?: string
-  searchResults: ResultDocData[] | null
+  searchResults: Partial<Search>[] | null
 }
 
 export const SearchResults = ({ searchQuery, searchResults }: Props) => {
@@ -47,11 +36,7 @@ export const SearchResults = ({ searchQuery, searchResults }: Props) => {
           >
             {searchResults?.map((result, index) => {
               if (typeof result === 'object' && result !== null) {
-                return (
-                  <div className="col-span-4" key={index}>
-                    <Card className="h-full" doc={result} relationTo="tattoo" showCategories />
-                  </div>
-                )
+                return <ResultDoc key={index} docData={result} className="col-span-4 h-full" />
               }
               return null
             })}

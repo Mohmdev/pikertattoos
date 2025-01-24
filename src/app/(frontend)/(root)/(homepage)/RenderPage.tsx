@@ -4,8 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import { cn } from '@utils/cn'
 
-import type { ResultDocData } from './Search/SearchResults'
-import type { Homepage, Tattoo } from '@payload-types'
+import type { Homepage, Search, Tattoo } from '@payload-types'
 
 import BackdropGradient from '@components/global/backdrop-gradient'
 import { TextEffect } from '@ui/text-effect'
@@ -19,7 +18,7 @@ import { SearchResults } from './Search/SearchResults'
 
 interface RenderPageProps {
   data: Homepage
-  searchResults: ResultDocData[] | null
+  searchResults: Partial<Search>[] | null
   searchQuery?: string
 }
 
@@ -28,7 +27,7 @@ export const RenderPage = ({
   searchQuery,
   searchResults: initialSearchResults
 }: RenderPageProps) => {
-  const [currentSearchResults, setCurrentSearchResults] = useState<ResultDocData[] | null>(
+  const [currentSearchResults, setCurrentSearchResults] = useState<Partial<Search>[] | null>(
     initialSearchResults
   )
 

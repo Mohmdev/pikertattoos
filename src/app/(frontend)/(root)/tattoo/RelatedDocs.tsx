@@ -1,6 +1,8 @@
 import React from 'react'
 
-import clsx from 'clsx'
+import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+
+import { cn } from '@utils/cn'
 
 import type { Post, Tattoo } from '@payload-types'
 
@@ -11,15 +13,14 @@ import { Card } from '../(homepage)/components/Card'
 export type RelatedDocsProps = {
   className?: string
   docs?: Tattoo[] | Post[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  introContent?: any
+  introContent?: SerializedEditorState
 }
 
 export const RelatedDocs: React.FC<RelatedDocsProps> = (props) => {
   const { className, docs, introContent } = props
 
   return (
-    <div className={clsx('lg:container', className)}>
+    <div className={cn('lg:container', className)}>
       {introContent && <RichText data={introContent} enableGutter={false} />}
 
       <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-8">

@@ -150,7 +150,7 @@ export interface Tattoo {
   video?: (number | null) | Media;
   area?: (number | Area)[] | null;
   style?: (number | Style)[] | null;
-  description?: {
+  richTextContent?: {
     root: {
       type: string;
       children: {
@@ -530,8 +530,11 @@ export interface Area {
 export interface Post {
   id: number;
   title: string;
-  heroImage?: (number | null) | Media;
-  editor?: {
+  /**
+   * Up to 12 images.
+   */
+  images?: (number | Media)[] | null;
+  richTextContent?: {
     root: {
       type: string;
       children: {
@@ -1427,7 +1430,7 @@ export interface TattooSelect<T extends boolean = true> {
   video?: T;
   area?: T;
   style?: T;
-  description?: T;
+  richTextContent?: T;
   artist?: T;
   relatedDocs?: T;
   tags?: T;
@@ -1690,8 +1693,8 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  heroImage?: T;
-  editor?: T;
+  images?: T;
+  richTextContent?: T;
   categories?: T;
   relatedDocs?: T;
   tags?: T;

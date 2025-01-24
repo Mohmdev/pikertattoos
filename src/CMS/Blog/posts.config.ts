@@ -64,12 +64,20 @@ export const Posts: CollectionConfig<'posts'> = {
           label: 'Content',
           fields: [
             {
-              name: 'heroImage',
+              label: 'Hero Image',
+              name: 'images',
               type: 'upload',
-              relationTo: 'media'
+              relationTo: 'media',
+              hasMany: true,
+              minRows: 1,
+              maxRows: 12,
+              admin: {
+                description: 'Up to 12 images.'
+              },
+              index: true
             },
             {
-              name: 'editor',
+              name: 'richTextContent',
               label: 'Editor',
               type: 'richText',
               editor: blogEditor
