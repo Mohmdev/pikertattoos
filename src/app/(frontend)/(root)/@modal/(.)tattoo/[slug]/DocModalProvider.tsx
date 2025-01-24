@@ -21,7 +21,7 @@ export const DocModalProvider = ({ children }: Props) => {
       // Delay the navigation to allow the exit animation to play
       setTimeout(() => {
         router.back()
-      }, 1000) // Match this with your animation duration
+      }, 300) // Match this with your animation duration
     }
   }
 

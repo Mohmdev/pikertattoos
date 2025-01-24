@@ -24,7 +24,7 @@ const DialogOverlay = React.forwardRef<
       'fixed inset-0 z-50',
       'data-[state=open]:animate-in data-[state=closed]:animate-out',
       'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-      'transition-all duration-1000 ease-linear',
+      'transition-all duration-300 ease-linear',
       'bg-background/0 backdrop-brightness-75',
       className
     )}
@@ -50,7 +50,7 @@ const DialogContent = React.forwardRef<
         'data-[state=closed]:slide-out-to-left-1/2 data-[state=open]:slide-in-from-left-1/2',
         'data-[state=closed]:zoom-out-[80%] data-[state=open]:zoom-in-[80%]',
         'border bg-background shadow-lg sm:rounded-lg',
-        'duration-1000 ease-linear',
+        'duration-300 ease-linear',
         className
       )}
       {...props}
