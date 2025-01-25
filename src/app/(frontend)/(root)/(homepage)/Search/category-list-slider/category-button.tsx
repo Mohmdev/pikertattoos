@@ -5,7 +5,7 @@ import { cn } from '@utils/cn'
 
 interface CategoryButtonProps {
   label: string
-  selected?: string
+  selected?: string | null
   radius?: string
   colors?: {
     from?: string

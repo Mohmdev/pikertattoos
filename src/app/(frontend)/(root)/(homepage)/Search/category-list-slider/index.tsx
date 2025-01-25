@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-
 import { SwiperProps, SwiperSlide } from 'swiper/react'
 
 import type { Area, Style, Tag } from '@payload-types'
@@ -23,6 +21,7 @@ type Props = {
   )[]
   onSearch?: (query: string | null) => void
   isLoading?: boolean
+  selectedQuery?: string | null
 } & SwiperProps
 
 export const CategoryListSlider = ({
@@ -32,24 +31,16 @@ export const CategoryListSlider = ({
   categories,
   onSearch,
   isLoading,
+  selectedQuery,
   ...rest
 }: Props) => {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-
   const handleCategoryClick = (title: string) => {
-    const params = new URLSearchParams(searchParams.toString())
-    const currentQuery = params.get('q')
-
-    if (currentQuery === title) {
-      params.delete('q')
+    // If the category is already selected, clear it
+    if (selectedQuery === title) {
       onSearch?.(null)
     } else {
-      params.set('q', title)
       onSearch?.(title)
     }
-
-    router.push(`/?${params.toString()}`)
   }
 
   return (
@@ -59,8 +50,7 @@ export const CategoryListSlider = ({
       freeMode
       label={label}
       overlay={overlay}
-      // spaceBetween={8}
-      className="*:gap-2" // Use className because spaceBetween gets applied after DOM is rendered resulting in an ugly initial render
+      className="*:gap-2"
       {...rest}
     >
       {categories.map((item) => {
@@ -70,7 +60,7 @@ export const CategoryListSlider = ({
             {route ? (
               <CategoryButton
                 label={data.title}
-                selected={searchParams.get('q') || undefined}
+                selected={selectedQuery}
                 onClick={() => handleCategoryClick(data.title)}
                 isLoading={isLoading}
               />

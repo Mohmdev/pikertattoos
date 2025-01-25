@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { cn } from '@utils/cn'
 
@@ -13,6 +13,7 @@ import { InView } from './components/in-view'
 import { RichStyleHeading } from './components/RichStyleHeading'
 import { TriggerCard } from './components/TriggerCard'
 import { CategoryListSlider } from './Search/category-list-slider'
+import { useSearch } from './Search/hooks/useSearch'
 import { SearchInput } from './Search/SearchInput'
 import { SearchResults } from './Search/SearchResults'
 
@@ -22,23 +23,11 @@ interface RenderPageProps {
   searchQuery?: string
 }
 
-interface SearchState {
-  isLoading: boolean
-  query: string | null
-  results: Partial<Search>[] | null
-}
-
 export const RenderPage = ({
   data,
-  searchQuery,
-  searchResults: initialSearchResults
+  searchQuery: initialSearchQuery,
+  searchResults
 }: RenderPageProps) => {
-  const [searchState, setSearchState] = useState<SearchState>({
-    isLoading: false,
-    query: searchQuery ?? null,
-    results: initialSearchResults
-  })
-
   const { heading, subheading, gradientBackground, search, gridView } = data
 
   const featuredPosts =
@@ -50,29 +39,16 @@ export const RenderPage = ({
 
   const filterOptions = search?.filterOptions ?? []
 
-  useEffect(() => {
-    setSearchState((prev) => ({
-      ...prev,
-      results: initialSearchResults,
-      query: searchQuery ?? null
-    }))
-  }, [initialSearchResults, searchQuery])
-
-  const handleSearch = (newQuery: string | null) => {
-    setSearchState((prev) => ({
-      ...prev,
-      isLoading: true,
-      query: newQuery
-    }))
-  }
-
-  const handleSearchComplete = (results: Partial<Search>[] | null) => {
-    setSearchState((prev) => ({
-      ...prev,
-      isLoading: false,
-      results
-    }))
-  }
+  const {
+    isLoading,
+    data: searchData,
+    query,
+    setSearch,
+    searchState
+  } = useSearch(
+    initialSearchQuery,
+    searchResults ? { docs: searchResults, totalDocs: searchResults.length } : undefined
+  )
 
   return (
     <div
@@ -113,7 +89,6 @@ export const RenderPage = ({
       {/* Search Section */}
       <div
         className={cn(
-          //
           'grid',
           'w-full max-w-[650px] px-10 md:px-0',
           'mb-[-100px] mt-[-80px] min-h-[250px]'
@@ -121,21 +96,16 @@ export const RenderPage = ({
       >
         <BackdropGradient
           className="flex h-full flex-col items-center"
-          blurClassName={cn(
-            //
-            'inset-y-0 w-[90%]',
-            'top-[30%] bottom-[49%]'
-          )}
+          blurClassName={cn('inset-y-0 w-[90%]', 'top-[30%] bottom-[49%]')}
         >
           <SearchInput
-            initialValue={searchState.query ?? ''}
-            onResultsChange={handleSearchComplete}
-            onSearch={handleSearch}
+            initialValue={query ?? ''}
+            onSearch={setSearch}
             placeholder={search?.placeholderText ?? 'Search for anything'}
             glass
             className="my-auto"
             iconClassName="text-themeTextGray"
-            isLoading={searchState.isLoading}
+            isLoading={isLoading}
           />
         </BackdropGradient>
       </div>
@@ -147,8 +117,9 @@ export const RenderPage = ({
             overlay
             route
             categories={filterOptions}
-            onSearch={handleSearch}
-            isLoading={searchState.isLoading}
+            onSearch={setSearch}
+            isLoading={isLoading}
+            selectedQuery={query}
           />
         </div>
       )}
@@ -156,16 +127,16 @@ export const RenderPage = ({
       {/* Dynamic Content Section */}
       <div className="relative w-full">
         <SearchResults
-          searchQuery={searchState.query ?? undefined}
-          searchResults={searchState.results}
-          isLoading={searchState.isLoading}
+          searchQuery={query ?? undefined}
+          searchResults={searchData?.docs ?? null}
+          searchState={searchState}
         />
 
         {/* Default Grid View */}
         <div
           className={cn(
             'relative transition-all duration-300',
-            searchState.query ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'
+            query ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'
           )}
         >
           <div

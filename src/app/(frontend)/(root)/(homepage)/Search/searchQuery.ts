@@ -1,9 +1,22 @@
-import type { Payload } from 'payload'
+'use server'
 
-export async function searchTattoos(payload: Payload, query: string | undefined) {
+import configPromise from '@payload-config'
+
+import { getPayload } from 'payload'
+
+import type { Search } from '@payload-types'
+
+export interface SearchResults {
+  docs: Partial<Search>[]
+  totalDocs: number
+}
+
+export async function searchTattoos(query: string | undefined): Promise<SearchResults> {
   if (!query) {
     return { docs: [], totalDocs: 0 }
   }
+
+  const payload = await getPayload({ config: configPromise })
 
   const results = await payload.find({
     collection: 'search',

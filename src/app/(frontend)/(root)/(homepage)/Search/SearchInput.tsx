@@ -1,13 +1,9 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import React from 'react'
 
 import { SearchIcon } from 'lucide-react'
 import { cn } from '@utils/cn'
-import { useDebounce } from '@utils/useDebounce'
-
-import type { Search } from '@payload-types'
 
 type Props = {
   className?: string
@@ -16,10 +12,8 @@ type Props = {
   iconClassName?: string
   glass?: boolean
   initialValue?: string
-  onResultsChange?: (results: Search[] | null) => void
   onSearch?: (query: string | null) => void
   isLoading?: boolean
-  // iconSize?: number
 }
 
 export const SearchInput = ({
@@ -29,61 +23,9 @@ export const SearchInput = ({
   inputClassName,
   placeholder = 'Search',
   initialValue = '',
-  onResultsChange,
   onSearch,
   isLoading = false
 }: Props) => {
-  const router = useRouter()
-  const [value, setValue] = useState(initialValue)
-  const debouncedValue = useDebounce(value)
-  const [isInitialized, setIsInitialized] = useState(false)
-  const [lastSearched, setLastSearched] = useState<string | null>(null)
-
-  // Handle initial value changes from parent
-  useEffect(() => {
-    if (initialValue !== value) {
-      setValue(initialValue)
-    }
-  }, [initialValue])
-
-  // Handle search only after initialization and when debounced value changes
-  useEffect(() => {
-    if (!isInitialized) {
-      setIsInitialized(true)
-      return
-    }
-
-    // Prevent duplicate searches
-    if (debouncedValue === lastSearched) {
-      return
-    }
-
-    async function fetchResults() {
-      if (debouncedValue) {
-        setLastSearched(debouncedValue)
-        onSearch?.(debouncedValue)
-        try {
-          onResultsChange?.(null)
-          router.push(`/?q=${encodeURIComponent(debouncedValue)}`, {
-            scroll: false
-          })
-        } catch (error) {
-          console.error('Search error:', error)
-          onResultsChange?.(null)
-        }
-      } else if (isInitialized && lastSearched !== null) {
-        setLastSearched(null)
-        onSearch?.(null)
-        onResultsChange?.(null)
-        router.push('/', {
-          scroll: false
-        })
-      }
-    }
-
-    fetchResults()
-  }, [debouncedValue, router, onResultsChange, onSearch, isInitialized, lastSearched])
-
   return (
     <div
       className={cn(
@@ -109,9 +51,9 @@ export const SearchInput = ({
       >
         <Input
           id="search"
-          value={value}
+          value={initialValue}
           onChange={(event) => {
-            setValue(event.target.value)
+            onSearch?.(event.target.value || null)
           }}
           placeholder={placeholder}
           className={cn(
