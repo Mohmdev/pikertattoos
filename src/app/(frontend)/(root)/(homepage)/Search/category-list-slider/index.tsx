@@ -1,5 +1,7 @@
 'use client'
 
+import { useCallback, useMemo } from 'react'
+
 import { SwiperProps, SwiperSlide } from 'swiper/react'
 
 import type { Area, Style, Tag } from '@payload-types'
@@ -34,26 +36,21 @@ export const CategoryListSlider = ({
   selectedQuery,
   ...rest
 }: Props) => {
-  const handleCategoryClick = (title: string) => {
-    // If the category is already selected, clear it
-    if (selectedQuery === title) {
-      onSearch?.(null)
-    } else {
-      onSearch?.(title)
-    }
-  }
+  const handleCategoryClick = useCallback(
+    (title: string) => {
+      // If the category is already selected, clear it
+      if (selectedQuery === title) {
+        onSearch?.(null)
+      } else {
+        onSearch?.(title)
+      }
+    },
+    [selectedQuery, onSearch]
+  )
 
-  return (
-    <Slider
-      slidesPerView={'auto'}
-      loop
-      freeMode
-      label={label}
-      overlay={overlay}
-      className="*:gap-2"
-      {...rest}
-    >
-      {categories.map((item) => {
+  const categorySlides = useMemo(
+    () =>
+      categories.map((item) => {
         const data = item.value as Style | Tag | Area
         return (
           <SwiperSlide key={data.id} className="content-width-slide">
@@ -69,7 +66,21 @@ export const CategoryListSlider = ({
             )}
           </SwiperSlide>
         )
-      })}
+      }),
+    [categories, route, selectedQuery, isLoading, handleCategoryClick]
+  )
+
+  return (
+    <Slider
+      slidesPerView={'auto'}
+      loop
+      freeMode
+      label={label}
+      overlay={overlay}
+      className="*:gap-2"
+      {...rest}
+    >
+      {categorySlides}
     </Slider>
   )
 }

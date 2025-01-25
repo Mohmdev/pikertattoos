@@ -48,7 +48,7 @@ Recommended to start with creating the centralized useSearch hook since that wil
 
 5. Performance Optimizations
 
-- [ ] Add proper memoization where needed
-- [ ] Implement request deduplication
-- [ ] Add proper error boundaries
-- [ ] Optimize re-renders
+- [✓] Add proper memoization where needed
+- [✓] Implement request deduplication
+- [✓] Add proper error boundaries
+- [✓] Optimize re-renders

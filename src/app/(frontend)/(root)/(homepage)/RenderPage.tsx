@@ -14,6 +14,7 @@ import { RichStyleHeading } from './components/RichStyleHeading'
 import { TriggerCard } from './components/TriggerCard'
 import { CategoryListSlider } from './Search/category-list-slider'
 import { useSearch } from './Search/hooks/useSearch'
+import { SearchErrorBoundary } from './Search/SearchErrorBoundary'
 import { SearchInput } from './Search/SearchInput'
 import { SearchResults } from './Search/SearchResults'
 
@@ -94,43 +95,49 @@ export const RenderPage = ({
           'mb-[-100px] mt-[-80px] min-h-[250px]'
         )}
       >
-        <BackdropGradient
-          className="flex h-full flex-col items-center"
-          blurClassName={cn('inset-y-0 w-[90%]', 'top-[30%] bottom-[49%]')}
-        >
-          <SearchInput
-            initialValue={query ?? ''}
-            onSearch={setSearch}
-            placeholder={search?.placeholderText ?? 'Search for anything'}
-            glass
-            className="my-auto"
-            iconClassName="text-themeTextGray"
-            isLoading={isLoading}
-          />
-        </BackdropGradient>
+        <SearchErrorBoundary>
+          <BackdropGradient
+            className="flex h-full flex-col items-center"
+            blurClassName={cn('inset-y-0 w-[90%]', 'top-[30%] bottom-[49%]')}
+          >
+            <SearchInput
+              initialValue={query ?? ''}
+              onSearch={setSearch}
+              placeholder={search?.placeholderText ?? 'Search for anything'}
+              glass
+              className="my-auto"
+              iconClassName="text-themeTextGray"
+              isLoading={isLoading}
+            />
+          </BackdropGradient>
+        </SearchErrorBoundary>
       </div>
 
       {/* Search Categories */}
       {search?.enableFilters && (
         <div className="w-full max-w-[800px] overflow-hidden px-0 md:px-0">
-          <CategoryListSlider
-            overlay
-            route
-            categories={filterOptions}
-            onSearch={setSearch}
-            isLoading={isLoading}
-            selectedQuery={query}
-          />
+          <SearchErrorBoundary>
+            <CategoryListSlider
+              overlay
+              route
+              categories={filterOptions}
+              onSearch={setSearch}
+              isLoading={isLoading}
+              selectedQuery={query}
+            />
+          </SearchErrorBoundary>
         </div>
       )}
 
       {/* Dynamic Content Section */}
       <div className="relative w-full">
-        <SearchResults
-          searchQuery={query ?? undefined}
-          searchResults={searchData?.docs ?? null}
-          searchState={searchState}
-        />
+        <SearchErrorBoundary>
+          <SearchResults
+            searchQuery={query ?? undefined}
+            searchResults={searchData?.docs ?? null}
+            searchState={searchState}
+          />
+        </SearchErrorBoundary>
 
         {/* Default Grid View */}
         <div
