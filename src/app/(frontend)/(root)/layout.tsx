@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { cn } from '@utils/cn'
+
 import { mockNavLinks } from './_nav/mockNavLinks'
 import { RoundedDrawerNav } from './_nav/RoundedDrawerNav'
 
@@ -10,7 +12,14 @@ type GlobalLayoutProps = {
 
 export default async function GlobalLayout({ children, modal }: GlobalLayoutProps) {
   return (
-    <div className="relative box-border flex min-h-screen w-full max-w-[100vw] flex-col pb-10">
+    <div
+      className={cn(
+        'flex flex-col',
+        'relative box-border',
+        'min-h-screen w-full max-w-[100vw]',
+        'pb-10'
+      )}
+    >
       <RoundedDrawerNav
         links={mockNavLinks}
         // navBackground="bg-neutral-950"

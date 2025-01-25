@@ -22,14 +22,22 @@ interface RenderPageProps {
   searchQuery?: string
 }
 
+interface SearchState {
+  isLoading: boolean
+  query: string | null
+  results: Partial<Search>[] | null
+}
+
 export const RenderPage = ({
   data,
   searchQuery,
   searchResults: initialSearchResults
 }: RenderPageProps) => {
-  const [currentSearchResults, setCurrentSearchResults] = useState<Partial<Search>[] | null>(
-    initialSearchResults
-  )
+  const [searchState, setSearchState] = useState<SearchState>({
+    isLoading: false,
+    query: searchQuery ?? null,
+    results: initialSearchResults
+  })
 
   const { heading, subheading, gradientBackground, search, gridView } = data
 
@@ -43,8 +51,28 @@ export const RenderPage = ({
   const filterOptions = search?.filterOptions ?? []
 
   useEffect(() => {
-    setCurrentSearchResults(initialSearchResults)
-  }, [initialSearchResults])
+    setSearchState((prev) => ({
+      ...prev,
+      results: initialSearchResults,
+      query: searchQuery ?? null
+    }))
+  }, [initialSearchResults, searchQuery])
+
+  const handleSearch = (newQuery: string | null) => {
+    setSearchState((prev) => ({
+      ...prev,
+      isLoading: true,
+      query: newQuery
+    }))
+  }
+
+  const handleSearchComplete = (results: Partial<Search>[] | null) => {
+    setSearchState((prev) => ({
+      ...prev,
+      isLoading: false,
+      results
+    }))
+  }
 
   return (
     <div
@@ -52,7 +80,7 @@ export const RenderPage = ({
         'flex flex-1 flex-col',
         'items-center justify-center',
         'gap-2 px-0 pb-10 pt-8 lg:px-2 lg:pt-28',
-        'min-h-screen max-w-[100vw]'
+        'min-h-full max-w-[100vw]'
       )}
     >
       {/* Hero Section */}
@@ -100,13 +128,14 @@ export const RenderPage = ({
           )}
         >
           <SearchInput
-            initialValue={searchQuery}
-            onResultsChange={setCurrentSearchResults}
+            initialValue={searchState.query ?? ''}
+            onResultsChange={handleSearchComplete}
+            onSearch={handleSearch}
             placeholder={search?.placeholderText ?? 'Search for anything'}
             glass
             className="my-auto"
             iconClassName="text-themeTextGray"
-            iconSize={21}
+            isLoading={searchState.isLoading}
           />
         </BackdropGradient>
       </div>
@@ -114,19 +143,29 @@ export const RenderPage = ({
       {/* Search Categories */}
       {search?.enableFilters && (
         <div className="w-full max-w-[800px] overflow-hidden px-0 md:px-0">
-          <CategoryListSlider overlay route categories={filterOptions} />
+          <CategoryListSlider
+            overlay
+            route
+            categories={filterOptions}
+            onSearch={handleSearch}
+            isLoading={searchState.isLoading}
+          />
         </div>
       )}
 
       {/* Dynamic Content Section */}
       <div className="relative w-full">
-        <SearchResults searchQuery={searchQuery} searchResults={currentSearchResults} />
+        <SearchResults
+          searchQuery={searchState.query ?? undefined}
+          searchResults={searchState.results}
+          isLoading={searchState.isLoading}
+        />
 
         {/* Default Grid View */}
         <div
           className={cn(
             'relative transition-all duration-300',
-            searchQuery ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'
+            searchState.query ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'
           )}
         >
           <div

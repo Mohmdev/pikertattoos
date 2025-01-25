@@ -6,11 +6,10 @@ import { SwiperProps, SwiperSlide } from 'swiper/react'
 
 import type { Area, Style, Tag } from '@payload-types'
 
+import { GroupListItem } from './list-item'
 import { Slider } from './slider'
 
 import 'swiper/css/bundle'
-
-import { CategoryButton } from './category-button'
 
 type Props = {
   overlay?: boolean
@@ -21,19 +20,9 @@ type Props = {
     | { relationTo: 'tag'; value: number | Tag }
     | { relationTo: 'area'; value: number | Area }
   )[]
-  onSearch?: (query: string | null) => void
-  isLoading?: boolean
 } & SwiperProps
 
-export const CategoryListSlider = ({
-  overlay,
-  label,
-  route,
-  categories,
-  onSearch,
-  isLoading,
-  ...rest
-}: Props) => {
+export const CategoryListSlider = ({ overlay, label, route, categories, ...rest }: Props) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -43,10 +32,8 @@ export const CategoryListSlider = ({
 
     if (currentQuery === title) {
       params.delete('q')
-      onSearch?.(null)
     } else {
       params.set('q', title)
-      onSearch?.(title)
     }
 
     router.push(`/?${params.toString()}`)
@@ -68,14 +55,11 @@ export const CategoryListSlider = ({
         return (
           <SwiperSlide key={data.id} className="content-width-slide">
             {route ? (
-              <CategoryButton
-                label={data.title}
-                selected={searchParams.get('q') || undefined}
-                onClick={() => handleCategoryClick(data.title)}
-                isLoading={isLoading}
-              />
+              <div onClick={() => handleCategoryClick(data.title)} className="cursor-pointer">
+                <GroupListItem label={data.title} selected={searchParams.get('q') || undefined} />
+              </div>
             ) : (
-              <CategoryButton label={data.title} />
+              <GroupListItem label={data.title} />
             )}
           </SwiperSlide>
         )

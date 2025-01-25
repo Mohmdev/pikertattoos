@@ -9,9 +9,10 @@ import { ResultDoc } from './ResultDoc'
 type Props = {
   searchQuery?: string
   searchResults: Partial<Search>[] | null
+  isLoading?: boolean
 }
 
-export const SearchResults = ({ searchQuery, searchResults }: Props) => {
+export const SearchResults = ({ searchQuery, searchResults, isLoading = false }: Props) => {
   return (
     <div
       className={cn(
@@ -19,7 +20,9 @@ export const SearchResults = ({ searchQuery, searchResults }: Props) => {
         searchQuery ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
       )}
     >
-      {searchResults ? (
+      {isLoading ? (
+        <div className="container px-4 text-center">Loading...</div>
+      ) : searchResults ? (
         <div
           className={cn(
             //

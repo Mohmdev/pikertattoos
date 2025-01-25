@@ -17,7 +17,9 @@ type Props = {
   glass?: boolean
   initialValue?: string
   onResultsChange?: (results: Search[] | null) => void
-  iconSize?: number
+  onSearch?: (query: string | null) => void
+  isLoading?: boolean
+  // iconSize?: number
 }
 
 export const SearchInput = ({
@@ -27,20 +29,39 @@ export const SearchInput = ({
   inputClassName,
   placeholder = 'Search',
   initialValue = '',
-  onResultsChange
+  onResultsChange,
+  onSearch,
+  isLoading = false
 }: Props) => {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
   const [value, setValue] = useState(initialValue)
   const debouncedValue = useDebounce(value)
+  const [isInitialized, setIsInitialized] = useState(false)
+  const [lastSearched, setLastSearched] = useState<string | null>(null)
 
-  console.log('Search - value:', value)
-  console.log('Search - debouncedValue:', debouncedValue)
-
+  // Handle initial value changes from parent
   useEffect(() => {
+    if (initialValue !== value) {
+      setValue(initialValue)
+    }
+  }, [initialValue])
+
+  // Handle search only after initialization and when debounced value changes
+  useEffect(() => {
+    if (!isInitialized) {
+      setIsInitialized(true)
+      return
+    }
+
+    // Prevent duplicate searches
+    if (debouncedValue === lastSearched) {
+      return
+    }
+
     async function fetchResults() {
       if (debouncedValue) {
-        setIsLoading(true)
+        setLastSearched(debouncedValue)
+        onSearch?.(debouncedValue)
         try {
           onResultsChange?.(null)
           router.push(`/?q=${encodeURIComponent(debouncedValue)}`, {
@@ -49,10 +70,10 @@ export const SearchInput = ({
         } catch (error) {
           console.error('Search error:', error)
           onResultsChange?.(null)
-        } finally {
-          setIsLoading(false)
         }
-      } else {
+      } else if (isInitialized && lastSearched !== null) {
+        setLastSearched(null)
+        onSearch?.(null)
         onResultsChange?.(null)
         router.push('/', {
           scroll: false
@@ -61,7 +82,7 @@ export const SearchInput = ({
     }
 
     fetchResults()
-  }, [debouncedValue, router, onResultsChange])
+  }, [debouncedValue, router, onResultsChange, onSearch, isInitialized, lastSearched])
 
   return (
     <div
