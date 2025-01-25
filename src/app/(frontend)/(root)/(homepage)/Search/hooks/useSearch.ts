@@ -21,7 +21,11 @@ export interface UseSearchReturn {
   prefetchSearch: (query: string) => void
 }
 
-export function useSearch(initialQuery?: string, initialData?: SearchResults): UseSearchReturn {
+export function useSearch(
+  initialQuery?: string,
+  initialData?: SearchResults,
+  minSearchLength: number = 3
+): UseSearchReturn {
   const router = useRouter()
   const searchParams = useSearchParams()
   const queryClient = useQueryClient()
@@ -75,7 +79,7 @@ export function useSearch(initialQuery?: string, initialData?: SearchResults): U
         throw error
       }
     },
-    enabled: !!debouncedQuery && debouncedQuery.length > 0,
+    enabled: !!debouncedQuery && debouncedQuery.length >= minSearchLength,
     staleTime: 30000, // Results stay fresh for 30s
     gcTime: 5 * 60 * 1000, // Cache for 5 minutes
     refetchOnWindowFocus: false,
@@ -95,7 +99,7 @@ export function useSearch(initialQuery?: string, initialData?: SearchResults): U
   // Prefetch related searches when hovering over categories
   const prefetchSearch = useCallback(
     (query: string) => {
-      if (!query) return
+      if (!query || query.length < minSearchLength) return
 
       queryClient.prefetchQuery({
         queryKey: ['search', query],
@@ -103,7 +107,7 @@ export function useSearch(initialQuery?: string, initialData?: SearchResults): U
         staleTime: 30000
       })
     },
-    [queryClient]
+    [queryClient, minSearchLength]
   )
 
   const setSearch = useCallback(
@@ -113,23 +117,29 @@ export function useSearch(initialQuery?: string, initialData?: SearchResults): U
 
       setSearchInput(newQuery || '')
 
-      // Only update URL if the query has actually changed
+      // Only update URL if the query has actually changed and meets minimum length
       const currentQuery = searchParams.get('q')
       if (currentQuery === newQuery) return
 
       const params = new URLSearchParams(searchParams.toString())
-      if (newQuery) {
-        params.set('q', newQuery)
-      } else {
-        params.delete('q')
-        // Clear the cache when search is cleared
-        queryClient.removeQueries({ queryKey: ['search'] })
-      }
 
-      // Update URL without full page reload and preserve scroll position
-      router.push(`/?${params.toString()}`, { scroll: false })
+      // Only update URL if query meets minimum length or is being cleared
+      if (newQuery && newQuery.length >= minSearchLength) {
+        params.set('q', newQuery)
+        // Update URL without full page reload and preserve scroll position
+        router.push(`/?${params.toString()}`, { scroll: false })
+      } else {
+        // If query is being cleared or is too short, remove it from URL
+        if (params.has('q')) {
+          params.delete('q')
+          // Clear the cache when search is cleared
+          queryClient.removeQueries({ queryKey: ['search'] })
+          // Update URL only if we're removing an existing query
+          router.push('/', { scroll: false })
+        }
+      }
     },
-    [router, searchParams, queryClient]
+    [router, searchParams, queryClient, minSearchLength]
   )
 
   // Determine the current search state

@@ -2,7 +2,7 @@
 
 import React, { memo, useCallback } from 'react'
 
-import { SearchIcon } from 'lucide-react'
+import { SearchIcon, X } from 'lucide-react'
 import { cn } from '@utils/cn'
 
 type Props = {
@@ -24,7 +24,7 @@ const Input = memo(
           type={type}
           style={{
             paddingLeft: '50px',
-            paddingRight: '0.75rem'
+            paddingRight: '2.5rem'
           }}
           className={cn(
             'flex bg-transparent px-3 py-1',
@@ -67,6 +67,10 @@ export const SearchInput = memo(
       [onSearch]
     )
 
+    const handleClear = useCallback(() => {
+      onSearch?.(null)
+    }, [onSearch])
+
     return (
       <div
         className={cn(
@@ -74,13 +78,14 @@ export const SearchInput = memo(
           glass && 'backdrop--blur__safari bg-clip-padding backdrop-blur-2xl backdrop-filter',
           className,
           'box-content flex w-full max-w-[90%] rounded-3xl border border-themeGray px-5 py-2 pl-4',
-          'h-[20px] bg-[rgba(71,58,68,0.2)] lg:h-[32px]'
+          'h-[20px] bg-[rgba(71,58,68,0.2)] lg:h-[32px]',
+          'relative'
         )}
       >
         <SearchIcon
           className={cn(
             'size-[1.125rem] text-themeTextGray lg:size-[1.25rem]',
-            isLoading && 'animate-spin',
+            isLoading && 'animate-pulse',
             iconClassName
           )}
         />
@@ -100,6 +105,23 @@ export const SearchInput = memo(
             disabled={isLoading}
           />
         </form>
+        {initialValue && (
+          <button
+            onClick={handleClear}
+            className={cn(
+              'absolute right-4 top-1/2 -translate-y-1/2',
+              'rounded-full p-1 transition-colors',
+              'hover:bg-themeGray/30',
+              'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+              'disabled:pointer-events-none'
+            )}
+            disabled={isLoading}
+            type="button"
+            aria-label="Clear search"
+          >
+            <X className="size-4 text-themeTextGray" />
+          </button>
+        )}
       </div>
     )
   }

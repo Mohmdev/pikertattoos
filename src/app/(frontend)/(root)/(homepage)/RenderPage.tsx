@@ -24,6 +24,8 @@ interface RenderPageProps {
   searchQuery?: string
 }
 
+const MIN_SEARCH_LENGTH = 3
+
 export const RenderPage = ({
   data,
   searchQuery: initialSearchQuery,
@@ -48,7 +50,8 @@ export const RenderPage = ({
     searchState
   } = useSearch(
     initialSearchQuery,
-    searchResults ? { docs: searchResults, totalDocs: searchResults.length } : undefined
+    searchResults ? { docs: searchResults, totalDocs: searchResults.length } : undefined,
+    MIN_SEARCH_LENGTH
   )
 
   return (
@@ -143,7 +146,10 @@ export const RenderPage = ({
         <div
           className={cn(
             'relative transition-all duration-300',
-            query ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'
+            // Only hide when we have a valid search (3+ chars)
+            (query?.length ?? 0) >= MIN_SEARCH_LENGTH
+              ? 'pointer-events-none opacity-0'
+              : 'pointer-events-auto opacity-100'
           )}
         >
           <div
