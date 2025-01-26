@@ -24,36 +24,35 @@ export const ThemeProvider = ({
   children: React.ReactNode
   defaultTheme?: Theme
 }) => {
-  const [theme, setThemeState] = useState<Theme | undefined>(
-    canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined
+  const [theme, setThemeState] = useState<Theme>(defaultThemeProp)
+
+  const setTheme = useCallback(
+    (themeToSet: Theme | null) => {
+      if (!canUseDOM) return
+
+      if (themeToSet === null) {
+        window.localStorage.removeItem(themeLocalStorageKey)
+        const implicitPreference = getImplicitPreference()
+        document.documentElement.setAttribute('data-theme', implicitPreference || defaultThemeProp)
+        if (implicitPreference) setThemeState(implicitPreference)
+        else setThemeState(defaultThemeProp)
+      } else {
+        setThemeState(themeToSet)
+        window.localStorage.setItem(themeLocalStorageKey, themeToSet)
+        document.documentElement.setAttribute('data-theme', themeToSet)
+      }
+    },
+    [defaultThemeProp]
   )
 
-  const setTheme = useCallback((themeToSet: Theme | null) => {
-    if (themeToSet === null) {
-      window.localStorage.removeItem(themeLocalStorageKey)
-      const implicitPreference = getImplicitPreference()
-      document.documentElement.setAttribute('data-theme', implicitPreference || '')
-      if (implicitPreference) setThemeState(implicitPreference)
-    } else {
-      setThemeState(themeToSet)
-      window.localStorage.setItem(themeLocalStorageKey, themeToSet)
-      document.documentElement.setAttribute('data-theme', themeToSet)
-    }
-  }, [])
-
   useEffect(() => {
-    let themeToSet: Theme = defaultThemeProp
-    const preference = window.localStorage.getItem(themeLocalStorageKey)
+    if (!canUseDOM) return
 
-    if (themeIsValid(preference)) {
-      themeToSet = preference
-    } else {
-      const implicitPreference = getImplicitPreference()
+    const storedTheme = window.localStorage.getItem(themeLocalStorageKey)
 
-      if (implicitPreference) {
-        themeToSet = implicitPreference
-      }
-    }
+    const themeToSet = themeIsValid(storedTheme)
+      ? storedTheme
+      : defaultThemeProp || getImplicitPreference()
 
     document.documentElement.setAttribute('data-theme', themeToSet)
     setThemeState(themeToSet)

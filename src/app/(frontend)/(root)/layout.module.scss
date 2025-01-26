@@ -1,0 +1,12 @@
+.noiseBackground {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  //
+  background-repeat: repeat;
+  background-image: url('/assets/static-noise.png');
+  background-size: var(--noise-size, 6rem);
+  opacity: var(--noise-opacity, 0.06);
+}

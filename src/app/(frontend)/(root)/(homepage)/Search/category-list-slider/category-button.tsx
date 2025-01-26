@@ -22,7 +22,7 @@ export const CategoryButton = memo(
   ({
     label,
     selected,
-    radius = '0.5rem',
+    radius = '0.375rem',
     colors = {
       from: 'rgb(255,255,255, 0.2)',
       via: 'rgb(255,255,255, 0.5)',
@@ -38,7 +38,12 @@ export const CategoryButton = memo(
   }: CategoryButtonProps) => {
     return (
       <button
-        className={cn('group relative p-px', 'cursor-pointer overflow-hidden', className)}
+        className={cn(
+          //
+          'group relative p-px',
+          'cursor-pointer overflow-hidden',
+          className
+        )}
         onClick={onClick}
         disabled={isLoading}
       >
@@ -82,8 +87,7 @@ export const CategoryButton = memo(
             className={cn(
               'transition-all duration-500',
               selected === label && includeCloseButton ? '-translate-x-1' : 'translate-x-0',
-              selected === label ? 'scale-105' : 'scale-100',
-              'text-white'
+              selected === label ? 'scale-105' : 'scale-100'
             )}
           >
             {label}

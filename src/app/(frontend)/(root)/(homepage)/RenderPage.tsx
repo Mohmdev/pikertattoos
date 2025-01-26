@@ -103,7 +103,9 @@ export const RenderPage = ({
         className={cn('px-10 md:px-0')}
       >
         <SearchErrorBoundary>
-          <BackdropGradient>
+          <BackdropGradient
+          // gradient={{ placeOverContent: true, opacity: 0.3 }}
+          >
             <SearchInput
               initialValue={query ?? ''}
               onSearch={setSearch}
@@ -156,7 +158,8 @@ export const RenderPage = ({
           <div
             className={cn('relative flex w-full flex-col items-center overflow-hidden')}
             style={{
-              maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.6) 40%,rgba(0, 0, 0, 0.6) 60%,rgba(0, 0, 0, 0))`
+              maskImage: `linear-gradient(to right,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.5) 20%,rgba(0, 0, 0, 0.6) 40%,rgba(0, 0, 0, 0.6) 60%,rgba(0, 0, 0, 0.5) 80%, rgba(0, 0, 0, 0))`,
+              filter: 'contrast(115%)'
             }}
           >
             <div
@@ -180,7 +183,14 @@ export const RenderPage = ({
                   }
                 }}
               >
-                <div className="w-full columns-2 gap-2 sm:columns-3 md:gap-3">
+                <div
+                  className={cn(
+                    //
+                    'w-full',
+                    'gap-2 md:gap-2.5',
+                    'columns-2 sm:columns-3'
+                  )}
+                >
                   {featuredPosts.map((post) => (
                     <TriggerCard enableLink key={post.id} doc={post} className="mb-2 md:mb-3" />
                   ))}

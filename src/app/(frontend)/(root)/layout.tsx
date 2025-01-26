@@ -4,6 +4,7 @@ import { cn } from '@utils/cn'
 
 import { mockNavLinks } from './_nav/mockNavLinks'
 import { RoundedDrawerNav } from './_nav/RoundedDrawerNav'
+import classes from './layout.module.scss'
 
 type GlobalLayoutProps = {
   children: React.ReactNode
@@ -11,6 +12,12 @@ type GlobalLayoutProps = {
 }
 
 export default async function GlobalLayout({ children, modal }: GlobalLayoutProps) {
+  const noiseProperties = {
+    enable: true,
+    size: 9,
+    opacity: 0.03
+  }
+
   return (
     <div
       className={cn(
@@ -30,6 +37,19 @@ export default async function GlobalLayout({ children, modal }: GlobalLayoutProp
         {children}
         {modal}
       </RoundedDrawerNav>
+      {noiseProperties.enable && (
+        <div
+          className="absolute inset-0 m-0"
+          style={
+            {
+              '--noise-size': `${noiseProperties.size}rem`,
+              '--noise-opacity': noiseProperties.opacity
+            } as React.CSSProperties
+          }
+        >
+          <div className={classes.noiseBackground} />
+        </div>
+      )}
     </div>
   )
 }

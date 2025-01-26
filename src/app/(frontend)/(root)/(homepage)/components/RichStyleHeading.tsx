@@ -18,6 +18,7 @@ interface RichStyleHeadingProps {
     secondColor: string
     opacity: number
   }
+  customShadowColor?: string
 }
 
 export function RichStyleHeading({
@@ -29,17 +30,14 @@ export function RichStyleHeading({
     firstColor: '#005994',
     secondColor: '#009C7F',
     opacity: 1
-  }
+  },
+  customShadowColor
 }: RichStyleHeadingProps) {
   const { theme } = useTheme()
 
-  const shadowColor = theme === 'dark' ? 'white' : 'black'
-
   console.log('theme', theme)
-  console.log('RichStyleHeading props:', {
-    withGradientBackground,
-    neonColors
-  })
+
+  const shadowColor = customShadowColor ?? (theme === 'dark' ? 'white' : 'black')
 
   const content = (
     <div

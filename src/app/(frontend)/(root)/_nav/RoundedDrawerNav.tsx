@@ -59,11 +59,41 @@ export const RoundedDrawerNav = ({
               activeSublinks={activeSublinks}
             />
           </div>
-          <Button className="grow-1 hidden h-auto items-center justify-center overflow-x-hidden rounded-md bg-indigo-500 px-3 py-1.5 transition-colors hover:bg-indigo-600 md:flex">
-            <div className="overflow-x-auto whitespace-normal">
+          {/*  */}
+          <div
+            className={cn(
+              'group',
+              'hidden rounded-md p-px md:grid',
+              // ' bg-white ',
+              '[background-image:linear-gradient(to_right,_rgb(255,255,255,0.45),_rgb(255,255,255,0.6),_rgb(255,255,255,0.45))]'
+              //
+            )}
+          >
+            <Button
+              className={cn(
+                //
+                // 'grow-1',
+                'max-h-min items-center justify-center px-3 py-1.5',
+                'rounded-md',
+                'overflow-x-hidden leading-[auto]',
+                'bg-indigo-600/80 group-hover:bg-indigo-600',
+                'transition-colors duration-300 ease-linear',
+                '',
+                ''
+              )}
+            >
+              <div className="truncate text-sm font-semibold transition-colors duration-300 ease-linear group-hover:text-neutral-50">
+                <span className="text-neutral-50">Request </span>a custom design
+              </div>
+            </Button>
+          </div>
+          {/*  */}
+          {/* <Button className="grow-1 hidden max-h-min items-center justify-center overflow-x-hidden rounded-md border-muted-foreground bg-indigo-500 px-3 py-1.5 transition-colors hover:bg-indigo-600 md:flex">
+            <div className="truncate">
               <span className="text-sm font-bold text-neutral-50">Request </span>a custom design
             </div>
-          </Button>
+          </Button> */}
+          {/*  */}
           <HamburgerButton
             active={mobileNavOpen}
             setActive={setMobileNavOpen}

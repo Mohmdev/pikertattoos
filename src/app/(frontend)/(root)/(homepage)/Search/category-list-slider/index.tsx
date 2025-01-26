@@ -10,6 +10,8 @@ import { Slider } from './slider'
 
 import 'swiper/css/bundle'
 
+import { cn } from '@utils/cn'
+
 import { CategoryButton } from './category-button'
 
 type Props = {
@@ -77,7 +79,11 @@ export const CategoryListSlider = ({
       freeMode
       label={label}
       overlay={overlay}
-      className="*:gap-2"
+      className={cn(
+        //
+        'text-xs text-foreground/80 md:text-sm lg:text-base xl:text-lg',
+        '*:gap-1 md:*:gap-1.5'
+      )}
       {...rest}
     >
       {categorySlides}
