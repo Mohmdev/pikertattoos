@@ -12,11 +12,13 @@ interface LineShadowTextProps
 
 export function LineShadowText({
   children,
-  shadowColor = 'black',
+  shadowColor: shadowColorProp,
   className,
   as: Component = 'span',
   ...props
 }: LineShadowTextProps) {
+  const shadowColor = shadowColorProp ?? 'black'
+
   const MotionComponent = motion.create(Component)
   const content = typeof children === 'string' ? children : null
 
@@ -26,6 +28,7 @@ export function LineShadowText({
 
   return (
     <MotionComponent
+      suppressHydrationWarning
       style={{ '--shadow-color': shadowColor } as React.CSSProperties}
       className={cn(
         'relative z-0 inline-flex',

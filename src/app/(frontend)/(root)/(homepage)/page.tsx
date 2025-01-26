@@ -27,7 +27,6 @@ export const dynamic = 'force-dynamic'
 
 export default async function HomePage({ searchParams }: Args) {
   const { isEnabled: isDraft } = await draftMode()
-  const payload = await getPayload({ config: configPromise })
 
   const homepage: Homepage = await getHomepage(isDraft)
 
@@ -37,7 +36,7 @@ export default async function HomePage({ searchParams }: Args) {
 
   const params = await searchParams
 
-  const runQuery = await searchTattoos(payload, params.q)
+  const runQuery = await searchTattoos(params.q)
   const { docs: returnedResults, totalDocs: totalResults } = runQuery
 
   console.log('Server-side searchParams:', params)

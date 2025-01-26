@@ -60,7 +60,9 @@
     ".next/types/**/*.ts",
     "redirects.cjs",
     "next.config.ts",
-    "next-sitemap.config.cjs"
+    "next-sitemap.config.cjs",
+    "public/scripts/*.ts",
+    "public/scripts/*.js"
   ],
   "exclude": ["node_modules", ".temp"]
 }

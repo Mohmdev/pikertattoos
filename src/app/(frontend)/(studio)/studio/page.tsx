@@ -1,6 +1,6 @@
 import { cn } from '@utils/cn'
 
-import BackdropGradient from '@components/global/backdrop-gradient'
+import { BackdropGradient } from '@components/global/backdrop-gradient'
 import GradientText from '@components/global/gradient-text'
 import { Spinner } from '@ui/spinner'
 
@@ -19,10 +19,7 @@ export default function StudioPage() {
           <Spinner size="sm" className="bg-themeTextGray" />
           <p>Soon</p>
         </span>
-        <BackdropGradient
-          className="h-3/6 w-4/12 md:w-5/12 xl:h-2/6 xl:w-3/12"
-          container="items-center"
-        >
+        <BackdropGradient>
           <div
             className={cn(
               'mb-36',

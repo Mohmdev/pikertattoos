@@ -84,8 +84,8 @@ export const SearchInput = memo(
       >
         <SearchIcon
           className={cn(
-            'size-[1.125rem] text-themeTextGray lg:size-[1.25rem]',
-            isLoading && 'animate-pulse',
+            'size-[1.125rem] text-themeTextGray transition-all lg:size-[1.25rem]',
+            isLoading && 'rotate-90 animate-pulse',
             iconClassName
           )}
         />
@@ -112,7 +112,7 @@ export const SearchInput = memo(
               'absolute right-4 top-1/2 -translate-y-1/2',
               'rounded-full p-1 transition-colors',
               'hover:bg-themeGray/30',
-              'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+              'outline-0 focus:outline-none focus:ring-0 focus:ring-ring focus:ring-offset-0',
               'disabled:pointer-events-none'
             )}
             disabled={isLoading}

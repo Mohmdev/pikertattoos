@@ -20,7 +20,23 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>{/* <Favicon /> */}</head>
+      <head>
+        <script
+          // Inline script to set theme immediately
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'dark';
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
+              })();
+            `
+          }}
+        />
+      </head>
       <body className={cn(jakarta.className, 'relative w-full antialiased')}>
         <Providers defaultTheme="dark">{children}</Providers>
       </body>

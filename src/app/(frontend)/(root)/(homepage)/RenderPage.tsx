@@ -6,7 +6,7 @@ import { cn } from '@utils/cn'
 
 import type { Homepage, Search, Tattoo } from '@payload-types'
 
-import BackdropGradient from '@components/global/backdrop-gradient'
+import { BackdropGradient } from '@components/global/backdrop-gradient'
 import { TextEffect } from '@ui/text-effect'
 
 import { InView } from './components/in-view'
@@ -68,7 +68,8 @@ export const RenderPage = ({
         <RichStyleHeading
           text={heading?.text}
           highlightedText={heading?.highlightedText}
-          withGradientBackground={gradientBackground?.enable ?? false}
+          withGradientBackground={false}
+          // withGradientBackground={gradientBackground?.enable ?? false}
           neonColors={{
             firstColor: gradientBackground?.firstColor ?? '#00E6BB',
             secondColor: gradientBackground?.secondColor ?? '#008AE6',
@@ -90,19 +91,20 @@ export const RenderPage = ({
         )}
       </div>
 
-      {/* Search Section */}
+      {/* Search Input */}
       <div
-        className={cn(
-          'grid',
-          'w-full max-w-[650px] px-10 md:px-0',
-          'mb-[-100px] mt-[-80px] min-h-[250px]'
-        )}
+        style={{
+          display: 'grid',
+          width: '100%',
+          minHeight: '15.625rem', // 250px
+          maxWidth: '40.625rem', // 650px
+          marginTop: '-5rem', // -80px
+          marginBottom: '-6.25rem' // -100px
+        }}
+        className={cn('px-10 md:px-0')}
       >
         <SearchErrorBoundary>
-          <BackdropGradient
-            className="flex h-full flex-col items-center"
-            blurClassName={cn('inset-y-0 w-[90%]', 'top-[30%] bottom-[49%]')}
-          >
+          <BackdropGradient>
             <SearchInput
               initialValue={query ?? ''}
               onSearch={setSearch}
