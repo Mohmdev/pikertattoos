@@ -68,8 +68,7 @@ export const RenderPage = ({
         <RichStyleHeading
           text={heading?.text}
           highlightedText={heading?.highlightedText}
-          withGradientBackground={false}
-          // withGradientBackground={gradientBackground?.enable ?? false}
+          withGradientBackground={gradientBackground?.enable ?? false}
           neonColors={{
             firstColor: gradientBackground?.firstColor ?? '#00E6BB',
             secondColor: gradientBackground?.secondColor ?? '#008AE6',
