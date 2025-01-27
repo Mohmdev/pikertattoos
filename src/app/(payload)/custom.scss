@@ -7,6 +7,7 @@
 @use 'styles/sidebar.scss';
 @use 'styles/buttons.scss';
 @use 'styles/components.scss';
+@use 'styles/fields.scss';
 @use 'styles/misc.scss';
 
 // @forward 'styles/tailwind.css';
@@ -18,25 +19,37 @@
   --border: hsl(220 13% 91% / 1);
 
   --space-bg: hsl(0, 0%, 96%);
-  --space-bg-less: hsl(0, 0%, 100%);
-  --deep-blue: hsl(232.12 13% 98%);
+  --space-bg-less: 0, 0%, 100%;
+  --deep-blue: 232.12 13% 98%;
+
+  --theme-black: 240 10% 4%;
+  --theme-gray: 240 4% 16%;
+  --theme-dark-gray: 240 4% 16%;
+  --theme-text-gray: 20 4% 69%;
+  --theme-text-white: 13 47% 94%;
 }
 
 [data-theme='dark'] {
   --space-bg: hsl(224 71.4% 4.1%);
-  --space-bg-less: hsl(224 11% 6%);
-  --deep-blue: hsl(220 14% 8%);
-  --border: hsl(0 0% 92% / 10%);
+  --space-bg-less: 224 11% 6%;
+  --deep-blue: 220 14% 8%;
+  --border: hsl(240 10% 92% / 10%);
 
-  --theme-elevation-0: var(--color-base-1000);
-  --theme-elevation-50: var(--color-base-950);
-  --theme-elevation-100: var(--color-base-900);
-  --theme-elevation-150: var(--color-base-850);
+  --theme-elevation-0: hsl(240, 10%, 2%);
+  --theme-elevation-50: hsl(240, 10%, 3%);
+  --theme-elevation-100: hsl(240, 10%, 8%);
+  --theme-elevation-150: hsl(240, 10%, 13%);
+
+  --theme-black: 240 10% 4%;
+  --theme-gray: 240 4% 16%;
+  --theme-dark-gray: 240 4% 16%;
+  --theme-text-gray: 20 4% 69%;
+  --theme-text-white: 13 47% 94%;
 }
 
 :root {
-  --bg-default-primary: var(--deep-blue);
-  --bg-default-secondary: var(--space-bg-less);
+  --bg-default-primary: hsl(var(--deep-blue));
+  --bg-default-secondary: hsl(var(--space-bg-less));
   --border-ui: var(--border);
   --text-default: var(--theme-elevation-800);
 
@@ -47,10 +60,12 @@
   --dashboard-card-bg: var(--bg-default-primary);
   --doc-controls-bg: var(--bg-default-primary);
 
+  --scrollbar-width: 6px;
+
   /* ----------------------------------- // ----------------------------------- */
 
   --font-body: 'Poppins', Tahoma, Geneva, sans-serif;
-  --theme-input-bg: var(--deep-blue);
+  --theme-input-bg: hsl(var(--deep-blue));
   --theme-text: var(--text-default);
   --theme-overlay: rgba(5, 5, 5, 0.5);
   --theme-border-color: var(--border-ui);

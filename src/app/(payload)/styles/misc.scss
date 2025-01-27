@@ -25,3 +25,23 @@ html {
 //     bottom: 2ch;
 //   }
 // }
+
+* {
+  &::-webkit-scrollbar {
+    width: 0.5em;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    // background-color: hsla(var(--theme-text-gray) / 0.5);
+    background-color: light-dark(hsla(199, 20%, 22%, 0.5), hsla(200 10% 37% / 0.5));
+    border-radius: 1rem;
+
+    &:hover {
+      background-color: hsla(var(--theme-text-gray) / 0.5);
+    }
+  }
+}
