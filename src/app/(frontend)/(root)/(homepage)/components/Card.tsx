@@ -1,12 +1,12 @@
 'use client'
 
-import React, { Fragment } from 'react'
 import Link from 'next/link'
+import React, { Fragment } from 'react'
 
 import { Media as MediaType } from '@payload-types'
 
-import { cn } from '@utils/cn'
 import useClickableCard from '@hooks/useClickableCard'
+import { cn } from '@utils/cn'
 
 import type { RELATABLE_COLLECTIONS_TYPES } from '@constants/featureFlags'
 
@@ -32,7 +32,13 @@ export const Card: React.FC<{
   title?: string
 }> = (props) => {
   const { card, link } = useClickableCard({})
-  const { className, doc, relationTo, showCategories, title: titleFromProps } = props
+  const {
+    className,
+    doc,
+    relationTo,
+    showCategories,
+    title: titleFromProps,
+  } = props
 
   const { title, slug, style: styles, image } = doc || {}
 
@@ -46,13 +52,15 @@ export const Card: React.FC<{
     <article
       className={cn(
         'overflow-hidden rounded-lg border border-border bg-card hover:cursor-pointer',
-        className
+        className,
       )}
       ref={card.ref}
     >
       <div className="relative w-full">
         {!image && <div className="">No image</div>}
-        {image && typeof image !== 'number' && <Media resource={image} sizes="33vw" />}
+        {image && typeof image !== 'number' && (
+          <Media resource={image} sizes="33vw" />
+        )}
       </div>
       <div className="p-4">
         {showCategories && hasStyles && (
@@ -63,7 +71,8 @@ export const Card: React.FC<{
                   if (typeof style === 'object') {
                     const { title: titleFromCategory } = style
 
-                    const categoryTitle = titleFromCategory || 'Untitled category'
+                    const categoryTitle =
+                      titleFromCategory || 'Untitled category'
 
                     const isLast = index === styles.length - 1
 

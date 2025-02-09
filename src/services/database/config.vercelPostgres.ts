@@ -11,6 +11,6 @@ export const vercelPostgres: Config['db'] = vercelPostgresAdapter({
     connectionString: process.env.POSTGRES_URL,
   },
   migrationDir: path.resolve(dirname, './migrations'),
-  push: true,
+  push: false,
   forceUseVercelPostgres: true,
 })

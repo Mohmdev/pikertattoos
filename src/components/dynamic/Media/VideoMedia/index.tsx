@@ -45,12 +45,18 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
     }
   }, [])
 
-  if (!resource || typeof resource !== 'object' || !resource.filename || error) {
+  if (
+    !resource ||
+    typeof resource !== 'object' ||
+    !resource.filename ||
+    error
+  ) {
     return null
   }
 
   // Apply the same URL validation and cache tag logic as ImageMedia
-  const isAbsoluteUrl = (url: string) => url.startsWith('http://') || url.startsWith('https://')
+  const isAbsoluteUrl = (url: string) =>
+    url.startsWith('http://') || url.startsWith('https://')
   const validatedUrl = resource.url
     ? isAbsoluteUrl(resource.url)
       ? resource.url
@@ -66,7 +72,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
         className={cn(
           videoClassName,
           'transition-opacity duration-300',
-          isLoading ? 'opacity-0' : 'opacity-100'
+          isLoading ? 'opacity-0' : 'opacity-100',
         )}
         controls={controls}
         loop

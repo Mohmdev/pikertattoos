@@ -11,13 +11,13 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
-    reactCompiler: false
+    reactCompiler: false,
   },
   eslint: {
-    ignoreDuringBuilds: true
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: true,
   },
   redirects,
   images: {
@@ -28,26 +28,26 @@ const nextConfig: NextConfig = {
 
         return {
           hostname: url.hostname,
-          protocol: url.protocol.replace(':', '') as 'http' | 'https'
+          protocol: url.protocol.replace(':', '') as 'http' | 'https',
         }
       }),
       {
         hostname: '127.0.0.1',
-        protocol: 'http'
+        protocol: 'http',
       },
       {
         hostname: 'localhost',
-        protocol: 'http'
+        protocol: 'http',
       },
       {
         hostname: 'res.cloudinary.com',
-        protocol: 'https'
-      }
-    ]
+        protocol: 'https',
+      },
+    ],
   },
   sassOptions: {
-    silenceDeprecations: ['legacy-js-api', 'import'] // https://github.com/vercel/next.js/issues/71638
-  }
+    silenceDeprecations: ['legacy-js-api', 'import'], // https://github.com/vercel/next.js/issues/71638
+  },
 }
 
 export default withPayload(nextConfig)

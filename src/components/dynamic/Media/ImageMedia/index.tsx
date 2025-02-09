@@ -38,15 +38,31 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
       height: fullHeight,
       url,
       width: fullWidth,
+      prefix,
+      filename,
+      updatedAt,
     } = resource
 
     width = fullWidth!
     height = fullHeight!
     alt = altFromResource || ''
 
-    const cacheTag = resource.updatedAt
+    const isAbsoluteUrl = (url: string) => {
+      try {
+        new URL(url)
+        return true
+      } catch {
+        return false
+      }
+    }
+    const validatedUrl = url
+      ? isAbsoluteUrl(url)
+        ? url
+        : `${getClientSideURL()}/${prefix}/${filename}`
+      : ''
 
-    src = `${getClientSideURL()}${url}?${cacheTag}`
+    const cacheTag = updatedAt
+    src = cacheTag ? `${validatedUrl}?${cacheTag}` : validatedUrl
   }
 
   // Calculate sizes
