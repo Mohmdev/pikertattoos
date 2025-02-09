@@ -1,12 +1,9 @@
-import { generateGlobalPreviewPath } from '@services/preview/generateGlobalPreviewPath'
-import { link } from '@fields/link'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { publishedOnly } from '@access/publishedOnly'
-
-import { getServerSideURL } from '@utils/getURL'
-
+import { link } from '@fields/link'
+import { getGlobalLivePreviewURL } from '@services/live-preview/getGlobalLivePreviewURL'
+import { getGlobalPreviewURL } from '@services/live-preview/getGlobalPreviewURL'
 import type { GlobalConfig } from 'payload'
-
 import { revalidateFooter } from './revalidateFooter'
 
 export const Footer: GlobalConfig = {
@@ -15,21 +12,11 @@ export const Footer: GlobalConfig = {
     read: publishedOnly,
     update: isAdminOrEditor,
     readVersions: isAdminOrEditor,
-    readDrafts: isAdminOrEditor
+    readDrafts: isAdminOrEditor,
   },
   admin: {
-    livePreview: {
-      url: ({ req }) => {
-        return generateGlobalPreviewPath({
-          global: 'footer',
-          slug: 'footer',
-          req
-        })
-      }
-    },
-    preview: () => {
-      return `${getServerSideURL()}`
-    }
+    livePreview: getGlobalLivePreviewURL('footer'),
+    preview: getGlobalPreviewURL('footer'),
   },
   fields: [
     {
@@ -41,35 +28,35 @@ export const Footer: GlobalConfig = {
         {
           type: 'text',
           name: 'label',
-          required: true
+          required: true,
         },
         {
           type: 'array',
           name: 'navItems',
           fields: [
             link({
-              appearances: false
-            })
+              appearances: false,
+            }),
           ],
           admin: {
             initCollapsed: true,
             components: {
-              RowLabel: '@CMS/Footer/FooterRowLabel#FooterRowLabel'
-            }
-          }
-        }
-      ]
-    }
+              RowLabel: '@CMS/Footer/FooterRowLabel#FooterRowLabel',
+            },
+          },
+        },
+      ],
+    },
   ],
   hooks: {
-    afterChange: [revalidateFooter]
+    afterChange: [revalidateFooter],
   },
   versions: {
     drafts: {
       autosave: {
-        interval: 100
-      }
+        interval: 100,
+      },
     },
-    max: 50
-  }
+    max: 50,
+  },
 }

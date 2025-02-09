@@ -1,17 +1,14 @@
-import { generateGlobalPreviewPath } from '@services/preview/generateGlobalPreviewPath'
+import { isAdmin } from '@access/isAdmin'
+import { isAdminOrEditor } from '@access/isAdminOrEditor'
+import { publishedOnly } from '@access/publishedOnly'
 import { authorsField } from '@fields/shared/authorsField'
 import { noindexField } from '@fields/shared/noindexField'
 import { populateAuthorsField } from '@fields/shared/populatedAuthorsField'
 import { publishedAtField } from '@fields/shared/publishedAtField'
 import { seoTab } from '@fields/shared/seoTab'
-import { isAdmin } from '@access/isAdmin'
-import { isAdminOrEditor } from '@access/isAdminOrEditor'
-import { publishedOnly } from '@access/publishedOnly'
-
-import { getServerSideURL } from '@utils/getURL'
-
+import { getGlobalLivePreviewURL } from '@services/live-preview/getGlobalLivePreviewURL'
+import { getGlobalPreviewURL } from '@services/live-preview/getGlobalPreviewURL'
 import type { GlobalConfig } from 'payload'
-
 import { populateAuthors } from './populateAuthors'
 import { populatePublishedAt } from './populatePublishedAt'
 import { revalidateHomepage } from './revalidateHomepage'
@@ -22,21 +19,11 @@ export const HomePage: GlobalConfig = {
     read: publishedOnly,
     update: isAdmin,
     readVersions: isAdminOrEditor,
-    readDrafts: isAdminOrEditor
+    readDrafts: isAdminOrEditor,
   },
   admin: {
-    livePreview: {
-      url: ({ req }) => {
-        return generateGlobalPreviewPath({
-          global: 'homepage',
-          slug: 'home',
-          req
-        })
-      }
-    },
-    preview: () => {
-      return `${getServerSideURL()}`
-    }
+    preview: getGlobalPreviewURL('homepage'),
+    livePreview: getGlobalLivePreviewURL('homepage'),
   },
   label: 'Home Page',
   fields: [
@@ -56,22 +43,22 @@ export const HomePage: GlobalConfig = {
                     {
                       name: 'text',
                       type: 'text',
-                      defaultValue: 'Nexweb'
+                      defaultValue: 'Nexweb',
                     },
                     {
                       name: 'highlightedText',
                       type: 'text',
-                      defaultValue: 'Studio'
-                    }
-                  ]
-                }
+                      defaultValue: 'Studio',
+                    },
+                  ],
+                },
               ],
               admin: {
                 style: {
                   marginTop: '2.5rem',
-                  marginBottom: '0'
-                }
-              }
+                  marginBottom: '0',
+                },
+              },
             },
             {
               name: 'subheading',
@@ -79,14 +66,14 @@ export const HomePage: GlobalConfig = {
               admin: {
                 style: {
                   marginTop: '2rem',
-                  marginBottom: '0'
-                }
+                  marginBottom: '0',
+                },
               },
               fields: [
                 {
                   name: 'text',
                   type: 'text',
-                  defaultValue: 'Web Technology Solutions'
+                  defaultValue: 'Web Technology Solutions',
                 },
                 {
                   type: 'row',
@@ -100,12 +87,12 @@ export const HomePage: GlobalConfig = {
                         { label: 'Fade In Blur', value: 'fadeInBlur' },
                         { label: 'Scale', value: 'scale' },
                         { label: 'Fade', value: 'fade' },
-                        { label: 'Slide', value: 'slide' }
+                        { label: 'Slide', value: 'slide' },
                       ],
                       defaultValue: 'fadeInBlur',
                       admin: {
-                        description: 'How the text should animate.'
-                      }
+                        description: 'How the text should animate.',
+                      },
                     },
                     {
                       name: 'animateBy',
@@ -114,11 +101,11 @@ export const HomePage: GlobalConfig = {
                       options: [
                         { label: 'whole Line', value: 'line' },
                         { label: 'each Word', value: 'word' },
-                        { label: 'each Character', value: 'character' }
+                        { label: 'each Character', value: 'character' },
                       ],
-                      defaultValue: 'character'
-                    }
-                  ]
+                      defaultValue: 'character',
+                    },
+                  ],
                 },
                 {
                   type: 'row',
@@ -133,8 +120,8 @@ export const HomePage: GlobalConfig = {
                         step: 5,
                         description:
                           'Controls how fast each element appears. Lower = slower animation.',
-                        placeholder: '100%'
-                      }
+                        placeholder: '100%',
+                      },
                     },
                     {
                       name: 'flowSpeed',
@@ -146,8 +133,8 @@ export const HomePage: GlobalConfig = {
                         step: 5,
                         description:
                           'Controls the spacing between animations. Lower = more spacing.',
-                        placeholder: '100%'
-                      }
+                        placeholder: '100%',
+                      },
                     },
                     {
                       name: 'startDelay',
@@ -157,9 +144,10 @@ export const HomePage: GlobalConfig = {
                       max: 5,
                       admin: {
                         step: 0.2,
-                        description: 'Delay before animation starts (in seconds)',
-                        placeholder: '0s'
-                      }
+                        description:
+                          'Delay before animation starts (in seconds)',
+                        placeholder: '0s',
+                      },
                     },
                     {
                       name: 'once',
@@ -170,13 +158,13 @@ export const HomePage: GlobalConfig = {
                         description:
                           'When enabled, the animation will only play the first time it appears on screen.',
                         style: {
-                          justifyContent: 'center'
-                        }
-                      }
-                    }
-                  ]
-                }
-              ]
+                          justifyContent: 'center',
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
             },
             {
               name: 'gradientBackground',
@@ -184,8 +172,8 @@ export const HomePage: GlobalConfig = {
               admin: {
                 style: {
                   marginTop: '2rem',
-                  marginBottom: '0'
-                }
+                  marginBottom: '0',
+                },
               },
               fields: [
                 {
@@ -193,8 +181,8 @@ export const HomePage: GlobalConfig = {
                   type: 'checkbox',
                   defaultValue: true,
                   admin: {
-                    description: 'The animating gradient background.'
-                  }
+                    description: 'The animating gradient background.',
+                  },
                 },
                 {
                   type: 'row',
@@ -216,9 +204,9 @@ export const HomePage: GlobalConfig = {
                         { label: 'Hollywood cerise', value: '#E600B1' },
                         { label: 'Mexican pink', value: '#E6008A' },
                         { label: 'Raspberry', value: '#E6005D' },
-                        { label: 'Crimson', value: '#E6003A' }
+                        { label: 'Crimson', value: '#E6003A' },
                       ],
-                      defaultValue: '#00E6BB'
+                      defaultValue: '#00E6BB',
                     },
                     {
                       name: 'secondColor',
@@ -237,9 +225,9 @@ export const HomePage: GlobalConfig = {
                         { label: 'Hollywood cerise', value: '#E600B1' },
                         { label: 'Mexican pink', value: '#E6008A' },
                         { label: 'Raspberry', value: '#E6005D' },
-                        { label: 'Crimson', value: '#E6003A' }
+                        { label: 'Crimson', value: '#E6003A' },
                       ],
-                      defaultValue: '#008AE6'
+                      defaultValue: '#008AE6',
                     },
                     {
                       name: 'opacity',
@@ -251,14 +239,14 @@ export const HomePage: GlobalConfig = {
                       admin: {
                         step: 1,
                         placeholder: '%',
-                        description: '0 - 100%'
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+                        description: '0 - 100%',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
         {
           label: 'Content',
@@ -272,8 +260,9 @@ export const HomePage: GlobalConfig = {
                   type: 'text',
                   defaultValue: 'Search for anything',
                   admin: {
-                    description: 'The static text that appears in the search bar.'
-                  }
+                    description:
+                      'The static text that appears in the search bar.',
+                  },
                 },
                 {
                   name: 'enableFilters',
@@ -281,8 +270,8 @@ export const HomePage: GlobalConfig = {
                   type: 'checkbox',
                   defaultValue: true,
                   admin: {
-                    description: 'Toggle the search filters component.'
-                  }
+                    description: 'Toggle the search filters component.',
+                  },
                 },
                 {
                   name: 'filterOptions',
@@ -291,19 +280,20 @@ export const HomePage: GlobalConfig = {
                   hasMany: true,
                   label: {
                     singular: 'Filter',
-                    plural: 'Filters'
+                    plural: 'Filters',
                   },
                   admin: {
-                    description: 'Options that will be displayed as filter buttons.'
-                  }
-                }
+                    description:
+                      'Options that will be displayed as filter buttons.',
+                  },
+                },
               ],
               admin: {
                 style: {
                   marginTop: '2.5rem',
-                  marginBottom: '0'
-                }
-              }
+                  marginBottom: '0',
+                },
+              },
             },
             {
               name: 'gridView',
@@ -318,38 +308,38 @@ export const HomePage: GlobalConfig = {
                   maxRows: 36,
                   admin: {
                     description:
-                      'The posts that you would like to feature on the homepage. Pick a minimum of 6 and a maximum of 36 posts.'
-                  }
-                }
+                      'The posts that you would like to feature on the homepage. Pick a minimum of 6 and a maximum of 36 posts.',
+                  },
+                },
               ],
               admin: {
                 style: {
                   marginTop: '2rem',
-                  marginBottom: '0'
-                }
-              }
-            }
-          ]
+                  marginBottom: '0',
+                },
+              },
+            },
+          ],
         },
-        seoTab
-      ]
+        seoTab,
+      ],
     },
     noindexField,
     authorsField,
     populateAuthorsField,
-    publishedAtField
+    publishedAtField,
   ],
   hooks: {
     afterChange: [revalidateHomepage],
     afterRead: [populateAuthors],
-    beforeChange: [populatePublishedAt]
+    beforeChange: [populatePublishedAt],
   },
   versions: {
     drafts: {
       autosave: {
-        interval: 100
-      }
+        interval: 100,
+      },
     },
-    max: 50
-  }
+    max: 50,
+  },
 }

@@ -4,7 +4,7 @@ import { revalidateRedirects } from '@hooks/revalidateRedirects'
 
 import type { Plugin } from 'payload'
 
-import { REDIRECTABLE_COLLECTIONS } from '@constants/featureFlags'
+import { REDIRECTABLE_COLLECTIONS } from '@services/control-board'
 
 export const redirectsPluginConfig: Plugin = redirectsPlugin({
   collections: REDIRECTABLE_COLLECTIONS,

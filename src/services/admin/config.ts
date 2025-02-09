@@ -1,10 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-
 import { Users } from '@CMS/Users/config'
-
-// import { Users } from '@CMS/_basic/Users/config'
-
 import type { Config } from 'payload'
 
 const filename = fileURLToPath(import.meta.url)
@@ -12,13 +8,13 @@ const dirname = path.dirname(filename)
 
 export const adminConfig: Config['admin'] = {
   avatar: {
-    Component: '@admin-components/AdminAvatar'
+    Component: '@admin-components/AdminAvatar',
   },
   components: {
     graphics: {
       Icon: '@services/admin/DynamicLogo#NavbarLogo',
-      Logo: '@services/admin/DynamicLogo#MainLogo'
-    }
+      Logo: '@services/admin/DynamicLogo#MainLogo',
+    },
     // beforeNavLinks: ['@services/admin/DynamicLogo#SidebarLogo'],
     // afterNavLinks: ['@services/admin/AfterNav#AfterNavComponent']
     // beforeLogin: ['@admin-components/BeforeLogin']
@@ -30,18 +26,18 @@ export const adminConfig: Config['admin'] = {
       {
         rel: 'icon',
         type: 'image/svg',
-        url: '/assets/nextjs-favicon.svg'
+        url: '/assets/nextjs-favicon.svg',
       },
       {
         rel: 'favicon',
         type: 'image/svg',
-        url: '/assets/nextjs-favicon.svg'
+        url: '/assets/nextjs-favicon.svg',
       },
       {
         rel: 'apple-touch-icon',
         type: 'image/svg',
-        url: '/assets/nextjs-favicon.svg'
-      }
+        url: '/assets/nextjs-favicon.svg',
+      },
     ],
     // you share links to your admin panel online and through social media.
     openGraph: {
@@ -51,15 +47,15 @@ export const adminConfig: Config['admin'] = {
         {
           height: 600,
           width: 800,
-          url: '/assets/home-bg.png'
-        }
-      ]
+          url: '/assets/home-bg.png',
+        },
+      ],
     },
     // Text that appends the meta/page title displayed in the browser tab.
-    titleSuffix: '| Pikertattos'
+    titleSuffix: '| Pikertattos',
   },
   importMap: {
-    baseDir: path.resolve(dirname)
+    baseDir: path.resolve(dirname),
   },
   user: Users.slug,
   livePreview: {
@@ -68,22 +64,22 @@ export const adminConfig: Config['admin'] = {
         label: 'Mobile',
         name: 'mobile',
         width: 375,
-        height: 667
+        height: 667,
       },
       {
         label: 'Tablet',
         name: 'tablet',
         width: 768,
-        height: 1024
+        height: 1024,
       },
       {
         label: 'Desktop',
         name: 'desktop',
         width: 1440,
-        height: 900
-      }
-    ]
-  }
+        height: 900,
+      },
+    ],
+  },
   // routes?: {
   //   /** The route for the account page. */
   //   account?: string;

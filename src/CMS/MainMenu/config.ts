@@ -1,12 +1,9 @@
-import { generateGlobalPreviewPath } from '@services/preview/generateGlobalPreviewPath'
-import { link } from '@fields/link'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { publishedOnly } from '@access/publishedOnly'
-
-import { getServerSideURL } from '@utils/getURL'
-
+import { link } from '@fields/link'
+import { getGlobalLivePreviewURL } from '@services/live-preview/getGlobalLivePreviewURL'
+import { getGlobalPreviewURL } from '@services/live-preview/getGlobalPreviewURL'
 import type { GlobalConfig } from 'payload'
-
 import { revalidateMainMenu } from './revalidateMainMenu'
 
 export const MainMenu: GlobalConfig = {
@@ -15,21 +12,11 @@ export const MainMenu: GlobalConfig = {
     read: publishedOnly,
     update: isAdminOrEditor,
     readVersions: isAdminOrEditor,
-    readDrafts: isAdminOrEditor
+    readDrafts: isAdminOrEditor,
   },
   admin: {
-    livePreview: {
-      url: ({ req }) => {
-        return generateGlobalPreviewPath({
-          global: 'main-menu',
-          slug: 'main-menu',
-          req
-        })
-      }
-    },
-    preview: () => {
-      return `${getServerSideURL()}`
-    }
+    preview: getGlobalPreviewURL('main-menu'),
+    livePreview: getGlobalLivePreviewURL('main-menu'),
   },
   fields: [
     {
@@ -37,50 +24,50 @@ export const MainMenu: GlobalConfig = {
       type: 'array',
       admin: {
         components: {
-          RowLabel: '@CMS/MainMenu/TabsRowLabel#TabsRowLabel'
-        }
+          RowLabel: '@CMS/MainMenu/TabsRowLabel#TabsRowLabel',
+        },
       },
       fields: [
         {
           name: 'label',
           type: 'text',
-          required: true
+          required: true,
         },
         {
           type: 'row',
           fields: [
             {
               name: 'enableDirectLink',
-              type: 'checkbox'
+              type: 'checkbox',
             },
             {
               name: 'enableDropdown',
-              type: 'checkbox'
-            }
-          ]
+              type: 'checkbox',
+            },
+          ],
         },
         {
           type: 'collapsible',
           admin: {
-            condition: (_, siblingData) => siblingData.enableDirectLink
+            condition: (_, siblingData) => siblingData.enableDirectLink,
           },
           fields: [
             link({
               appearances: false,
-              disableLabel: true
-            })
+              disableLabel: true,
+            }),
           ],
-          label: 'Direct Link'
+          label: 'Direct Link',
         },
         {
           type: 'collapsible',
           admin: {
-            condition: (_, siblingData) => siblingData.enableDropdown
+            condition: (_, siblingData) => siblingData.enableDropdown,
           },
           fields: [
             {
               name: 'description',
-              type: 'textarea'
+              type: 'textarea',
             },
             {
               name: 'descriptionLinks',
@@ -89,18 +76,18 @@ export const MainMenu: GlobalConfig = {
                 link({
                   appearances: false,
                   overrides: {
-                    label: false
-                  }
-                })
-              ]
+                    label: false,
+                  },
+                }),
+              ],
             },
             {
               name: 'navItems',
               type: 'array',
               admin: {
                 components: {
-                  RowLabel: '@CMS/MainMenu/ItemsRowLabel#ItemsRowLabel'
-                }
+                  RowLabel: '@CMS/MainMenu/ItemsRowLabel#ItemsRowLabel',
+                },
               },
               fields: [
                 {
@@ -110,51 +97,53 @@ export const MainMenu: GlobalConfig = {
                   options: [
                     {
                       label: 'Default',
-                      value: 'default'
+                      value: 'default',
                     },
                     {
                       label: 'Featured',
-                      value: 'featured'
+                      value: 'featured',
                     },
                     {
                       label: 'List',
-                      value: 'list'
-                    }
-                  ]
+                      value: 'list',
+                    },
+                  ],
                 },
                 {
                   name: 'defaultLink',
                   type: 'group',
                   admin: {
-                    condition: (_, siblingData) => siblingData.style === 'default'
+                    condition: (_, siblingData) =>
+                      siblingData.style === 'default',
                   },
                   fields: [
                     link({
                       appearances: false,
                       overrides: {
-                        label: false
-                      }
+                        label: false,
+                      },
                     }),
                     {
                       name: 'description',
-                      type: 'textarea'
-                    }
-                  ]
+                      type: 'textarea',
+                    },
+                  ],
                 },
                 {
                   name: 'featuredLink',
                   type: 'group',
                   admin: {
-                    condition: (_, siblingData) => siblingData.style === 'featured'
+                    condition: (_, siblingData) =>
+                      siblingData.style === 'featured',
                   },
                   fields: [
                     {
                       name: 'tag',
-                      type: 'text'
+                      type: 'text',
                     },
                     {
                       name: 'label',
-                      type: 'richText'
+                      type: 'richText',
                     },
                     {
                       name: 'links',
@@ -163,23 +152,23 @@ export const MainMenu: GlobalConfig = {
                         link({
                           appearances: false,
                           overrides: {
-                            label: false
-                          }
-                        })
-                      ]
-                    }
-                  ]
+                            label: false,
+                          },
+                        }),
+                      ],
+                    },
+                  ],
                 },
                 {
                   name: 'listLinks',
                   type: 'group',
                   admin: {
-                    condition: (_, siblingData) => siblingData.style === 'list'
+                    condition: (_, siblingData) => siblingData.style === 'list',
                   },
                   fields: [
                     {
                       name: 'tag',
-                      type: 'text'
+                      type: 'text',
                     },
                     {
                       name: 'links',
@@ -188,30 +177,30 @@ export const MainMenu: GlobalConfig = {
                         link({
                           appearances: false,
                           overrides: {
-                            label: false
-                          }
-                        })
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
+                            label: false,
+                          },
+                        }),
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
           ],
-          label: 'Dropdown Menu'
-        }
+          label: 'Dropdown Menu',
+        },
       ],
-      label: 'Main Menu Items'
+      label: 'Main Menu Items',
     },
     link({
       appearances: false,
       overrides: {
         name: 'menuCta',
-        label: 'Menu CTA Button'
-      }
-    })
+        label: 'Menu CTA Button',
+      },
+    }),
   ],
   hooks: {
-    afterChange: [revalidateMainMenu]
-  }
+    afterChange: [revalidateMainMenu],
+  },
 }

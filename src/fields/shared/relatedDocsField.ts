@@ -1,6 +1,6 @@
 import { Field } from 'payload'
 
-import { RELATABLE_COLLECTIONS } from '@constants/featureFlags'
+import { RELATABLE_COLLECTIONS } from '@services/control-board'
 
 export const relatedDocsField: Field = {
   name: 'relatedDocs',
@@ -9,18 +9,18 @@ export const relatedDocsField: Field = {
   filterOptions: ({ id }) => {
     return {
       id: {
-        not_in: [id]
-      }
+        not_in: [id],
+      },
     }
   },
   hasMany: true,
   admin: {
     position: 'sidebar',
     description:
-      "Content that are related to this one. Could be a post, or a tattoo that's featured in this document."
+      "Content that are related to this one. Could be a post, or a tattoo that's featured in this document.",
   },
   label: {
     singular: 'Related Content',
-    plural: 'Related Content'
-  }
+    plural: 'Related Content',
+  },
 }

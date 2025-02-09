@@ -1,6 +1,6 @@
-import { basicLexical } from '@services/editor/basicLexical'
-import { getLivePreviewUrl } from '@services/preview/getLivePreviewUrl'
-import { getPreviewUrl } from '@services/preview/getPreviewUrl'
+import { anyone } from '@access/anyone'
+import { isAdminOrEditor } from '@access/isAdminOrEditor'
+import { isAdminOrSelf } from '@access/isAdminOrSelf'
 import { authorsField } from '@fields/shared/authorsField'
 import { noindexField } from '@fields/shared/noindexField'
 import { populateAuthorsField } from '@fields/shared/populatedAuthorsField'
@@ -9,41 +9,46 @@ import { relatedDocsField } from '@fields/shared/relatedDocsField'
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
-import { anyone } from '@access/anyone'
-import { isAdminOrEditor } from '@access/isAdminOrEditor'
-import { isAdminOrSelf } from '@access/isAdminOrSelf'
-
 import { populateAuthors } from '@hooks/populateAuthors'
 import { populatePublishedAt } from '@hooks/populatePublishedAt'
-
+import { basicLexical } from '@services/editor/basicLexical'
+import { getCollectionLivePreviewURL } from '@services/live-preview/getCollectionLivePreviewURL'
+import { getCollectionPreviewURL } from '@services/live-preview/getCollectionPreviewURL'
 import type { CollectionConfig } from 'payload'
-
 import { revalidateDelete, revalidateTattoo } from './hooks/revalidateTattoo'
 
 export const Tattoo: CollectionConfig<'tattoo'> = {
   slug: 'tattoo',
   labels: {
     singular: 'Tattoo',
-    plural: 'Tattoos'
+    plural: 'Tattoos',
   },
   access: {
     read: anyone,
     create: isAdminOrEditor,
     delete: isAdminOrSelf,
-    update: isAdminOrSelf
+    update: isAdminOrSelf,
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['images', 'title', 'area', 'style', 'artist', 'createdAt', 'updatedAt'],
-    livePreview: getLivePreviewUrl('tattoo'),
-    preview: getPreviewUrl('tattoo')
+    defaultColumns: [
+      'images',
+      'title',
+      'area',
+      'style',
+      'artist',
+      'createdAt',
+      'updatedAt',
+    ],
+    livePreview: getCollectionLivePreviewURL('tattoo'),
+    preview: getCollectionPreviewURL('tattoo'),
   },
   defaultPopulate: {
     title: true,
     slug: true,
     area: true,
     style: true,
-    images: true
+    images: true,
   },
   fields: [
     {
@@ -52,7 +57,7 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
       label: 'Tattoo Title',
       required: true,
       unique: true,
-      index: true
+      index: true,
     },
     {
       type: 'tabs',
@@ -69,16 +74,16 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
               maxRows: 12,
               label: 'Images',
               admin: {
-                description: 'Up to 12 images.'
+                description: 'Up to 12 images.',
               },
-              index: true
+              index: true,
             },
             {
               name: 'video',
               type: 'upload',
               relationTo: 'media',
               hasMany: false,
-              label: 'Video'
+              label: 'Video',
             },
             {
               type: 'row',
@@ -91,9 +96,9 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
                   hasMany: true,
                   label: {
                     singular: 'Area',
-                    plural: 'Areas'
+                    plural: 'Areas',
                   },
-                  index: true
+                  index: true,
                 },
                 {
                   name: 'style',
@@ -102,11 +107,11 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
                   hasMany: true,
                   label: {
                     singular: 'Style',
-                    plural: 'Styles'
+                    plural: 'Styles',
                   },
-                  index: true
-                }
-              ]
+                  index: true,
+                },
+              ],
             },
             {
               name: 'richTextContent',
@@ -114,10 +119,10 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
               type: 'richText',
               editor: basicLexical,
               admin: {
-                position: 'sidebar'
-              }
-            }
-          ]
+                position: 'sidebar',
+              },
+            },
+          ],
         },
         {
           label: 'Options',
@@ -129,35 +134,35 @@ export const Tattoo: CollectionConfig<'tattoo'> = {
               hasMany: true,
               label: {
                 singular: 'Artist',
-                plural: 'Artists'
-              }
+                plural: 'Artists',
+              },
             },
             relatedDocsField,
-            tagsField
-          ]
+            tagsField,
+          ],
         },
-        seoTab
-      ]
+        seoTab,
+      ],
     },
     noindexField,
     authorsField,
     populateAuthorsField,
     publishedAtField,
-    ...slugField()
+    ...slugField(),
   ],
   hooks: {
     afterChange: [revalidateTattoo],
     beforeChange: [populatePublishedAt],
     afterRead: [populateAuthors],
-    afterDelete: [revalidateDelete]
+    afterDelete: [revalidateDelete],
   },
   versions: {
     drafts: {
       autosave: {
-        interval: 100
+        interval: 100,
       },
-      schedulePublish: true
+      schedulePublish: true,
     },
-    maxPerDoc: 50
-  }
+    maxPerDoc: 50,
+  },
 }

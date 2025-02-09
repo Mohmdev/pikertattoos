@@ -1,8 +1,8 @@
 import RichText from '@components/RichText'
 import { Card } from '@components/dynamic/Card'
-import type { RELATABLE_COLLECTIONS_TYPES } from '@constants/featureFlags'
 import type { Post, Tattoo } from '@payload-types'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import type { RELATABLE_COLLECTIONS_TYPES } from '@services/control-board'
 import { cn } from '@utils/cn'
 import React from 'react'
 

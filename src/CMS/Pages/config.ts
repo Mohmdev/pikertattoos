@@ -1,6 +1,6 @@
-import { getLivePreviewUrl } from '@services/preview/getLivePreviewUrl'
-import { getPreviewUrl } from '@services/preview/getPreviewUrl'
-import { heroFields } from '@heros/config'
+import { isAdminOrEditor } from '@access/isAdminOrEditor'
+import { isAdminOrSelf } from '@access/isAdminOrSelf'
+import { publishedOnly } from '@access/publishedOnly'
 import { ArchiveBlock } from '@blocks/ArchiveBlock/config'
 import { CallToActionBlock } from '@blocks/CallToActionBlock/config'
 import { ContentBlock } from '@blocks/ContentBlock/config'
@@ -14,15 +14,12 @@ import { publishedAtField } from '@fields/shared/publishedAtField'
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
-import { isAdminOrEditor } from '@access/isAdminOrEditor'
-import { isAdminOrSelf } from '@access/isAdminOrSelf'
-import { publishedOnly } from '@access/publishedOnly'
-
+import { heroFields } from '@heros/config'
 import { populateAuthors } from '@hooks/populateAuthors'
 import { populatePublishedAt } from '@hooks/populatePublishedAt'
-
+import { getCollectionLivePreviewURL } from '@services/live-preview/getCollectionLivePreviewURL'
+import { getCollectionPreviewURL } from '@services/live-preview/getCollectionPreviewURL'
 import type { CollectionConfig } from 'payload'
-
 import { revalidateDelete, revalidatePage } from './revalidatePage'
 
 export const Pages: CollectionConfig<'pages'> = {
@@ -32,18 +29,24 @@ export const Pages: CollectionConfig<'pages'> = {
     create: isAdminOrEditor,
     delete: isAdminOrSelf,
     update: isAdminOrSelf,
-    readVersions: isAdminOrEditor
+    readVersions: isAdminOrEditor,
   },
   admin: {
     useAsTitle: 'fullTitle',
-    defaultColumns: ['fullTitle', 'populatedAuthors', 'slug', 'createdAt', 'updatedAt'],
-    livePreview: getLivePreviewUrl('pages'),
-    preview: getPreviewUrl('pages')
+    defaultColumns: [
+      'fullTitle',
+      'populatedAuthors',
+      'slug',
+      'createdAt',
+      'updatedAt',
+    ],
+    livePreview: getCollectionLivePreviewURL('pages'),
+    preview: getCollectionPreviewURL('pages'),
   },
   defaultPopulate: {
     slug: true,
     breadcrumbs: true,
-    title: true
+    title: true,
   },
   fields: [
     {
@@ -51,7 +54,7 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'text',
       required: true,
       unique: true,
-      index: true
+      index: true,
     },
     {
       type: 'tabs',
@@ -62,41 +65,47 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'blocks',
               type: 'blocks',
-              blocks: [CallToActionBlock, ContentBlock, MediaBlock, ArchiveBlock, FormBlock],
+              blocks: [
+                CallToActionBlock,
+                ContentBlock,
+                MediaBlock,
+                ArchiveBlock,
+                FormBlock,
+              ],
               label: 'Blocks',
               admin: {
-                initCollapsed: true
-              }
-            }
+                initCollapsed: true,
+              },
+            },
           ],
-          label: 'layout'
+          label: 'layout',
         },
         {
           label: 'Options',
-          fields: [fullTitle, tagsField]
+          fields: [fullTitle, tagsField],
         },
-        seoTab
-      ]
+        seoTab,
+      ],
     },
     noindexField,
     authorsField,
     populateAuthorsField,
     publishedAtField,
-    ...slugField()
+    ...slugField(),
   ],
   hooks: {
     afterChange: [revalidatePage],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
-    beforeChange: [populatePublishedAt]
+    beforeChange: [populatePublishedAt],
   },
   versions: {
     drafts: {
       autosave: {
-        interval: 100
+        interval: 100,
       },
-      schedulePublish: true
+      schedulePublish: true,
     },
-    maxPerDoc: 50
-  }
+    maxPerDoc: 50,
+  },
 }

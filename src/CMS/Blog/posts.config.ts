@@ -1,6 +1,6 @@
-import { blogEditor } from '@services/editor/blogEditor'
-import { getLivePreviewUrl } from '@services/preview/getLivePreviewUrl'
-import { getPreviewUrl } from '@services/preview/getPreviewUrl'
+import { isAdminOrEditor } from '@access/isAdminOrEditor'
+import { isAdminOrSelf } from '@access/isAdminOrSelf'
+import { publishedOnly } from '@access/publishedOnly'
 import { authorsField } from '@fields/shared/authorsField'
 import { categoriesField } from '@fields/shared/categoriesField'
 import { noindexField } from '@fields/shared/noindexField'
@@ -10,29 +10,26 @@ import { relatedDocsField } from '@fields/shared/relatedDocsField'
 import { seoTab } from '@fields/shared/seoTab'
 import { slugField } from '@fields/shared/slug/config'
 import { tagsField } from '@fields/shared/tagsField'
-import { isAdminOrEditor } from '@access/isAdminOrEditor'
-import { isAdminOrSelf } from '@access/isAdminOrSelf'
-import { publishedOnly } from '@access/publishedOnly'
-
 import { populateAuthors } from '@hooks/populateAuthors'
 import { populatePublishedAt } from '@hooks/populatePublishedAt'
-
+import { blogEditor } from '@services/editor/blogEditor'
+import { getCollectionLivePreviewURL } from '@services/live-preview/getCollectionLivePreviewURL'
+import { getCollectionPreviewURL } from '@services/live-preview/getCollectionPreviewURL'
 import type { CollectionConfig } from 'payload'
-
 import { revalidateDelete, revalidatePost } from './revalidatePost'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   labels: {
     singular: 'Blog Post',
-    plural: 'Blog Posts'
+    plural: 'Blog Posts',
   },
   access: {
     read: publishedOnly,
     create: isAdminOrEditor,
     delete: isAdminOrSelf,
     update: isAdminOrSelf,
-    readVersions: isAdminOrEditor
+    readVersions: isAdminOrEditor,
   },
   defaultPopulate: {
     title: true,
@@ -40,14 +37,20 @@ export const Posts: CollectionConfig<'posts'> = {
     categories: true,
     meta: {
       image: true,
-      description: true
-    }
+      description: true,
+    },
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'populatedAuthors', 'slug', 'createdAt', 'updatedAt'],
-    livePreview: getLivePreviewUrl('posts'),
-    preview: getPreviewUrl('posts')
+    defaultColumns: [
+      'title',
+      'populatedAuthors',
+      'slug',
+      'createdAt',
+      'updatedAt',
+    ],
+    preview: getCollectionPreviewURL('posts'),
+    livePreview: getCollectionLivePreviewURL('posts'),
   },
   fields: [
     {
@@ -55,7 +58,7 @@ export const Posts: CollectionConfig<'posts'> = {
       type: 'text',
       required: true,
       unique: true,
-      index: true
+      index: true,
     },
     {
       type: 'tabs',
@@ -72,44 +75,44 @@ export const Posts: CollectionConfig<'posts'> = {
               minRows: 1,
               maxRows: 12,
               admin: {
-                description: 'Up to 12 images.'
+                description: 'Up to 12 images.',
               },
-              index: true
+              index: true,
             },
             {
               name: 'richTextContent',
               label: 'Editor',
               type: 'richText',
-              editor: blogEditor
-            }
-          ]
+              editor: blogEditor,
+            },
+          ],
         },
         {
           label: 'Options',
-          fields: [categoriesField, relatedDocsField, tagsField]
+          fields: [categoriesField, relatedDocsField, tagsField],
         },
-        seoTab
-      ]
+        seoTab,
+      ],
     },
     noindexField,
     authorsField,
     populateAuthorsField,
     publishedAtField,
-    ...slugField()
+    ...slugField(),
   ],
   hooks: {
     afterChange: [revalidatePost],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
-    beforeChange: [populatePublishedAt]
+    beforeChange: [populatePublishedAt],
   },
   versions: {
     drafts: {
       autosave: {
-        interval: 100
+        interval: 100,
       },
-      schedulePublish: true
+      schedulePublish: true,
     },
-    maxPerDoc: 50
-  }
+    maxPerDoc: 50,
+  },
 }

@@ -421,6 +421,7 @@ export interface Style {
  */
 export interface User {
   id: number;
+  username: string;
   firstName?: string | null;
   lastName?: string | null;
   photo?: (number | null) | UserPhoto;
@@ -428,7 +429,6 @@ export interface User {
   updatedAt: string;
   createdAt: string;
   email: string;
-  username: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
   salt?: string | null;
@@ -1848,6 +1848,7 @@ export interface AssetsSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  username?: T;
   firstName?: T;
   lastName?: T;
   photo?: T;
@@ -1855,7 +1856,6 @@ export interface UsersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   email?: T;
-  username?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
   salt?: T;

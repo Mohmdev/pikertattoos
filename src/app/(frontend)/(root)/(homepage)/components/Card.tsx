@@ -8,7 +8,7 @@ import { Media as MediaType } from '@payload-types'
 import useClickableCard from '@hooks/useClickableCard'
 import { cn } from '@utils/cn'
 
-import type { RELATABLE_COLLECTIONS_TYPES } from '@constants/featureFlags'
+import type { RELATABLE_COLLECTIONS_TYPES } from '@services/control-board'
 
 import { Media } from '@components/dynamic/Media'
 

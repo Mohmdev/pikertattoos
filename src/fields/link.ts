@@ -3,36 +3,39 @@ import deepMerge from '@utils/deepMerge'
 import type { ButtonProps } from '@ui/button'
 import type { Field, GroupField } from 'payload'
 
-import { LINKABLE_COLLECTIONS } from '@constants/featureFlags'
+import { LINKABLE_COLLECTIONS } from '@services/control-board'
 
 type ButtonVariants = NonNullable<ButtonProps['variant']>
 export type LinkAppearances = 'default' | 'outline' | ButtonVariants
 
-export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
+export const appearanceOptions: Record<
+  LinkAppearances,
+  { label: string; value: string }
+> = {
   default: {
     label: 'Default',
-    value: 'default'
+    value: 'default',
   },
   outline: {
     label: 'Outline',
-    value: 'outline'
+    value: 'outline',
   },
   secondary: {
     label: 'Secondary',
-    value: 'secondary'
+    value: 'secondary',
   },
   destructive: {
     label: 'Destructive',
-    value: 'destructive'
+    value: 'destructive',
   },
   ghost: {
     label: 'Ghost',
-    value: 'ghost'
+    value: 'ghost',
   },
   link: {
     label: 'Link',
-    value: 'link'
-  }
+    value: 'link',
+  },
 }
 
 type LinkType = (options?: {
@@ -41,13 +44,17 @@ type LinkType = (options?: {
   overrides?: Partial<GroupField>
 }) => Field
 
-export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+export const link: LinkType = ({
+  appearances,
+  disableLabel = false,
+  overrides = {},
+} = {}) => {
   const linkResult: GroupField = {
     name: 'link',
     type: 'group',
     admin: {
       hideGutter: true,
-      ...(overrides?.admin || {})
+      ...(overrides?.admin || {}),
     },
     fields: [
       {
@@ -58,34 +65,34 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
             type: 'radio',
             admin: {
               layout: 'horizontal',
-              width: '50%'
+              width: '50%',
             },
             defaultValue: 'reference',
             options: [
               {
                 label: 'Internal link',
-                value: 'reference'
+                value: 'reference',
               },
               {
                 label: 'Custom URL',
-                value: 'custom'
-              }
-            ]
+                value: 'custom',
+              },
+            ],
           },
           {
             name: 'newTab',
             type: 'checkbox',
             admin: {
               style: {
-                alignSelf: 'flex-end'
+                alignSelf: 'flex-end',
               },
-              width: '25%'
+              width: '25%',
             },
-            label: 'Open in new tab'
-          }
-        ]
-      }
-    ]
+            label: 'Open in new tab',
+          },
+        ],
+      },
+    ],
   }
 
   const linkTypes: Field[] = [
@@ -93,22 +100,22 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       name: 'reference',
       type: 'relationship',
       admin: {
-        condition: (_, siblingData) => siblingData?.type === 'reference'
+        condition: (_, siblingData) => siblingData?.type === 'reference',
       },
       label: 'Document to link to',
       maxDepth: 2,
       relationTo: LINKABLE_COLLECTIONS,
-      required: true
+      required: true,
     },
     {
       name: 'url',
       type: 'text',
       admin: {
-        condition: (_, siblingData) => siblingData?.type === 'custom'
+        condition: (_, siblingData) => siblingData?.type === 'custom',
       },
       label: 'Custom URL',
-      required: true
-    }
+      required: true,
+    },
   ]
 
   if (!disableLabel) {
@@ -116,8 +123,8 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       ...linkType,
       admin: {
         ...linkType.admin,
-        width: '50%'
-      }
+        width: '50%',
+      },
     }))
 
     linkResult.fields.push({
@@ -128,12 +135,12 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
           name: 'label',
           type: 'text',
           admin: {
-            width: '25%'
+            width: '25%',
           },
           label: 'Label',
-          required: true
-        }
-      ]
+          required: true,
+        },
+      ],
     })
   } else {
     linkResult.fields = [...linkResult.fields, ...linkTypes]
@@ -143,17 +150,19 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
     let appearanceOptionsToUse = Object.values(appearanceOptions)
 
     if (appearances) {
-      appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
+      appearanceOptionsToUse = appearances.map(
+        (appearance) => appearanceOptions[appearance],
+      )
     }
 
     linkResult.fields.push({
       name: 'appearance',
       type: 'select',
       admin: {
-        description: 'Choose how the link should be rendered.'
+        description: 'Choose how the link should be rendered.',
       },
       defaultValue: 'default',
-      options: appearanceOptionsToUse
+      options: appearanceOptionsToUse,
     })
   }
 

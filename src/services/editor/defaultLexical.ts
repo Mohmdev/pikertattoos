@@ -1,15 +1,15 @@
 import {
   BoldFeature,
   ItalicFeature,
-  lexicalEditor,
   LinkFeature,
   ParagraphFeature,
-  UnderlineFeature
+  UnderlineFeature,
+  lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
 import { Config } from 'payload'
 
-import { LINKABLE_COLLECTIONS } from '@constants/featureFlags'
+import { LINKABLE_COLLECTIONS } from '@services/control-board'
 
 export const defaultLexical: Config['editor'] = lexicalEditor({
   features: () => {
@@ -32,14 +32,14 @@ export const defaultLexical: Config['editor'] = lexicalEditor({
               name: 'url',
               type: 'text',
               admin: {
-                condition: ({ linkType }) => linkType !== 'internal'
+                condition: ({ linkType }) => linkType !== 'internal',
               },
               label: ({ t }) => t('fields:enterURL'),
-              required: true
-            }
+              required: true,
+            },
           ]
-        }
-      })
+        },
+      }),
     ]
-  }
+  },
 })

@@ -1,21 +1,21 @@
+import { link } from '@fields/link'
+import { LabelFeature } from '@fields/richTextField/features/label/server'
+import { LargeBodyFeature } from '@fields/richTextField/features/largeBody/server'
 import {
   BlocksFeature,
   BoldFeature,
   EXPERIMENTAL_TableFeature,
   ItalicFeature,
-  lexicalEditor,
   LinkFeature,
   ParagraphFeature,
   UnderlineFeature,
-  UploadFeature
+  UploadFeature,
+  lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { link } from '@fields/link'
-import { LabelFeature } from '@fields/richTextField/features/label/server'
-import { LargeBodyFeature } from '@fields/richTextField/features/largeBody/server'
 
 import { Config } from 'payload'
 
-import { LINKABLE_COLLECTIONS } from '@constants/featureFlags'
+import { LINKABLE_COLLECTIONS } from '@services/control-board'
 
 export const advancedLexical: Config['editor'] = lexicalEditor({
   features: ({ defaultFeatures }) => [
@@ -39,13 +39,13 @@ export const advancedLexical: Config['editor'] = lexicalEditor({
             name: 'url',
             type: 'text',
             admin: {
-              condition: ({ linkType }) => linkType !== 'internal'
+              condition: ({ linkType }) => linkType !== 'internal',
             },
             label: ({ t }) => t('fields:enterURL'),
-            required: true
-          }
+            required: true,
+          },
         ]
-      }
+      },
     }),
     UploadFeature({
       collections: {
@@ -54,20 +54,20 @@ export const advancedLexical: Config['editor'] = lexicalEditor({
             {
               name: 'enableLink',
               type: 'checkbox',
-              label: 'Enable Link'
+              label: 'Enable Link',
             },
             link({
               appearances: false,
               disableLabel: true,
               overrides: {
                 admin: {
-                  condition: (_, data) => Boolean(data?.enableLink)
-                }
-              }
-            })
-          ]
-        }
-      }
+                  condition: (_, data) => Boolean(data?.enableLink),
+                },
+              },
+            }),
+          ],
+        },
+      },
     }),
     LabelFeature(),
     LargeBodyFeature(),
@@ -82,61 +82,61 @@ export const advancedLexical: Config['editor'] = lexicalEditor({
               options: [
                 {
                   label: 'H1',
-                  value: 'h1'
+                  value: 'h1',
                 },
                 {
                   label: 'H2',
-                  value: 'h2'
+                  value: 'h2',
                 },
                 {
                   label: 'H3',
-                  value: 'h3'
+                  value: 'h3',
                 },
                 {
                   label: 'Paragraph',
-                  value: 'p'
-                }
-              ]
+                  value: 'p',
+                },
+              ],
             },
             {
               name: 'richText',
               type: 'richText',
-              editor: lexicalEditor()
-            }
+              editor: lexicalEditor(),
+            },
           ],
-          interfaceName: 'SpotlightBlock'
+          interfaceName: 'SpotlightBlock',
         },
         {
           slug: 'video',
           fields: [
             {
               name: 'url',
-              type: 'text'
-            }
+              type: 'text',
+            },
           ],
-          interfaceName: 'VideoBlock'
+          interfaceName: 'VideoBlock',
         },
         {
           slug: 'br',
           fields: [
             {
               name: 'ignore',
-              type: 'text'
-            }
+              type: 'text',
+            },
           ],
 
-          interfaceName: 'BrBlock'
+          interfaceName: 'BrBlock',
         },
         {
           slug: 'commandLine',
           fields: [
             {
               name: 'command',
-              type: 'text'
-            }
+              type: 'text',
+            },
           ],
-          interfaceName: 'CommandLineBlock'
-        }
+          interfaceName: 'CommandLineBlock',
+        },
         // {
         //   slug: 'templateCards',
         //   fields: [
@@ -180,7 +180,7 @@ export const advancedLexical: Config['editor'] = lexicalEditor({
         // }
         // BannerBlock,
         // CodeBlock,
-      ]
-    })
-  ]
+      ],
+    }),
+  ],
 })
