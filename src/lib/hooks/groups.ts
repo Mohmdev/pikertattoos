@@ -49,13 +49,14 @@ export const useGroupChatOnline = (userid: string) => {
 
     channel
       .on('presence', { event: 'sync' }, () => {
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const state: any = channel.presenceState()
         console.log(state)
         for (const user in state) {
           dispatch(
             onOnline({
-              members: [{ id: state[user][0].member.userid }]
-            })
+              members: [{ id: state[user][0].member.userid }],
+            }),
           )
         }
       })
@@ -63,8 +64,8 @@ export const useGroupChatOnline = (userid: string) => {
         if (status === 'SUBSCRIBED') {
           await channel.track({
             member: {
-              userid
-            }
+              userid,
+            },
           })
         }
       })
@@ -81,7 +82,8 @@ export const useSearch = (search: 'GROUPS' | 'POSTS') => {
 
   const dispatch: AppDispatch = useDispatch()
 
-  const onSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)
+  const onSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setQuery(e.target.value)
 
   useEffect(() => {
     const delayInputTimeoutId = setTimeout(() => {
@@ -98,15 +100,15 @@ export const useSearch = (search: 'GROUPS' | 'POSTS') => {
         return groups
       }
     },
-    enabled: false
+    enabled: false,
   })
 
   if (isFetching)
     dispatch(
       onSearch({
         isSearching: true,
-        data: []
-      })
+        data: [],
+      }),
     )
 
   if (isFetched)
@@ -115,8 +117,8 @@ export const useSearch = (search: 'GROUPS' | 'POSTS') => {
         isSearching: false,
         status: data?.status as number,
         data: data?.groups || [],
-        debounce
-      })
+        debounce,
+      }),
     )
 
   useEffect(() => {
@@ -133,32 +135,37 @@ export const useSearch = (search: 'GROUPS' | 'POSTS') => {
 export const useGroupSettings = (groupid: string) => {
   const { data } = useQuery({
     queryKey: ['group-info'],
-    queryFn: () => onGetGroupInfo(groupid)
+    queryFn: () => onGetGroupInfo(groupid),
   })
 
   const jsonContent = data?.group?.jsonDescription
     ? JSON.parse(data?.group?.jsonDescription as string)
     : undefined
 
-  const [onJsonDescription, setJsonDescription] = useState<JSONContent | undefined>(jsonContent)
+  const [onJsonDescription, setJsonDescription] = useState<
+    JSONContent | undefined
+  >(jsonContent)
 
   const [onDescription, setOnDescription] = useState<string | undefined>(
-    data?.group?.description || undefined
+    data?.group?.description || undefined,
   )
 
   const {
     register,
     formState: { errors },
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
     reset,
     handleSubmit,
     watch,
-    setValue
+    setValue,
   } = useForm<z.infer<typeof GroupSettingsSchema>>({
     resolver: zodResolver(GroupSettingsSchema),
-    mode: 'onChange'
+    mode: 'onChange',
   })
   const [previewIcon, setPreviewIcon] = useState<string | undefined>(undefined)
-  const [previewThumbnail, setPreviewThumbnail] = useState<string | undefined>(undefined)
+  const [previewThumbnail, setPreviewThumbnail] = useState<string | undefined>(
+    undefined,
+  )
 
   useEffect(() => {
     const previews = watch(({ thumbnail, icon }) => {
@@ -195,11 +202,11 @@ export const useGroupSettings = (groupid: string) => {
           groupid,
           'IMAGE',
           uploaded.uuid,
-          `/group/${groupid}/settings`
+          `/group/${groupid}/settings`,
         )
         if (updated.status !== 200) {
           return toast('Error', {
-            description: 'Oops! looks like your form is empty'
+            description: 'Oops! looks like your form is empty',
           })
         }
       }
@@ -210,11 +217,11 @@ export const useGroupSettings = (groupid: string) => {
           groupid,
           'ICON',
           uploaded.uuid,
-          `/group/${groupid}/settings`
+          `/group/${groupid}/settings`,
         )
         if (updated.status !== 200) {
           return toast('Error', {
-            description: 'Oops! looks like your form is empty'
+            description: 'Oops! looks like your form is empty',
           })
         }
       }
@@ -223,11 +230,11 @@ export const useGroupSettings = (groupid: string) => {
           groupid,
           'NAME',
           values.name,
-          `/group/${groupid}/settings`
+          `/group/${groupid}/settings`,
         )
         if (updated.status !== 200) {
           return toast('Error', {
-            description: 'Oops! looks like your form is empty'
+            description: 'Oops! looks like your form is empty',
           })
         }
       }
@@ -238,11 +245,11 @@ export const useGroupSettings = (groupid: string) => {
           groupid,
           'DESCRIPTION',
           values.description,
-          `/group/${groupid}/settings`
+          `/group/${groupid}/settings`,
         )
         if (updated.status !== 200) {
           return toast('Error', {
-            description: 'Oops! looks like your form is empty'
+            description: 'Oops! looks like your form is empty',
           })
         }
       }
@@ -251,11 +258,11 @@ export const useGroupSettings = (groupid: string) => {
           groupid,
           'JSONDESCRIPTION',
           values.jsondescription,
-          `/group/${groupid}/settings`
+          `/group/${groupid}/settings`,
         )
         if (updated.status !== 200) {
           return toast('Error', {
-            description: 'Oops! looks like your form is empty'
+            description: 'Oops! looks like your form is empty',
           })
         }
       }
@@ -267,13 +274,13 @@ export const useGroupSettings = (groupid: string) => {
         !values.jsondescription
       ) {
         return toast('Error', {
-          description: 'Oops! looks like your form is empty'
+          description: 'Oops! looks like your form is empty',
         })
       }
       return toast('Success', {
-        description: 'Group data updated'
+        description: 'Group data updated',
       })
-    }
+    },
   })
   const router = useRouter()
   const onUpdate = handleSubmit(async (values) => update(values))
@@ -290,12 +297,12 @@ export const useGroupSettings = (groupid: string) => {
     onJsonDescription,
     setJsonDescription,
     setOnDescription,
-    onDescription
+    onDescription,
   }
 }
 export const useGroupList = (query: string) => {
   const { data } = useQuery({
-    queryKey: [query]
+    queryKey: [query],
   })
 
   const dispatch: AppDispatch = useDispatch()
@@ -318,7 +325,7 @@ export const useExploreSlider = (query: string, paginate: number) => {
   const { data, refetch, isFetching, isFetched } = useQuery({
     queryKey: ['fetch-group-slides'],
     queryFn: () => onGetExploreGroup(query, paginate | 0),
-    enabled: false
+    enabled: false,
   })
 
   if (isFetched && data?.status === 200 && data.groups) {
@@ -337,7 +344,7 @@ export const useExploreSlider = (query: string, paginate: number) => {
 
 export const useGroupInfo = () => {
   const { data } = useQuery({
-    queryKey: ['about-group-info']
+    queryKey: ['about-group-info'],
   })
 
   const router = useRouter()
@@ -349,7 +356,7 @@ export const useGroupInfo = () => {
   if (status !== 200) router.push('/explore')
 
   return {
-    group
+    group,
   }
 }
 
@@ -358,7 +365,7 @@ export const useGroupAbout = (
   jsonDescription: string | null,
   htmlDescription: string | null,
   currentMedia: string,
-  groupid: string
+  groupid: string,
 ) => {
   const editor = useRef<HTMLFormElement | null>(null)
   const mediaType = validateURLString(currentMedia)
@@ -372,29 +379,34 @@ export const useGroupAbout = (
     mediaType.type === 'IMAGE'
       ? {
           url: currentMedia,
-          type: mediaType.type
+          type: mediaType.type,
         }
-      : { ...mediaType }
+      : { ...mediaType },
   )
 
-  const jsonContent = jsonDescription !== null ? JSON.parse(jsonDescription as string) : undefined
+  const jsonContent =
+    jsonDescription !== null ? JSON.parse(jsonDescription as string) : undefined
 
-  const [onJsonDescription, setJsonDescription] = useState<JSONContent | undefined>(jsonContent)
+  const [onJsonDescription, setJsonDescription] = useState<
+    JSONContent | undefined
+  >(jsonContent)
 
-  const [onDescription, setOnDescription] = useState<string | undefined>(description || undefined)
-
-  const [onHtmlDescription, setOnHtmlDescription] = useState<string | undefined>(
-    htmlDescription || undefined
+  const [onDescription, setOnDescription] = useState<string | undefined>(
+    description || undefined,
   )
+
+  const [onHtmlDescription, setOnHtmlDescription] = useState<
+    string | undefined
+  >(htmlDescription || undefined)
 
   const [onEditDescription, setOnEditDescription] = useState<boolean>(false)
 
   const {
     setValue,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = useForm<z.infer<typeof GroupSettingsSchema>>({
-    resolver: zodResolver(GroupSettingsSchema)
+    resolver: zodResolver(GroupSettingsSchema),
   })
 
   const onSetDescriptions = () => {
@@ -434,11 +446,11 @@ export const useGroupAbout = (
           groupid,
           'DESCRIPTION',
           values.description,
-          `/about/${groupid}`
+          `/about/${groupid}`,
         )
         if (updated.status !== 200) {
           return toast('Error', {
-            description: 'Oops! looks like your form is empty'
+            description: 'Oops! looks like your form is empty',
           })
         }
       }
@@ -447,11 +459,11 @@ export const useGroupAbout = (
           groupid,
           'JSONDESCRIPTION',
           values.jsondescription,
-          `/about/${groupid}`
+          `/about/${groupid}`,
         )
         if (updated.status !== 200) {
           return toast('Error', {
-            description: 'Oops! looks like your form is empty'
+            description: 'Oops! looks like your form is empty',
           })
         }
       }
@@ -460,23 +472,27 @@ export const useGroupAbout = (
           groupid,
           'HTMLDESCRIPTION',
           values.htmldescription,
-          `/about/${groupid}`
+          `/about/${groupid}`,
         )
         if (updated.status !== 200) {
           return toast('Error', {
-            description: 'Oops! looks like your form is empty'
+            description: 'Oops! looks like your form is empty',
           })
         }
       }
-      if (!values.description && !values.jsondescription && !values.htmldescription) {
+      if (
+        !values.description &&
+        !values.jsondescription &&
+        !values.htmldescription
+      ) {
         return toast('Error', {
-          description: 'Oops! looks like your form is empty'
+          description: 'Oops! looks like your form is empty',
         })
       }
       return toast('Success', {
-        description: 'Group description updated'
+        description: 'Group description updated',
       })
-    }
+    },
   })
   const onSetActiveMedia = (media: { url: string | undefined; type: string }) =>
     setActiveMedia(media)
@@ -497,7 +513,7 @@ export const useGroupAbout = (
     onSetActiveMedia,
     setOnHtmlDescription,
     onUpdateDescription,
-    isPending
+    isPending,
   }
 }
 
@@ -505,9 +521,9 @@ export const useMediaGallery = (groupid: string) => {
   const {
     register,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = useForm<z.infer<typeof UpdateGallerySchema>>({
-    resolver: zodResolver(UpdateGallerySchema)
+    resolver: zodResolver(UpdateGallerySchema),
   })
 
   const { mutate, isPending } = useMutation({
@@ -517,7 +533,7 @@ export const useMediaGallery = (groupid: string) => {
         const update = await onUpdateGroupGallery(groupid, values.videourl)
         if (update && update.status !== 200) {
           return toast('Error', {
-            description: update?.message
+            description: update?.message,
           })
         }
       }
@@ -529,13 +545,13 @@ export const useMediaGallery = (groupid: string) => {
             const update = await onUpdateGroupGallery(groupid, uploaded.uuid)
             if (update?.status !== 200) {
               toast('Error', {
-                description: update?.message
+                description: update?.message,
               })
               break
             }
           } else {
             toast('Error', {
-              description: 'Looks like something went wrong!'
+              description: 'Looks like something went wrong!',
             })
             break
           }
@@ -545,9 +561,9 @@ export const useMediaGallery = (groupid: string) => {
       }
 
       return toast('Success', {
-        description: 'Group gallery updated'
+        description: 'Group gallery updated',
       })
-    }
+    },
   })
 
   const onUpdateGallery = handleSubmit(async (values) => mutate(values))
@@ -556,14 +572,14 @@ export const useMediaGallery = (groupid: string) => {
     register,
     errors,
     onUpdateGallery,
-    isPending
+    isPending,
   }
 }
 
 export const useGroupChat = (groupid: string) => {
   const { data } = useQuery({
     queryKey: ['member-chats'],
-    queryFn: () => onGetAllGroupMembers(groupid)
+    queryFn: () => onGetAllGroupMembers(groupid),
   })
 
   const pathname = usePathname()
@@ -574,7 +590,7 @@ export const useGroupChat = (groupid: string) => {
 export const useChatWindow = (recieverid: string) => {
   const { data, isFetched } = useQuery({
     queryKey: ['user-messages'],
-    queryFn: () => onGetAllUserMessages(recieverid)
+    queryFn: () => onGetAllUserMessages(recieverid),
   })
 
   const messageWindowRef = useRef<HTMLDivElement | null>(null)
@@ -583,7 +599,7 @@ export const useChatWindow = (recieverid: string) => {
     messageWindowRef.current?.scroll({
       top: messageWindowRef.current.scrollHeight,
       left: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
   }
 
@@ -595,7 +611,7 @@ export const useChatWindow = (recieverid: string) => {
         {
           event: '*',
           schema: 'public',
-          table: 'Message'
+          table: 'Message',
         },
         async (payload) => {
           dispatch(
@@ -607,11 +623,11 @@ export const useChatWindow = (recieverid: string) => {
                   createdAt: Date
                   senderid: string | null
                   recieverId: string | null
-                }[])
-              ]
-            })
+                }[]),
+              ],
+            }),
           )
-        }
+        },
       )
       .subscribe()
   }, [])
@@ -628,8 +644,10 @@ export const useChatWindow = (recieverid: string) => {
 }
 
 export const useSendMessage = (recieverId: string) => {
-  const { register, reset, handleSubmit } = useForm<z.infer<typeof SendNewMessageSchema>>({
-    resolver: zodResolver(SendNewMessageSchema)
+  const { register, reset, handleSubmit } = useForm<
+    z.infer<typeof SendNewMessageSchema>
+  >({
+    resolver: zodResolver(SendNewMessageSchema),
   })
 
   const { mutate } = useMutation({
@@ -639,11 +657,11 @@ export const useSendMessage = (recieverId: string) => {
     onMutate: () => reset(),
     onSuccess: () => {
       return
-    }
+    },
   })
 
   const onSendNewMessage = handleSubmit(async (values) =>
-    mutate({ messageid: v4(), message: values.message })
+    mutate({ messageid: v4(), message: values.message }),
   )
 
   return { onSendNewMessage, register }
@@ -654,31 +672,32 @@ export const useCustomDomain = (groupid: string) => {
     handleSubmit,
     register,
     formState: { errors },
-    reset
+    reset,
   } = useForm<z.infer<typeof AddCustomDomainSchema>>({
-    resolver: zodResolver(AddCustomDomainSchema)
+    resolver: zodResolver(AddCustomDomainSchema),
   })
 
   const client = useQueryClient()
 
   const { data } = useQuery({
     queryKey: ['domain-config'],
-    queryFn: () => onGetDomainConfig(groupid)
+    queryFn: () => onGetDomainConfig(groupid),
   })
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: { domain: string }) => onAddCustomDomain(groupid, data.domain),
+    mutationFn: (data: { domain: string }) =>
+      onAddCustomDomain(groupid, data.domain),
     onMutate: reset,
     onSuccess: (data) => {
       return toast(data.status === 200 ? 'Success' : 'Error', {
-        description: data.message
+        description: data.message,
       })
     },
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ['domain-config']
+        queryKey: ['domain-config'],
       })
-    }
+    },
   })
 
   const onAddDomain = handleSubmit(async (values) => mutate(values))
@@ -688,6 +707,6 @@ export const useCustomDomain = (groupid: string) => {
     isPending,
     register,
     errors,
-    data
+    data,
   }
 }

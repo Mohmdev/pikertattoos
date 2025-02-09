@@ -1,12 +1,14 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
-
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import type { Plugin } from 'payload'
 
-import { formsLexical } from '../editor/formsLexical'
-
-export const formBuilderPluginConfig: Plugin = formBuilderPlugin({
+export const formBuilderService: Plugin = formBuilderPlugin({
   fields: {
-    payment: false
+    payment: false,
   },
   formOverrides: {
     fields: ({ defaultFields }) => {
@@ -14,19 +16,29 @@ export const formBuilderPluginConfig: Plugin = formBuilderPlugin({
         if ('name' in field && field.name === 'confirmationMessage') {
           return {
             ...field,
-            editor: formsLexical
+            editor: lexicalEditor({
+              features: ({ rootFeatures }) => {
+                return [
+                  ...rootFeatures,
+                  FixedToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'],
+                  }),
+                ]
+              },
+            }),
           }
         }
         return field
       })
     },
     admin: {
-      group: 'Settings'
-    }
+      group: 'Marketing',
+    },
   },
   formSubmissionOverrides: {
     admin: {
-      group: 'Settings'
-    }
-  }
+      group: 'Marketing',
+    },
+  },
 })

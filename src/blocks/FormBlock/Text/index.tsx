@@ -3,18 +3,23 @@
 import React from 'react'
 
 import type { TextField } from '@payloadcms/plugin-form-builder/types'
-import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+import type {
+  FieldErrorsImpl,
+  FieldValues,
+  UseFormRegister,
+} from 'react-hook-form'
 
 import { Input } from '@ui/input'
 import { Label } from '@ui/label'
 
-import { Error } from '../Error'
+import { ErrorComponent } from '../Error'
 import { Width } from '../Width'
 
 export const Text: React.FC<
   TextField & {
     errors: Partial<
       FieldErrorsImpl<{
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         [x: string]: any
       }>
     >
@@ -32,8 +37,13 @@ export const Text: React.FC<
           </span>
         )}
       </Label>
-      <Input defaultValue={defaultValue} id={name} type="text" {...register(name, { required })} />
-      {errors[name] && <Error />}
+      <Input
+        defaultValue={defaultValue}
+        id={name}
+        type="text"
+        {...register(name, { required })}
+      />
+      {errors[name] && <ErrorComponent />}
     </Width>
   )
 }

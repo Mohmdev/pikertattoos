@@ -14,7 +14,7 @@ type InitialStateProps = {
 }
 
 const InitialState: InitialStateProps = {
-  chat: []
+  chat: [],
 }
 
 export const onChats = createSlice({
@@ -22,13 +22,15 @@ export const onChats = createSlice({
   initialState: InitialState,
   reducers: {
     onChat: (state, action: PayloadAction<InitialStateProps>) => {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const messages = state.chat.find((data: any) =>
-        action.payload.chat.find((payload: any) => data.id === payload.id)
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        action.payload.chat.find((payload: any) => data.id === payload.id),
       )
 
       if (!messages) state.chat = [...state.chat, ...action.payload.chat]
-    }
-  }
+    },
+  },
 })
 
 export const { onChat } = onChats.actions

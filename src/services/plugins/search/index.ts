@@ -15,8 +15,8 @@ export const searchPluginConfig: Plugin = searchPlugin({
         type: 'text',
         index: true,
         admin: {
-          readOnly: true
-        }
+          readOnly: true,
+        },
       },
       {
         name: 'image',
@@ -25,50 +25,50 @@ export const searchPluginConfig: Plugin = searchPlugin({
         relationTo: 'media',
         index: true,
         admin: {
-          readOnly: true
-        }
+          readOnly: true,
+        },
       },
       {
         name: 'styles',
         type: 'array',
         index: true,
         admin: {
-          readOnly: true
+          readOnly: true,
         },
         fields: [
           {
             name: 'relationTo',
-            type: 'text'
+            type: 'text',
           },
           {
             name: 'title',
-            type: 'text'
-          }
-        ]
+            type: 'text',
+          },
+        ],
       },
       {
         name: 'areas',
         type: 'array',
         index: true,
         admin: {
-          readOnly: true
+          readOnly: true,
         },
         fields: [
           {
             name: 'relationTo',
-            type: 'text'
+            type: 'text',
           },
           {
             name: 'title',
-            type: 'text'
-          }
-        ]
-      }
+            type: 'text',
+          },
+        ],
+      },
     ],
     admin: {
       useAsTitle: 'title',
       defaultColumns: ['title', 'image', 'styles', 'areas', 'description'],
-      group: 'Site Content'
-    }
-  }
+      group: 'Resources',
+    },
+  },
 })

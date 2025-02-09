@@ -28,14 +28,14 @@ const InitialState: InitialStateProps = {
   isSearching: false,
   status: undefined,
   data: [],
-  debounce: ''
+  debounce: '',
 }
 
 export const Search = createSlice({
   name: 'search',
   initialState: InitialState,
   reducers: {
-    onSearch: (state, action: PayloadAction<InitialStateProps>) => {
+    onSearch: (_state, action: PayloadAction<InitialStateProps>) => {
       return { ...action.payload }
     },
     onClearSearch: (state) => {
@@ -43,8 +43,8 @@ export const Search = createSlice({
       state.isSearching = false
       state.status = undefined
       state.debounce = ''
-    }
-  }
+    },
+  },
 })
 
 export const { onSearch, onClearSearch } = Search.actions

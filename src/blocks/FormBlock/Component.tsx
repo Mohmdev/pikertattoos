@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import React, { useCallback, useState } from 'react'
 
-import { FormProvider, useForm } from 'react-hook-form'
 import { getClientSideURL } from '@utils/getURL'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
@@ -41,23 +41,31 @@ export const FormBlock: React.FC<
   const {
     enableIntro,
     form: formFromProps,
-    form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
-    introContent
+    form: {
+      id: formID,
+      confirmationMessage,
+      confirmationType,
+      redirect,
+      submitButtonLabel,
+    } = {},
+    introContent,
   } = props
 
   const formMethods = useForm<Data>({
-    defaultValues: buildInitialFormState(formFromProps.fields)
+    defaultValues: buildInitialFormState(formFromProps.fields),
   })
   const {
     control,
     formState: { errors },
     handleSubmit,
-    register
+    register,
   } = formMethods
 
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
-  const [error, setError] = useState<{ message: string; status?: string } | undefined>()
+  const [error, setError] = useState<
+    { message: string; status?: string } | undefined
+  >()
   const router = useRouter()
 
   const onSubmit = useCallback(
@@ -68,7 +76,7 @@ export const FormBlock: React.FC<
 
         const dataToSend = Object.entries(data).map(([name, value]) => ({
           field: name,
-          value
+          value,
         }))
 
         // delay loading indicator by 1s
@@ -77,16 +85,19 @@ export const FormBlock: React.FC<
         }, 1000)
 
         try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            body: JSON.stringify({
-              form: formID,
-              submissionData: dataToSend
-            }),
-            headers: {
-              'Content-Type': 'application/json'
+          const req = await fetch(
+            `${getClientSideURL()}/api/form-submissions`,
+            {
+              body: JSON.stringify({
+                form: formID,
+                submissionData: dataToSend,
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
             },
-            method: 'POST'
-          })
+          )
 
           const res = await req.json()
 
@@ -97,7 +108,7 @@ export const FormBlock: React.FC<
 
             setError({
               message: res.errors?.[0]?.message || 'Internal Server Error',
-              status: res.status
+              status: res.status,
             })
 
             return
@@ -117,20 +128,24 @@ export const FormBlock: React.FC<
           console.warn(err)
           setIsLoading(false)
           setError({
-            message: 'Something went wrong.'
+            message: 'Something went wrong.',
           })
         }
       }
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType]
+    [router, formID, redirect, confirmationType],
   )
 
   return (
     <div className="container lg:max-w-[48rem]">
       {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
+        <RichText
+          className="mb-8 lg:mb-12"
+          data={introContent}
+          enableGutter={false}
+        />
       )}
       <div className="rounded-[0.8rem] border border-border p-4 lg:p-6">
         <FormProvider {...formMethods}>
@@ -138,15 +153,18 @@ export const FormBlock: React.FC<
             <RichText data={confirmationMessage} />
           )}
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+          {error && (
+            <div>{`${error.status || '500'}: ${error.message || ''}`}</div>
+          )}
           {!hasSubmitted && (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
                 {formFromProps &&
                   formFromProps.fields &&
                   formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                    const Field: React.FC<any> =
+                      fields?.[field.blockType as keyof typeof fields]
                     if (Field) {
                       return (
                         <div className="mb-6 last:mb-0" key={index}>

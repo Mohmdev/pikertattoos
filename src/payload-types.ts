@@ -15,14 +15,14 @@ export interface Config {
     area: Area;
     style: Style;
     artist: Artist;
-    tag: Tag;
     pages: Page;
     posts: Post;
     categories: Category;
+    tag: Tag;
     media: Media;
     assets: Asset;
-    'user-photo': UserPhoto;
     users: User;
+    'user-photos': UserPhoto;
     forms: Form;
     'form-submissions': FormSubmission;
     redirects: Redirect;
@@ -50,7 +50,7 @@ export interface Config {
     media: {
       relatedTattoo: 'tattoo';
     };
-    'user-photo': {
+    'user-photos': {
       user: 'users';
     };
   };
@@ -59,14 +59,14 @@ export interface Config {
     area: AreaSelect<false> | AreaSelect<true>;
     style: StyleSelect<false> | StyleSelect<true>;
     artist: ArtistSelect<false> | ArtistSelect<true>;
-    tag: TagSelect<false> | TagSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tag: TagSelect<false> | TagSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     assets: AssetsSelect<false> | AssetsSelect<true>;
-    'user-photo': UserPhotoSelect<false> | UserPhotoSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'user-photos': UserPhotosSelect<false> | UserPhotosSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -421,7 +421,7 @@ export interface Style {
  */
 export interface User {
   id: number;
-  firstName: string;
+  firstName?: string | null;
   lastName?: string | null;
   photo?: (number | null) | UserPhoto;
   role: 'admin' | 'editor' | 'public';
@@ -441,7 +441,7 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "user-photo".
+ * via the `definition` "user-photos".
  */
 export interface UserPhoto {
   id: number;
@@ -471,7 +471,7 @@ export interface UserPhoto {
       filesize?: number | null;
       filename?: string | null;
     };
-    square?: {
+    avatar?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -479,15 +479,7 @@ export interface UserPhoto {
       filesize?: number | null;
       filename?: string | null;
     };
-    small?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
+    original?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -1327,10 +1319,6 @@ export interface PayloadLockedDocument {
         value: number | Artist;
       } | null)
     | ({
-        relationTo: 'tag';
-        value: number | Tag;
-      } | null)
-    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -1343,6 +1331,10 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'tag';
+        value: number | Tag;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1351,12 +1343,12 @@ export interface PayloadLockedDocument {
         value: number | Asset;
       } | null)
     | ({
-        relationTo: 'user-photo';
-        value: number | UserPhoto;
-      } | null)
-    | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'user-photos';
+        value: number | UserPhoto;
       } | null)
     | ({
         relationTo: 'forms';
@@ -1517,22 +1509,6 @@ export interface ArtistSelect<T extends boolean = true> {
   bio?: T;
   tattoos?: T;
   tags?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tag_select".
- */
-export interface TagSelect<T extends boolean = true> {
-  title?: T;
-  tattoos?: T;
-  artists?: T;
-  image?: T;
-  description?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1727,6 +1703,22 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tag_select".
+ */
+export interface TagSelect<T extends boolean = true> {
+  title?: T;
+  tattoos?: T;
+  artists?: T;
+  image?: T;
+  description?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1853,9 +1845,31 @@ export interface AssetsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "user-photo_select".
+ * via the `definition` "users_select".
  */
-export interface UserPhotoSelect<T extends boolean = true> {
+export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  photo?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  username?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  _verified?: T;
+  _verificationToken?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-photos_select".
+ */
+export interface UserPhotosSelect<T extends boolean = true> {
   alt?: T;
   user?: T;
   prefix?: T;
@@ -1883,7 +1897,7 @@ export interface UserPhotoSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        square?:
+        avatar?:
           | T
           | {
               url?: T;
@@ -1893,17 +1907,7 @@ export interface UserPhotoSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        small?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        medium?:
+        original?:
           | T
           | {
               url?: T;
@@ -1914,28 +1918,6 @@ export interface UserPhotoSelect<T extends boolean = true> {
               filename?: T;
             };
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  firstName?: T;
-  lastName?: T;
-  photo?: T;
-  role?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  username?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  _verified?: T;
-  _verificationToken?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

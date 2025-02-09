@@ -1,6 +1,13 @@
 'use client'
 
-import { CSSProperties, ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
+import {
+  CSSProperties,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import { cn } from '@utils/cn'
 
@@ -57,7 +64,7 @@ interface NeonGradientCardProps {
    * */
   neonColors?: NeonColorsProps
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   [key: string]: any
 }
 
@@ -68,7 +75,7 @@ const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   borderRadius = 20,
   neonColors = {
     firstColor: '#ff00aa',
-    secondColor: '#00FFF1'
+    secondColor: '#00FFF1',
   },
   ...props
 }) => {
@@ -113,10 +120,13 @@ const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
           '--pseudo-element-background-image': `linear-gradient(0deg, ${neonColors.firstColor}, ${neonColors.secondColor})`,
           '--pseudo-element-width': `${dimensions.width + borderSize * 2}px`,
           '--pseudo-element-height': `${dimensions.height + borderSize * 2}px`,
-          '--after-blur': `${dimensions.width / 3}px`
+          '--after-blur': `${dimensions.width / 3}px`,
         } as CSSProperties
       }
-      className={cn('relative z-10 size-full rounded-[var(--border-radius)]', className)}
+      className={cn(
+        'relative z-10 size-full rounded-[var(--border-radius)]',
+        className,
+      )}
       {...props}
     >
       <div
@@ -130,7 +140,7 @@ const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
           "after:h-[var(--pseudo-element-height)] after:w-[var(--pseudo-element-width)] after:rounded-[var(--border-radius)] after:blur-[var(--after-blur)] after:content-['']",
           'after:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:100%_200%] after:opacity-80',
           'after:animate-background-position-spin',
-          'bg-gray-100 dark:bg-neutral-900'
+          'bg-gray-100 dark:bg-neutral-900',
         )}
       >
         {children}

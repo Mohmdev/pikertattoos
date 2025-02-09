@@ -5,23 +5,30 @@ import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import type { CheckboxField } from '@payloadcms/plugin-form-builder/types'
-import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+import type {
+  FieldErrorsImpl,
+  FieldValues,
+  UseFormRegister,
+} from 'react-hook-form'
 
 import { Checkbox as CheckboxUi } from '@ui/checkbox'
 import { Label } from '@ui/label'
 
-import { Error } from '../Error'
+import { ErrorComponent } from '../Error'
 import { Width } from '../Width'
 
 export const Checkbox: React.FC<
   CheckboxField & {
     errors: Partial<
       FieldErrorsImpl<{
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         [x: string]: any
       }>
     >
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     getValues: any
     register: UseFormRegister<FieldValues>
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     setValue: any
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
@@ -48,7 +55,7 @@ export const Checkbox: React.FC<
           {label}
         </Label>
       </div>
-      {errors[name] && <Error />}
+      {errors[name] && <ErrorComponent />}
     </Width>
   )
 }

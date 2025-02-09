@@ -9,7 +9,7 @@ type Props = {
   disableMobile?: boolean
   leftGutter?: boolean
   rightGutter?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   ref?: React.RefObject<any>
 }
 export const Gutter: React.FC<Props> = ({
@@ -19,7 +19,7 @@ export const Gutter: React.FC<Props> = ({
   disableMobile,
   leftGutter = true,
   rightGutter = true,
-  ref: refFromProps
+  ref: refFromProps,
 }) => {
   return (
     <div
@@ -27,7 +27,7 @@ export const Gutter: React.FC<Props> = ({
         className,
         leftGutter && classes.leftGutter,
         rightGutter && classes.rightGutter,
-        disableMobile && classes.disableMobile
+        disableMobile && classes.disableMobile,
       ]
         .filter(Boolean)
         .join(' ')}

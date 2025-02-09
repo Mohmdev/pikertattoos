@@ -2,7 +2,7 @@ import {
   $applyNodeReplacement,
   $createParagraphNode,
   ElementNode,
-  isHTMLElement
+  isHTMLElement,
 } from '@payloadcms/richtext-lexical/lexical'
 import { addClassNamesToElement } from '@payloadcms/richtext-lexical/lexical/utils'
 
@@ -15,7 +15,7 @@ import type {
   ParagraphNode,
   RangeSelection,
   SerializedElementNode,
-  Spread
+  Spread,
 } from '@payloadcms/richtext-lexical/lexical'
 
 export type SerializedLabelNode = Spread<
@@ -31,17 +31,17 @@ export class LabelNode extends ElementNode {
     super(key)
   }
 
-  static clone(node: LabelNode): LabelNode {
+  static override clone(node: LabelNode): LabelNode {
     return new LabelNode({
-      key: node.__key
+      key: node.__key,
     })
   }
 
-  static getType(): string {
+  static override getType(): string {
     return 'label'
   }
 
-  static importJSON(serializedNode: SerializedLabelNode): LabelNode {
+  static override importJSON(serializedNode: SerializedLabelNode): LabelNode {
     const node = $createLabelNode()
     node.setFormat(serializedNode.format)
     node.setIndent(serializedNode.indent)
@@ -49,18 +49,18 @@ export class LabelNode extends ElementNode {
     return node
   }
 
-  canBeEmpty(): true {
+  override canBeEmpty(): true {
     return true
   }
 
-  canInsertTextAfter(): true {
+  override canInsertTextAfter(): true {
     return true
   }
 
-  canInsertTextBefore(): true {
+  override canInsertTextBefore(): true {
     return true
   }
-  collapseAtStart(): true {
+  override collapseAtStart(): true {
     const paragraph = $createParagraphNode()
     const children = this.getChildren()
     children.forEach((child) => paragraph.append(child))
@@ -68,14 +68,13 @@ export class LabelNode extends ElementNode {
     return true
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  createDOM(config: EditorConfig): HTMLElement {
+  override createDOM(_config: EditorConfig): HTMLElement {
     const element = document.createElement('span')
     addClassNamesToElement(element, 'rich-text-label-node')
     return element
   }
 
-  exportDOM(editor: LexicalEditor): DOMExportOutput {
+  override exportDOM(editor: LexicalEditor): DOMExportOutput {
     const { element } = super.exportDOM(editor)
 
     if (element && isHTMLElement(element)) {
@@ -91,18 +90,21 @@ export class LabelNode extends ElementNode {
     }
 
     return {
-      element
+      element,
     }
   }
 
-  exportJSON(): SerializedElementNode {
+  override exportJSON(): SerializedElementNode {
     return {
       ...super.exportJSON(),
-      type: this.getType()
+      type: this.getType(),
     }
   }
 
-  insertNewAfter(_: RangeSelection, restoreSelection?: boolean): ParagraphNode {
+  override insertNewAfter(
+    _: RangeSelection,
+    restoreSelection?: boolean,
+  ): ParagraphNode {
     const newBlock = $createParagraphNode()
     const direction = this.getDirection()
     newBlock.setDirection(direction)
@@ -112,12 +114,11 @@ export class LabelNode extends ElementNode {
 
   // Mutation
 
-  isInline(): false {
+  override isInline(): false {
     return false
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  updateDOM(prevNode: LabelNode, dom: HTMLElement): boolean {
+  override updateDOM(_prevNode: LabelNode, _dom: HTMLElement): boolean {
     return false
   }
 }
@@ -126,6 +127,8 @@ export function $createLabelNode(): LabelNode {
   return $applyNodeReplacement(new LabelNode({}))
 }
 
-export function $isLabelNode(node: LexicalNode | null | undefined): node is LabelNode {
+export function $isLabelNode(
+  node: LexicalNode | null | undefined,
+): node is LabelNode {
   return node instanceof LabelNode
 }

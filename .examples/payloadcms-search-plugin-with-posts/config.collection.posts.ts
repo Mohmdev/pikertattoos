@@ -1,12 +1,14 @@
+// @ts-nocheck
+
+import { slugField } from '@fields/slugField'
 import {
   MetaDescriptionField,
   MetaImageField,
   MetaTitleField,
   OverviewField,
-  PreviewField
+  PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { slugField } from '@fields/slug'
 
 import type { CollectionConfig } from 'payload'
 
@@ -21,14 +23,14 @@ export const Posts: CollectionConfig<'posts'> = {
     categories: true,
     meta: {
       image: true,
-      description: true
-    }
+      description: true,
+    },
   },
   fields: [
     {
       name: 'title',
       type: 'text',
-      required: true
+      required: true,
     },
     {
       type: 'tabs',
@@ -38,7 +40,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'heroImage',
               type: 'upload',
-              relationTo: 'media'
+              relationTo: 'media',
             },
             {
               name: 'content',
@@ -46,13 +48,13 @@ export const Posts: CollectionConfig<'posts'> = {
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [...rootFeatures]
-                }
+                },
               }),
               label: false,
-              required: true
-            }
+              required: true,
+            },
           ],
-          label: 'Content'
+          label: 'Content',
         },
         {
           fields: [
@@ -60,13 +62,13 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'categories',
               type: 'relationship',
               admin: {
-                position: 'sidebar'
+                position: 'sidebar',
               },
               hasMany: true,
-              relationTo: 'categories'
-            }
+              relationTo: 'categories',
+            },
           ],
-          label: 'Meta'
+          label: 'Meta',
         },
         {
           name: 'meta',
@@ -75,13 +77,13 @@ export const Posts: CollectionConfig<'posts'> = {
             OverviewField({
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
-              imagePath: 'meta.image'
+              imagePath: 'meta.image',
             }),
             MetaTitleField({
-              hasGenerateFn: true
+              hasGenerateFn: true,
             }),
             MetaImageField({
-              relationTo: 'media'
+              relationTo: 'media',
             }),
 
             MetaDescriptionField({}),
@@ -91,12 +93,12 @@ export const Posts: CollectionConfig<'posts'> = {
 
               // field paths to match the target field for data
               titlePath: 'meta.title',
-              descriptionPath: 'meta.description'
-            })
-          ]
-        }
-      ]
+              descriptionPath: 'meta.description',
+            }),
+          ],
+        },
+      ],
     },
-    ...slugField()
-  ]
+    ...slugField(),
+  ],
 }

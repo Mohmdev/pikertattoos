@@ -1,26 +1,26 @@
-import { generateForgotPasswordEmail } from '@services/email/generateForgotPasswordEmail'
-import { generateVerificationEmail } from '@services/email/generateVerificationEmail'
 import { anyone } from '@access/anyone'
 import { hasAdminPanelAccess } from '@access/hasAdminPanelAccess'
 import { isAdminFieldLevel } from '@access/isAdmin'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrEditorOrSelf } from '@access/isAdminOrEditorOrSelf'
 import { isAdminOrSelf, isAdminOrSelfFieldLevel } from '@access/isAdminOrSelf'
+import { generateForgotPasswordEmail } from '@services/email/generateForgotPasswordEmail'
+import { generateVerificationEmail } from '@services/email/generateVerificationEmail'
 
 import type { CollectionConfig } from 'payload'
 
-import { ensureFirstUserIsAdmin } from './ensureFirstUserIsAdmin'
 import { ROLES_WITH_ADMIN_ACCESS } from '@constants/featureFlags'
+import { ensureFirstUserIsAdmin } from './ensureFirstUserIsAdmin'
 
 export const Users: CollectionConfig<'users'> = {
   slug: 'users',
   labels: {
     singular: 'User',
-    plural: 'Users'
+    plural: 'Users',
   },
   admin: {
     useAsTitle: 'username',
-    defaultColumns: ['photo', 'username', 'role', 'email']
+    defaultColumns: ['photo', 'username', 'role', 'email'],
   },
   defaultPopulate: {
     email: true,
@@ -28,7 +28,7 @@ export const Users: CollectionConfig<'users'> = {
     firstName: true,
     lastName: true,
     role: true,
-    photo: true
+    photo: true,
   },
   fields: [
     {
@@ -41,9 +41,9 @@ export const Users: CollectionConfig<'users'> = {
           ({ value }) => {
             if (!value) return value // If no value, return it as is
             return value.trim().toLowerCase()
-          }
-        ]
-      }
+          },
+        ],
+      },
     },
     {
       type: 'row',
@@ -51,18 +51,17 @@ export const Users: CollectionConfig<'users'> = {
         {
           name: 'firstName',
           type: 'text',
-          required: true
         },
         {
           name: 'lastName',
-          type: 'text'
-        }
-      ]
+          type: 'text',
+        },
+      ],
     },
     {
       name: 'photo',
       type: 'upload',
-      relationTo: 'user-photo'
+      relationTo: 'user-photos',
     },
     {
       name: 'role',
@@ -71,18 +70,18 @@ export const Users: CollectionConfig<'users'> = {
       access: {
         create: isAdminFieldLevel,
         read: isAdminOrSelfFieldLevel,
-        update: isAdminFieldLevel
+        update: isAdminFieldLevel,
       },
       defaultValue: 'public',
       options: ['admin', 'editor', 'public'],
       hasMany: false, // setting this to `true` makes the roles field type definition an array. Keep it false.
       saveToJWT: true,
       hooks: {
-        beforeChange: [ensureFirstUserIsAdmin]
+        beforeChange: [ensureFirstUserIsAdmin],
       },
       admin: {
-        position: 'sidebar'
-      }
+        position: 'sidebar',
+      },
     },
     {
       type: 'ui',
@@ -90,10 +89,10 @@ export const Users: CollectionConfig<'users'> = {
       label: '',
       admin: {
         components: {
-          Field: '@admin-components/SeedAreasButton#SeedAreasButton'
+          Field: '@admin-components/SeedAreasButton#SeedAreasButton',
         },
-        position: 'sidebar'
-      }
+        position: 'sidebar',
+      },
     },
     {
       type: 'ui',
@@ -101,10 +100,10 @@ export const Users: CollectionConfig<'users'> = {
       label: '',
       admin: {
         components: {
-          Field: '@admin-components/SeedStylesButton#SeedStylesButton'
+          Field: '@admin-components/SeedStylesButton#SeedStylesButton',
         },
-        position: 'sidebar'
-      }
+        position: 'sidebar',
+      },
     },
     {
       type: 'ui',
@@ -112,10 +111,10 @@ export const Users: CollectionConfig<'users'> = {
       label: '',
       admin: {
         components: {
-          Field: '@admin-components/SeedTagsButton#SeedTagsButton'
+          Field: '@admin-components/SeedTagsButton#SeedTagsButton',
         },
-        position: 'sidebar'
-      }
+        position: 'sidebar',
+      },
     },
     {
       type: 'ui',
@@ -123,10 +122,10 @@ export const Users: CollectionConfig<'users'> = {
       label: '',
       admin: {
         components: {
-          Field: '@admin-components/SeedTattoosButton#SeedTattoosButton'
+          Field: '@admin-components/SeedTattoosButton#SeedTattoosButton',
         },
-        position: 'sidebar'
-      }
+        position: 'sidebar',
+      },
     },
     // {
     //   type: 'ui',
@@ -145,11 +144,11 @@ export const Users: CollectionConfig<'users'> = {
       label: '',
       admin: {
         components: {
-          Field: '@admin-components/ResetButton#ResetButton'
+          Field: '@admin-components/ResetButton#ResetButton',
         },
-        position: 'sidebar'
-      }
-    }
+        position: 'sidebar',
+      },
+    },
   ],
   access: {
     create: anyone,
@@ -159,32 +158,33 @@ export const Users: CollectionConfig<'users'> = {
     // Determines which users can unlock other users who may be blocked due to failing too many login attempts.
     unlock: isAdminOrEditor,
     // Determines whether or not the currently logged in user can access the admin
-    admin: hasAdminPanelAccess(...ROLES_WITH_ADMIN_ACCESS)
+    admin: hasAdminPanelAccess(...ROLES_WITH_ADMIN_ACCESS),
   },
   auth: {
     loginWithUsername: {
       allowEmailLogin: true,
       requireEmail: true,
-      requireUsername: true
+      requireUsername: true,
     },
     cookies: {
       // HTTPS only cookies
       secure:
-        process.env.NODE_ENV === 'production' && !process.env.DISABLE_SECURE_COOKIE
+        process.env.NODE_ENV === 'production' &&
+        !process.env.DISABLE_SECURE_COOKIE
           ? true // true in production
           : undefined,
       sameSite: 'None', // cross-origin requests
-      domain: process.env.COOKIE_DOMAIN || undefined // cross-domain authentication
+      domain: process.env.COOKIE_DOMAIN || undefined, // cross-domain authentication
     },
     tokenExpiration: 28800, // 8 hours
     // verify: false,
     forgotPassword: {
       generateEmailHTML: generateForgotPasswordEmail,
-      generateEmailSubject: () => 'Reset your password'
+      generateEmailSubject: () => 'Reset your password',
     },
     verify: {
       generateEmailHTML: generateVerificationEmail,
-      generateEmailSubject: () => 'Verify your email'
-    }
-  }
+      generateEmailSubject: () => 'Verify your email',
+    },
+  },
 }

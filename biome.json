@@ -142,7 +142,8 @@
       "**/playwright.config.ts",
       "**/jest.config.js",
       "src/services/database/migrations/**/*",
-      "**/.next/"
+      "**/.next/**",
+      "**/.examples/**"
     ]
   },
   "javascript": {

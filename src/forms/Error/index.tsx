@@ -3,7 +3,7 @@ import React from 'react'
 import classes from './index.module.scss'
 import { Props } from './types.js'
 
-const Error: React.FC<Props> = (props) => {
+const ErrorComponent: React.FC<Props> = (props) => {
   const { showError, message, className } = props
 
   if (showError) {
@@ -17,4 +17,4 @@ const Error: React.FC<Props> = (props) => {
   return null
 }
 
-export default Error
+export default ErrorComponent

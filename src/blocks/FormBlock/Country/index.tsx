@@ -8,17 +8,25 @@ import type { CountryField } from '@payloadcms/plugin-form-builder/types'
 import type { Control, FieldErrorsImpl, FieldValues } from 'react-hook-form'
 
 import { Label } from '@ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@ui/select'
 
-import { Error } from '../Error'
+import { ErrorComponent } from '../Error'
 import { Width } from '../Width'
 import { countryOptions } from './options'
 
 export const Country: React.FC<
   CountryField & {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     control: Control<FieldValues, any>
     errors: Partial<
       FieldErrorsImpl<{
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         [x: string]: any
       }>
     >
@@ -43,7 +51,10 @@ export const Country: React.FC<
           const controlledValue = countryOptions.find((t) => t.value === value)
 
           return (
-            <Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
+            <Select
+              onValueChange={(val) => onChange(val)}
+              value={controlledValue?.value}
+            >
               <SelectTrigger className="w-full" id={name}>
                 <SelectValue placeholder={label} />
               </SelectTrigger>
@@ -61,7 +72,7 @@ export const Country: React.FC<
         }}
         rules={{ required }}
       />
-      {errors[name] && <Error />}
+      {errors[name] && <ErrorComponent />}
     </Width>
   )
 }

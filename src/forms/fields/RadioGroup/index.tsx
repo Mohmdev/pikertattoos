@@ -2,7 +2,7 @@
 
 import React, { useId } from 'react'
 
-import Error from '../../Error'
+import ErrorComponent from '../../Error'
 import Label from '../../Label'
 import { FieldProps } from '../types'
 import { useField } from '../useField'
@@ -31,15 +31,19 @@ const RadioGroup: React.FC<
     layout,
     hidden,
     onClick,
-    className
+    className,
   } = props
 
   const id = useId()
 
   const defaultValidateFunction = React.useCallback(
-    (fieldValue: string): string | true => {
+    (fieldValue: unknown): string | true => {
       if (required && !fieldValue) {
         return 'Please make a selection.'
+      }
+
+      if (typeof fieldValue !== 'string') {
+        return 'This field has an invalid selection'
       }
 
       if (
@@ -51,7 +55,7 @@ const RadioGroup: React.FC<
 
       return true
     },
-    [required, options]
+    [required, options],
   )
 
   const { onChange, value, showError, errorMessage } = useField<string>({
@@ -59,7 +63,7 @@ const RadioGroup: React.FC<
     onChange: onChangeFromProps,
     path,
     validate: validate || defaultValidateFunction,
-    required
+    required,
   })
 
   return (
@@ -67,12 +71,12 @@ const RadioGroup: React.FC<
       className={[
         className,
         classes.wrap,
-        layout && classes[`layout--${layout}`]
+        layout && classes[`layout--${layout}`],
       ]
         .filter(Boolean)
         .join(' ')}
     >
-      <Error showError={showError} message={errorMessage} />
+      <ErrorComponent showError={showError} message={errorMessage} />
       <Label htmlFor={path} label={label} required={required} />
       <ul className={classes.ul}>
         {options.map((option, index) => {
@@ -98,7 +102,7 @@ const RadioGroup: React.FC<
                   className={[
                     classes.radio,
                     isSelected && classes.selected,
-                    hidden && classes.hidden
+                    hidden && classes.hidden,
                   ]
                     .filter(Boolean)
                     .join(' ')}

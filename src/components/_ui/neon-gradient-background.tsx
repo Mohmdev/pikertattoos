@@ -1,6 +1,13 @@
 'use client'
 
-import { CSSProperties, ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
+import {
+  CSSProperties,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import { cn } from '@utils/cn'
 
@@ -58,7 +65,7 @@ interface NeonGradientBackgroundProps {
    * */
   neonColors?: NeonColorsProps
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   [key: string]: any
 }
 
@@ -70,7 +77,7 @@ const NeonGradientBackground: React.FC<NeonGradientBackgroundProps> = ({
   neonColors = {
     firstColor: '#ff00aa',
     secondColor: '#00FFF1',
-    opacity: 1 // default opacity
+    opacity: 1, // default opacity
   },
   ...props
 }) => {
@@ -116,10 +123,13 @@ const NeonGradientBackground: React.FC<NeonGradientBackgroundProps> = ({
           '--pseudo-element-width': `${dimensions.width + borderSize * 2}px`,
           '--pseudo-element-height': `${dimensions.height + borderSize * 2}px`,
           '--after-blur': `${dimensions.width / 3}px`,
-          '--pseudo-element-opacity': neonColors.opacity
+          '--pseudo-element-opacity': neonColors.opacity,
         } as CSSProperties
       }
-      className={cn('relative z-10 size-full rounded-[var(--border-radius)]', className)}
+      className={cn(
+        'relative z-10 size-full rounded-[var(--border-radius)]',
+        className,
+      )}
       {...props}
     >
       <div
@@ -129,7 +139,7 @@ const NeonGradientBackground: React.FC<NeonGradientBackgroundProps> = ({
           "after:h-[var(--pseudo-element-height)] after:w-[var(--pseudo-element-width)] after:rounded-[var(--border-radius)] after:blur-[var(--after-blur)] after:content-['']",
           'after:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:100%_200%]',
           'after:opacity-[var(--pseudo-element-opacity)]',
-          'after:animate-background-position-spin'
+          'after:animate-background-position-spin',
         )}
       >
         {children}

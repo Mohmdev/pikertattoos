@@ -4,9 +4,8 @@ import React, { useEffect } from 'react'
 
 import Label from '@forms/Label'
 
-import { CheckIcon } from '@icons/CheckIcon'
-
-import Error from '../../Error'
+import { CheckIcon } from '@payloadcms/ui'
+import ErrorComponent from '../../Error'
 import { FieldProps } from '../types'
 import { useField } from '../useField'
 import classes from './index.module.scss'
@@ -25,43 +24,43 @@ export const Checkbox: React.FC<
     validate,
     className,
     checked: checkedFromProps,
-    disabled
+    disabled,
   } = props
 
   const [checked, setChecked] = React.useState<boolean | undefined | null>(
-    initialValue || false
+    initialValue || false,
   )
   const prevChecked = React.useRef<boolean | undefined | null>(checked)
   const prevContextValue = React.useRef<boolean | undefined | null>(
-    initialValue
+    initialValue,
   )
 
   const defaultValidateFunction = React.useCallback(
-    (fieldValue: boolean): string | true => {
+    (fieldValue: unknown): string | true => {
+      if (typeof fieldValue !== 'boolean') {
+        return true // Or a more specific error message if you prefer
+      }
+
       if (required && !fieldValue) {
         return 'This field is required.'
       }
 
-      if (typeof fieldValue !== 'boolean') {
-        return 'This field can only be equal to true or false.'
-      }
-
       return true
     },
-    [required]
+    [required],
   )
 
   const {
     onChange,
     value: valueFromContext,
     showError,
-    errorMessage
+    errorMessage,
   } = useField<boolean>({
     initialValue,
     onChange: onChangeFromProps,
     path,
     validate: validate || defaultValidateFunction,
-    required
+    required,
   })
 
   // allow external control
@@ -97,13 +96,13 @@ export const Checkbox: React.FC<
         classes.checkbox,
         showError && classes.error,
         checked && classes.checked,
-        disabled && classes.disabled
+        disabled && classes.disabled,
       ]
         .filter(Boolean)
         .join(' ')}
     >
       <div className={classes.errorWrap}>
-        <Error showError={showError} message={errorMessage} />
+        <ErrorComponent showError={showError} message={errorMessage} />
       </div>
       <input
         className={classes.htmlInput}
@@ -124,7 +123,7 @@ export const Checkbox: React.FC<
         disabled={disabled}
       >
         <span className={classes.input}>
-          <CheckIcon className={classes.icon} size="medium" bold />
+          <CheckIcon />
         </span>
         <Label
           className={classes.label}

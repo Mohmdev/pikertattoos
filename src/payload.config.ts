@@ -1,6 +1,5 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-
 import { Categories } from '@CMS/Blog/categories.config'
 import { Posts } from '@CMS/Blog/posts.config'
 import { Footer } from '@CMS/Footer/config'
@@ -21,41 +20,52 @@ import { adminConfig } from '@services/admin/config'
 import { vercelPostgres } from '@services/database/config.vercelPostgres'
 import { basicLexical } from '@services/editor/basicLexical'
 import { emailAdapter } from '@services/email/config'
-import { jobsConfig } from '@services/jobs/config'
-import { pluginsConfig } from '@services/plugins'
-
-import { buildConfig } from 'payload'
-import sharp from 'sharp'
+import { formBuilderService } from '@services/plugins/formBuilder'
+import { nestedDocsPluginConfig } from '@services/plugins/nestedDocs'
+import { redirectsPluginConfig } from '@services/plugins/redirects'
+import { searchPluginConfig } from '@services/plugins/search'
+import { seoPluginConfig } from '@services/plugins/seo'
+import { vercelBlob } from '@services/plugins/storage.vercelBlob'
+import { scheduledJobsService } from '@services/scheduled-jobs/config'
 import { getServerSideURL } from '@utils/getURL'
 import { collectionGroup, globalGroup } from '@utils/groupContent'
-
-import { COOKIE_PREFIX } from '@constants/featureFlags'
+import { buildConfig } from 'payload'
+import sharp from 'sharp'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   collections: [
-    ...collectionGroup('Studio Content', [Tattoo, Area, Style, Artist, Tag]),
-    ...collectionGroup('Site Content', [Pages, Posts, Categories]),
-    ...collectionGroup('Uploads', [Media, Assets, UserPhotos]),
-    ...collectionGroup('Settings', [Users])
+    ...collectionGroup('Studio', [Tattoo, Area, Style, Artist]),
+    ...collectionGroup('Marketing', [Pages, Posts, Categories, Tag]),
+    ...collectionGroup('Resources', [Media, Assets]),
+    ...collectionGroup('Accounts', [Users, UserPhotos]),
   ],
-  globals: [...globalGroup('Customize', [HomePage, MainMenu, Footer, GlobalSettings])],
-  editor: basicLexical,
-  admin: adminConfig,
+  globals: [
+    ...globalGroup('Design', [HomePage, MainMenu, Footer, GlobalSettings]),
+  ],
   db: vercelPostgres,
+  admin: adminConfig,
+  editor: basicLexical,
   email: emailAdapter,
+  jobs: scheduledJobsService,
+  plugins: [
+    formBuilderService,
+    redirectsPluginConfig,
+    nestedDocsPluginConfig,
+    searchPluginConfig,
+    seoPluginConfig,
+    vercelBlob,
+  ],
   sharp,
-  plugins: [...pluginsConfig],
-  jobs: jobsConfig,
-  secret: process.env.PAYLOAD_SECRET || '',
-  cookiePrefix: `${COOKIE_PREFIX}`,
+  secret: process.env.PAYLOAD_SECRET || 'isItASecret?',
   serverURL: getServerSideURL(),
   cors: [getServerSideURL()].filter(Boolean),
   typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts')
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  // cookiePrefix: `${COOKIE_PREFIX}`,
   // debug: true,
-  telemetry: false
+  telemetry: false,
 })

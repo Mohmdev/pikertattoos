@@ -8,10 +8,13 @@ const ArrayContext = React.createContext<{
   clearRows: () => void
   uuids: string[]
 }>({
+  // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
   addRow: () => {},
+  // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
   removeRow: () => {},
+  // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
   clearRows: () => {},
-  uuids: []
+  uuids: [],
 })
 
 export const useArray = () => React.useContext(ArrayContext)
@@ -24,7 +27,7 @@ export const ArrayProvider: React.FC<{
   const { children, instantiateEmpty, clearCount } = props
 
   const [uuids, setUUIDs] = React.useState<string[]>(
-    instantiateEmpty ? [] : [uuid()]
+    instantiateEmpty ? [] : [uuid()],
   )
 
   const addRow = React.useCallback(() => {
@@ -39,7 +42,7 @@ export const ArrayProvider: React.FC<{
         return remainingRows.length > 0 ? remainingRows : initialRows
       })
     },
-    [instantiateEmpty]
+    [instantiateEmpty],
   )
 
   const clearRows = React.useCallback(() => {
@@ -58,7 +61,7 @@ export const ArrayProvider: React.FC<{
         addRow,
         removeRow,
         clearRows,
-        uuids
+        uuids,
       }}
     >
       {children}

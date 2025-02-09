@@ -10,7 +10,7 @@ type InitialStateProps = {
 }
 
 const InitialState: InitialStateProps = {
-  members: []
+  members: [],
 }
 
 export const OnlineTracking = createSlice({
@@ -19,8 +19,10 @@ export const OnlineTracking = createSlice({
   reducers: {
     onOnline: (state, action: PayloadAction<InitialStateProps>) => {
       //check for duplicates
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const list = state.members.find((data: any) =>
-        action.payload.members.find((payload: any) => data.id === payload.id)
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        action.payload.members.find((payload: any) => data.id === payload.id),
       )
 
       if (!list) state.members = [...state.members, ...action.payload.members]
@@ -28,10 +30,10 @@ export const OnlineTracking = createSlice({
     onOffline: (state, action: PayloadAction<InitialStateProps>) => {
       //look for member and remove them
       state.members = state.members.filter((member) =>
-        action.payload.members.find((m) => member.id !== m.id)
+        action.payload.members.find((m) => member.id !== m.id),
       )
-    }
-  }
+    },
+  },
 })
 
 export const { onOffline, onOnline } = OnlineTracking.actions

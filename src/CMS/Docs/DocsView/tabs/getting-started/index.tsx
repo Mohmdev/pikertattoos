@@ -43,7 +43,7 @@ export const GettingStarted: React.FC = () => {
         </li>
         <li>
           {'Visit your website from '}
-          <a href="/" target="_blank">
+          <a href="/" target="_blank" rel="noreferrer">
             here
           </a>
           {'.'}

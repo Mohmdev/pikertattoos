@@ -1,15 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import NextImage from 'next/image'
-import type { StaticImageData } from 'next/image'
-
-import { cssVariables } from 'src/cssVariables'
 import { cn } from '@utils/cn'
 import { getClientSideURL } from '@utils/getURL'
-
+import NextImage from 'next/image'
+import type { StaticImageData } from 'next/image'
+import React, { useEffect, useState } from 'react'
+import { cssVariables } from 'src/cssVariables'
 import type { Props as MediaProps } from '../types'
-
 const { breakpoints } = cssVariables
 
 export const ImageMedia: React.FC<MediaProps> = (props) => {
@@ -23,7 +20,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     src: srcFromProps,
     loading: loadingFromProps,
     onLoad: onLoadFromProps,
-    objectFit = 'cover'
+    objectFit = 'cover',
   } = props
 
   const [isLoading, setIsLoading] = useState(true)
@@ -36,24 +33,28 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let src: StaticImageData | string = srcFromProps || ''
 
   if (!src && resource && typeof resource === 'object') {
-    const { url, alt: altFromResource, height: fullHeight, width: fullWidth } = resource
+    const {
+      alt: altFromResource,
+      height: fullHeight,
+      url,
+      width: fullWidth,
+    } = resource
 
     width = fullWidth!
     height = fullHeight!
     alt = altFromResource || ''
 
-    const isAbsoluteUrl = (url: string) => url.startsWith('http://') || url.startsWith('https://')
-    const validatedUrl = url ? (isAbsoluteUrl(url) ? url : `${getClientSideURL()}${url}`) : ''
     const cacheTag = resource.updatedAt
-    src = cacheTag ? `${validatedUrl}?${cacheTag}` : validatedUrl
+
+    src = `${getClientSideURL()}${url}?${cacheTag}`
   }
 
   // Calculate sizes
-  const sizes =
-    sizeFromProps ||
-    Object.entries(breakpoints)
-      .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
-      .join(', ')
+  const sizes = sizeFromProps
+    ? sizeFromProps
+    : Object.entries(breakpoints)
+        .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
+        .join(', ')
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
@@ -81,21 +82,21 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
       <NextImage
         alt={alt || ''}
         fill={fill}
-        height={!fill ? height : undefined}
         priority={priority}
         quality={100}
         loading={loading}
-        sizes={sizes}
         src={src}
+        onLoad={handleLoad}
+        onError={handleError}
+        sizes={sizes}
+        height={!fill ? height : undefined}
         width={!fill ? width : undefined}
+        style={fill ? { objectFit } : undefined}
         className={cn(
           imgClassName,
           'transition-opacity duration-300 ease-in-out',
-          isLoading ? 'opacity-0' : 'opacity-100'
+          isLoading ? 'opacity-0' : 'opacity-100',
         )}
-        style={fill ? { objectFit } : undefined}
-        onLoad={handleLoad}
-        onError={handleError}
       />
     </picture>
   )

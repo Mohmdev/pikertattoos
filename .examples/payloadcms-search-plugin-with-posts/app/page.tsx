@@ -1,21 +1,23 @@
+// @ts-nocheck
 import type { Metadata } from 'next/types'
 
-import { CollectionArchive } from '../../../src/app/(frontend)/(root)/tattoos/CollectionArchive'
-import configPromise from '../../../src/payload.config'
 import { getPayload } from 'payload'
 import React from 'react'
+import { CollectionArchive } from '../../../src/app/(frontend)/(root)/tattoos/CollectionArchive'
+import configPromise from '../../../src/payload.config'
 // import { Post } from '../../../src/payload-types'
 
-
-import { CardDocData } from '../../../src/app/(frontend)/(root)/tattoos/Card'
 import { Search } from '../../../src/app/(frontend)/(root)/(homepage)/Search'
+import { CardDocData } from '../../../src/app/(frontend)/(root)/tattoos/Card'
 
 type Args = {
   searchParams: Promise<{
     q: string
   }>
 }
-export default async function Page({ searchParams: searchParamsPromise }: Args) {
+export default async function Page({
+  searchParams: searchParamsPromise,
+}: Args) {
   const { q: query } = await searchParamsPromise
   const payload = await getPayload({ config: configPromise })
 

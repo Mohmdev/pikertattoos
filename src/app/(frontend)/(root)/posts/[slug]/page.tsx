@@ -1,21 +1,21 @@
-import React, { cache } from 'react'
-import { draftMode } from 'next/headers'
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
+import React, { cache } from 'react'
 
-import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { RelatedDocs } from '@blocks/RelatedDocs/Component'
 import configPromise from '@payload-config'
-import { RelatedContentBlock } from '@blocks/RelatedContentBlock/Component'
+import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
+import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@seo/generateMeta'
 import { getDynamicMeta } from '@seo/getDynamicMeta'
 import { getPayload } from 'payload'
-import { PostHero } from '@/heros/PostHero'
 
 import type { Post } from '@/payload-types'
 
+import RichText from '@components/RichText'
 import { LivePreviewListener } from '@components/dynamic/LivePreviewListener'
 import { PayloadRedirects } from '@components/dynamic/PayloadRedirects'
-import RichText from '@components/RichText'
 
 import PageClient from './page.client'
 
@@ -28,8 +28,8 @@ export async function generateStaticParams() {
     overrideAccess: false,
     pagination: false,
     select: {
-      slug: true
-    }
+      slug: true,
+    },
   })
 
   const params = posts.docs.map(({ slug }) => {
@@ -78,19 +78,9 @@ export default async function Post({ params: paramsPromise }: Args) {
             />
           )}
           {post.relatedDocs && post.relatedDocs.length > 0 && (
-            <RelatedContentBlock
-              className="col-span-3 col-start-1 mt-12 max-w-[52rem] grid-rows-[2fr] lg:grid lg:grid-cols-subgrid"
-              docs={post.relatedDocs
-                .map((doc) => {
-                  if (typeof doc.value === 'object' && doc.value !== null) {
-                    return {
-                      ...doc.value,
-                      relationTo: doc.relationTo
-                    }
-                  }
-                  return null
-                })
-                .filter(Boolean)}
+            <RelatedDocs
+              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
+              docs={post.relatedDocs.filter((post) => typeof post === 'object')}
             />
           )}
         </div>
@@ -99,7 +89,9 @@ export default async function Post({ params: paramsPromise }: Args) {
   )
 }
 
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+export async function generateMetadata({
+  params: paramsPromise,
+}: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const post = await queryPostBySlug({ slug })
 
@@ -107,7 +99,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     const { siteName, siteDescription } = await getDynamicMeta()
     return {
       title: `Not Found | ${siteName}`,
-      description: siteDescription
+      description: siteDescription,
     }
   }
 
@@ -127,9 +119,9 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     pagination: false,
     where: {
       slug: {
-        equals: slug
-      }
-    }
+        equals: slug,
+      },
+    },
   })
 
   return result.docs?.[0] || null

@@ -2,11 +2,18 @@
 
 'use client'
 
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import ReactSelect from 'react-select'
 
-import Error from '../../Error'
+import ErrorComponent from '../../Error'
 import Label from '../../Label'
 import { useFormField } from '../../useFormField'
 import { FieldProps } from '../types'
@@ -14,6 +21,7 @@ import classes from './index.module.scss'
 
 type Option = {
   label: string
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   value: any
 }
 
@@ -23,6 +31,7 @@ type SelectProps = FieldProps<string | string[]> & {
   isClearable?: boolean
   isSearchable?: boolean
   components?: {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     [key: string]: React.FC<any>
   }
   value?: string | string[]
@@ -46,12 +55,15 @@ export const Select: React.FC<SelectProps> = (props) => {
     description,
     disabled,
     onMenuScrollToBottom,
-    isSearchable = true
+    isSearchable = true,
   } = props
 
-  const id = useId()
+  // const id = useId()
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const ref = useRef<any>(null)
-  const prevValueFromProps = useRef<string | string[] | undefined>(valueFromProps)
+  const prevValueFromProps = useRef<string | string[] | undefined>(
+    valueFromProps,
+  )
 
   const defaultValidateFunction = React.useCallback(
     (fieldValue: Option | Option[]): string | true => {
@@ -61,18 +73,23 @@ export const Select: React.FC<SelectProps> = (props) => {
         (!fieldValue ||
           (Array.isArray(fieldValue)
             ? !fieldValue.length
-            : !(typeof fieldValue === 'string' ? fieldValue : fieldValue?.value)))
+            : !(typeof fieldValue === 'string'
+                ? fieldValue
+                : fieldValue?.value)))
       ) {
         return 'This field is required.'
       }
 
       const isValid = Array.isArray(fieldValue)
         ? fieldValue.every((v) =>
-            options.find((item) => item.value === (typeof v === 'string' ? v : v?.value))
+            options.find(
+              (item) => item.value === (typeof v === 'string' ? v : v?.value),
+            ),
           )
         : options.find(
             (item) =>
-              item.value === (typeof fieldValue === 'string' ? fieldValue : fieldValue?.value)
+              item.value ===
+              (typeof fieldValue === 'string' ? fieldValue : fieldValue?.value),
           )
 
       if (!isValid) {
@@ -81,18 +98,25 @@ export const Select: React.FC<SelectProps> = (props) => {
 
       return true
     },
-    [options, required]
+    [options, required],
   )
 
   const fieldFromContext = useFormField<string | string[]>({
-    path,
+    path: path!,
     validate: validate || defaultValidateFunction,
-    initialValue: initialValueFromProps
+    initialValue: initialValueFromProps,
   })
 
-  const { value: valueFromContext, showError, setValue, errorMessage } = fieldFromContext
+  const {
+    value: valueFromContext,
+    showError,
+    setValue,
+    errorMessage,
+  } = fieldFromContext
 
-  const [internalState, setInternalState] = useState<Option | Option[] | undefined>(() => {
+  const [internalState, setInternalState] = useState<
+    Option | Option[] | undefined
+  >(() => {
     const initialValue = valueFromContext || initialValueFromProps
 
     if (initialValue && Array.isArray(initialValue)) {
@@ -124,11 +148,16 @@ export const Select: React.FC<SelectProps> = (props) => {
       if (incomingSelection && internalState) {
         if (Array.isArray(incomingSelection) && Array.isArray(internalState)) {
           const internalValues = internalState.map((item) => item.value)
-          differences = incomingSelection.filter((x) => internalValues.includes(x))
+          differences = incomingSelection.filter((x) =>
+            internalValues.includes(x),
+          )
           isDifferent = differences.length > 0
         }
 
-        if (typeof incomingSelection === 'string' && typeof internalState === 'string') {
+        if (
+          typeof incomingSelection === 'string' &&
+          typeof internalState === 'string'
+        ) {
           isDifferent = incomingSelection !== internalState
         }
 
@@ -147,17 +176,21 @@ export const Select: React.FC<SelectProps> = (props) => {
 
         if (Array.isArray(incomingSelection)) {
           newValue =
-            options?.filter((item) => incomingSelection.find((x) => x === item.value)) || []
+            options?.filter((item) =>
+              incomingSelection.find((x) => x === item.value),
+            ) || []
         }
 
         if (typeof incomingSelection === 'string') {
-          newValue = options?.find((item) => item.value === incomingSelection) || undefined
+          newValue =
+            options?.find((item) => item.value === incomingSelection) ||
+            undefined
         }
 
         setInternalState(newValue)
       }
     },
-    [internalState, options]
+    [internalState, options],
   )
 
   // allow external control
@@ -172,13 +205,16 @@ export const Select: React.FC<SelectProps> = (props) => {
   }, [valueFromProps, setFormattedValue, prevValueFromProps])
 
   const handleChange = useCallback(
-    (incomingSelection: Option | Option[]) => {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    (incomingSelection: any) => {
       let selectedOption
 
       if (Array.isArray(incomingSelection)) {
         selectedOption = incomingSelection.map((item) => item.value)
-      } else {
+      } else if (incomingSelection) {
         selectedOption = incomingSelection.value
+      } else {
+        selectedOption = null
       }
       setInternalState(incomingSelection)
 
@@ -190,7 +226,7 @@ export const Select: React.FC<SelectProps> = (props) => {
         onChange(selectedOption)
       }
     },
-    [onChange, setValue]
+    [onChange, setValue],
   )
 
   return (
@@ -199,12 +235,12 @@ export const Select: React.FC<SelectProps> = (props) => {
         className,
         classes.select,
         showError && classes.error,
-        isSearchable && classes.isSearchable
+        isSearchable && classes.isSearchable,
       ]
         .filter(Boolean)
         .join(' ')}
     >
-      <Error showError={showError} message={errorMessage} />
+      <ErrorComponent showError={showError} message={errorMessage} />
       <Label htmlFor={path} label={label} required={required} />
       <ReactSelect
         ref={ref}

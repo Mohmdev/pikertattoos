@@ -21,7 +21,7 @@ const BeforeDashboard: React.FC = () => {
           {
             ' with a few pages, posts, and projects to jump-start your new site, then '
           }
-          <a href="/" target="_blank">
+          <a href="/" target="_blank" rel="noreferrer">
             visit your website
           </a>
           {' to see the results.'}

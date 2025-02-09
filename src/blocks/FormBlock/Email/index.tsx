@@ -3,18 +3,23 @@
 import React from 'react'
 
 import type { EmailField } from '@payloadcms/plugin-form-builder/types'
-import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+import type {
+  FieldErrorsImpl,
+  FieldValues,
+  UseFormRegister,
+} from 'react-hook-form'
 
 import { Input } from '@ui/input'
 import { Label } from '@ui/label'
 
-import { Error } from '../Error'
+import { ErrorComponent } from '../Error'
 import { Width } from '../Width'
 
 export const Email: React.FC<
   EmailField & {
     errors: Partial<
       FieldErrorsImpl<{
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         [x: string]: any
       }>
     >
@@ -39,7 +44,7 @@ export const Email: React.FC<
         {...register(name, { pattern: /^\S[^\s@]*@\S+$/, required })}
       />
 
-      {errors[name] && <Error />}
+      {errors[name] && <ErrorComponent />}
     </Width>
   )
 }

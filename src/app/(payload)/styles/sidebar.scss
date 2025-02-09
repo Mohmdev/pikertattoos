@@ -2,26 +2,43 @@
   .nav-group {
     &.Studio {
       order: 1;
-      // margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
-    &.Content {
+
+    &.Marketing {
       order: 2;
-      // margin-top: 1rem;
-      // margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
-    &.Customize {
+
+    &.Design {
       order: 3;
+      margin-bottom: 1rem;
+
+      .nav-group__content {
+        display: flex;
+        flex-direction: column;
+
+        #nav-redirects {
+          order: 99;
+        }
+      }
     }
-    &.Uploads {
-      order: 20;
+
+    &.Resources {
+      order: 4;
+      margin-bottom: 1rem;
     }
-    &.Settings {
-      order: 30;
+
+    &.Accounts {
+      order: 5;
+      margin-bottom: 1rem;
     }
   }
-  // controls is a direct child with just nav__controls class
-  > .nav__controls {
-    order: 99;
+
+  /* controls is a direct child with just .nav__controls */
+  >.nav__controls {
+    order: 100;
+    margin-bottom: 1rem;
   }
 }
 

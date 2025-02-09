@@ -16,18 +16,19 @@ export const redirectsPluginConfig: Plugin = redirectsPlugin({
           return {
             ...field,
             admin: {
-              description: 'You will need to rebuild the website when changing this field.'
-            }
+              description:
+                'You will need to rebuild the website when changing this field.',
+            },
           }
         }
         return field
       })
     },
     hooks: {
-      afterChange: [revalidateRedirects]
+      afterChange: [revalidateRedirects],
     },
     admin: {
-      group: 'Settings'
-    }
-  }
+      group: 'Design',
+    },
+  },
 })

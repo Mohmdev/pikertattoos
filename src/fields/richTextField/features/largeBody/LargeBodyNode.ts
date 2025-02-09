@@ -2,7 +2,7 @@ import {
   $applyNodeReplacement,
   $createParagraphNode,
   ElementNode,
-  isHTMLElement
+  isHTMLElement,
 } from '@payloadcms/richtext-lexical/lexical'
 import { addClassNamesToElement } from '@payloadcms/richtext-lexical/lexical/utils'
 
@@ -15,7 +15,7 @@ import type {
   ParagraphNode,
   RangeSelection,
   SerializedElementNode,
-  Spread
+  Spread,
 } from '@payloadcms/richtext-lexical/lexical'
 
 export type SerializedLargeBodyNode = Spread<
@@ -31,17 +31,19 @@ export class LargeBodyNode extends ElementNode {
     super(key)
   }
 
-  static clone(node: LargeBodyNode): LargeBodyNode {
+  static override clone(node: LargeBodyNode): LargeBodyNode {
     return new LargeBodyNode({
-      key: node.__key
+      key: node.__key,
     })
   }
 
-  static getType(): string {
+  static override getType(): string {
     return 'largeBody'
   }
 
-  static importJSON(serializedNode: SerializedLargeBodyNode): LargeBodyNode {
+  static override importJSON(
+    serializedNode: SerializedLargeBodyNode,
+  ): LargeBodyNode {
     const node = $createLargeBodyNode()
     node.setFormat(serializedNode.format)
     node.setIndent(serializedNode.indent)
@@ -49,18 +51,18 @@ export class LargeBodyNode extends ElementNode {
     return node
   }
 
-  canBeEmpty(): true {
+  override canBeEmpty(): true {
     return true
   }
 
-  canInsertTextAfter(): true {
+  override canInsertTextAfter(): true {
     return true
   }
 
-  canInsertTextBefore(): true {
+  override canInsertTextBefore(): true {
     return true
   }
-  collapseAtStart(): true {
+  override collapseAtStart(): true {
     const paragraph = $createParagraphNode()
     const children = this.getChildren()
     children.forEach((child) => paragraph.append(child))
@@ -68,14 +70,14 @@ export class LargeBodyNode extends ElementNode {
     return true
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  createDOM(config: EditorConfig): HTMLElement {
-    const element = document.createElement('span')
+  override createDOM(_config: EditorConfig): HTMLElement {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    const element = document.createElement('span') as any
     addClassNamesToElement(element, 'rich-text-large-body')
     return element
   }
 
-  exportDOM(editor: LexicalEditor): DOMExportOutput {
+  override exportDOM(editor: LexicalEditor): DOMExportOutput {
     const { element } = super.exportDOM(editor)
 
     if (element && isHTMLElement(element)) {
@@ -91,18 +93,21 @@ export class LargeBodyNode extends ElementNode {
     }
 
     return {
-      element
+      element,
     }
   }
 
-  exportJSON(): SerializedElementNode {
+  override exportJSON(): SerializedElementNode {
     return {
       ...super.exportJSON(),
-      type: this.getType()
+      type: this.getType(),
     }
   }
 
-  insertNewAfter(_: RangeSelection, restoreSelection?: boolean): ParagraphNode {
+  override insertNewAfter(
+    _: RangeSelection,
+    restoreSelection?: boolean,
+  ): ParagraphNode {
     const newBlock = $createParagraphNode()
     const direction = this.getDirection()
     newBlock.setDirection(direction)
@@ -112,12 +117,11 @@ export class LargeBodyNode extends ElementNode {
 
   // Mutation
 
-  isInline(): false {
+  override isInline(): false {
     return false
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  updateDOM(prevNode: LargeBodyNode, dom: HTMLElement): boolean {
+  override updateDOM(_prevNode: LargeBodyNode, _dom: HTMLElement): boolean {
     return false
   }
 }
@@ -126,6 +130,8 @@ export function $createLargeBodyNode(): LargeBodyNode {
   return $applyNodeReplacement(new LargeBodyNode({}))
 }
 
-export function $isLargeBodyNode(node: LexicalNode | null | undefined): node is LargeBodyNode {
+export function $isLargeBodyNode(
+  node: LexicalNode | null | undefined,
+): node is LargeBodyNode {
   return node instanceof LargeBodyNode
 }

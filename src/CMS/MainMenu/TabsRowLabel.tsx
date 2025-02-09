@@ -4,8 +4,10 @@ import { useRowLabel } from '@payloadcms/ui'
 
 import { PayloadClientReactComponent, RowLabelComponent } from 'payload'
 
-export const TabsRowLabel: PayloadClientReactComponent<RowLabelComponent> = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const TabsRowLabel: PayloadClientReactComponent<
+  RowLabelComponent
+> = () => {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { data } = useRowLabel<any>()
 
   return data.label || '...'

@@ -1,11 +1,11 @@
-import React, { cache } from 'react'
-import { draftMode } from 'next/headers'
-import type { Metadata } from 'next'
 import { fetchCachedPageBySlug } from '@data/pages'
+import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
+import React, { cache } from 'react'
 
-import configPromise from '@payload-config'
-import { RenderHero } from '@heros/RenderHero'
 import { RenderBlocks } from '@blocks/RenderBlocks'
+import { RenderHero } from '@heros/RenderHero'
+import configPromise from '@payload-config'
 
 import { generateMeta } from '@seo/generateMeta'
 import { getDynamicMeta } from '@seo/getDynamicMeta'
@@ -37,9 +37,9 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     overrideAccess: draft,
     where: {
       slug: {
-        equals: slug
-      }
-    }
+        equals: slug,
+      },
+    },
   })
 
   return result.docs?.[0] || null
@@ -56,11 +56,12 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const url = '/' + slug
 
+  // biome-ignore lint/style/useConst: <explanation>
   let page: PageType | null
 
   // eslint-disable-next-line prefer-const
   page = await queryPageBySlug({
-    slug
+    slug,
   })
 
   const { hero, blocks } = page ? page : { hero: null, blocks: null }
@@ -92,8 +93,8 @@ export async function generateStaticParams() {
     overrideAccess: false,
     pagination: false,
     select: {
-      slug: true
-    }
+      slug: true,
+    },
   })
 
   const params = pages.docs
@@ -108,7 +109,9 @@ export async function generateStaticParams() {
   return params
 }
 
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+export async function generateMetadata({
+  params: paramsPromise,
+}: Args): Promise<Metadata> {
   const { slug } = await paramsPromise
 
   if (!slug) {
@@ -121,7 +124,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     const { siteName, siteDescription } = await getDynamicMeta()
     return {
       title: `Not Found | ${siteName}`,
-      description: siteDescription
+      description: siteDescription,
     }
   }
 

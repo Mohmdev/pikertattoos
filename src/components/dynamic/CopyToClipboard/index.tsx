@@ -16,11 +16,11 @@ type CopyToClipboardProps = {
 export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
   value,
   className,
-  hoverText
+  hoverText,
 }) => {
   const [copied, setCopied] = useState(false)
   const [showTooltip, setShowTooltip] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const ref = useRef<any>(null)
 
   const copy = useCallback(async () => {
@@ -54,7 +54,12 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
       className={className}
     >
       <CopyIcon size="large" />
-      <textarea className={classes.copyTextarea} tabIndex={-1} readOnly ref={ref} />
+      <textarea
+        className={classes.copyTextarea}
+        tabIndex={-1}
+        readOnly
+        ref={ref}
+      />
     </Tooltip>
   )
 }

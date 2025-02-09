@@ -1,12 +1,10 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-
-import { basicLexical } from '@services/editor/basicLexical'
-import { tagsField } from '@fields/shared/tagsField'
 import { anyone } from '@access/anyone'
 import { isAdminOrEditor } from '@access/isAdminOrEditor'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
-
+import { tagsField } from '@fields/shared/tagsField'
+import { minimalLexical } from '@services/editor/minimalLexical'
 import type { CollectionConfig } from 'payload'
 
 const filename = fileURLToPath(import.meta.url)
@@ -16,13 +14,13 @@ export const Media: CollectionConfig<'media'> = {
   slug: 'media',
   labels: {
     singular: 'Media',
-    plural: 'Media'
+    plural: 'Media',
   },
   access: {
     read: anyone,
     create: isAdminOrEditor,
     delete: isAdminOrSelf,
-    update: isAdminOrSelf
+    update: isAdminOrSelf,
   },
   defaultPopulate: {
     alt: true,
@@ -30,39 +28,45 @@ export const Media: CollectionConfig<'media'> = {
     height: true,
     mimeType: true,
     url: true,
-    width: true
-    // relatedTattoo: true,
-    // tags: true
+    width: true,
   },
   admin: {
     useAsTitle: 'alt',
-    defaultColumns: ['filename', 'relatedTattoo', 'tags', 'mimeType', 'createdAt', 'updatedAt']
+    defaultColumns: [
+      'filename',
+      'relatedTattoo',
+      'tags',
+      'mimeType',
+      'createdAt',
+      'updatedAt',
+    ],
   },
   fields: [
     {
       name: 'alt',
       type: 'text',
       admin: {
-        description: 'For SEO and accessibility'
-      }
+        description: 'For SEO and accessibility',
+      },
     },
     {
       name: 'caption',
       type: 'richText',
       label: 'Caption',
-      editor: basicLexical,
+      editor: minimalLexical,
       admin: {
-        description: 'Custom caption for the image'
-      }
+        description: 'Custom caption for the image',
+      },
     },
     {
       type: 'join',
       name: 'relatedTattoo',
-      label: false,
+      label: 'Related Tattoo',
       collection: 'tattoo',
-      on: 'images'
+      on: 'images',
+      hasMany: true,
     },
-    tagsField
+    tagsField,
   ],
   upload: {
     crop: true,
@@ -75,8 +79,8 @@ export const Media: CollectionConfig<'media'> = {
       'video/*',
       'text/plain',
       'application/json',
-      'application/pdf', // PDF documents
-      'application/msword' // DOC
+      'application/pdf',
+      'application/msword',
     ],
     adminThumbnail: 'thumbnail',
     imageSizes: [
@@ -84,40 +88,40 @@ export const Media: CollectionConfig<'media'> = {
         name: 'original',
         withoutEnlargement: true,
         withoutReduction: true,
-        height: 1500
+        height: 1500,
       },
       {
         name: 'thumbnail',
-        width: 300
+        width: 300,
       },
       {
         name: 'square',
         width: 500,
-        height: 500
+        height: 500,
       },
       {
         name: 'small',
-        width: 600
+        width: 600,
       },
       {
         name: 'medium',
-        width: 900
+        width: 900,
       },
       {
         name: 'large',
-        width: 1400
+        width: 1400,
       },
       {
         name: 'xlarge',
-        width: 1920
+        width: 1920,
       },
       {
         name: 'og',
         width: 1200,
         height: 630,
-        crop: 'center'
-      }
+        crop: 'center',
+      },
     ],
-    staticDir: path.resolve(dirname, '../../public/media')
-  }
+    staticDir: path.resolve(dirname, '../../public/media'),
+  },
 }

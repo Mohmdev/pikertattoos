@@ -1,11 +1,11 @@
 'use client'
 
-import React from 'react'
 import NextError from 'next/error'
+import React from 'react'
 
 import { Gutter } from '@components/layout/Gutter'
 
-export default function Error() {
+export default function ErrorComponent() {
   return (
     <Gutter>
       <h2>Something went wrong</h2>

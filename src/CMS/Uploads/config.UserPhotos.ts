@@ -1,19 +1,18 @@
 import { anyone } from '@access/anyone'
 import { isAdminOrSelf } from '@access/isAdminOrSelf'
-
 import type { CollectionConfig } from 'payload'
 
-export const UserPhotos: CollectionConfig<'user-photo'> = {
-  slug: 'user-photo',
+export const UserPhotos: CollectionConfig<'user-photos'> = {
+  slug: 'user-photos',
   labels: {
     singular: 'User Photo',
-    plural: 'User Photos'
+    plural: 'User Photos',
   },
   access: {
     read: anyone,
     create: isAdminOrSelf,
     delete: isAdminOrSelf,
-    update: isAdminOrSelf
+    update: isAdminOrSelf,
   },
   defaultPopulate: {
     filename: true,
@@ -21,24 +20,31 @@ export const UserPhotos: CollectionConfig<'user-photo'> = {
     url: true,
     height: true,
     width: true,
-    mimeType: true
+    mimeType: true,
   },
   admin: {
     useAsTitle: 'user',
-    defaultColumns: ['user', 'filename', 'filesize', 'mimeType', 'createdAt', 'updatedAt']
+    defaultColumns: [
+      'user',
+      'filename',
+      'filesize',
+      'mimeType',
+      'createdAt',
+      'updatedAt',
+    ],
   },
   fields: [
     {
       name: 'alt',
-      type: 'text'
+      type: 'text',
     },
     {
       type: 'join',
       name: 'user',
       collection: 'users',
       on: 'photo',
-      label: 'User'
-    }
+      label: 'User',
+    },
   ],
   upload: {
     crop: true,
@@ -49,21 +55,22 @@ export const UserPhotos: CollectionConfig<'user-photo'> = {
     imageSizes: [
       {
         name: 'thumbnail',
-        width: 300
+        width: 100,
+        height: 100,
+        crop: 'center',
       },
       {
-        name: 'square',
-        width: 500,
-        height: 500
+        name: 'avatar',
+        width: 300,
+        height: 300,
+        crop: 'center',
       },
       {
-        name: 'small',
-        width: 600
+        name: 'original',
+        width: 800,
+        withoutEnlargement: true,
+        withoutReduction: true,
       },
-      {
-        name: 'medium',
-        width: 900
-      }
-    ]
-  }
+    ],
+  },
 }

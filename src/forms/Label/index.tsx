@@ -4,11 +4,14 @@ import classes from './index.module.scss'
 import { Props } from './types'
 
 const LabelOnly: React.FC<Props> = (props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { htmlFor, required, label, className, margin } = props
 
   return (
-    <label htmlFor={htmlFor} className={[classes.label, className].filter(Boolean).join(' ')}>
+    <label
+      htmlFor={htmlFor}
+      className={[classes.label, className].filter(Boolean).join(' ')}
+    >
       {label}
       {required && <span className={classes.required}>*</span>}
     </label>
@@ -22,7 +25,10 @@ const Label: React.FC<Props> = (props) => {
     if (actionsSlot) {
       return (
         <div
-          className={[classes.labelWithActions, margin === false && classes.noMargin]
+          className={[
+            classes.labelWithActions,
+            margin === false && classes.noMargin,
+          ]
             .filter(Boolean)
             .join(' ')}
         >

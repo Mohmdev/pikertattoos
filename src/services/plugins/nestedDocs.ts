@@ -7,5 +7,6 @@ import { NESTED_COLLECTIONS } from '@constants/featureFlags'
 export const nestedDocsPluginConfig: Plugin = nestedDocsPlugin({
   collections: NESTED_COLLECTIONS,
   generateLabel: (_, doc) => doc.title as string,
-  generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug as string}`, '')
+  generateURL: (docs) =>
+    docs.reduce((url, doc) => `${url}/${doc.slug as string}`, ''),
 })

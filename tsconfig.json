@@ -64,5 +64,5 @@
     "public/scripts/*.ts",
     "public/scripts/*.js"
   ],
-  "exclude": ["node_modules", ".temp"]
+  "exclude": ["node_modules", ".temp", ".examples"]
 }

@@ -2,7 +2,8 @@ import type React from 'react'
 
 export type Validate = undefined | ((value: unknown) => boolean | string)
 
-export type Value = any // eslint-disable-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export type Value = any
 
 export interface Property {
   [key: string]: Value
@@ -16,7 +17,7 @@ export interface OnSubmit {
   ({
     data,
     unflattenedData,
-    dispatchFields
+    dispatchFields,
   }: {
     data: Property
     unflattenedData: Data
@@ -82,7 +83,9 @@ export interface IFormContext {
   initialState: InitialState
   fields: Fields
   validateForm: () => boolean
-  handleSubmit?: (e: React.ChangeEvent<HTMLFormElement>) => Promise<boolean> | void | false
+  handleSubmit?: (
+    e: React.ChangeEvent<HTMLFormElement>,
+  ) => Promise<boolean> | void | false
   getFields: () => Fields
   getField: (path: string) => Field | undefined
   getFormData?: () => Data

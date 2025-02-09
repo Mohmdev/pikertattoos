@@ -1,9 +1,11 @@
+// @ts-nocheck
 /**
  * These types are used to generate the search plugin config.
  */
 export type FieldsOverride = (args: { defaultFields: Field[] }) => Field[]
 export type BeforeSync = (args: {
   originalDoc: {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     [key: string]: any
   }
   payload: Payload
@@ -11,6 +13,7 @@ export type BeforeSync = (args: {
   searchDoc: DocToSync
 }) => DocToSync | Promise<DocToSync>
 export type DocToSync = {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   [key: string]: any
   doc: {
     relationTo: string

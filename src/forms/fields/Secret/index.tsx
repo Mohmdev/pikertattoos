@@ -4,11 +4,10 @@ import React, { Fragment } from 'react'
 
 import Label from '@forms/Label'
 
-import { EyeIcon } from '@icons/EyeIcon'
-import { CopyToClipboard } from '@components/CopyToClipboard'
-import { Tooltip } from '@components/Tooltip'
-
-import Error from '../../Error'
+import { CopyToClipboard } from '@components/dynamic/CopyToClipboard'
+import { Tooltip } from '@components/dynamic/Tooltip'
+import { EyeIcon } from '@icons'
+import ErrorComponent from '../../Error'
 import { FieldProps } from '../types'
 import { useField } from '../useField'
 import classes from './index.module.scss'
@@ -32,38 +31,38 @@ export const Secret: React.FC<SecretProps> = (props) => {
     loadSecret: loadValue,
     description,
     largeLabel,
-    readOnly
+    readOnly,
   } = props
 
   const [isValueLoaded, setIsValueLoaded] = React.useState(false)
   const [isHidden, setIsHidden] = React.useState(true)
 
   const defaultValidateFunction = React.useCallback(
-    (fieldValue: boolean): string | true => {
+    (fieldValue: unknown): string | true => {
       if (required && !fieldValue) {
         return 'Please enter a value.'
       }
 
-      if (fieldValue && typeof fieldValue !== 'string') {
+      if (typeof fieldValue !== 'string') {
         return 'This field can only be a string.'
       }
 
       return true
     },
-    [required]
+    [required],
   )
 
   const {
     onChange,
     value = '',
     showError,
-    errorMessage
+    errorMessage,
   } = useField<string>({
     initialValue,
     onChange: onChangeFromProps,
     path,
     validate: validate || defaultValidateFunction,
-    required
+    required,
   })
 
   const loadExternalValue = React.useCallback(async (): Promise<
@@ -111,7 +110,7 @@ export const Secret: React.FC<SecretProps> = (props) => {
         tabIndex={isHidden ? -1 : 0}
         readOnly={readOnly}
       />
-      <Error showError={showError} message={errorMessage} />
+      <ErrorComponent showError={showError} message={errorMessage} />
       <Label
         htmlFor={path}
         label={label}

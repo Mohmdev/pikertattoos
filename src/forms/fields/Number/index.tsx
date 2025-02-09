@@ -4,7 +4,7 @@ import React from 'react'
 
 import { isNumber } from '@utils/isNumber'
 
-import Error from '../../Error'
+import ErrorComponent from '../../Error'
 import Label from '../../Label'
 import { FieldProps } from '../types'
 import { useField } from '../useField'
@@ -19,12 +19,15 @@ export const NumberInput: React.FC<FieldProps<number>> = (props) => {
     placeholder,
     onChange: onChangeFromProps,
     className,
-    initialValue
+    initialValue,
   } = props
 
   const defaultValidateFunction = React.useCallback(
-    (fieldValue: number | string): string | true => {
-      const stringVal = fieldValue as string
+    (fieldValue: unknown): string | true => {
+      if (typeof fieldValue !== 'number' && typeof fieldValue !== 'string') {
+        return true // Or some other appropriate error/handling
+      }
+      const stringVal = String(fieldValue)
       if (required && (!fieldValue || stringVal.length === 0)) {
         return 'Please enter a value.'
       }
@@ -35,7 +38,7 @@ export const NumberInput: React.FC<FieldProps<number>> = (props) => {
 
       return true
     },
-    [required]
+    [required],
   )
 
   const { onChange, value, showError, errorMessage } = useField<number>({
@@ -43,12 +46,12 @@ export const NumberInput: React.FC<FieldProps<number>> = (props) => {
     onChange: onChangeFromProps,
     path,
     validate: validate || defaultValidateFunction,
-    required
+    required,
   })
 
   return (
     <div className={[classes.wrap, className].filter(Boolean).join(' ')}>
-      <Error showError={showError} message={errorMessage} />
+      <ErrorComponent showError={showError} message={errorMessage} />
       <Label htmlFor={path} label={label} required={required} />
       <input
         className={classes.input}

@@ -1,15 +1,18 @@
 import React, { Fragment, JSX } from 'react'
 
-import { DefaultNodeTypes, SerializedBlockNode } from '@payloadcms/richtext-lexical'
 import { BannerBlock } from '@blocks/BannerBlock/Component'
 import { CallToActionBlock } from '@blocks/CallToActionBlock/Component'
 import { CodeBlock, CodeBlockProps } from '@blocks/CodeBlock/Component'
 import { MediaBlock } from '@blocks/MediaBlock/Component'
+import {
+  DefaultNodeTypes,
+  SerializedBlockNode,
+} from '@payloadcms/richtext-lexical'
 
 import type {
   BannerBlock as BannerBlockProps,
   CallToActionBlock as CTABlockProps,
-  MediaBlock as MediaBlockProps
+  MediaBlock as MediaBlockProps,
 } from '@payload-types'
 
 import { CMSLink } from '@components/dynamic/CMSLink'
@@ -21,12 +24,14 @@ import {
   IS_STRIKETHROUGH,
   IS_SUBSCRIPT,
   IS_SUPERSCRIPT,
-  IS_UNDERLINE
+  IS_UNDERLINE,
 } from './nodeFormat'
 
 export type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+  | SerializedBlockNode<
+      CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps
+    >
 
 type Props = {
   nodes: NodeTypes[]
@@ -95,7 +100,8 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
           }
         }
 
-        const serializedChildren = 'children' in node ? serializedChildrenFn(node) : ''
+        const serializedChildren =
+          'children' in node ? serializedChildrenFn(node) : ''
 
         if (node.type === 'block') {
           const block = node.fields
@@ -122,9 +128,17 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
                 />
               )
             case 'banner':
-              return <BannerBlock className="col-start-2 mb-4" key={index} {...block} />
+              return (
+                <BannerBlock
+                  className="col-start-2 mb-4"
+                  key={index}
+                  {...block}
+                />
+              )
             case 'code':
-              return <CodeBlock className="col-start-2" key={index} {...block} />
+              return (
+                <CodeBlock className="col-start-2" key={index} {...block} />
+              )
             default:
               return null
           }
@@ -192,7 +206,7 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
                 <CMSLink
                   key={index}
                   newTab={Boolean(fields?.newTab)}
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                   reference={fields.doc as any}
                   type={fields.linkType === 'internal' ? 'reference' : 'custom'}
                   url={fields.url}

@@ -8,7 +8,7 @@ type InitialStateProps = {
 }
 
 const InitialState: InitialStateProps = {
-  data: []
+  data: [],
 }
 
 export const InfiniteScroll = createSlice({
@@ -16,16 +16,18 @@ export const InfiniteScroll = createSlice({
   initialState: InitialState,
   reducers: {
     onInfiniteScroll: (state, action: PayloadAction<InitialStateProps>) => {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const list = state.data.find((data: any) =>
-        action.payload.data.find((payload: any) => data.id === payload.id)
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        action.payload.data.find((payload: any) => data.id === payload.id),
       )
 
       if (!list) state.data = [...state.data, ...action.payload.data]
     },
     onClearList: (state, action) => {
       state.data = action.payload.data
-    }
-  }
+    },
+  },
 })
 
 export const { onInfiniteScroll, onClearList } = InfiniteScroll.actions

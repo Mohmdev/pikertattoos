@@ -1,6 +1,6 @@
 import type { JobsConfig, PayloadRequest } from 'payload'
 
-export const jobsConfig: JobsConfig = {
+export const scheduledJobsService: JobsConfig = {
   access: {
     run: ({ req }: { req: PayloadRequest }): boolean => {
       // Allow logged in users to execute this endpoint (default)
@@ -11,7 +11,7 @@ export const jobsConfig: JobsConfig = {
       // Authorization header:
       const authHeader = req.headers.get('authorization')
       return authHeader === `Bearer ${process.env.CRON_SECRET}`
-    }
+    },
   },
-  tasks: []
+  tasks: [],
 }

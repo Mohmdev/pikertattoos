@@ -4,11 +4,11 @@ import React, { Fragment, useEffect } from 'react'
 
 import { EyeIcon } from '@icons'
 
-import Label from '@forms/Label'
 import { CopyToClipboard } from '@components/dynamic/CopyToClipboard'
 import { Tooltip } from '@components/dynamic/Tooltip'
+import Label from '@forms/Label'
 
-import Error from '../../Error'
+import ErrorComponent from '../../Error'
 import { FieldProps } from '../types'
 import { useField } from '../useField'
 import classes from './index.module.scss'
@@ -19,7 +19,7 @@ export const Text: React.FC<
     copy?: boolean
     elementAttributes?: React.InputHTMLAttributes<HTMLInputElement>
     value?: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     customOnChange?: (e: any) => void
     suffix?: React.ReactNode
     readOnly?: boolean
@@ -43,14 +43,14 @@ export const Text: React.FC<
     elementAttributes = {
       autoComplete: 'off',
       autoCorrect: 'off',
-      autoCapitalize: 'none'
+      autoCapitalize: 'none',
     },
     description,
     value: valueFromProps,
     showError: showErrorFromProps,
     icon,
     fullWidth = true,
-    suffix
+    suffix,
   } = props
 
   const prevValueFromProps = React.useRef(valueFromProps)
@@ -58,7 +58,7 @@ export const Text: React.FC<
   const [isHidden, setIsHidden] = React.useState(type === 'password')
 
   const defaultValidateFunction = React.useCallback(
-    (fieldValue: boolean): string | true => {
+    (fieldValue: unknown): string | true => {
       if (required && !fieldValue) {
         return 'Please enter a value.'
       }
@@ -69,20 +69,20 @@ export const Text: React.FC<
 
       return true
     },
-    [required]
+    [required],
   )
 
   const {
     onChange,
     value: valueFromContext,
     showError,
-    errorMessage
+    errorMessage,
   } = useField<string>({
     initialValue,
     onChange: onChangeFromProps,
     path,
     validate: validate || defaultValidateFunction,
-    required
+    required,
   })
 
   const value = valueFromProps || valueFromContext
@@ -105,7 +105,7 @@ export const Text: React.FC<
         classes.component,
         (showError || showErrorFromProps) && classes.showError,
         classes[`type--${type}`],
-        fullWidth && classes.fullWidth
+        fullWidth && classes.fullWidth,
       ]
         .filter(Boolean)
         .join(' ')}
@@ -143,8 +143,10 @@ export const Text: React.FC<
       </div>
       {type !== 'hidden' && (
         <>
-          <Error
-            showError={Boolean((showError || showErrorFromProps) && errorMessage)}
+          <ErrorComponent
+            showError={Boolean(
+              (showError || showErrorFromProps) && errorMessage,
+            )}
             message={errorMessage}
           />
           <Label

@@ -6,10 +6,11 @@ import { getPayload } from 'payload'
 
 import type { Payload } from 'payload'
 
+import type { Media } from '@payload-types'
 import { fetchImageByURL } from './fetchFile'
 import { tattoosData } from './tattosData'
 
-export const maxDuration = 60
+export const maxDuration = 60 // Vercel timeout limit
 
 export async function POST(): Promise<Response> {
   const payload: Payload = await getPayload({ config })
@@ -30,14 +31,16 @@ export async function POST(): Promise<Response> {
   }
 }
 
-const createTattoos = async ({ payload }: { payload: Payload }): Promise<void> => {
+const createTattoos = async ({
+  payload,
+}: { payload: Payload }): Promise<void> => {
   for (const tattoo of tattoosData) {
     try {
       const existingTattoo = await payload.find({
         collection: 'tattoo',
         where: {
-          slug: { equals: tattoo.slug }
-        }
+          slug: { equals: tattoo.slug },
+        },
       })
 
       if (existingTattoo.docs.length === 0) {
@@ -46,16 +49,22 @@ const createTattoos = async ({ payload }: { payload: Payload }): Promise<void> =
         if (!firstImage) {
           throw new Error(`No image found for tattoo "${tattoo.title}"`)
         }
+        if (typeof firstImage.url !== 'string') {
+          throw new Error(`Invalid image URL for tattoo "${tattoo.title}"`)
+        }
 
         const imageBuffer = await fetchImageByURL(firstImage.url)
         const mediaDoc = await payload.create({
+          depth: 1,
           collection: 'media',
           data: {
             alt: firstImage.alt || tattoo.title,
             width: firstImage.width,
-            height: firstImage.height
+            height: firstImage.height,
+            filename: firstImage.filename,
+            mimeType: firstImage.mimeType,
           },
-          file: imageBuffer
+          file: imageBuffer,
         })
 
         const sanitizedDescription = tattoo.richTextContent
@@ -66,25 +75,28 @@ const createTattoos = async ({ payload }: { payload: Payload }): Promise<void> =
                 version: 1,
                 children: tattoo.richTextContent.root.children.map((child) => ({
                   ...child,
-                  version: 1
-                }))
-              }
+                  version: 1,
+                })),
+              },
             }
           : null
 
         await payload.create({
           collection: 'tattoo',
+          depth: 1,
           data: {
             _status: 'published',
             title: tattoo.title,
             slug: tattoo.slug,
             images: [mediaDoc.id],
-            richTextContent: sanitizedDescription
-          }
+            richTextContent: sanitizedDescription,
+          },
         })
         payload.logger.info(`✓ Created tattoo "${tattoo.title}"`)
       } else {
-        payload.logger.info(`Tattoo "${tattoo.title}" already exists, skipping...`)
+        payload.logger.info(
+          `Tattoo "${tattoo.title}" already exists, skipping...`,
+        )
       }
     } catch (error) {
       payload.logger.error(`Error creating tattoo "${tattoo.title}":`, error)
@@ -92,17 +104,21 @@ const createTattoos = async ({ payload }: { payload: Payload }): Promise<void> =
   }
 }
 
-const updateTattoos = async ({ payload }: { payload: Payload }): Promise<void> => {
+const updateTattoos = async ({
+  payload,
+}: { payload: Payload }): Promise<void> => {
   for (const tattoo of tattoosData) {
     try {
       // Check if tattoo exists before updating
       const existingTattoo = await payload.find({
         collection: 'tattoo',
-        where: { slug: { equals: tattoo.slug } }
+        where: { slug: { equals: tattoo.slug } },
       })
 
       if (!existingTattoo.docs.length) {
-        payload.logger.warn(`Tattoo "${tattoo.title}" not found, skipping update...`)
+        payload.logger.warn(
+          `Tattoo "${tattoo.title}" not found, skipping update...`,
+        )
         continue
       }
 
@@ -111,39 +127,39 @@ const updateTattoos = async ({ payload }: { payload: Payload }): Promise<void> =
         tattoo.style.map(async (style) => {
           const existingStyle = await payload.find({
             collection: 'style',
-            where: { slug: { equals: style.slug } }
+            where: { slug: { equals: style.slug } },
           })
           if (!existingStyle.docs.length) {
             throw new Error(`Style not found: ${style.slug}`)
           }
           return existingStyle.docs[0]?.id
-        })
+        }),
       )
 
       const areaIds = await Promise.all(
         tattoo.area.map(async (area) => {
           const existingArea = await payload.find({
             collection: 'area',
-            where: { slug: { equals: area.slug } }
+            where: { slug: { equals: area.slug } },
           })
           if (!existingArea.docs.length) {
             throw new Error(`Area not found: ${area.slug}`)
           }
           return existingArea.docs[0]?.id
-        })
+        }),
       )
 
       const tagIds = await Promise.all(
         tattoo.tags.map(async (tag) => {
           const existingTag = await payload.find({
             collection: 'tag',
-            where: { slug: { equals: tag.slug } }
+            where: { slug: { equals: tag.slug } },
           })
           if (!existingTag.docs.length) {
             throw new Error(`Tag not found: ${tag.slug}`)
           }
           return existingTag.docs[0]?.id
-        })
+        }),
       )
 
       await payload.update({
@@ -153,8 +169,8 @@ const updateTattoos = async ({ payload }: { payload: Payload }): Promise<void> =
           _status: 'published',
           style: styleIds,
           area: areaIds,
-          tags: tagIds
-        }
+          tags: tagIds,
+        },
       })
       payload.logger.info(`✓ Updated relationships for "${tattoo.title}"`)
     } catch (error) {

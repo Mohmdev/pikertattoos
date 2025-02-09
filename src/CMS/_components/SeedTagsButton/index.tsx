@@ -11,7 +11,7 @@ import styles from '../SeedButton/index.module.scss'
 const SuccessMessage: React.FC = () => (
   <div>
     Tags seeding complete! You can now{' '}
-    <a target="_blank" href="/">
+    <a target="_blank" href="/" rel="noreferrer">
       visit your website
     </a>
   </div>

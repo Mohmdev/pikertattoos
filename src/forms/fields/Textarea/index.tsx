@@ -2,9 +2,9 @@
 
 import React from 'react'
 
-import { CopyToClipboard } from '@components/CopyToClipboard'
+import { CopyToClipboard } from '@components/dynamic/CopyToClipboard'
 
-import Error from '../../Error'
+import ErrorComponent from '../../Error'
 import Label from '../../Label'
 import { FieldProps } from '../types'
 import { useField } from '../useField'
@@ -31,12 +31,12 @@ export const Textarea: React.FC<
     elementAttributes = {
       autoComplete: 'off',
       autoCorrect: 'off',
-      autoCapitalize: 'none'
-    }
+      autoCapitalize: 'none',
+    },
   } = props
 
   const defaultValidateFunction = React.useCallback(
-    (fieldValue: string): string | true => {
+    (fieldValue: unknown): string | true => {
       if (required && !fieldValue) {
         return 'Please enter a value.'
       }
@@ -47,7 +47,7 @@ export const Textarea: React.FC<
 
       return true
     },
-    [required]
+    [required],
   )
 
   const { onChange, value, showError, errorMessage } = useField<string>({
@@ -55,12 +55,12 @@ export const Textarea: React.FC<
     onChange: onChangeFromProps,
     path,
     validate: validate || defaultValidateFunction,
-    required
+    required,
   })
 
   return (
     <div className={[className, classes.wrap].filter(Boolean).join(' ')}>
-      <Error showError={showError} message={errorMessage} />
+      <ErrorComponent showError={showError} message={errorMessage} />
       <Label
         htmlFor={path}
         label={label}

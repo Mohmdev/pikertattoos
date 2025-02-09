@@ -1,8 +1,15 @@
 'use client'
 
-import React, { createContext, useContext, useEffect, useReducer, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react'
 
 import { LinkIcon } from 'lucide-react'
 
@@ -14,15 +21,17 @@ const Context = createContext<IContext>({
   dispatch: () => null,
   items: {},
   lastActive: undefined,
-  setLastActive: () => null
+  setLastActive: () => null,
 })
 
 const reducer: Reducer = (state, { id, active }) => ({
   ...state,
-  [id]: active
+  [id]: active,
 })
 
-export const JumplistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const JumplistProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [items, dispatch] = useReducer(reducer, {})
   const [lastActive, setLastActive] = useState<string | undefined>()
 
@@ -44,7 +53,10 @@ export const Jumplist: React.FC<Props> = ({ className, injectProps, list }) => {
       {list.map(({ id, anchor, Component }) => (
         <li key={id}>
           <Link href={`${pathname}/#${anchor}`} replace>
-            <Component active={items[id] || lastActive === id} {...(injectProps || {})} />
+            <Component
+              active={items[id] || lastActive === id}
+              {...(injectProps || {})}
+            />
           </Link>
         </li>
       ))}
@@ -57,7 +69,7 @@ const elements = {
   h3: 'h3',
   h4: 'h4',
   h5: 'h5',
-  h6: 'h6'
+  h6: 'h6',
 }
 
 export const JumplistNode: React.FC<NodeProps> = ({ id, type, children }) => {
@@ -81,8 +93,8 @@ export const JumplistNode: React.FC<NodeProps> = ({ id, type, children }) => {
         },
         {
           rootMargin: '0px',
-          threshold: 0.5
-        }
+          threshold: 0.5,
+        },
       )
 
       observer.observe(el)
@@ -92,7 +104,7 @@ export const JumplistNode: React.FC<NodeProps> = ({ id, type, children }) => {
     return () => null
   }, [dispatch, id, setLastActive])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const Element: any = elements[type]
 
   return (

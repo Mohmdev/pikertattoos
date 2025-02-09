@@ -1,55 +1,18 @@
-type MockTatttoo = {
-  title: string
-  slug: string
-  richTextContent?: {
-    root: {
-      type: string
-      children: {
-        type: string
+import type { Area, Media, Style, Tag, Tattoo } from '@payload-types'
 
-        [k: string]: unknown
-      }[]
-      direction: ('ltr' | 'rtl') | null
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-      indent: number
-    }
-    [k: string]: unknown
-  }
-  images: {
-    alt: string
-    url: string
-    filename: string
-    mimeType: string
-    width?: number
-    height?: number
-  }[]
-  style: {
-    title: string
-    slug: string
-  }[]
-  area: {
-    title: string
-    slug: string
-  }[]
-  tags: {
-    title: string
-    slug: string
-  }[]
-}
-
-const mockDescription: MockTatttoo['richTextContent'] = {
+const mockDescription: Tattoo['richTextContent'] = {
   root: {
     type: 'root',
     format: '',
     indent: 0,
-
+    version: 1,
     children: [
       {
         tag: 'h2',
         type: 'heading',
         format: 'left',
         indent: 0,
-
+        version: 1,
         children: [
           {
             mode: 'normal',
@@ -57,16 +20,16 @@ const mockDescription: MockTatttoo['richTextContent'] = {
             type: 'text',
             style: '',
             detail: 0,
-            format: 0
-          }
+            format: 0,
+          },
         ],
-        direction: 'ltr'
+        direction: 'ltr',
       },
       {
         type: 'paragraph',
         format: 'justify',
         indent: 0,
-
+        version: 1,
         children: [
           {
             mode: 'normal',
@@ -74,7 +37,7 @@ const mockDescription: MockTatttoo['richTextContent'] = {
             type: 'text',
             style: '',
             detail: 0,
-            format: 1
+            format: 1,
           },
           {
             mode: 'normal',
@@ -82,19 +45,19 @@ const mockDescription: MockTatttoo['richTextContent'] = {
             type: 'text',
             style: '',
             detail: 0,
-            format: 0
-          }
+            format: 0,
+          },
         ],
         direction: 'ltr',
         textStyle: '',
-        textFormat: 0
+        textFormat: 0,
       },
       {
         tag: 'h2',
         type: 'heading',
         format: 'left',
         indent: 0,
-
+        version: 1,
         children: [
           {
             mode: 'normal',
@@ -102,16 +65,16 @@ const mockDescription: MockTatttoo['richTextContent'] = {
             type: 'text',
             style: '',
             detail: 0,
-            format: 0
-          }
+            format: 0,
+          },
         ],
-        direction: 'ltr'
+        direction: 'ltr',
       },
       {
         type: 'paragraph',
         format: 'justify',
         indent: 0,
-
+        version: 1,
         children: [
           {
             mode: 'normal',
@@ -119,19 +82,27 @@ const mockDescription: MockTatttoo['richTextContent'] = {
             type: 'text',
             style: '',
             detail: 0,
-            format: 0
-          }
+            format: 0,
+          },
         ],
         direction: 'ltr',
         textStyle: '',
-        textFormat: 0
-      }
+        textFormat: 0,
+      },
     ],
-    direction: 'ltr'
-  }
+    direction: 'ltr',
+  },
 }
 
-export const tattoosData: MockTatttoo[] = [
+type TattooDepthZero = Pick<Tattoo, 'title' | 'slug' | 'richTextContent'>
+type TattooDepthOne = TattooDepthZero & {
+  images: Partial<Media>[]
+  style: Partial<Style>[]
+  area: Partial<Area>[]
+  tags: Partial<Tag>[]
+}
+
+export const tattoosData: TattooDepthOne[] = [
   {
     title: 'Japanese Dragon Sleeve',
     slug: 'japanese-dragon-sleeve',
@@ -143,31 +114,31 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 731,
-        height: 977
-      }
+        height: 977,
+      },
     ],
     style: [
       {
         title: 'Japanese',
-        slug: 'japanese'
-      }
+        slug: 'japanese',
+      },
     ],
     area: [
       {
         title: 'Upper Boddy',
-        slug: 'upper-boddy'
-      }
+        slug: 'upper-boddy',
+      },
     ],
     tags: [
       {
         title: 'Dragons',
-        slug: 'dragons'
+        slug: 'dragons',
       },
       {
         title: 'Mythology',
-        slug: 'mythology'
-      }
-    ]
+        slug: 'mythology',
+      },
+    ],
   },
   {
     title: 'Traditional Rose',
@@ -180,31 +151,31 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 736,
-        height: 1104
-      }
+        height: 1104,
+      },
     ],
     style: [
       {
         title: 'Traditional',
-        slug: 'traditional'
-      }
+        slug: 'traditional',
+      },
     ],
     area: [
       {
         title: 'Chest',
-        slug: 'chest'
-      }
+        slug: 'chest',
+      },
     ],
     tags: [
       {
         title: 'Flowers',
-        slug: 'flowers'
+        slug: 'flowers',
       },
       {
         title: 'Nature',
-        slug: 'nature'
-      }
-    ]
+        slug: 'nature',
+      },
+    ],
   },
   {
     title: 'Geometric Wolf',
@@ -217,31 +188,31 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 720,
-        height: 907
-      }
+        height: 907,
+      },
     ],
     style: [
       {
         title: 'Geometric',
-        slug: 'geometric'
-      }
+        slug: 'geometric',
+      },
     ],
     area: [
       {
         title: 'Leg',
-        slug: 'leg'
-      }
+        slug: 'leg',
+      },
     ],
     tags: [
       {
         title: 'Animals',
-        slug: 'animals'
+        slug: 'animals',
       },
       {
         title: 'Symbols',
-        slug: 'symbols'
-      }
-    ]
+        slug: 'symbols',
+      },
+    ],
   },
   {
     title: 'Realistic Portrait',
@@ -254,27 +225,27 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 735,
-        height: 1092
-      }
+        height: 1092,
+      },
     ],
     style: [
       {
         title: 'Realism',
-        slug: 'realism'
-      }
+        slug: 'realism',
+      },
     ],
     area: [
       {
         title: 'Upper Boddy',
-        slug: 'upper-boddy'
-      }
+        slug: 'upper-boddy',
+      },
     ],
     tags: [
       {
         title: 'Portrait',
-        slug: 'portrait'
-      }
-    ]
+        slug: 'portrait',
+      },
+    ],
   },
   {
     title: 'Mandala Finger Band',
@@ -287,31 +258,31 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 736,
-        height: 736
-      }
+        height: 736,
+      },
     ],
     style: [
       {
         title: 'Minimalist',
-        slug: 'minimalist'
-      }
+        slug: 'minimalist',
+      },
     ],
     area: [
       {
         title: 'Finger',
-        slug: 'finger'
-      }
+        slug: 'finger',
+      },
     ],
     tags: [
       {
         title: 'Mandala',
-        slug: 'mandala'
+        slug: 'mandala',
       },
       {
         title: 'Spiritual',
-        slug: 'spiritual'
-      }
-    ]
+        slug: 'spiritual',
+      },
+    ],
   },
   {
     title: 'Celtic Cross Cover-up',
@@ -324,31 +295,31 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 736,
-        height: 736
-      }
+        height: 736,
+      },
     ],
     style: [
       {
         title: 'Blackwork',
-        slug: 'blackwork'
-      }
+        slug: 'blackwork',
+      },
     ],
     area: [
       {
         title: 'Cover-up',
-        slug: 'cover-up'
-      }
+        slug: 'cover-up',
+      },
     ],
     tags: [
       {
         title: 'Celtic',
-        slug: 'celtic'
+        slug: 'celtic',
       },
       {
         title: 'Religious',
-        slug: 'religious'
-      }
-    ]
+        slug: 'religious',
+      },
+    ],
   },
   {
     title: 'Watercolor Abstract',
@@ -361,27 +332,27 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 736,
-        height: 736
-      }
+        height: 736,
+      },
     ],
     style: [
       {
         title: 'Watercolor',
-        slug: 'watercolor'
-      }
+        slug: 'watercolor',
+      },
     ],
     area: [
       {
         title: 'Neck',
-        slug: 'neck'
-      }
+        slug: 'neck',
+      },
     ],
     tags: [
       {
         title: 'Abstract',
-        slug: 'abstract'
-      }
-    ]
+        slug: 'abstract',
+      },
+    ],
   },
   {
     title: 'Neo Traditional Skull',
@@ -394,27 +365,27 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 736,
-        height: 868
-      }
+        height: 868,
+      },
     ],
     style: [
       {
         title: 'Neo Traditional',
-        slug: 'neo-traditional'
-      }
+        slug: 'neo-traditional',
+      },
     ],
     area: [
       {
         title: 'Lower Body',
-        slug: 'lower-body'
-      }
+        slug: 'lower-body',
+      },
     ],
     tags: [
       {
         title: 'Skull',
-        slug: 'skull'
-      }
-    ]
+        slug: 'skull',
+      },
+    ],
   },
   {
     title: 'Musical Notes Script',
@@ -427,31 +398,31 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 736,
-        height: 1177
-      }
+        height: 1177,
+      },
     ],
     style: [
       {
         title: 'Minimalist',
-        slug: 'minimalist'
-      }
+        slug: 'minimalist',
+      },
     ],
     area: [
       {
         title: 'Custom',
-        slug: 'custom'
-      }
+        slug: 'custom',
+      },
     ],
     tags: [
       {
         title: 'Music',
-        slug: 'music'
+        slug: 'music',
       },
       {
         title: 'Script',
-        slug: 'script'
-      }
-    ]
+        slug: 'script',
+      },
+    ],
   },
   {
     title: 'Tribal Phoenix',
@@ -464,30 +435,30 @@ export const tattoosData: MockTatttoo[] = [
         filename: 'sample-tattoo-image.jpg',
         mimeType: 'image/jpeg',
         width: 600,
-        height: 600
-      }
+        height: 600,
+      },
     ],
     style: [
       {
         title: 'Tribal',
-        slug: 'tribal'
-      }
+        slug: 'tribal',
+      },
     ],
     area: [
       {
         title: 'Full Body',
-        slug: 'full-body'
-      }
+        slug: 'full-body',
+      },
     ],
     tags: [
       {
         title: 'Animals',
-        slug: 'animals'
+        slug: 'animals',
       },
       {
         title: 'Mythology',
-        slug: 'mythology'
-      }
-    ]
-  }
+        slug: 'mythology',
+      },
+    ],
+  },
 ]
